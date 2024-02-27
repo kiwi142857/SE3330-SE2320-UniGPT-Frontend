@@ -1,11 +1,11 @@
 import React from 'react';
-import AppRouter from './components/router.tsx';
+import AppRouter from './components/AppRouter.tsx';
 import './css/App.css';
 
 function App() {
   return (
     <div className="App">
-      <AppRouter/>
+      <AppRouter />
     </div>
   );
 }
