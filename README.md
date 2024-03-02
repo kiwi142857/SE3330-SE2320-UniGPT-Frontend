@@ -1,7 +1,19 @@
-# Getting Started with Create React App
+# AI-assistant
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Description
+
+This project is a web playform that allows users to interact with an AI assistant. For this AI-assistant is aimed to provide serives to univerity student, we offer the following services:
+
+- Course information
+- English polishing
+- Summarization of articles
+- Translation
+- Schedule management
+- Chatting
+- etc.
+  
 ## Available Scripts
 
 In the project directory, you can run:
