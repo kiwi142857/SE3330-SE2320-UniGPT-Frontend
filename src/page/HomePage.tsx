@@ -1,5 +1,5 @@
 import React from 'react';
-import Navigator from '../components/Navigator.tsx';
+import Navigator from '../components/Navigator';
 
 // 首页
 const HomePage: React.FC = () => {
