@@ -47,7 +47,6 @@ const Navigator: React.FC<{}> = () => {
 
                 </Toolbar>
             </AppBar>
-
     );
 }
 
