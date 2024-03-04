@@ -29,7 +29,7 @@ const OneChat = ({ chat }: { chat: Chat }) => {
         <div className='one-chat-content'>   
             {chat.content}
         </div>
-      </div>,
+    </div>,
     <Divider />
   ];
     
