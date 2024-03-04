@@ -20,22 +20,22 @@ export async function getBotDetail(id: string) {
 export async function getBotComments(id: string) {
     let comments = {
         total: 3,
-        comments: [
+        items: [
             {
                 id: '1',
-                user: 'user1',
+                name: 'user1',
                 avator: '/assets/user-default.jpg',
                 content: 'CommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentComment....',
             },
             {
                 id: '2',
-                user: 'user2',
+                name: 'user2',
                 avator: '/assets/user-default.jpg',
                 content: 'CommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentComment....',
             },
             {
                 id: '3',
-                user: 'user3',
+                name: 'user3',
                 avator: '/assets/user-default.jpg',
                 content: 'CommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentComment....',
             },
