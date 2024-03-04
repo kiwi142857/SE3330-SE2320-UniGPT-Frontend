@@ -1,0 +1,27 @@
+.one-chat-container{
+    width: 100%;
+    min-height: 133px;
+}
+
+.one-chat-name{
+    margin-top: 30px;
+    font-weight: 700;
+}
+
+.one-chat-header{
+    display: flex;
+    flex-direction: row;
+}
+
+.one-chat-avator{
+    min-width: 50px;
+    min-height: 50px;
+    border-radius: 50%;
+    margin: 20px 20px 0px 20px;
+}
+
+.one-chat-content{
+    margin-left: 90px;
+    display: flex;
+    align-items: flex-start;
+}

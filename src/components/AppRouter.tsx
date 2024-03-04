@@ -26,7 +26,7 @@ const AppRouter = () => {
                     element={<MarketPage />}
                 />
                 <Route
-                    path="/botDetail"
+                    path="/botdetail/:id"
                     element={<BotDetailPage />}
                 />
                 <Route
@@ -34,7 +34,7 @@ const AppRouter = () => {
                     element={<ProfilePage />}
                 />
                 <Route
-                    path="/botEdit"
+                    path="/botedit/:id"
                     element={<BotEditPage />}
                 />
                 <Route
