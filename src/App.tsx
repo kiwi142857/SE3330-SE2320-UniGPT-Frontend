@@ -1,8 +1,8 @@
 import React from 'react';
-import AppRouter from './components/AppRouter.tsx';
+import AppRouter from './components/AppRouter';
 import './css/App.css';
 
-function App() {
+const App = () => {
   return (
     <div className="App">
       <AppRouter />
