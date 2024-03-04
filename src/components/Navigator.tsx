@@ -1,13 +1,11 @@
 import { AppBar, Avatar, IconButton, Link, Toolbar } from '@mui/material';
-import { Box, ThemeProvider } from '@mui/system';
+import { Box } from '@mui/system';
 import React from 'react';
 import '../css/Navigator.css';
-import theme from './theme';
 
 // 顶部导航栏
 const Navigator: React.FC<{}> = () => {
-    return (
-        <ThemeProvider theme={theme}>
+    return ( 
             <AppBar
                 position="static"
                 className='navigator'
@@ -49,7 +47,6 @@ const Navigator: React.FC<{}> = () => {
 
                 </Toolbar>
             </AppBar>
-        </ThemeProvider>
 
     );
 }
