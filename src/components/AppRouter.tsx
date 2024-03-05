@@ -34,7 +34,7 @@ const AppRouter = () => {
                     element={<ProfilePage />}
                 />
                 <Route
-                    path="/botedit/:id"
+                    path="/botedit"
                     element={<BotEditPage />}
                 />
                 <Route

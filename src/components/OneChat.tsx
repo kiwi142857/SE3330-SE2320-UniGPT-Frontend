@@ -24,6 +24,7 @@ const OneChat = ({ id, name, avatar, content }: { id:string, name:string, avatar
                   {content}
               </div>
           </div>
+          <br/>
           <Divider/>
       </>);
 };

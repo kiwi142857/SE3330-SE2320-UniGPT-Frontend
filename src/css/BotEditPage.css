@@ -1,0 +1,20 @@
+.bot-edit-container{
+    width: 90%;
+    margin: auto;
+    padding-top: 100px;
+    
+}
+
+.edit-basic-container{
+    display: flex;
+    height: 200px;
+    margin-top: 50px;
+    margin-bottom: 40px;
+}
+
+.edit-avator{
+    height: 100%;
+    width: auto;
+}
+
+
