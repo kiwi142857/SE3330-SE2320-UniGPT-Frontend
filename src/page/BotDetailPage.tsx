@@ -14,7 +14,7 @@ interface BotDetail {
     id: string;
     name: string;
     author: string;
-    avator: string;
+    avatar: string;
     description: string;
     detail: string;
     photos: string[];
@@ -26,7 +26,7 @@ interface BotDetail {
 interface Comment {
     id: string;
     name: string;
-    avator: string;
+    avatar: string;
     content: string;
 }
 
@@ -68,13 +68,13 @@ const BotDetailPage: React.FC = () => {
                     id={bot?.id || ''}
                     name={bot?.name || ''}
                     author={bot?.author || ''}
-                    avator={bot?.avator || ''}
+                    avatar={bot?.avatar || ''}
                     description={bot?.description || ''}
                     like={bot?.like.toString() || ''}
                     collect={bot?.collect.toString() || ''}
-                /> 
+                />
                 <BotCarousel photos={bot?.photos || []} />
-                <Typography 
+                <Typography
                     sx={{color: 'primary.light'}}
                     align='left'
                 >
@@ -88,7 +88,7 @@ const BotDetailPage: React.FC = () => {
                     ))}
                 </List>
             </div>
-        ]; 
+        ];
 }
 
 export default BotDetailPage;

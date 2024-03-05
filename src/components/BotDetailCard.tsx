@@ -7,14 +7,14 @@ import React from 'react';
 import '../css/BotDetailPage.css';
 
 
-const BotDetailCard = ({id, name, author, avator, description, like, collect} 
-    : {id:string ; name:string; author:string; avator:string; description:string; like:string; collect:string;}) => {
+const BotDetailCard = ({id, name, author, avatar, description, like, collect}
+    : {id:string ; name:string; author:string; avatar:string; description:string; like:string; collect:string;}) => {
     return (
         <div className='detail-card-container'>
             <img
-                src={avator}
+                src={avatar}
                 alt='bot'
-                className='detail-card-avator'
+                className='detail-card-avatar'
             ></img>
             <div className='detail-card-right'>
                 <Typography sx={{color: 'primary.main'}}>
@@ -33,14 +33,14 @@ const BotDetailCard = ({id, name, author, avator, description, like, collect}
                     </p>
                 </Typography>
                 <div className='detail-card-btn-group'>
-                    <FavoriteBorderIcon 
+                    <FavoriteBorderIcon
                         sx={{color: 'primary.main'}}
                         fontSize='large'
                     />
                     <span className='detail-card-like'>
                         {like}
                     </span>
-                    <StarBorderIcon 
+                    <StarBorderIcon
                         sx={{color: 'primary.main'}}
                         fontSize='large'
                     />

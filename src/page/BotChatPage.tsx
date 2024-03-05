@@ -4,7 +4,6 @@ import {Container, Fab, Icon, List} from "@mui/material";
 import OneChat from "../components/OneChat";
 import PromptTextField from "../components/PromptTextField";
 import {Box} from "@mui/system";
-import {Navigation} from "@mui/icons-material";
 
 // bot聊天页
 const BotChatPage: React.FC = () => {
