@@ -28,4 +28,5 @@ const OneChat = ({ id, name, avatar, content }: { id:string, name:string, avatar
       </>);
 };
 
+
 export default OneChat;
