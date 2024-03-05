@@ -6,7 +6,9 @@
     box-shadow: 0px 10px 20px 0px #00000026;
     justify-content: center;
     display: flex;
-    
+    position: fixed;
+    top: 0;
+    z-index: 1;
 }
 
 .navigator-title-box {
@@ -20,9 +22,8 @@
     font-size: 32px;
     font-weight: 400;
     line-height: 32px;
-    letter-spacing: 0em;
+    letter-spacing: 0;
     text-align: center;
-
 }
 
 .navigator-user {

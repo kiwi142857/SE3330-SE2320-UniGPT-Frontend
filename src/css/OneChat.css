@@ -19,7 +19,7 @@
     flex-direction: row;
 }
 
-.one-chat-avator{
+.one-chat-avatar{
     min-width: 50px;
     min-height: 50px;
     border-radius: 50%;
@@ -27,6 +27,11 @@
 }
 
 .one-chat-content{
+    font-family: "Inter" ;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 24px;
+
     margin-left: 90px;
     display: flex;
     align-items: flex-start;
@@ -36,6 +41,6 @@
     line-height: 24px;
     letter-spacing: 0em;
     text-align: left;
-
+    white-space: pre-wrap;
 
 }
