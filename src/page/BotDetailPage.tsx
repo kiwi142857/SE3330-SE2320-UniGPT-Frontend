@@ -1,8 +1,9 @@
-import { List } from '@mui/material';
+import { List, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useParams } from 'react-router-dom';
 import BotCarousel from '../components/BotCarousel';
+import BotDetailCard from '../components/BotDetailCard';
 import Navigator from '../components/Navigator';
 import OneChat from '../components/OneChat';
 import '../css/BotDetailPage.css';
@@ -63,7 +64,24 @@ const BotDetailPage: React.FC = () => {
         return [
             <Navigator/>,
             <div className='bot-detail-container'>
+                <BotDetailCard
+                    id={bot?.id || ''}
+                    name={bot?.name || ''}
+                    author={bot?.author || ''}
+                    avator={bot?.avator || ''}
+                    description={bot?.description || ''}
+                    like={bot?.like.toString() || ''}
+                    collect={bot?.collect.toString() || ''}
+                /> 
                 <BotCarousel photos={bot?.photos || []} />
+                <Typography 
+                    sx={{color: 'primary.light'}}
+                    align='left'
+                >
+                    <p className='bot-detail-long'>
+                        {bot?.detail}
+                    </p>
+                </Typography>
                 <List>
                     {comments?.map((comment) => (
                         <OneChat chat={comment} />

@@ -5,7 +5,13 @@
 
 .one-chat-name{
     margin-top: 30px;
+    font-family: "Inter";
+    font-size: 18px;
     font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left; 
+
 }
 
 .one-chat-header{
@@ -29,6 +35,12 @@
     margin-left: 90px;
     display: flex;
     align-items: flex-start;
+    font-family: "Inter";
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0em;
     text-align: left;
     white-space: pre-wrap;
+
 }

@@ -5,7 +5,7 @@ export async function getBotDetail(id: string) {
         name: 'bot1',
         author: 'user1',
         avator: '/assets/bot-default.png',
-        description: 'this is bot1',
+        description: "this is bot1. ",
         detail: 'Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.',
         photos: ['/assets/bot-detail-1.png', '/assets/bot-detail-2.png', '/assets/bot-detail-1.png', '/assets/bot-detail-2.png'],
         like: 100,

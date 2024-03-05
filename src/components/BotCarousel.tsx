@@ -6,9 +6,9 @@ import '../css/OneChat.css';
 const BotCarousel = ({ photos }: { photos: string[] }) => {
 
   // 这里我是想用css的，但是试过了好多次都不行，所以就只能这样了
-  let imageWidth = '40%';
+  let imageWidth = '45%';
   let centerGap = '10%';
-  let sideGap = '5%';
+  let sideGap = '0%';
   let borderRadius = '20px';
     
   return (
