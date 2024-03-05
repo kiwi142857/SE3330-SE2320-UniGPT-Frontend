@@ -5,10 +5,13 @@ import '../css/Navigator.css';
 
 // 顶部导航栏
 const Navigator: React.FC<{}> = () => {
-    return ( 
+    return (
+        <div
+            className="navigator"
+        >
             <AppBar
                 position="static"
-                className='navigator'
+                className="navigator"
             >
                 <Toolbar>
 
@@ -37,16 +40,18 @@ const Navigator: React.FC<{}> = () => {
 
                     {/* 用户头像 */}
                     <Link href="/profile">
-                            <IconButton className='navigator-user'>
-                                <Avatar
-                                    alt="/assets/user-default.jpg"
-                                    src="/assets/user-default.jpg"
-                                />
-                            </IconButton>
+                        <IconButton className='navigator-user'>
+                            <Avatar
+                                alt="/assets/user-default.jpg"
+                                src="/assets/user-default.jpg"
+                            />
+                        </IconButton>
                     </Link>
 
                 </Toolbar>
             </AppBar>
+        </div>
+
     );
 }
 
