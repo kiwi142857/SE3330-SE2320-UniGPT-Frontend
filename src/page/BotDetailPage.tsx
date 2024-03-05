@@ -1,4 +1,4 @@
-import { List } from '@mui/material';
+import { List, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useParams } from 'react-router-dom';
@@ -74,6 +74,14 @@ const BotDetailPage: React.FC = () => {
                     collect={bot?.collect.toString() || ''}
                 /> 
                 <BotCarousel photos={bot?.photos || []} />
+                <Typography 
+                    sx={{color: 'primary.light'}}
+                    align='left'
+                >
+                    <p className='bot-detail-long'>
+                        {bot?.detail}
+                    </p>
+                </Typography>
                 <List>
                     {comments?.map((comment) => (
                         <OneChat chat={comment} />

@@ -3,6 +3,17 @@
     margin: auto;
 }
 
+.bot-detail-long{
+    font-family: "Inter";
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: left;
+    line-height: 1.5;
+
+}
+
 .detail-card-container{
     display: flex;
     height: 200px;
