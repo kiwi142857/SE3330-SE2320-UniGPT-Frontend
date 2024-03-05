@@ -1,8 +1,10 @@
 import React from 'react';
 import Navigator from '../components/Navigator';
-import {Container, List} from "@mui/material";
+import {Container, Fab, Icon, List} from "@mui/material";
 import OneChat from "../components/OneChat";
 import PromptTextField from "../components/PromptTextField";
+import {Box} from "@mui/system";
+import {Navigation} from "@mui/icons-material";
 
 // bot聊天页
 const BotChatPage: React.FC = () => {
@@ -33,7 +35,26 @@ const BotChatPage: React.FC = () => {
                     </List>
                 </Container>
             </div>
-            <PromptTextField />
+            <div>
+                <Box
+                    style={{
+                        display: 'flex',
+                        position: 'fixed',
+                        bottom: 0,
+                        flexDirection:'row',
+                        justifyContent:'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        backgroundColor: 'white',
+                    }}
+                >
+                    <Fab variant="extended" size="large" color="primary">
+                    </Fab>
+                    <PromptTextField />
+                    <Fab variant="extended" size="large" color="primary">
+                    </Fab>
+                </Box>
+            </div>
         </>
     );
 }

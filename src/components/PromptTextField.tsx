@@ -3,16 +3,12 @@ import React from "react";
 import "../css/PromptTextField.css"
 const PromptTextField = ()=> {
     return (
-        <div
-            className="prompt-text-field"
-        >
-            <TextField
-                InputProps={{ className:'prompt-text-field-input' }}
-                placeholder="Enter your message here..."
-                multiline
-                maxRows={5}
-            />
-        </div>
+        <TextField
+            placeholder="Enter your message here..."
+            InputProps={{className: 'prompt-text-field-input'}}
+            multiline
+            maxRows={5}
+        />
     );
 };
 export default PromptTextField;
