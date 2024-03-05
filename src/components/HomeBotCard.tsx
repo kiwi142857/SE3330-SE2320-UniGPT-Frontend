@@ -15,7 +15,7 @@ export default function HomeBotCard({BotInfo}: HomeBotCardProps) {
 
   return (
     <Link href='/bot1' style={{ textDecoration: 'none' }} >
-      <Card style={{ borderRadius: '20px' }} className='bot-card'>
+      <Card className='bot-card'>
         <CardMedia style={{ width: '30%', height: '30%', marginLeft: '0', borderRadius: '20px' }}
           component="img"
           height="194"
