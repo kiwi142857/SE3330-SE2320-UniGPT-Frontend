@@ -4,8 +4,8 @@ export async function getBotDetail(id: string) {
         id: '1',
         name: 'bot1',
         author: 'user1',
-        avator: '/assets/bot-default.png',
-        description: "this is bot1. this is bot1. this is bot1. this is bot1. this is bot1. this is bot1. this is bot1. ",
+        avatar: '/assets/bot-default.png',
+        description: "this is bot1. ",
         detail: 'Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.Long description here.',
         photos: ['/assets/bot-detail-1.png', '/assets/bot-detail-2.png', '/assets/bot-detail-1.png', '/assets/bot-detail-2.png'],
         like: 100,
@@ -24,20 +24,20 @@ export async function getBotComments(id: string) {
             {
                 id: '1',
                 name: 'user1',
-                avator: '/assets/user-default.jpg',
-                content: 'Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment ....',
+                avatar: '/assets/user-default.jpg',
+                content: 'CommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentComment....',
             },
             {
                 id: '2',
                 name: 'user2',
-                avator: '/assets/user-default.jpg',
-                content: 'Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment ....',    
+                avatar: '/assets/user-default.jpg',
+                content: 'CommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentComment....',
             },
             {
                 id: '3',
                 name: 'user3',
-                avator: '/assets/user-default.jpg',
-                content: 'Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment Comment ....',
+                avatar: '/assets/user-default.jpg',
+                content: 'CommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentComment....',
             },
         ]
     }
