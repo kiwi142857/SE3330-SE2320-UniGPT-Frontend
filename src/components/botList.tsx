@@ -4,13 +4,18 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import HomeBotCard from './HomeBotCard';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Link from '@mui/material/Link';
+import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
 import GetBotInfo from '../service/BotInfo';
 import { Favorite } from '@mui/icons-material';
 import { Divider } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
-export type botListType = {Favorite:string, Recent:string};
+export type botListType = { Favorite: string, Recent: string; };
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -35,6 +40,19 @@ function FormRow({ ids }: { ids: string[]; }) {
     );
 }
 
+function HomeMarketCard() {
+    return (
+        <Link href='/bot1' style={{ textDecoration: 'none' }} >
+            <LocalGroceryStoreIcon style={{ width: '30%', height: '30%', marginLeft: '0', borderRadius: '20px' }} />
+            <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                    This is a description of the icon.
+                </Typography>
+            </CardContent>
+        </Link>
+    );
+}
+
 function FavoriteHeader() {
     return (
         <div>
@@ -48,15 +66,16 @@ function FavoriteHeader() {
                     <Typography variant="h6">Favorite</Typography>
                 </Grid>
             </Grid>
-            <Divider style={{marginBottom:'50px'}}/>
+            <Divider style={{ marginBottom: '50px' }} />
         </div>
     );
 }
 
 export default function BotList() {
     return (
-        <Box sx={{ flexGrow: 1 }} style={{marginLeft:'50px'}}>
+        <Box sx={{ flexGrow: 1 }} style={{ marginLeft: '50px' }}>
             <FavoriteHeader />
+            <HomeMarketCard />
             <Grid container spacing={1}>
                 <Grid container item spacing={3}>
                     <FormRow ids={['1', '2', '3']} />
