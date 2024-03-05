@@ -1,0 +1,27 @@
+
+.bot-card-name {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+.bot-card{
+  box-shadow: 0px 10px 20px 0px #00000026;
+  text-decoration: none;
+  border-radius: 20px;
+  margin: 10px;
+  margin-top: 0;
+}
+
+.bot-box{
+  margin-top: -50px;
+  margin-right: 10%;
+}
+
+.home-bg{
+  margin: 10px;
+  margin-top: 0;
+  width: 100%;
+}
