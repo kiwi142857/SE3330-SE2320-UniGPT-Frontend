@@ -1,9 +1,11 @@
+import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
+import ArticleIcon from '@mui/icons-material/Article';
+import { Container, Fab, List } from "@mui/material";
+import { Box } from "@mui/system";
 import React from 'react';
+import BasicInput from '../components/BasicInput';
 import Navigator from '../components/Navigator';
-import {Container, Fab, Icon, List} from "@mui/material";
 import OneChat from "../components/OneChat";
-import PromptTextField from "../components/PromptTextField";
-import {Box} from "@mui/system";
 
 // bot聊天页
 const BotChatPage: React.FC = () => {
@@ -47,10 +49,14 @@ const BotChatPage: React.FC = () => {
                         backgroundColor: 'white',
                     }}
                 >
-                    <Fab variant="extended" size="large" color="primary">
+                    <Fab variant="extended" size="large" style={{ color:'white' }}>
+                        <ArticleIcon fontSize='large'/>
                     </Fab>
-                    <PromptTextField />
-                    <Fab variant="extended" size="large" color="primary">
+                    <div style={{width: '604px', margin: '20px'}}>
+                        <BasicInput placeholder="Enter your message here..." name="message"/>
+                    </div>
+                    <Fab variant="extended" size="large" style={{ color:'white' }}>
+                        <ArrowCircleUpIcon fontSize='large'/>
                     </Fab>
                 </Box>
             </div>

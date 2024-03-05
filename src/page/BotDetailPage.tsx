@@ -1,9 +1,11 @@
+import { Comment } from '@mui/icons-material';
 import { List, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useParams } from 'react-router-dom';
 import BotCarousel from '../components/BotCarousel';
 import BotDetailCard from '../components/BotDetailCard';
+import CommentInput from '../components/CommentInput';
 import Navigator from '../components/Navigator';
 import OneChat from '../components/OneChat';
 import '../css/BotDetailPage.css';
@@ -64,6 +66,7 @@ const BotDetailPage: React.FC = () => {
         return [
             <Navigator/>,
             <div className='bot-detail-container'>
+
                 <BotDetailCard
                     id={bot?.id || ''}
                     name={bot?.name || ''}
@@ -82,9 +85,17 @@ const BotDetailPage: React.FC = () => {
                         {bot?.detail}
                     </p>
                 </Typography>
+
+                <CommentInput/>
+                
                 <List>
                     {comments?.map((comment) => (
-                        <OneChat chat={comment} />
+                        <OneChat 
+                            id={comment.id}
+                            name={comment.name}
+                            avatar={comment.avator}
+                            content={comment.content}
+                        />
                     ))}
                 </List>
             </div>

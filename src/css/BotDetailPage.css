@@ -1,6 +1,7 @@
 .bot-detail-container{
     width: 90%;
     margin: auto;
+    padding-top: 100px;
 }
 
 .bot-detail-long{
@@ -85,4 +86,12 @@
     letter-spacing: 0em;
     text-align: left;
     margin-left: -10px;
+}
+
+.comment-input-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 10px;
 }
