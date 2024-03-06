@@ -2,6 +2,7 @@ import { Avatar, Divider, Grid } from '@mui/material';
 import React from 'react';
 import '../css/OneChat.css';
 
+// 聊天或评论区的一句对话
 const OneChat = ({ id, name, avatar, content }: { id:string, name:string, avatar:string, content:string }) => {
   return (
       <>
