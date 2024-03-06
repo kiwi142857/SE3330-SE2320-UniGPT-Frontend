@@ -7,12 +7,15 @@ import BasicInput from '../components/BasicInput';
 import Navigator from '../components/Navigator';
 import OneChat from "../components/OneChat";
 
+import '../css/App.css'
+import '../css/BotChatPage.css'
+
 // bot聊天页
 const BotChatPage: React.FC = () => {
     return (
         <>
             <Navigator />
-            <div style={{paddingTop: '100px',paddingBottom: '133px'}}> {/* Adjust '64px' based on your navigator's height */}
+            <div className="main-container bot-chat-container">
                 <Container>
                     <List>
                         <OneChat id="1" name="Creeper" avatar=""
@@ -30,7 +33,6 @@ const BotChatPage: React.FC = () => {
                             '- In the azure depths of the vast ocean, there existed a unique figure whose legend stretched far and wide—Sharky, the tooth-brushing shark superhero, whose passion for dental hygiene surpassed that of any other creature beneath the waves.\n' +
                             '- Born with a keen sense of duty and armed with a gleaming toothbrush and a supply of the finest seaweed-infused toothpaste, Sharky embarked on his noble mission to safeguard the dental health of all marine life.\n' +
                             '- With graceful strokes and a determined spirit, Sharky traversed the ocean depths, tirelessly seeking out those in need of his expert dental care.\n' +
-                            '- From the smallest shrimp to the largest whales, Sharky offered his services with a friendly smile, ensuring that every tooth sparkled with cleanliness and vitality.\n' +
                             '- As word of Sharky\'s heroic deeds spread, he became a symbol of hope and inspiration to creatures of all sizes, his legacy etched into the annals of oceanic folklore as the greatest tooth-brushing shark superhero the world had ever known.'
                         }/>
                     </List>
