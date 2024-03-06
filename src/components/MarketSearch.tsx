@@ -2,7 +2,7 @@ import React from 'react';
 import { Tabs, Tab, Grid, Input } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import '../css/market.css';
+import '../css/Market.css';
 
 export function SearchTabs() {
     const [value, setValue] = React.useState(0);

@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import BotCard from './BotCard';
 import Card from '@mui/material/Card';
@@ -11,26 +9,16 @@ import Link from '@mui/material/Link';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import GetBotInfo from '../service/BotInfo';
-import { Favorite, MarginRounded } from '@mui/icons-material';
+import { Favorite } from '@mui/icons-material';
 import { Divider } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
 export type botListType = { Favorite: string, Recent: string; };
 
-const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-}));
-
-
-
 function HomeMarketCard() {
     return (
-        <Link href='/bot1' style={{ textDecoration: 'none', width: '30%', height: '30%', borderRadius: '20px' }}>
+        <Link href='/market' style={{ textDecoration: 'none', width: '30%', height: '30%', borderRadius: '20px' }}>
             <Card elevation={0}>
                 <ShoppingCartOutlinedIcon style={{ width: '30%', height: '30%', marginTop:'20%', color:'#666666' }} />
                 <CardContent>

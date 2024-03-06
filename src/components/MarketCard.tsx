@@ -4,7 +4,7 @@ import { HomeCreateCard } from './BotList';
 import BotCard from './BotCard';
 import GetBotInfo from '../service/BotInfo';
 import React from 'react';
-import '../css/market.css';
+import '../css/Market.css';
 
 export default function MarketCard() {
     const ids = ['1', '2', '3', '4', '5', '6'];
