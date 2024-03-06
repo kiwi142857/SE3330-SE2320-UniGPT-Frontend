@@ -10,25 +10,27 @@ const CommentInput = ()=> {
     return (
             <Grid container className='comment-input-container'>
                 <Grid xs={11}>
-                    <BasicInput 
-                        placeholder='Write your comment here...' 
-                        name='comment'
+                    <BasicInput
+                        placeholder='Enter your message here...'
+                        name='prompt'
                     />
                 </Grid>
-                <Grid xs={1}>          
-                    <Fab 
-                        variant="extended" 
-                        size="large" 
+                <Grid xs={1}>
+                    <Fab
+                        variant="extended"
+                        size="large"
                         sx={{color:'secondary.main'}}
                     >
-                        <ArrowCircleUpIcon 
-                            fontSize='large' 
+                        <ArrowCircleUpIcon
+                            fontSize='large'
                             style={{ color:'white' }}
                         />
                     </Fab>
                 </Grid>
             </Grid>
-        
+
+
     );
 };
+
 export default CommentInput;

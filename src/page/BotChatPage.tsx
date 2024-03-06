@@ -1,33 +1,32 @@
-import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
-import ArticleIcon from '@mui/icons-material/Article';
 import {
-    Container, Divider,
     Drawer,
     Fab,
     List,
     ListItem,
     ListItemButton,
     ListItemText,
-    Toolbar,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React from 'react';
-import BasicInput from '../components/BasicInput';
-import Navigator from '../components/Navigator';
 import OneChat from "../components/OneChat";
-import ChatHistoryItem from "../components/ChatHistoryItem";
 
 import '../css/App.css'
 import '../css/BotChatPage.css'
-import Chats from "../components/Chats";
+import PromptInput from "../components/PromptInput";
+import Navigator from "../components/Navigator.tsx";
+import ChatHistoryItem from "../components/ChatHistoryItem.tsx";
 
 // bot聊天页
 let drawerWidth = 240;
 const BotChatPage = () => {
     return (
         <>
-            <Navigator />
-            <div style={{ display: 'flex' , flexDirection: 'row' }}>
+            {/*<Navigator />*/}
+            <div
+                style={{
+                    display: 'flex' ,
+                    flexDirection: 'row',
+            }}>
                 <Drawer
                     variant="permanent"
                     sx={{
@@ -37,48 +36,36 @@ const BotChatPage = () => {
                 >
                     <Box sx={{ overflow: 'auto' }}>
                         <List>
-                            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                                <ListItem key={text} disablePadding>
-                                    <ListItemButton>
-                                        <ListItemText primary={text} />
-                                    </ListItemButton>
-                                </ListItem>
-                            ))}
+                            <ChatHistoryItem />
+                            <ChatHistoryItem />
+                            <ChatHistoryItem />
+                            <ChatHistoryItem />
+                            <ChatHistoryItem />
                         </List>
                     </Box>
                 </Drawer>
-                <Box component="main" sx={{flexGrow: 1, p: 3}}>
-                    <div className="main-container bot-chat-container">
-                        <Container>
-                            <List>
-                                <Chats/>
-                            </List>
-                        </Container>
-                    </div>
-                    <div>
-                        <Box
-                            style={{
-                                display: 'flex',
-                                position: 'fixed',
-                                bottom: 0,
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                width: '100%',
-                                backgroundColor: 'white',
-                            }}
-                        >
-                            <Fab variant="extended" size="large" style={{color: 'white'}}>
-                                <ArticleIcon fontSize='large'/>
-                            </Fab>
-                            <div style={{width: '604px', margin: '20px'}}>
-                                <BasicInput placeholder="Enter your message here..." name="message"/>
-                            </div>
-                            <Fab variant="extended" size="large" style={{color: 'white'}}>
-                                <ArrowCircleUpIcon fontSize='large'/>
-                            </Fab>
-                        </Box>
-                    </div>
+
+                <Box
+                    className="main-container bot-chat-container"
+                    flexDirection="column"
+                    alignItems="center"
+                    display="flex"
+                    width="100%"
+                >
+                    <Box>
+                        <OneChat id="1" name="Creeper" avatar=""
+                                 content={'Make up a 5-sentence story about "Sharky", a tooth-brushing shark superhero. Make each sentence a bullet point.'}/>
+                        <OneChat id="2" name="ChatGPT" avatar="" content={
+                            '- In the depths of the ocean, there existed a remarkable creature known as Sharky, a shark with a passion for dental hygiene and a secret identity as a superhero. \n' +
+                            '- With a sleek, silver costume adorned with a toothbrush emblem, Sharky patrolled the seas, ensuring all marine life kept their teeth sparkling clean. \n' +
+                            '- Armed with a special toothpaste that could banish even the most stubborn plaque, Sharky swiftly dealt with any dental neglect among his fellow sea creatures. \n' +
+                            '- His reputation as a tooth-brushing shark superhero spread far and wide, earning him admiration and respect from creatures great and small. \n' +
+                            '- And so, with each swoosh of his toothbrush and flash of his smile, Sharky continued his noble mission to promote dental health throughout the ocean, one tooth at a time.'}/>
+                        <OneChat id="3" name="Creeper" avatar="" content={
+                            'Make another story'
+                        }/>
+                    </Box>
+                    <PromptInput />
                 </Box>
             </div>
         </>

@@ -1,4 +1,13 @@
 .bot-chat-container {
     padding-bottom: 200px;
-    background-color: tomato;
+}
+.prompt-input-container {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: white;
 }

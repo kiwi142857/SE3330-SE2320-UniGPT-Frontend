@@ -1,6 +1,7 @@
 .one-chat-container{
     width: 100%;
     min-height: 133px;
+    max-width: 1200px;
 }
 
 .one-chat-name{
@@ -10,7 +11,7 @@
     font-weight: 700;
     line-height: 24px;
     letter-spacing: 0em;
-    text-align: left; 
+    text-align: left;
 
 }
 
