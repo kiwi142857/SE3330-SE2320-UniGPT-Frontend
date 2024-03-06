@@ -8,8 +8,10 @@ import BotDetailCard from '../components/BotDetailCard';
 import CommentInput from '../components/CommentInput';
 import Navigator from '../components/Navigator';
 import OneChat from '../components/OneChat';
-import '../css/BotDetailPage.css';
 import { getBotComments, getBotDetail } from '../service/BotDetail';
+
+import '../css/App.css'
+import '../css/BotDetailPage.css'
 
 // 并不是bot的全部信息，但是对于应用市场来说够用了
 interface BotDetail {
@@ -65,7 +67,7 @@ const BotDetailPage: React.FC = () => {
 
         return [
             <Navigator/>,
-            <div className='bot-detail-container'>
+            <div className="main-container bot-detail-container">
 
                 <BotDetailCard
                     id={bot?.id || ''}
@@ -87,13 +89,13 @@ const BotDetailPage: React.FC = () => {
                 </Typography>
 
                 <CommentInput/>
-                
+
                 <List>
                     {comments?.map((comment) => (
-                        <OneChat 
+                        <OneChat
                             id={comment.id}
                             name={comment.name}
-                            avatar={comment.avator}
+                            avatar={comment.avatar}
                             content={comment.content}
                         />
                     ))}
