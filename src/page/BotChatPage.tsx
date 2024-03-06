@@ -1,10 +1,6 @@
 import {
     Drawer,
-    Fab,
     List,
-    ListItem,
-    ListItemButton,
-    ListItemText,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React from 'react';
@@ -14,7 +10,7 @@ import '../css/App.css'
 import '../css/BotChatPage.css'
 import PromptInput from "../components/PromptInput";
 import Navigator from "../components/Navigator.tsx";
-import ChatHistoryItem from "../components/ChatHistoryItem.tsx";
+import ChatHistoryList from "../components/ChatHistoryList.tsx";
 
 // bot聊天页
 let drawerWidth = 240;
@@ -34,15 +30,7 @@ const BotChatPage = () => {
                         [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
                     }}
                 >
-                    <Box sx={{ overflow: 'auto' }}>
-                        <List>
-                            <ChatHistoryItem />
-                            <ChatHistoryItem />
-                            <ChatHistoryItem />
-                            <ChatHistoryItem />
-                            <ChatHistoryItem />
-                        </List>
-                    </Box>
+                    <ChatHistoryList />
                 </Drawer>
 
                 <Box
