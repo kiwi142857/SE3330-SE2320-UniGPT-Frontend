@@ -87,13 +87,13 @@ const BotDetailPage: React.FC = () => {
                 </Typography>
 
                 <CommentInput/>
-                
+
                 <List>
                     {comments?.map((comment) => (
-                        <OneChat 
+                        <OneChat
                             id={comment.id}
                             name={comment.name}
-                            avatar={comment.avator}
+                            avatar={comment.avatar}
                             content={comment.content}
                         />
                     ))}
