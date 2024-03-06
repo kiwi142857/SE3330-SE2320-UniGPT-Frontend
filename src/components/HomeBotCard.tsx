@@ -12,21 +12,26 @@ type HomeBotCardProps = {
 };
 
 export default function HomeBotCard({BotInfo}: HomeBotCardProps) {
-
   return (
     <Link href='/bot1' style={{ textDecoration: 'none' }} >
-      <Card className='bot-card'>
-        <CardMedia style={{ width: '30%', height: '30%', marginLeft: '0', borderRadius: '20px' }}
+      <Card className='bot-card' style={{ height: '100%' }}>
+        <CardMedia style={{ width: '40%', height: '40%', marginLeft: '5%', borderRadius: '20px', marginBottom: '-10px' }}
           component="img"
-          height="194"
           image={BotInfo.avator}
           alt="bot-default"
         />
-        <CardContent>
+        <CardContent >
           <Typography className='bot-card-name'>
             {BotInfo.name}
           </Typography>
-          <Typography variant="body2" align="left" color="text.secondary">
+          <Typography variant="body2" align="left" color="text.secondary" style={{
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            marginBottom: '0',
+          }}>
             {BotInfo.description}
           </Typography>
         </CardContent>

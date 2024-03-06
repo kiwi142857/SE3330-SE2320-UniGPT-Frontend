@@ -6,11 +6,12 @@ import Grid from '@mui/material/Grid';
 import HomeBotCard from './HomeBotCard';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Link from '@mui/material/Link';
-import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import GetBotInfo from '../service/BotInfo';
-import { Favorite } from '@mui/icons-material';
+import { Favorite, MarginRounded } from '@mui/icons-material';
 import { Divider } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -25,63 +26,92 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-function FormRow({ ids }: { ids: string[]; }) {
-    return (
-        <React.Fragment>
-            {ids.map(id => {
-                const botInfo = GetBotInfo(id);
-                return (
-                    <Grid item xs={4} key={id}>
-                        <HomeBotCard BotInfo={botInfo}></HomeBotCard>
-                    </Grid>
-                );
-            })}
-        </React.Fragment>
-    );
-}
+
 
 function HomeMarketCard() {
     return (
-        <Link href='/bot1' style={{ textDecoration: 'none' }} >
-            <LocalGroceryStoreIcon style={{ width: '30%', height: '30%', marginLeft: '0', borderRadius: '20px' }} />
-            <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                    This is a description of the icon.
-                </Typography>
-            </CardContent>
+        <Link href='/bot1' style={{ textDecoration: 'none', width: '30%', height: '30%', borderRadius: '20px' }}>
+            <Card elevation={0}>
+                <ShoppingCartOutlinedIcon style={{ width: '30%', height: '30%', marginTop:'25px', color:'#666666' }} />
+                <CardContent>
+                    <Typography className='card-discription' color="text.secondary">
+                        More form market
+                    </Typography>
+                </CardContent>
+            </Card>
         </Link>
     );
 }
 
-function FavoriteHeader() {
+function HomeCreateCard() {
     return (
-        <div>
+        <Link href='/bot1' style={{ textDecoration: 'none' }} >
+            <Card elevation={0}>
+                <AddCircleOutlineIcon style={{ width: '30%', height: '30%', marginTop:'25px', color:'#666666' }} />
+                <CardContent>
+                    <Typography className='card-discription' color="text.secondary">
+                        Craete your new bot
+                    </Typography>
+                </CardContent>
+            </Card>
+        </Link>
+    );
+}
+
+export function RecentUsedHeader() {
+    return (
+        <div style={{marginLeft:'20px', marginTop:'10px'}}>
             <Grid container alignItems="center" spacing={2}>
                 <Grid item>
                     <IconButton>
-                        <Favorite />
+                        <AccessTimeFilledIcon fontSize='large'/>
                     </IconButton>
                 </Grid>
                 <Grid item>
-                    <Typography variant="h6">Favorite</Typography>
+                    <Typography className='list-header'>Recently Used</Typography>
                 </Grid>
             </Grid>
-            <Divider style={{ marginBottom: '50px' }} />
+            <Divider  className='Divider'/>
         </div>
     );
 }
 
-export default function BotList() {
+export function FavoriteHeader() {
     return (
-        <Box sx={{ flexGrow: 1 }} style={{ marginLeft: '50px' }}>
-            <FavoriteHeader />
-            <HomeMarketCard />
-            <Grid container spacing={1}>
-                <Grid container item spacing={3}>
-                    <FormRow ids={['1', '2', '3']} />
+        <div style={{marginLeft:'60px', marginTop:'10px'}}>
+            <Grid container alignItems="center" spacing={3}>
+                <Grid item>
+                    <IconButton>
+                        <Favorite fontSize='large'/>
+                    </IconButton>
                 </Grid>
-                <Grid container item spacing={3}>
-                    <FormRow ids={['4', '5']} />
+                <Grid item>
+                    <Typography className='list-header'>Favorite</Typography>
+                </Grid>
+            </Grid>
+            <Divider  className='Divider'/>
+        </div>
+    );
+}
+
+export interface BotListProps {
+    type: 'Favorite' | 'Recently used';
+}
+
+export default function BotList({ type }: BotListProps) {
+    const ids = ['1', '2', '3', '4', '5', '6'];
+    return (
+        <Box sx={{ flexGrow: 1 }} style={{ marginLeft: type === 'Favorite' ? '60px' : '0', marginRight: type === 'Favorite' ? '0' : '80px' }}>
+            <Grid container spacing={1}>
+                <Grid container item spacing={2}>
+                    <Grid item xs={4}>
+                    {type === 'Favorite' ? <HomeMarketCard /> : <HomeCreateCard></HomeCreateCard>}
+                    </Grid>
+                    {ids.map(id => (
+                        <Grid item xs={4} key={id}>
+                            <HomeBotCard BotInfo={GetBotInfo(id)} />
+                        </Grid>
+                    ))}
                 </Grid>
             </Grid>
         </Box>

@@ -3,6 +3,7 @@ import Navigator from '../components/Navigator';
 import BotList from '../components/botList';
 import Grid from '@mui/material/Grid';
 import { Typography } from '@mui/material';
+import { FavoriteHeader, RecentUsedHeader } from '../components/botList';
 import '../css/Home.css';
 // 首页
 const HomePage: React.FC = () => {
@@ -16,10 +17,12 @@ const HomePage: React.FC = () => {
 
             <Grid container spacing={8} className='bot-box' >
                 <Grid item xs={6}>
-                    <BotList></BotList>
+                    <FavoriteHeader></FavoriteHeader>
+                    <BotList type='Favorite'></BotList>
                 </Grid>
                 <Grid item xs={6}>
-                    <BotList></BotList>
+                    <RecentUsedHeader></RecentUsedHeader>
+                    <BotList type="Recently used"></BotList>
                 </Grid>
             </Grid>
         </div>
