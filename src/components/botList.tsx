@@ -33,7 +33,7 @@ function HomeMarketCard() {
 
 export function HomeCreateCard() {
     return (
-        <Link href='/bot1' style={{ textDecoration: 'none' }} >
+        <Link href='/botedit' style={{ textDecoration: 'none' }} >
             <Card elevation={0}>
                 <AddCircleOutlineIcon style={{ width: '30%', height: '30%', marginTop:'20%', color:'#666666' }} />
                 <CardContent>
