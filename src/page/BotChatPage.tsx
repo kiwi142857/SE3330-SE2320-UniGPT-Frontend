@@ -1,19 +1,51 @@
+import {
+    Drawer,
+    List, Toolbar,
+} from "@mui/material";
+import { Box } from "@mui/system";
 import React from 'react';
-import Navigator from '../components/Navigator';
-import {Container, Fab, Link, List} from "@mui/material";
 import OneChat from "../components/OneChat";
-import PromptTextField from "../components/PromptTextField";
-import {Box} from "@mui/system";
-import Button from "@mui/material/Button";
+
+import '../css/App.css'
+import '../css/BotChatPage.css'
+import PromptInput from "../components/PromptInput";
+import Navigator from "../components/Navigator";
+import ChatHistoryList from "../components/ChatHistoryList";
+import BotBriefCard from "../components/BotBriefCard";
 
 // bot聊天页
-const BotChatPage: React.FC = () => {
+// 侧边栏宽度
+let drawerWidth = 300;
+const BotChatPage = () => {
     return (
         <>
             <Navigator />
-            <div style={{paddingTop: '100px',paddingBottom: '133px'}}> {/* Adjust '64px' based on your navigator's height */}
-                <Container>
-                    <List>
+            <div
+                style={{
+                    display: 'flex' ,
+                    flexDirection: 'row',
+            }}>
+                <Drawer
+                    variant="permanent"
+                    sx={{
+                        width: drawerWidth,
+                        [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+                    }}
+                >
+                    <Toolbar
+                        style={{height: 100,}}
+                    />
+                    <BotBriefCard />
+                    <ChatHistoryList />
+                </Drawer>
+                <Box
+                    className="main-container bot-chat-container"
+                    flexDirection="column"
+                    alignItems="center"
+                    display="flex"
+                    width="100%"
+                >
+                    <Box>
                         <OneChat id="1" name="Creeper" avatar=""
                                  content={'Make up a 5-sentence story about "Sharky", a tooth-brushing shark superhero. Make each sentence a bullet point.'}/>
                         <OneChat id="2" name="ChatGPT" avatar="" content={
@@ -25,34 +57,8 @@ const BotChatPage: React.FC = () => {
                         <OneChat id="3" name="Creeper" avatar="" content={
                             'Make another story'
                         }/>
-                        <OneChat id="4" name="ChatGPT" avatar="" content={
-                            '- In the azure depths of the vast ocean, there existed a unique figure whose legend stretched far and wide—Sharky, the tooth-brushing shark superhero, whose passion for dental hygiene surpassed that of any other creature beneath the waves.\n' +
-                            '- Born with a keen sense of duty and armed with a gleaming toothbrush and a supply of the finest seaweed-infused toothpaste, Sharky embarked on his noble mission to safeguard the dental health of all marine life.\n' +
-                            '- With graceful strokes and a determined spirit, Sharky traversed the ocean depths, tirelessly seeking out those in need of his expert dental care.\n' +
-                            '- From the smallest shrimp to the largest whales, Sharky offered his services with a friendly smile, ensuring that every tooth sparkled with cleanliness and vitality.\n' +
-                            '- As word of Sharky\'s heroic deeds spread, he became a symbol of hope and inspiration to creatures of all sizes, his legacy etched into the annals of oceanic folklore as the greatest tooth-brushing shark superhero the world had ever known.'
-                        }/>
-                    </List>
-                </Container>
-            </div>
-            <div>
-                <Box
-                    style={{
-                        display: 'flex',
-                        position: 'fixed',
-                        bottom: 0,
-                        flexDirection:'row',
-                        justifyContent:'center',
-                        alignItems: 'center',
-                        width: '100%',
-                        backgroundColor: 'white',
-                    }}
-                >
-
-                    <PromptTextField/>
-                    <Fab variant="extended" size="large" color="primary">
-                        <h1>Send</h1>
-                    </Fab>
+                    </Box>
+                    <PromptInput />
                 </Box>
             </div>
         </>

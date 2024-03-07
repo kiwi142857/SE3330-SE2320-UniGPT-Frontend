@@ -21,7 +21,7 @@
     margin-bottom: 60px;
 }
 
-.detail-card-avator{
+.detail-card-avatar{
     height: 100%;
     width: auto;
 }
@@ -85,4 +85,12 @@
     letter-spacing: 0em;
     text-align: left;
     margin-left: -10px;
+}
+
+.comment-input-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 10px;
 }

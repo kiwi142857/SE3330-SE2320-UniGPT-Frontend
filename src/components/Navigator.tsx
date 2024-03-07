@@ -1,4 +1,4 @@
-import { AppBar, Avatar, IconButton, Link, Toolbar } from '@mui/material';
+import {AppBar, Avatar, IconButton, Link, Toolbar, Typography} from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import '../css/Navigator.css';
@@ -6,12 +6,10 @@ import '../css/Navigator.css';
 // 顶部导航栏
 const Navigator: React.FC<{}> = () => {
     return (
-        <div
-            className="navigator"
-        >
             <AppBar
-                position="static"
+                position="fixed"
                 className="navigator"
+                sx={{ zIndex: (theme) => theme.zIndex.drawer + 1}}
             >
                 <Toolbar>
 
@@ -19,6 +17,10 @@ const Navigator: React.FC<{}> = () => {
                     <Box
                         className='navigator-title-box'
                         sx={{ flexGrow: 1}}
+                        flexDirection="column"
+                        alignItems="center"
+                        display="flex"
+                        width="100%"
                     >
                         <Link
                             href="/"
@@ -47,11 +49,8 @@ const Navigator: React.FC<{}> = () => {
                             />
                         </IconButton>
                     </Link>
-
                 </Toolbar>
             </AppBar>
-        </div>
-
     );
 }
 

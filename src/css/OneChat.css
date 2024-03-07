@@ -1,6 +1,7 @@
 .one-chat-container{
     width: 100%;
     min-height: 133px;
+    max-width: 1300px;
 }
 
 .one-chat-name{
@@ -10,7 +11,7 @@
     font-weight: 700;
     line-height: 24px;
     letter-spacing: 0em;
-    text-align: left; 
+    text-align: left;
 
 }
 
@@ -31,16 +32,10 @@
     font-weight: 400;
     font-size: 18px;
     line-height: 24px;
-
     margin-left: 90px;
     display: flex;
     align-items: flex-start;
-    font-family: "Inter";
-    font-size: 18px;
-    font-weight: 400;
-    line-height: 24px;
     letter-spacing: 0em;
     text-align: left;
     white-space: pre-wrap;
-
 }
