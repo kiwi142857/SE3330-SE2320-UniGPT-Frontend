@@ -8,7 +8,7 @@ import OneChat from "../components/OneChat";
 
 import '../css/App.css'
 import '../css/BotChatPage.css'
-import PromptInput from "../components/PromptInput";
+import PromptInput from '../components/Inputs';
 import Navigator from "../components/Navigator";
 import ChatHistoryList from "../components/ChatHistoryList";
 import BotBriefCard from "../components/BotBriefCard";

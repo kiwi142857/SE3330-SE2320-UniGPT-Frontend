@@ -5,13 +5,13 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useParams } from 'react-router-dom';
 import BotCarousel from '../components/BotCarousel';
 import BotDetailCard from '../components/BotDetailCard';
-import CommentInput from '../components/CommentInput';
+import { CommentInput } from '../components/Inputs';
 import Navigator from '../components/Navigator';
 import OneChat from '../components/OneChat';
 import { getBotComments, getBotDetail } from '../service/BotDetail';
 
-import '../css/App.css'
-import '../css/BotDetailPage.css'
+import '../css/App.css';
+import '../css/BotDetailPage.css';
 
 // 并不是bot的全部信息，但是对于应用市场来说够用了
 interface BotDetail {

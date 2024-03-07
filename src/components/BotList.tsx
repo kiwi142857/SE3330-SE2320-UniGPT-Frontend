@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import HomeBotCard from './HomeBotCard';
+import BotCard from './BotCard';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -11,28 +9,18 @@ import Link from '@mui/material/Link';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import GetBotInfo from '../service/BotInfo';
-import { Favorite, MarginRounded } from '@mui/icons-material';
+import { Favorite } from '@mui/icons-material';
 import { Divider } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
 export type botListType = { Favorite: string, Recent: string; };
 
-const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-}));
-
-
-
 function HomeMarketCard() {
     return (
-        <Link href='/bot1' style={{ textDecoration: 'none', width: '30%', height: '30%', borderRadius: '20px' }}>
+        <Link href='/market' style={{ textDecoration: 'none', width: '30%', height: '30%', borderRadius: '20px' }}>
             <Card elevation={0}>
-                <ShoppingCartOutlinedIcon style={{ width: '30%', height: '30%', marginTop:'25px', color:'#666666' }} />
+                <ShoppingCartOutlinedIcon style={{ width: '30%', height: '30%', marginTop:'20%', color:'#666666' }} />
                 <CardContent>
                     <Typography className='card-discription' color="text.secondary">
                         More form market
@@ -43,11 +31,11 @@ function HomeMarketCard() {
     );
 }
 
-function HomeCreateCard() {
+export function HomeCreateCard() {
     return (
-        <Link href='/bot1' style={{ textDecoration: 'none' }} >
+        <Link href='/botedit' style={{ textDecoration: 'none' }} >
             <Card elevation={0}>
-                <AddCircleOutlineIcon style={{ width: '30%', height: '30%', marginTop:'25px', color:'#666666' }} />
+                <AddCircleOutlineIcon style={{ width: '30%', height: '30%', marginTop:'20%', color:'#666666' }} />
                 <CardContent>
                     <Typography className='card-discription' color="text.secondary">
                         Craete your new bot
@@ -109,7 +97,7 @@ export default function BotList({ type }: BotListProps) {
                     </Grid>
                     {ids.map(id => (
                         <Grid item xs={4} key={id}>
-                            <HomeBotCard BotInfo={GetBotInfo(id)} />
+                            <BotCard BotInfo={GetBotInfo(id)} />
                         </Grid>
                     ))}
                 </Grid>

@@ -1,0 +1,74 @@
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 200px;
+    margin-left: 8%;
+}
+
+.user-name {
+    font-family: Inter !important;
+    font-size: 28px !important;
+    font-weight: 500 !important;
+    line-height: 24px !important;
+    letter-spacing: 0em !important;
+    text-align: left;
+    color: #333333 !important;
+}
+
+.change-button {
+    width: 100%;
+    height: 70%;
+    border-radius: 25px !important;
+    background-color: #333333 !important;
+    color: #ffffff !important;
+    font-family: Inter !important;
+    font-size: 16px !important;
+    text-transform: none !important;
+    font-weight: 300 !important;
+    letter-spacing: 0.05em !important;
+}
+
+.email {
+    font-family: Inter !important;
+    font-size: 18px !important;
+    font-weight: 500 !important;
+    line-height: 24px !important;
+    letter-spacing: 0em !important;
+    text-align: left;
+    color: #666666 !important;
+}
+
+.description {
+    font-family: Inter !important;
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    line-height: 24px !important;
+    letter-spacing: 0em !important;
+    text-align: left;
+    max-width: 50% !important;
+    margin-top: 2% !important;
+    color: #666666 !important;
+    display: -webkit-box; /* 使用 -webkit-box 模型 */
+    -webkit-line-clamp: 3; /* 最多显示3行 */
+    -webkit-box-orient: vertical; /* 垂直排列 */
+    overflow: auto; /* 超出部分显示滚动条 */
+}
+
+.botlist-tab {
+    margin-top: 50px;
+    font-family: Inter !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    line-height: 24px !important;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #666666;
+    text-transform: none !important;
+}
+
+.botlist-tabs {
+    margin-left: 8% ;
+    margin-top: 4% ;
+}

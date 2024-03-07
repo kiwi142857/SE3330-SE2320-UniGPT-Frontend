@@ -18,7 +18,7 @@ const AppRouter = () => {
                     index
                 />
                 <Route
-                    path="/botChat"
+                    path="/botchat"
                     element={<BotChatPage />}
                 />
                 <Route

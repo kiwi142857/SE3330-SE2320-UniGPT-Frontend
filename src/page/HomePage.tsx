@@ -1,9 +1,9 @@
 import React from 'react';
 import Navigator from '../components/Navigator';
-import BotList from '../components/botList';
+import BotList from "../components/BotList";
 import Grid from '@mui/material/Grid';
 import { Typography } from '@mui/material';
-import { FavoriteHeader, RecentUsedHeader } from '../components/botList';
+import { FavoriteHeader, RecentUsedHeader } from '../components/BotList';
 import '../css/Home.css';
 // 首页
 const HomePage: React.FC = () => {
