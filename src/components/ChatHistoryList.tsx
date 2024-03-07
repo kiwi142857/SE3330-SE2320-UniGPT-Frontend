@@ -1,8 +1,8 @@
 import ChatHistoryItem from "./ChatHistoryItem";
 import {Divider, List} from "@mui/material";
 import React, {useState} from "react";
-import chatHistoryItem from "./ChatHistoryItem";
-import theme from "./theme.tsx";
+import theme from './theme';
+import '../css/BotChatPage.css'
 
 interface ChatHistory {
     title: string,
@@ -41,7 +41,7 @@ const ChatHistoryList = ()=> {
                     />
                     {index !== chatHistoryData.length - 1 &&
                         <Divider
-                            className="chat-history-divider"
+                            className="drawer-divider"
                             style={{ backgroundColor: theme.palette.secondary.main}}
                         />}
                 </React.Fragment>

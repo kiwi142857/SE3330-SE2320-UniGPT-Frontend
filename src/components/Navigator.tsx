@@ -17,6 +17,10 @@ const Navigator: React.FC<{}> = () => {
                     <Box
                         className='navigator-title-box'
                         sx={{ flexGrow: 1}}
+                        flexDirection="column"
+                        alignItems="center"
+                        display="flex"
+                        width="100%"
                     >
                         <Link
                             href="/"

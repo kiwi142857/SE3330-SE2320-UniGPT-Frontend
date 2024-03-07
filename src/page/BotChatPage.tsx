@@ -1,6 +1,6 @@
 import {
     Drawer,
-    List,
+    List, Toolbar,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React from 'react';
@@ -9,15 +9,17 @@ import OneChat from "../components/OneChat";
 import '../css/App.css'
 import '../css/BotChatPage.css'
 import PromptInput from "../components/PromptInput";
-import Navigator from "../components/Navigator.tsx";
-import ChatHistoryList from "../components/ChatHistoryList.tsx";
+import Navigator from "../components/Navigator";
+import ChatHistoryList from "../components/ChatHistoryList";
+import BotBriefCard from "../components/BotBriefCard";
 
 // bot聊天页
-let drawerWidth = 240;
+// 侧边栏宽度
+let drawerWidth = 300;
 const BotChatPage = () => {
     return (
         <>
-            {/*<Navigator />*/}
+            <Navigator />
             <div
                 style={{
                     display: 'flex' ,
@@ -30,9 +32,12 @@ const BotChatPage = () => {
                         [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
                     }}
                 >
+                    <Toolbar
+                        style={{height: 100,}}
+                    />
+                    <BotBriefCard />
                     <ChatHistoryList />
                 </Drawer>
-
                 <Box
                     className="main-container bot-chat-container"
                     flexDirection="column"

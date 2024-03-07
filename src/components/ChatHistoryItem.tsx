@@ -1,14 +1,17 @@
 import React from "react";
 import {Box} from "@mui/system";
-import {ListItem, ListItemButton, Typography} from "@mui/material";
-import '../css/ChatHistory.css'
-import theme from "./theme";
+import {Button, IconButton, ListItem, ListItemButton, Typography} from "@mui/material";
+import theme from './theme';
+import '../css/BotChatPage.css'
 
 const ChatHistoryItem = ({title, message, selected} : {title:string, message: string, selected: boolean})=> {
     return (
-        <ListItemButton className="chat-history-item">
-            <div className="chat-history-item-title" >{title}</div>
-            <div className="chat-history-item-message" style={{color: theme.palette.primary.light}}>{message}</div>
+        <ListItemButton className="drawer-item chat-history-item">
+            <div className="drawer-item-container">
+                <div className="drawer-item-title">{title}</div>
+                <div className="drawer-item-content"
+                     style={{color: theme.palette.primary.light}}>{message}</div>
+            </div>
         </ListItemButton>
     );
 };
