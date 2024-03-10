@@ -3,20 +3,22 @@ import {
     List, Toolbar,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React from 'react';
+import React, {useState} from 'react';
 import OneChat from "../components/OneChat";
 
 import '../css/App.css'
 import '../css/BotChatPage.css'
-import PromptInput from '../components/Inputs';
+import {PromptInput} from "../components/Inputs";
 import Navigator from "../components/Navigator";
 import ChatHistoryList from "../components/ChatHistoryList";
 import BotBriefCard from "../components/BotBriefCard";
+import TableCreateDialog from "../components/TableCreateDialog";
 
 // bot聊天页
 // 侧边栏宽度
 let drawerWidth = 300;
 const BotChatPage = () => {
+    const [tableCreateOpen, setTableCreateOpen] = useState(false);
     return (
         <>
             <Navigator />
@@ -58,7 +60,13 @@ const BotChatPage = () => {
                             'Make another story'
                         }/>
                     </Box>
-                    <PromptInput />
+                    <PromptInput
+                        onAltTable={()=>{setTableCreateOpen(true);}}
+                        onSend={()=>{alert("send")}} />
+                    <TableCreateDialog
+                        open={tableCreateOpen}
+                        handleClose={()=>{setTableCreateOpen(false);}}
+                        handleSubmit={()=>{alert("submit finished");}} />
                 </Box>
             </div>
         </>
