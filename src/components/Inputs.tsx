@@ -4,6 +4,7 @@ import Fab from '@mui/material/Fab';
 import React from "react";
 import "../css/BotDetailPage.css";
 import "../css/BotEditPage.css";
+import "../css/BotChatPage.css";
 import BasicInput from './BasicInput';
 import ArticleIcon from "@mui/icons-material/Article";
 
@@ -61,19 +62,65 @@ export function EditInput ({title, placeholder, name}:{title:string; placeholder
 
 
 // BotChat页的终端输入框
-const PromptInput = () => {
+export function PromptInput
+({
+     onAltTable,
+     onSend
+}: {
+    onAltTable: ()=>void,
+    onSend: ()=>void}
+){
     return (
         <Box className="prompt-input-container">
-            <Fab variant="extended" size="large" style={{color: 'white'}}>
+            <Fab
+                onClick={onAltTable}
+                variant="extended"
+                size="large"
+                style={{color: 'white'}}
+            >
                 <ArticleIcon fontSize='large'/>
             </Fab>
             <div style={{width: '604px', margin: '20px'}}>
                 <BasicInput placeholder="Enter your message here..." name="message"/>
             </div>
-            <Fab variant="extended" size="large" style={{color: 'white'}}>
+            <Fab
+                onClick={onSend}
+                variant="extended"
+                size="large"
+                style={{color: 'white'}}>
                 <ArrowCircleUpIcon fontSize='large'/>
             </Fab>
         </Box>
     );
-};
-export default PromptInput;
+}
+
+export function TableCreateInput({
+         title,
+         placeholder,
+         name
+    }:{
+        title: string,
+        placeholder: string,
+        name:string}) {
+    return (
+        <Box
+            style={{
+                display: 'flex',
+                flexDirection: 'row',
+            }}
+        >
+            <Typography
+                className='table-create-edit-label'
+                style={{
+                    display: 'flex',
+                    alignItems: 'center'
+                }}
+                sx={{color: 'primary.main'}}
+            >
+                {title}
+            </Typography>
+            <div style={{width: '604px', margin: '20px'}}>
+                <BasicInput placeholder={placeholder} name={name}/>
+            </div>
+        </Box>);
+}

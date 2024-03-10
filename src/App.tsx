@@ -3,6 +3,7 @@ import React from 'react';
 import AppRouter from './components/AppRouter';
 import theme from './components/theme';
 import './css/App.css';
+import TableCreateForm from "./components/TableCreateDialog.tsx";
 
 const App = () => {
   return (

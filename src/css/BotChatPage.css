@@ -60,3 +60,25 @@
     height: 70px;
     width: auto;
 }
+.table-create-dialog {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.table-create-edit-label {
+    justify-content: center;
+    font-family: Inter!important;
+    font-size: 18px!important;
+    font-weight: 700!important;
+    line-height: 24px;
+    letter-spacing: 0em;
+}
+.table-create-title {
+    font-family: Abril Fatface!important;
+    font-size: 40px!important;
+    font-weight: 400!important;
+    line-height: 24px!important;
+    letter-spacing: 0em;
+    text-align: center;
+}
