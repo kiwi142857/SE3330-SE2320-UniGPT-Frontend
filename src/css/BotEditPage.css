@@ -13,6 +13,11 @@
 .edit-avatar{
     height: 200px;
     width: 200px;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.edit-avatar:hover {
+    opacity: 0.5;
 }
 
 .edit-avatar-text{
@@ -22,11 +27,17 @@
     line-height: 24px!important;
     letter-spacing: 0em!important;
     text-align: center;
-    color: #fff !important;
+    color: black !important;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    visibility: hidden;
+    transition: visibility 0.3s ease-in-out;
+}
+
+.edit-avatar:hover + .edit-avatar-text {
+    visibility: visible;
 }
 
 .edit-basic-right{
@@ -45,7 +56,6 @@
     font-weight: 600!important;
     line-height: 24px!important;
     letter-spacing: 0em!important;
-    text-align: left;
     display: flex;
     justify-content: center;
 }
@@ -66,6 +76,16 @@
     letter-spacing: 0em!important;
     text-align: left;
     display: flex;
+}
+
+.edit-prompt{
+    font-family: "Inter"!important;
+    font-size: 18px!important;
+    font-weight: 400!important;
+    line-height: 24px!important;
+    letter-spacing: 0em!important;
+    text-align: left;
+
 }
 
 .edit-publish-container{

@@ -146,7 +146,7 @@ const BotEditPage: React.FC = () => {
                             </Grid>
                             <Grid item xs={8}>
                                 <Typography 
-                                    className='edit-prompt-label'
+                                    className='edit-prompt'
                                     sx={{color: 'primary.light'}}
                                 >
                                     {item.prompt}
