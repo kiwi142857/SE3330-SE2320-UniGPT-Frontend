@@ -47,7 +47,7 @@ const BotDetailCard = ({id, name, author, avatar, description, like, collect}
                     <span className='detail-card-collect'>
                         {collect}
                     </span>
-                    <Button variant="contained" endIcon={<SendIcon />}>
+                    <Button variant="contained" endIcon={<SendIcon />} href={'/botchat'}>
                         Use
                     </Button>
                 </div>
