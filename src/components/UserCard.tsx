@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Avatar, Button, Grid, Typography, TextField } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 export default function UserCard() {
     const [description, setDescription] = useState('');
     const [avatarSrc, setAvatarSrc] = useState('/assets/user-default.png');
+    const { t } = useTranslation();
 
     const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setDescription(event.target.value);
@@ -17,6 +19,7 @@ export default function UserCard() {
     };
 
     return (
+        
         <Grid container spacing={5} >
             <Grid item spacing={2}>
                 <div style={{ position: 'relative' }}>
@@ -28,16 +31,16 @@ export default function UserCard() {
                         style={{ display: 'none' }} 
                         id="avatar-input"
                     />
-                    <label htmlFor="avatar-input" className="avatar-overlay">Change your avatar</label>
+                    <label htmlFor="avatar-input" className="avatar-overlay">{t("change your avatar") }</label>
                 </div>
             </Grid>
             <Grid item spacing={2}>
                 <Grid container spacing={2} >
                     <Grid item spacing={2}>
-                        <Typography className='user-name'>Username</Typography>
+                        <Typography className='user-name'>{t("Username") }</Typography>
                     </Grid>
                     <Grid item spacing={4}>
-                        <Button className='change-button'>change</Button>
+                        <Button className='change-button'>{t("change") }</Button>
                     </Grid>
                 </Grid>
                 <Typography className='email'>@jaccount</Typography>
@@ -45,7 +48,7 @@ export default function UserCard() {
                     className='description' 
                     value={description} 
                     onChange={handleDescriptionChange} 
-                    placeholder="Write your description here..."
+                    placeholder={t("Write your description here...") }
                     multiline
                     style={{ height: '100px'}}
                 />

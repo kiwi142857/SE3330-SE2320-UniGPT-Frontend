@@ -3,15 +3,15 @@ import Navigator from '../components/Navigator';
 import '../css/Profile.css';
 import UserCard from '../components/UserCard';
 import { Tab, Tabs } from '@mui/material';
-import { useState, ChangeEvent } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import BotCard from '../components/BotCard';
 import GetBotInfo from '../service/BotInfo';
-import HomeCreateCard from '../components/BotList';
+import { useTranslation } from 'react-i18next';
 // 个人主页
 
 export function BotListTabs() {
+    const { t } = useTranslation();
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -21,8 +21,8 @@ export function BotListTabs() {
     return (
         <div>
             <Tabs value={value} onChange={handleChange}>
-                <Tab label="Created" className='botlist-tab' />
-                <Tab label="Favorite" className='botlist-tab' />
+                <Tab label={t("Created")} className='botlist-tab' />
+                <Tab label={t("Favorite")}  className='botlist-tab' />
             </Tabs>
         </div>
     );
@@ -46,19 +46,6 @@ function ProfileBotList() {
 }
 
 const ProfilePage: React.FC = () => {
-
-    const [avatarImg, setAvatarImg] = useState<string>('/assets/bot-default.png');
-
-    const onAvatarUpload = (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setAvatarImg(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
 
     return (
         <>

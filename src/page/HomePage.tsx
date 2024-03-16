@@ -5,14 +5,16 @@ import Grid from '@mui/material/Grid';
 import { Typography } from '@mui/material';
 import { FavoriteHeader, RecentUsedHeader } from '../components/BotList';
 import '../css/Home.css';
+import { useTranslation } from 'react-i18next';
 // 首页
 const HomePage: React.FC = () => {
+    const { t } = useTranslation();
     return (
         <div>
             <Navigator></Navigator>
             <div>
                 <img src="/assets/home-background.png" alt="home-bg" className='home-bg' />
-                <Typography className='home-image-text'>Welcome to UniGPT.</Typography>
+                <Typography className='home-image-text'>{t("Welcome to UniGPT")}</Typography>
             </div>
 
             <Grid container spacing={8} className='bot-box' >

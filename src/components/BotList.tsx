@@ -13,17 +13,19 @@ import { Favorite } from '@mui/icons-material';
 import { Divider } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import { useTranslation } from 'react-i18next';
 
 export type botListType = { Favorite: string, Recent: string; };
 
 function HomeMarketCard() {
+    const { t } = useTranslation();
     return (
         <Link href='/market' style={{ textDecoration: 'none', width: '30%', height: '30%', borderRadius: '20px' }}>
             <Card elevation={0}>
                 <ShoppingCartOutlinedIcon style={{ width: '30%', height: '30%', marginTop:'20%', color:'#666666' }} />
                 <CardContent>
                     <Typography className='card-discription' color="text.secondary">
-                        More from market
+                        {t("More from market")}
                     </Typography>
                 </CardContent>
             </Card>
@@ -32,13 +34,14 @@ function HomeMarketCard() {
 }
 
 export function HomeCreateCard() {
+    const { t } = useTranslation();
     return (
         <Link href='/botedit' style={{ textDecoration: 'none' }} >
             <Card elevation={0}>
                 <AddCircleOutlineIcon style={{ width: '30%', height: '30%', marginTop:'20%', color:'#666666' }} />
                 <CardContent>
                     <Typography className='card-discription' color="text.secondary">
-                        Create your new bot
+                       {t(" Create your new bot")}
                     </Typography>
                 </CardContent>
             </Card>
@@ -47,6 +50,7 @@ export function HomeCreateCard() {
 }
 
 export function RecentUsedHeader() {
+    const { t } = useTranslation();
     return (
         <div style={{marginLeft:'20px', marginTop:'10px'}}>
             <Grid container alignItems="center" spacing={2}>
@@ -56,7 +60,7 @@ export function RecentUsedHeader() {
                     </IconButton>
                 </Grid>
                 <Grid item>
-                    <Typography className='list-header'>Recently Used</Typography>
+                    <Typography className='list-header'>{t('Recently Used')}</Typography>
                 </Grid>
             </Grid>
             <Divider  className='Divider'/>
@@ -65,6 +69,7 @@ export function RecentUsedHeader() {
 }
 
 export function FavoriteHeader() {
+    const { t } = useTranslation();
     return (
         <div style={{marginLeft:'60px', marginTop:'10px'}}>
             <Grid container alignItems="center" spacing={3}>
@@ -74,7 +79,7 @@ export function FavoriteHeader() {
                     </IconButton>
                 </Grid>
                 <Grid item>
-                    <Typography className='list-header'>Favorite</Typography>
+                    <Typography className='list-header'>{t('Favorite')}</Typography>
                 </Grid>
             </Grid>
             <Divider  className='Divider'/>
