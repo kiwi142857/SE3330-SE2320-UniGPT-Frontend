@@ -12,7 +12,11 @@ const BotCarousel = ({ photos }: { photos: string[] }) => {
   let borderRadius = '20px';
     
   return (
-    <Carousel showArrows={true}>
+    <Carousel 
+        showArrows={true}
+        showStatus={false}
+        showThumbs={false}
+    >
       {photos?.length > 1 ? (
         photos.map((photo, index, array) => (
             <div 

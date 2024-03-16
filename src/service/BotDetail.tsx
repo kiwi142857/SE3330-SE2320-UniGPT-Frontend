@@ -25,7 +25,7 @@ export async function getBotComments(id: string) {
                 id: '1',
                 name: 'user1',
                 avatar: '/assets/user-default.jpg',
-                content: 'CommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentComment....',
+                content: 'CommentCommentComment CommentCommentComment CommentCommentComment CommentCommentComment CommentCommentComment CommentCommentComment CommentCommentComment CommentCommentComment CommentCommentComment CommentCommentComment CommentCommentComment....',
             },
             {
                 id: '2',

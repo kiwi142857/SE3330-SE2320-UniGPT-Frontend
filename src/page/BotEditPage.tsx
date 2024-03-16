@@ -1,4 +1,5 @@
 import { Button, Divider, Grid } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import React, { ChangeEvent, useState } from 'react';
@@ -55,12 +56,16 @@ const BotEditPage: React.FC = () => {
     };
 
     const onPromptClick = () => {
-        const itemName = document.querySelector<HTMLInputElement>('[name="itemName"]')?.value;
-        const prompt = document.querySelector<HTMLInputElement>('[name="prompt"]')?.value;
+        const itemNameInput = document.querySelector<HTMLInputElement>('[name="itemName"]');
+        const promptInput = document.querySelector<HTMLInputElement>('[name="prompt"]');
+        const itemName = itemNameInput?.value;
+        const prompt = promptInput?.value;
         if (!itemName || !prompt) {
             return;
         }
         setItems(prevItems => [...prevItems, { itemName, prompt }]);
+        if (itemNameInput) itemNameInput.value = '';
+        if (promptInput) promptInput.value = '';
     };
 
     const fileInputRef = React.useRef<HTMLInputElement>(null);
@@ -98,25 +103,25 @@ const BotEditPage: React.FC = () => {
 
                  {/* 第一层，基本信息 */}
                 <div className='edit-basic-container'>
-                    <input 
-                        type="file" 
-                        accept="image/*" 
-                        onChange={onAvatarUpload} 
-                        style={{display: 'none'}} 
-                        id="imageUpload" 
-                    />
-                    <label htmlFor="imageUpload">
-                        <div style={{ position: 'relative' }}>
-                            <img 
-                                src={avatarImg} 
-                                alt="Selected" 
-                                className='edit-avatar'
-                            />
-                            <Typography className='edit-avatar-text'>
+                    <div style={{ position: 'relative' }}>
+                        <Avatar 
+                            alt="bot-default" 
+                            src={avatarImg} 
+                            sx={{ width: 200, height: 200, borderRadius: 0 }} 
+                        />
+                        <input 
+                            type="file" 
+                            accept="image/*" 
+                            onChange={onAvatarUpload} 
+                            style={{display: 'none'}} 
+                            id="imageUpload" 
+                        />
+                        <label htmlFor="avatar-input">
+                            <Typography className='avatar-overlay'>
                                 {t("Change photo for your assistant")}
                             </Typography>
-                        </div>
-                    </label>
+                        </label>
+                    </div>
                     <div className='edit-basic-right'>
                         <EditInput 
                             title= {t('Assistant Name')}

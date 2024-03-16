@@ -1,5 +1,6 @@
 import { Comment } from '@mui/icons-material';
-import { List, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useParams } from 'react-router-dom';
@@ -92,7 +93,7 @@ const BotDetailPage: React.FC = () => {
 
                 <CommentInput/>
 
-                <List>
+                <Box>
                     {comments?.map((comment) => (
                         <OneChat
                             id={comment.id}
@@ -101,7 +102,7 @@ const BotDetailPage: React.FC = () => {
                             content={comment.content}
                         />
                     ))}
-                </List>
+                </Box>
             </div>
         ];
 }
