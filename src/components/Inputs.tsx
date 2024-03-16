@@ -1,21 +1,23 @@
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import ArticleIcon from "@mui/icons-material/Article";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import Fab from '@mui/material/Fab';
 import React from "react";
+import { useTranslation } from "react-i18next";
 import "../css/BotChatPage.css";
 import "../css/BotDetailPage.css";
 import "../css/BotEditPage.css";
 import BasicInput from './BasicInput';
-import { Button } from "@mui/material";
 
 // botDetail页的评论输入框
 export function CommentInput () {
+    const { t } = useTranslation();
+
     return (
             <Grid container className='comment-input-container'>
                 <Grid xs={11}>
                     <BasicInput
-                        placeholder='Enter your message here...'
+                        placeholder={t('Enter your message here...')}
                         name='prompt'
                     />
                 </Grid>
@@ -64,18 +66,20 @@ export function EditInput ({title, placeholder, name}:{title:string; placeholder
 
 // botEdit页的promptList的输入框
 export function PromptListInput ({onPromptClick}:{onPromptClick:()=>void}) {
+    const { t } = useTranslation();
+
     return (
         <Grid container spacing={2}>
             <Grid item xs={1}/>
             <Grid item xs={2}>
                 <BasicInput 
-                    placeholder='Item name'  
+                    placeholder={t('Item Name')}  
                     name='itemName'
                 />
             </Grid>
             <Grid item xs={8}>
                 <BasicInput 
-                    placeholder='Prompt for this item'  
+                    placeholder={t('Prompt for this item' )}  
                     name='prompt'
                 />
             </Grid>
@@ -86,7 +90,7 @@ export function PromptListInput ({onPromptClick}:{onPromptClick:()=>void}) {
                     onClick={onPromptClick}
                     sx={{backgroundColor: 'primary.light'}}
                 >
-                    ADD PROMPT
+                    {t('add prompt')}
                 </Button>
             </Grid>
         </Grid>

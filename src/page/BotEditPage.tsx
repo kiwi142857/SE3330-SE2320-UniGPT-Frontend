@@ -2,6 +2,7 @@ import { Button, Divider, Grid } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import React, { ChangeEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { EditInput, PromptListInput } from '../components/Inputs';
 import Navigator from '../components/Navigator';
 import '../css/App.css';
@@ -20,6 +21,8 @@ interface item {
 }
 
 const BotEditPage: React.FC = () => {
+    const { t } = useTranslation();
+
     const [avatarImg, setAvatarImg] = useState<string>('/assets/bot-default.png');
     const [photoImgs, setPhotoImgs] = useState<image[]>([]);
     const [items, setItems] = useState<item[]>([]);
@@ -110,19 +113,19 @@ const BotEditPage: React.FC = () => {
                                 className='edit-avatar'
                             />
                             <Typography className='edit-avatar-text'>
-                                Change photo for your assistant
+                                {t("Change photo for your assistant")}
                             </Typography>
                         </div>
                     </label>
                     <div className='edit-basic-right'>
                         <EditInput 
-                            title='Assistant Name' 
-                            placeholder='Your assistant name'  
+                            title= {t('Assistant Name')}
+                            placeholder={t("Your assistant name")}
                             name='name' 
                         />
                         <EditInput 
-                            title='Description' 
-                            placeholder='Your description for your assistant'  
+                            title={t('Description')}
+                            placeholder={t('Your description for your assistant')} 
                             name='description' 
                         />
                     </div>
@@ -142,7 +145,7 @@ const BotEditPage: React.FC = () => {
                             style={{ display: 'flex', alignItems: 'center' }}
                             sx={{color: 'primary.main'}}
                         >
-                            Define your own prompt list
+                            {t('Define your own prompt list')}
                         </Typography>
                     </div>
                     {promptCheck && (
@@ -187,15 +190,15 @@ const BotEditPage: React.FC = () => {
                             style={{ display: 'flex', alignItems: 'center' }}
                             sx={{color: 'primary.main'}}
                         >
-                            Publish to market
+                            {t('Publish to market')}
                         </Typography>
                     </div>
                     
                     {publishCheck && (
                         <div>
                             <EditInput 
-                                title='Detailed Description' 
-                                placeholder='Your description for your assistant'  
+                                title={t('Detailed Description')}
+                                placeholder={t('Your detail description for your assistant')} 
                                 name='detail' 
                             />
                             <div>
@@ -212,7 +215,7 @@ const BotEditPage: React.FC = () => {
                                             style={{ display: 'flex', alignItems: 'center' }}
                                             sx={{color: 'primary.main'}}
                                         >
-                                            Photos
+                                            {t('Photos')}
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={4}>
@@ -230,7 +233,7 @@ const BotEditPage: React.FC = () => {
                                             onClick={onPhotoClick}
                                             sx={{backgroundColor: 'primary.light'}}
                                         >
-                                            ADD Image
+                                            {t('add image')}
                                         </Button>
                                     </Grid>
                                 </Grid>
@@ -245,7 +248,7 @@ const BotEditPage: React.FC = () => {
                     variant="contained" 
                     sx={{backgroundColor: 'primary.main'}}
                 >
-                    Submit
+                    {t('Submit')}
                 </Button>
             </form>
         </div>
