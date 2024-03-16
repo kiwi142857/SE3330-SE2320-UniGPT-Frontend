@@ -3,6 +3,7 @@ import Navigator from '../components/Navigator';
 import '../css/Profile.css';
 import UserCard from '../components/UserCard';
 import { Tab, Tabs } from '@mui/material';
+import { useState, ChangeEvent } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import BotCard from '../components/BotCard';
@@ -45,6 +46,20 @@ function ProfileBotList() {
 }
 
 const ProfilePage: React.FC = () => {
+
+    const [avatarImg, setAvatarImg] = useState<string>('/assets/bot-default.png');
+
+    const onAvatarUpload = (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setAvatarImg(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     return (
         <>
             <Navigator></Navigator>

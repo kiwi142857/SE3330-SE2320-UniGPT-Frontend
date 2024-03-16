@@ -41,21 +41,39 @@
 }
 
 .description {
-    font-family: Inter !important;
-    font-size: 10px !important;
-    font-weight: 500 !important;
-    line-height: 24px !important;
-    letter-spacing: 0em !important;
+    font-family: Inter ;
+    font-size: 14px ;
+    font-weight: 500 ;
+    line-height: 24px ;
+    padding: 10px !important;
+    padding-left: 0%;
+    width: 200% ;
     text-align: left;
-    max-width: 50% !important;
-    margin-top: 2% !important;
-    color: #666666 !important;
-    display: -webkit-box; /* 使用 -webkit-box 模型 */
-    -webkit-line-clamp: 3; /* 最多显示3行 */
-    -webkit-box-orient: vertical; /* 垂直排列 */
+    margin-top: 2% ;
+    border-radius: 20px ;
     overflow: auto; /* 超出部分显示滚动条 */
 }
 
+.description {
+    /* ... 其他样式 ... */
+    overflow: auto;
+}
+
+.description::-webkit-scrollbar {
+    width: 0;
+}
+
+.description:focus::-webkit-scrollbar {
+    width: 10px;
+}
+
+.description::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.description::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
 .botlist-tab {
     margin-top: 50px;
     font-family: Inter !important;

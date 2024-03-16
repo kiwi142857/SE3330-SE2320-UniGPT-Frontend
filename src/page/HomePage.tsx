@@ -12,7 +12,7 @@ const HomePage: React.FC = () => {
             <Navigator></Navigator>
             <div>
                 <img src="/assets/home-background.png" alt="home-bg" className='home-bg' />
-                <Typography className='home-image-text'>Welcome to your own AI assistant.</Typography>
+                <Typography className='home-image-text'>Welcome to UniGPT.</Typography>
             </div>
 
             <Grid container spacing={8} className='bot-box' >
