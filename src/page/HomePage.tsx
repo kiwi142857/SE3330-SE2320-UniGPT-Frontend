@@ -1,12 +1,10 @@
-import React from 'react';
-import Navigator from '../components/Navigator';
-import BotList from "../components/BotList";
-import Grid from '@mui/material/Grid';
 import { Typography } from '@mui/material';
-import { FavoriteHeader, RecentUsedHeader } from '../components/BotList';
-import '../css/Home.css';
+import Grid from '@mui/material/Grid';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useEffect } from 'react';
+import BotList, { FavoriteHeader, RecentUsedHeader } from "../components/BotList";
+import Navigator from '../components/Navigator';
+import '../css/Home.css';
 import { LanguageContext } from "../provider/LanguageProvider";
 
 const HomePage: React.FC = () => {

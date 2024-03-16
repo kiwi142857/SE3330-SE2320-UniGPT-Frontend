@@ -6,11 +6,19 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import '../css/BotDetailPage.css';
 
 // bot详情页的最上方的简介
 const BotDetailCard = ({id, name, author, avatar, description, like, collect}
     : {id:string ; name:string; author:string; avatar:string; description:string; like:string; collect:string;}) => {
+    const { t, i18n } = useTranslation();
+    // const context = React.useContext(LanguageContext);
+
+    // useEffect(() => {
+    //     i18n.changeLanguage(context?.language);
+    // }, [context?.language, i18n]);
+    
     const [isLiked, setIsLiked] = React.useState(false);
     const [isCollected, setIsCollected] = React.useState(false);
 
@@ -71,7 +79,7 @@ const BotDetailCard = ({id, name, author, avatar, description, like, collect}
                         {isCollected ? parseInt(collect) + 1 : collect}
                     </span>
                     <Button variant="contained" endIcon={<SendIcon />} href={'/botchat'}>
-                        Use
+                        {t('Use')}
                     </Button>
                 </div>
             </div>
