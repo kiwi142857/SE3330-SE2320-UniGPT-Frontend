@@ -1,5 +1,5 @@
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { Button, Divider, Grid } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import React, { ChangeEvent, useState } from 'react';
 import BasicInput from '../components/BasicInput';
@@ -24,6 +24,8 @@ const BotEditPage: React.FC = () => {
     const [avatarImg, setAvatarImg] = useState<string>('/assets/bot-default.png');
     const [photoImgs, setPhotoImgs] = useState<image[]>([]);
     const [items, setItems] = useState<item[]>([]);
+    const [promptCheck, setPromptCheck] = useState<boolean>(false);
+    const [publishCheck, setPublishCheck] = useState<boolean>(false);
 
     const onAvatarUpload = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -77,6 +79,7 @@ const BotEditPage: React.FC = () => {
         const description = target.description.value; 
 
         console.log(`name:${name}, description:${description}, avatar:${avatarImg}, photos:${photoImgs}`);
+        window.location.href = '/botchat';
     };
 
     return [
@@ -124,7 +127,10 @@ const BotEditPage: React.FC = () => {
                 {/* 第二层，自定义prompt */}
                 <div className='edit-prompts-container'>
                     <div className='edit-title-container'>
-                        <CheckCircleOutlineIcon sx={{ fontSize: 60 }} />
+                        <Checkbox
+                            checked={promptCheck}
+                            onChange={(event) => setPromptCheck(event.target.checked)}
+                        />
                         <Typography 
                             className='edit-label' 
                             style={{ display: 'flex', alignItems: 'center' }}
@@ -133,58 +139,67 @@ const BotEditPage: React.FC = () => {
                             Define your own prompt list
                         </Typography>
                     </div>
-                    {items.map((item, index) => (
-                        <Grid container spacing={2} key={index}>
-                            <Grid item xs={1.1}/>
-                            <Grid item xs={2}>
-                                <Typography 
-                                    className='edit-prompt-label'
-                                    sx={{color: 'primary.light'}}
-                                >
-                                    {item.itemName}
-                                </Typography>
+                    {promptCheck && (
+                        <div className='prompts-list-container'>
+                            {items.map((item, index) => (
+                                <Grid container spacing={2} key={index}>
+                                    <Grid item xs={1.1}/>
+                                    <Grid item xs={2}>
+                                        <Typography 
+                                            className='edit-prompt-label'
+                                            sx={{color: 'primary.light'}}
+                                        >
+                                            {item.itemName}
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={8}>
+                                        <Typography 
+                                            className='edit-prompt'
+                                            sx={{color: 'primary.light'}}
+                                        >
+                                            {item.prompt}
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
+                            ))}
+                            <Grid container spacing={2}>
+                                <Grid item xs={1}/>
+                                <Grid item xs={2}>
+                                    <BasicInput 
+                                        placeholder='Item name'  
+                                        name='itemName'
+                                    />
+                                </Grid>
+                                <Grid item xs={8}>
+                                    <BasicInput 
+                                        placeholder='Prompt for this item'  
+                                        name='prompt'
+                                    />
+                                </Grid>
+                                <Grid item xs={5}/>
+                                <Grid item xs={2}>
+                                    <Button 
+                                        variant="contained" 
+                                        onClick={onPromptClick}
+                                        sx={{backgroundColor: 'primary.light'}}
+                                    >
+                                        ADD PROMPT
+                                    </Button>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={8}>
-                                <Typography 
-                                    className='edit-prompt'
-                                    sx={{color: 'primary.light'}}
-                                >
-                                    {item.prompt}
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    ))}
-                    <Grid container spacing={2}>
-                        <Grid item xs={1}/>
-                        <Grid item xs={2}>
-                            <BasicInput 
-                                placeholder='Item name'  
-                                name='itemName'
-                            />
-                        </Grid>
-                        <Grid item xs={8}>
-                            <BasicInput 
-                                placeholder='Prompt for this item'  
-                                name='prompt'
-                            />
-                        </Grid>
-                    </Grid>
+                        </div>
+                    )}
                 </div>
-
-                <Button 
-                        variant="contained" 
-                        sx={{backgroundColor: 'primary.light'}}
-                        onClick={onPromptClick}
-                    >
-                        Add Prompt
-                </Button>
 
                 <Divider style={{marginTop:'20px'}}/>
 
                 {/* 第三层，发布market的信息 */}
                 <div className='edit-publish-container'>
                     <div className='edit-title-container'>
-                        <CheckCircleOutlineIcon sx={{ fontSize: 60 }} />
+                        <Checkbox
+                            checked={publishCheck}
+                            onChange={(event) => setPublishCheck(event.target.checked)}
+                        />
                         <Typography 
                             className='edit-label' 
                             style={{ display: 'flex', alignItems: 'center' }}
@@ -194,48 +209,52 @@ const BotEditPage: React.FC = () => {
                         </Typography>
                     </div>
                     
-                    <EditInput 
-                        title='Detailed Description' 
-                        placeholder='Your description for your assistant'  
-                        name='detail' 
-                    />
-                    <div>
-                        <input 
-                            type="file" 
-                            ref={fileInputRef} 
-                            style={{ display: 'none' }} 
-                            onChange={onPhotoUpload} 
-                        />
-                        <Grid container>
-                            <Grid item xs={2}>
-                                <Typography 
-                                    className='edit-label' 
-                                    style={{ display: 'flex', alignItems: 'center' }}
-                                    sx={{color: 'primary.main'}}
-                                >
-                                    Photos
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={4}>
-                                {photoImgs.map((image, index) => (
-                                    <div key={index} className='edit-photo-container'>
-                                        <img src={image.src} alt={image.name} style={{width: '30px'}} />
-                                        <Typography sx={{color:'primary.light'}}>
-                                            {image.name}
+                    {publishCheck && (
+                        <div>
+                            <EditInput 
+                                title='Detailed Description' 
+                                placeholder='Your description for your assistant'  
+                                name='detail' 
+                            />
+                            <div>
+                                <input 
+                                    type="file" 
+                                    ref={fileInputRef} 
+                                    style={{ display: 'none' }} 
+                                    onChange={onPhotoUpload} 
+                                />
+                                <Grid container>
+                                    <Grid item xs={2}>
+                                        <Typography 
+                                            className='edit-label' 
+                                            style={{ display: 'flex', alignItems: 'center' }}
+                                            sx={{color: 'primary.main'}}
+                                        >
+                                            Photos
                                         </Typography>
-                                    </div>
-                                ))}
-                                <br/>
-                                <Button 
-                                    variant="contained" 
-                                    onClick={onPhotoClick}
-                                    sx={{backgroundColor: 'primary.light'}}
-                                >
-                                    ADD Image
-                                </Button>
-                            </Grid>
-                        </Grid>
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        {photoImgs.map((image, index) => (
+                                            <div key={index} className='edit-photo-container'>
+                                                <img src={image.src} alt={image.name} style={{width: '30px'}} />
+                                                <Typography sx={{color:'primary.light'}}>
+                                                    {image.name}
+                                                </Typography>
+                                            </div>
+                                        ))}
+                                        <br/>
+                                        <Button 
+                                            variant="contained" 
+                                            onClick={onPhotoClick}
+                                            sx={{backgroundColor: 'primary.light'}}
+                                        >
+                                            ADD Image
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </div>
                     </div>
+                    )}
                 </div>
 
                 <Button 
