@@ -2,7 +2,7 @@ import { LanguageContext } from "../provider/LanguageProvider";
 import { useContext, useEffect } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "@mui/material";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 
 function LanguageButton() {
     const context = useContext(LanguageContext);
@@ -12,16 +12,25 @@ function LanguageButton() {
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
 
+    const handleLanguageChange = (event: React.MouseEvent<HTMLElement>, newLanguage: string) => {
+        context?.changeLanguage(newLanguage);
+    };
+
     return (
-        <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-                context?.changeLanguage(context?.language === "en" ? "zh" : "en");
-            }}
+        <ToggleButtonGroup 
+            style={{borderRadius: '20px'}}
+            value={context?.language}
+            exclusive
+            onChange={handleLanguageChange}
+            aria-label="language"
         >
-            {t("changeLanguage")}
-        </Button>
+            <ToggleButton style={{ border:'none' }} value="zh" aria-label="chinese">
+                中
+            </ToggleButton>
+            <ToggleButton style={{ border:'none' }} value="en" aria-label="english">
+                EN
+            </ToggleButton>
+        </ToggleButtonGroup>
     );
 };
 

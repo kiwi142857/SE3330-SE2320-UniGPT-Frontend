@@ -66,7 +66,7 @@ export default function UserCard() {
                 <Grid item >
                     <Typography className='email'>@jaccount</Typography>
                 </Grid>
-                <Grid item >
+                <Grid item  style={{marginTop:'10px'}}>
                     <TextField
                         className='description'
                         value={description}
@@ -80,7 +80,8 @@ export default function UserCard() {
                         InputProps={{
                             style: {
                                 border : 'none',
-                            }
+                            },
+                            disableUnderline: true,
                         }}
                     />
                 </Grid>
