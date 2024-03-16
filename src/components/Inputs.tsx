@@ -1,12 +1,12 @@
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
-import {Box, Grid, Typography} from "@mui/material";
+import ArticleIcon from "@mui/icons-material/Article";
+import { Box, Grid, Typography } from "@mui/material";
 import Fab from '@mui/material/Fab';
 import React from "react";
+import "../css/BotChatPage.css";
 import "../css/BotDetailPage.css";
 import "../css/BotEditPage.css";
-import "../css/BotChatPage.css";
 import BasicInput from './BasicInput';
-import ArticleIcon from "@mui/icons-material/Article";
 
 // botDetail页的评论输入框
 export function CommentInput () {
@@ -39,16 +39,16 @@ export function EditInput ({title, placeholder, name}:{title:string; placeholder
     return (
         <Grid container>
             <Grid item xs={2}>
-                <Typography
-                    className='edit-label'
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center'
-                    }}
-                    sx={{color: 'primary.main'}}
-                >
-                    {title}
-                </Typography>
+                    <Typography
+                        className='edit-label'
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}
+                        sx={{color: 'primary.main'}}
+                    >
+                        <p>{title}</p>
+                    </Typography>
             </Grid>
             <Grid item xs={10}>
                 <BasicInput

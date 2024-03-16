@@ -35,7 +35,7 @@ const Navigator: React.FC<{}> = () => {
                                 />
                             </IconButton>
                             <span className='navigator-title'>
-                                AI Assistant
+                                UniGPT
                             </span>
                         </Link>
                     </Box>
