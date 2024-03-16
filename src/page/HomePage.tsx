@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 import { LanguageContext } from "../provider/LanguageProvider";
 
-// 首页
 const HomePage: React.FC = () => {
     const context = React.useContext(LanguageContext);
     const { t, i18n } = useTranslation();
