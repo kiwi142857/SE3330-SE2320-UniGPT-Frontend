@@ -26,6 +26,7 @@ const BotBriefCard = () => {
                             backgroundColor: theme.palette.primary.main,
                             color: 'white',
                         }}
+                        href="/botedit"
                     >
                         Modify
                     </Button>
