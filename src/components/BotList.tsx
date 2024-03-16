@@ -23,7 +23,7 @@ function HomeMarketCard() {
                 <ShoppingCartOutlinedIcon style={{ width: '30%', height: '30%', marginTop:'20%', color:'#666666' }} />
                 <CardContent>
                     <Typography className='card-discription' color="text.secondary">
-                        More form market
+                        More from market
                     </Typography>
                 </CardContent>
             </Card>
@@ -38,7 +38,7 @@ export function HomeCreateCard() {
                 <AddCircleOutlineIcon style={{ width: '30%', height: '30%', marginTop:'20%', color:'#666666' }} />
                 <CardContent>
                     <Typography className='card-discription' color="text.secondary">
-                        Craete your new bot
+                        Create your new bot
                     </Typography>
                 </CardContent>
             </Card>
