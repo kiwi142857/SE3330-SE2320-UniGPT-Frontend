@@ -2,8 +2,7 @@ import { Button, Divider, Grid } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import React, { ChangeEvent, useState } from 'react';
-import BasicInput from '../components/BasicInput';
-import { EditInput } from '../components/Inputs';
+import { EditInput, PromptListInput } from '../components/Inputs';
 import Navigator from '../components/Navigator';
 import '../css/App.css';
 import '../css/BotEditPage.css';
@@ -71,12 +70,19 @@ const BotEditPage: React.FC = () => {
 
     const onSubmit = (event: React.FormEvent) => {
         event.preventDefault();
+
         const target = event.target as typeof event.target & {
             name: { value: string };
             description: { value: string };
         };
+
         const name = target.name.value; 
         const description = target.description.value; 
+
+        if (promptCheck && items.length === 0) {
+            alert('Please add at least one item when prompt check is enabled.');
+            return;
+        }
 
         console.log(`name:${name}, description:${description}, avatar:${avatarImg}, photos:${photoImgs}`);
         window.location.href = '/botchat';
@@ -162,31 +168,7 @@ const BotEditPage: React.FC = () => {
                                     </Grid>
                                 </Grid>
                             ))}
-                            <Grid container spacing={2}>
-                                <Grid item xs={1}/>
-                                <Grid item xs={2}>
-                                    <BasicInput 
-                                        placeholder='Item name'  
-                                        name='itemName'
-                                    />
-                                </Grid>
-                                <Grid item xs={8}>
-                                    <BasicInput 
-                                        placeholder='Prompt for this item'  
-                                        name='prompt'
-                                    />
-                                </Grid>
-                                <Grid item xs={5}/>
-                                <Grid item xs={2}>
-                                    <Button 
-                                        variant="contained" 
-                                        onClick={onPromptClick}
-                                        sx={{backgroundColor: 'primary.light'}}
-                                    >
-                                        ADD PROMPT
-                                    </Button>
-                                </Grid>
-                            </Grid>
+                            <PromptListInput onPromptClick={onPromptClick}/>
                         </div>
                     )}
                 </div>

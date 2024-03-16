@@ -7,6 +7,7 @@ import "../css/BotChatPage.css";
 import "../css/BotDetailPage.css";
 import "../css/BotEditPage.css";
 import BasicInput from './BasicInput';
+import { Button } from "@mui/material";
 
 // botDetail页的评论输入框
 export function CommentInput () {
@@ -34,7 +35,7 @@ export function CommentInput () {
     );
 };
 
-// botCreate页的项目输入框
+// botEdit页的项目输入框
 export function EditInput ({title, placeholder, name}:{title:string; placeholder:string; name:string}) {
     return (
         <Grid container>
@@ -54,7 +55,39 @@ export function EditInput ({title, placeholder, name}:{title:string; placeholder
                 <BasicInput
                     placeholder={placeholder}
                     name={name}
+                    required
                 />
+            </Grid>
+        </Grid>
+    );
+}
+
+// botEdit页的promptList的输入框
+export function PromptListInput ({onPromptClick}:{onPromptClick:()=>void}) {
+    return (
+        <Grid container spacing={2}>
+            <Grid item xs={1}/>
+            <Grid item xs={2}>
+                <BasicInput 
+                    placeholder='Item name'  
+                    name='itemName'
+                />
+            </Grid>
+            <Grid item xs={8}>
+                <BasicInput 
+                    placeholder='Prompt for this item'  
+                    name='prompt'
+                />
+            </Grid>
+            <Grid item xs={5}/>
+            <Grid item xs={2}>
+                <Button 
+                    variant="contained" 
+                    onClick={onPromptClick}
+                    sx={{backgroundColor: 'primary.light'}}
+                >
+                    ADD PROMPT
+                </Button>
             </Grid>
         </Grid>
     );

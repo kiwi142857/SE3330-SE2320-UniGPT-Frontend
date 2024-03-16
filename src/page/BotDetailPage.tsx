@@ -78,7 +78,9 @@ const BotDetailPage: React.FC = () => {
                     like={bot?.like.toString() || ''}
                     collect={bot?.collect.toString() || ''}
                 />
+
                 <BotCarousel photos={bot?.photos || []} />
+                
                 <Typography
                     sx={{color: 'primary.light'}}
                     align='left'
