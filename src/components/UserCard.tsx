@@ -21,7 +21,7 @@ export default function UserCard() {
     return (
         
         <Grid container spacing={5} >
-            <Grid item spacing={2}>
+            <Grid item >
                 <div style={{ position: 'relative' }}>
                     <Avatar alt="user-default" src={avatarSrc} sx={{ width: 100, height: 100 }} />
                     <input 
@@ -34,12 +34,12 @@ export default function UserCard() {
                     <label htmlFor="avatar-input" className="avatar-overlay">{t("change your avatar") }</label>
                 </div>
             </Grid>
-            <Grid item spacing={2}>
+            <Grid item >
                 <Grid container spacing={2} >
-                    <Grid item spacing={2}>
+                    <Grid item >
                         <Typography className='user-name'>{t("Username") }</Typography>
                     </Grid>
-                    <Grid item spacing={4}>
+                    <Grid item >
                         <Button className='change-button'>{t("change") }</Button>
                     </Grid>
                 </Grid>
@@ -53,7 +53,7 @@ export default function UserCard() {
                     style={{ height: '100px'}}
                 />
             </Grid>
-            <Grid item spacing={8}>
+            <Grid item >
             </Grid>
         </Grid>
     );

@@ -14,11 +14,19 @@ import { Divider } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+import { LanguageContext } from "../provider/LanguageProvider";
+
 
 export type botListType = { Favorite: string, Recent: string; };
 
 function HomeMarketCard() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const context = React.useContext(LanguageContext);
+
+    useEffect(() => {
+        i18n.changeLanguage(context?.language);
+    }, [context?.language, i18n]);
     return (
         <Link href='/market' style={{ textDecoration: 'none', width: '30%', height: '30%', borderRadius: '20px' }}>
             <Card elevation={0}>
@@ -34,7 +42,13 @@ function HomeMarketCard() {
 }
 
 export function HomeCreateCard() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const context = React.useContext(LanguageContext);
+
+    useEffect(() => {
+        i18n.changeLanguage(context?.language);
+    }, [context?.language, i18n]);
+
     return (
         <Link href='/botedit' style={{ textDecoration: 'none' }} >
             <Card elevation={0}>
@@ -50,7 +64,13 @@ export function HomeCreateCard() {
 }
 
 export function RecentUsedHeader() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const context = React.useContext(LanguageContext);
+
+    useEffect(() => {
+        i18n.changeLanguage(context?.language);
+    }, [context?.language, i18n]);
+
     return (
         <div style={{marginLeft:'20px', marginTop:'10px'}}>
             <Grid container alignItems="center" spacing={2}>
@@ -69,7 +89,12 @@ export function RecentUsedHeader() {
 }
 
 export function FavoriteHeader() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const context = React.useContext(LanguageContext);
+
+    useEffect(() => {
+        i18n.changeLanguage(context?.language);
+    }, [context?.language, i18n]);
     return (
         <div style={{marginLeft:'60px', marginTop:'10px'}}>
             <Grid container alignItems="center" spacing={3}>

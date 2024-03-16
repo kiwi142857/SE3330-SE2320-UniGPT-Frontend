@@ -8,10 +8,18 @@ import Grid from '@mui/material/Grid';
 import BotCard from '../components/BotCard';
 import GetBotInfo from '../service/BotInfo';
 import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+import { LanguageContext } from "../provider/LanguageProvider";
 // 个人主页
 
 export function BotListTabs() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const context = React.useContext(LanguageContext);
+
+    useEffect(() => {
+        i18n.changeLanguage(context?.language);
+    }, [context?.language, i18n]);
+    
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {

@@ -2,7 +2,6 @@ import { AppBar, Avatar, IconButton, Link, Toolbar, Typography } from '@mui/mate
 import { Box } from '@mui/system';
 import React from 'react';
 import '../css/Navigator.css';
-import { useTranslation } from 'react-i18next';
 import LanguageButton from './LanguageButton';
 
 // 顶部导航栏

@@ -6,9 +6,18 @@ import { Typography } from '@mui/material';
 import { FavoriteHeader, RecentUsedHeader } from '../components/BotList';
 import '../css/Home.css';
 import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+import { LanguageContext } from "../provider/LanguageProvider";
+
 // 首页
 const HomePage: React.FC = () => {
-    const { t } = useTranslation();
+    const context = React.useContext(LanguageContext);
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        i18n.changeLanguage(context?.language);
+    }, [context?.language, i18n]);
+    
     return (
         <div>
             <Navigator></Navigator>

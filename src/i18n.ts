@@ -16,6 +16,8 @@ const resources = {
       "change": "change",
       "Write your description here...": "Write your description here...",
       "Created": "Created",
+      "Latest": "Latest",
+      "Hottest": "Hottest",
     }
   },
   zh: {
@@ -32,6 +34,8 @@ const resources = {
       "change": "更改",
       "Write your description here...": "你的个人简介...",
       "Created": "已创建",
+      "Latest": "最新",
+      "Hottest": "最热",
     }
   }
 };
@@ -40,7 +44,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: "zh", // 默认语言
+    lng: "en", // 默认语言
     interpolation: {
       escapeValue: false
     }

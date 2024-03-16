@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import i18n from '../i18n';
 
 interface LanguageContextProps {
@@ -13,13 +13,26 @@ interface LanguageProviderProps {
 }
 
 export const LanguageProvider: FC<LanguageProviderProps> = ({ children }) => {
-    const [language, setLanguage] = useState<string>(i18n.language);
+    const initialLanguage = localStorage.getItem('language') || i18n.language;
+    const [language, setLanguage] = useState<string>(initialLanguage);
+
+    useEffect(() => {
+        const handleLanguageChange = (lng: string) => {
+            setLanguage(lng);
+            localStorage.setItem('language', lng);
+        };
+
+        i18n.on('languageChanged', handleLanguageChange);
+        return () => {
+            i18n.off('languageChanged', handleLanguageChange);
+        };
+    }, []);
 
     const changeLanguage = (lng: string) => {
         i18n.changeLanguage(lng);
-        setLanguage(lng);
     };
 
+    console.log('language', language);
     return (
         <LanguageContext.Provider value={{ language, changeLanguage }}>
             {children}
