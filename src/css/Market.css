@@ -12,7 +12,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 50%;
     color: transparent;
     font-size: 18px;
     font-weight: 300;
@@ -33,7 +32,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 50%;
+    border-radius: 20px;
     color: #ffffff;
     font-size: 18px;
     font-weight: 300;
