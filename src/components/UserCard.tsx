@@ -80,7 +80,8 @@ export default function UserCard() {
                         InputProps={{
                             style: {
                                 border : 'none',
-                            }
+                            },
+                            disableUnderline: true,
                         }}
                     />
                 </Grid>
