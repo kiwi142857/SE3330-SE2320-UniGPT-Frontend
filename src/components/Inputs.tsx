@@ -1,17 +1,27 @@
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import ArticleIcon from "@mui/icons-material/Article";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import RemoveIcon from '@mui/icons-material/Remove';
+import { Box, Grid, Typography } from "@mui/material";
 import Fab from '@mui/material/Fab';
-import React, {useState} from "react";
+import IconButton from '@mui/material/IconButton';
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "../css/BotChatPage.css";
 import "../css/BotDetailPage.css";
 import "../css/BotEditPage.css";
+import { LanguageContext } from "../provider/LanguageProvider";
 import BasicInput from './BasicInput';
 
 // botDetail页的评论输入框
-export function CommentInput () {
-    const { t } = useTranslation();
+export function CommentInput ({onSend}:{onSend: (content: string)=>void}) {
+    const context = React.useContext(LanguageContext);
+    const { t, i18n } = useTranslation();
+    
+    useEffect(() => {
+        i18n.changeLanguage(context?.language);
+    }, [context?.language, i18n]);
+
+    const [message, setMessage] = useState('');
 
     return (
             <Grid container className='comment-input-container'>
@@ -19,6 +29,10 @@ export function CommentInput () {
                     <BasicInput
                         placeholder={t('Enter your comment here...')}
                         name='prompt'
+                        onChange={(event)=> {
+                            setMessage(event.target.value);
+                        }}
+                        value={message}
                     />
                 </Grid>
                 <Grid xs={1}>
@@ -26,6 +40,10 @@ export function CommentInput () {
                         variant="extended"
                         size="large"
                         sx={{color:'secondary.main'}}
+                        onClick={() => {
+                                onSend(message);
+                                setMessage('');
+                            }}
                     >
                         <ArrowCircleUpIcon
                             fontSize='large'
@@ -64,34 +82,62 @@ export function EditInput ({title, placeholder, name}:{title:string; placeholder
     );
 }
 
-// botEdit页的promptList的输入框
-export function PromptListInput ({onPromptClick}:{onPromptClick:()=>void}) {
-    const { t } = useTranslation();
+// botEdit页的promptList中的单条prompt（可修改，删除）
+export function OnePromptInput 
+({
+    item, 
+    index,
+    onItemNameChange, 
+    onPromptChange,
+    handleDelete
+}: {
+    item: {itemName: string, prompt: string}, 
+    index: number, 
+    onItemNameChange: (event: React.ChangeEvent<HTMLInputElement>)=>void, 
+    onPromptChange: (event: React.ChangeEvent<HTMLInputElement>)=>void,
+    handleDelete: (index: number)=>void
+}){
+    const context = React.useContext(LanguageContext);
+    const { t, i18n } = useTranslation();
+    
+    useEffect(() => {
+        i18n.changeLanguage(context?.language);
+    }, [context?.language, i18n]);
 
     return (
         <Grid container spacing={2}>
             <Grid item xs={1}/>
-            <Grid item xs={2}>
-                <BasicInput
-                    placeholder={t('Item Name')}
-                    name='itemName'
-                />
+            <Grid item xs={1}>
+                <div className='oneprompt-element'>
+                    <IconButton
+                        sx={{backgroundColor: 'secondary.main'}}
+                        onClick={()=>handleDelete(index)}
+                    >
+                        <RemoveIcon />
+                    </IconButton>
+                </div>
             </Grid>
-            <Grid item xs={8}>
-                <BasicInput
-                    placeholder={t('Prompt for this item' )}
-                    name='prompt'
-                />
-            </Grid>
-            <Grid item xs={5}/>
             <Grid item xs={2}>
-                <Button
-                    variant="contained"
-                    onClick={onPromptClick}
-                    sx={{backgroundColor: 'primary.light'}}
-                >
-                    {t('add prompt')}
-                </Button>
+                <div className='oneprompt-element'>
+                    <BasicInput
+                        placeholder={t('Item Name')}
+                        name='oneItemName'
+                        value={item.itemName}
+                        onChange={onItemNameChange}
+                        required
+                    />
+                </div>
+            </Grid>
+            <Grid item xs={7}>
+                <div className='oneprompt-element'>
+                    <BasicInput
+                        placeholder={t('Prompt for this item' )}
+                        name='onePrompt'
+                        value={item.prompt}
+                        onChange={onPromptChange}
+                        required
+                    />
+                </div>
             </Grid>
         </Grid>
     );

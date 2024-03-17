@@ -1,8 +1,9 @@
+import { Avatar, Grid, TextField, Typography } from '@mui/material';
 import * as React from 'react';
-import { useState, useRef } from 'react';
-import { Avatar, Grid, Typography, TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../css/Profile.css';
+import { LanguageContext } from "../provider/LanguageProvider";
 
 export default function UserCard() {
     const [description, setDescription] = useState('');
@@ -17,7 +18,12 @@ export default function UserCard() {
         setIsDescriptionFocused(false);
     };
     const [avatarSrc, setAvatarSrc] = useState('/assets/user-default.png');
-    const { t } = useTranslation();
+    const context = React.useContext(LanguageContext);
+    const { t, i18n } = useTranslation();
+    
+    useEffect(() => {
+        i18n.changeLanguage(context?.language);
+    }, [context?.language, i18n]);
 
     const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setDescription(event.target.value);
