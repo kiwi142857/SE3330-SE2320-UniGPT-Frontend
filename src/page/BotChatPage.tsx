@@ -70,18 +70,37 @@ const BotChatPage = () => {
                     display="flex"
                     width="100%"
                 >
-                    <Box>{
-                            botChatList.map((botChat)=>
-                                <OneChat
-                                    id={botChat.id}
-                                    name={botChat.name}
-                                    avatar={botChat.avatar}
-                                    content={botChat.content}
-                                />)
-                        }</Box>
+                    <Box sx={{
+                        width:"80%",
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center'
+                    }}>{
+                            botChatList.map((botChat, index)=>
+                                <React.Fragment key={index} >
+                                    <OneChat
+                                        id={botChat.id}
+                                        name={botChat.name}
+                                        avatar={botChat.avatar}
+                                        content={botChat.content}
+                                    />
+                                </React.Fragment>)
+                        }
+                    </Box>
                     <PromptInput
                         onAltTable={()=>{setTableCreateOpen(true);}}
-                        onSend={()=>{alert("send")}} />
+                        onSend={(text)=>{
+                            setBotChatList([
+                                ...botChatList,
+                                {
+                                    id: '',
+                                    name: '你',
+                                    historyId: selectedHistory,
+                                    avatar:'',
+                                    content: text
+                                }]);
+                            window.scrollTo(0, document.body.scrollHeight);
+                        }} />
                     <TableCreateDialog
                         open={tableCreateOpen}
                         handleClose={()=>{setTableCreateOpen(false);}}
