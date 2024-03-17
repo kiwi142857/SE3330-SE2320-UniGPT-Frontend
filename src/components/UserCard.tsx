@@ -10,6 +10,15 @@ export default function UserCard() {
     const [description, setDescription] = useState('');
     const [usename, setUsename] = useState('user');
     const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
+    const [isUsernameFocused, setIsUsernameFocused] = useState(false);
+
+    const handleUsernameFocus = () => {
+        setIsUsernameFocused(true);
+    };
+
+    const handleUsernameBlur = () => {
+        setIsUsernameFocused(false);
+    };
 
     const handleDescriptionFocus = () => {
         setIsDescriptionFocused(true);
@@ -33,8 +42,9 @@ export default function UserCard() {
     const handleUsenameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUsename(event.target.value);
     };
-
-    const {t , i18n} = useTranslation();
+    const [isDiscriptionInputActive, setDiscriptionIsInputActive] = useState(false);
+    const [isInputActive, setIsInputActive] = useState(false);
+    const { t, i18n } = useTranslation();
     const context = React.useContext(LanguageContext);
 
     useEffect(() => {
@@ -54,7 +64,7 @@ export default function UserCard() {
                         style={{ display: 'none' }}
                         id="avatar-input"
                     />
-                    <label htmlFor="avatar-input" className="avatar-overlay">{t("change your avatar")}</label>
+                    <label htmlFor="avatar-input" className="avatar-overlay-profile">{t("change your avatar")}</label>
                 </div>
             </Grid>
             <Grid item >
@@ -66,30 +76,42 @@ export default function UserCard() {
                         variant="standard"
                         value={usename}
                         onChange={handleUsenameChange}
+                        onFocus={handleUsernameFocus}
+                        onBlur={handleUsernameBlur}
+                        onMouseEnter={() => setIsUsernameFocused(true)}
+                        onMouseLeave={() => { if (!isInputActive) setIsUsernameFocused(false); }}
                         placeholder={t("Maximum 25 characters input")}
                         style={{ height: '50px', width: '120%' }}
                         inputProps={{ maxLength: 25 }}
+                        InputProps={{
+                            style: {
+                                border: 'none',
+                            },
+                            disableUnderline: isUsernameFocused? false : true
+                        }}
                     />
                 </Grid>
                 <Grid item >
                     <Typography className='email'>@jaccount</Typography>
                 </Grid>
-                <Grid item  style={{marginTop:'10px'}}>
+                <Grid item style={{ marginTop: '10px' }}>
                     <TextField
                         className='description'
                         value={description}
                         onChange={handleDescriptionChange}
                         placeholder={t("Write your description here...")}
                         multiline
-                        variant={isDescriptionFocused ? "outlined" : "standard"}
-                        onFocus={handleDescriptionFocus}
-                        onBlur={handleDescriptionBlur}
-                        style={{ height: '100px', width: '200%'}}
+                        variant='standard'
+                        onFocus={() => { handleDescriptionFocus(); setDiscriptionIsInputActive(true); }}
+                        onBlur={() => { handleDescriptionBlur(); setDiscriptionIsInputActive(false); }}
+                        onMouseEnter={() => setIsDescriptionFocused(true)}
+                        onMouseLeave={() => { if (!isDiscriptionInputActive) setIsDescriptionFocused(false); }}
+                        style={{ height: '100px', width: '200%' }}
                         InputProps={{
                             style: {
-                                border : 'none',
+                                border: 'none',
                             },
-                            disableUnderline: true,
+                            disableUnderline: isDescriptionFocused ? false : true
                         }}
                     />
                 </Grid>
