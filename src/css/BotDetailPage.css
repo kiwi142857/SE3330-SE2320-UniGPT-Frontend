@@ -62,11 +62,11 @@
     font-family: "Inter";
     font-size: 18px;
     font-weight: 400;
-    line-height: 25px;
+    line-height: 24px;
     letter-spacing: 0em;
     text-align: left;
     margin-top: 0px;
-    max-height: 50px;
+    max-height: 48px;
     overflow: auto;
 }
 

@@ -7,34 +7,13 @@
 
 .edit-basic-container{
     display: flex;
-    /* height: 200px; */
     margin-top: 50px;
     margin-bottom: 40px;
-    
 }
 
 .avatar-overlay {
     border-radius: 0;
 }
-
-/* .edit-avatar{
-    height: 200px;
-    width: 200px;
-} */
-
-/* .edit-avatar-text{
-    font-family: "Inter"!important;
-    font-size: 24px!important;
-    font-weight: 600!important;
-    line-height: 24px!important;
-    letter-spacing: 0em!important;
-    text-align: center;
-    color: black !important;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-} */
 
 .edit-avatar:hover + .edit-avatar-text {
     visibility: visible;
@@ -73,23 +52,11 @@
     margin-bottom: 20px;
 }
 
-.edit-prompt-label{
-    font-family: "Inter"!important;
-    font-size: 24px!important;
-    font-weight: 600!important;
-    line-height: 24px!important;
-    letter-spacing: 0em!important;
-    text-align: left;
+.oneprompt-element{
     display: flex;
-}
-
-.edit-prompt{
-    font-family: "Inter"!important;
-    font-size: 18px!important;
-    font-weight: 400!important;
-    line-height: 24px!important;
-    letter-spacing: 0em!important;
-    text-align: left;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }
 
 .edit-publish-container{
@@ -116,4 +83,21 @@
 }
 
 
+/* .edit-avatar{
+    height: 200px;
+    width: 200px;
+} */
 
+/* .edit-avatar-text{
+    font-family: "Inter"!important;
+    font-size: 24px!important;
+    font-weight: 600!important;
+    line-height: 24px!important;
+    letter-spacing: 0em!important;
+    text-align: center;
+    color: black !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} */

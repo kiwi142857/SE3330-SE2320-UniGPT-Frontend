@@ -1,13 +1,16 @@
-import { Button, Divider, Grid } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { Button, Divider, Grid } from "@mui/material";
 import Avatar from '@mui/material/Avatar';
 import Checkbox from '@mui/material/Checkbox';
+import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { EditInput, PromptListInput } from '../components/Inputs';
+import { EditInput, OnePromptInput } from '../components/Inputs';
 import Navigator from '../components/Navigator';
 import '../css/App.css';
 import '../css/BotEditPage.css';
+import { LanguageContext } from "../provider/LanguageProvider";
 
 // bot创建/修改页
 
@@ -22,11 +25,16 @@ interface item {
 }
 
 const BotEditPage: React.FC = () => {
-    const { t } = useTranslation();
+    const context = React.useContext(LanguageContext);
+    const { t, i18n } = useTranslation();
+    
+    useEffect(() => {
+        i18n.changeLanguage(context?.language);
+    }, [context?.language, i18n]);
 
     const [avatarImg, setAvatarImg] = useState<string>('/assets/bot-default.png');
     const [photoImgs, setPhotoImgs] = useState<image[]>([]);
-    const [items, setItems] = useState<item[]>([]);
+    const [items, setItems] = useState<item[]>([{itemName: '', prompt: ''}]);
     const [promptCheck, setPromptCheck] = useState<boolean>(false);
     const [publishCheck, setPublishCheck] = useState<boolean>(false);
 
@@ -52,20 +60,23 @@ const BotEditPage: React.FC = () => {
         
             reader.readAsDataURL(file);
         }
-        
     };
 
-    const onPromptClick = () => {
-        const itemNameInput = document.querySelector<HTMLInputElement>('[name="itemName"]');
-        const promptInput = document.querySelector<HTMLInputElement>('[name="prompt"]');
-        const itemName = itemNameInput?.value;
-        const prompt = promptInput?.value;
-        if (!itemName || !prompt) {
-            return;
+    const onPromptCheck = (event: ChangeEvent<HTMLInputElement>) => {
+        setPromptCheck(event.target.checked);
+        if (!event.target.checked) {
+            setItems([]);
+        } else {
+            setItems([{itemName: '', prompt: ''}]);
         }
-        setItems(prevItems => [...prevItems, { itemName, prompt }]);
-        if (itemNameInput) itemNameInput.value = '';
-        if (promptInput) promptInput.value = '';
+    }
+
+    const onItemNameChange = (index: number, newValue: string) => {
+        setItems(items.map((item, i) => i === index ? {...item, itemName: newValue} : item));
+    };
+    
+    const onPromptChange = (index: number, newValue: string) => {
+        setItems(items.map((item, i) => i === index ? {...item, prompt: newValue} : item));
     };
 
     const fileInputRef = React.useRef<HTMLInputElement>(null);
@@ -92,8 +103,15 @@ const BotEditPage: React.FC = () => {
             return;
         }
 
-        console.log(`name:${name}, description:${description}, avatar:${avatarImg}, photos:${photoImgs}`);
-        window.location.href = '/botchat';
+        console.log(`name:${name}, description:${description}`);
+
+        items.forEach((item, index) => {
+            console.log(`item${index}: ${item.itemName}, prompt${index}: ${item.prompt}`);
+        });
+
+        setTimeout(() => {
+            window.location.href = '/botchat';
+        }, 1000);
     };
 
     return [
@@ -143,7 +161,7 @@ const BotEditPage: React.FC = () => {
                     <div className='edit-title-container'>
                         <Checkbox
                             checked={promptCheck}
-                            onChange={(event) => setPromptCheck(event.target.checked)}
+                            onChange={onPromptCheck}
                         />
                         <Typography 
                             className='edit-label' 
@@ -156,27 +174,26 @@ const BotEditPage: React.FC = () => {
                     {promptCheck && (
                         <div className='prompts-list-container'>
                             {items.map((item, index) => (
-                                <Grid container spacing={2} key={index}>
-                                    <Grid item xs={1.1}/>
-                                    <Grid item xs={2}>
-                                        <Typography 
-                                            className='edit-prompt-label'
-                                            sx={{color: 'primary.light'}}
-                                        >
-                                            {item.itemName}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={8}>
-                                        <Typography 
-                                            className='edit-prompt'
-                                            sx={{color: 'primary.light'}}
-                                        >
-                                            {item.prompt}
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
+                                <OnePromptInput 
+                                    key={index}
+                                    index={index} 
+                                    item={item} 
+                                    onItemNameChange={(event) => onItemNameChange(index, event.target.value)} 
+                                    onPromptChange={(event) => onPromptChange(index, event.target.value)}
+                                    handleDelete={() => setItems(items.filter((_, i) => i !== index))}
+                                />
                             ))}
-                            <PromptListInput onPromptClick={onPromptClick}/>
+                            <Grid container spacing={2}>
+                                <Grid item xs={1}/>
+                                <Grid item xs={1}>
+                                    <IconButton
+                                        sx={{backgroundColor: 'secondary.main'}}
+                                        onClick={() => setItems([...items, {itemName: '', prompt: ''}])}
+                                    >
+                                        <AddIcon />
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
                         </div>
                     )}
                 </div>
