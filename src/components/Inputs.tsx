@@ -17,7 +17,7 @@ export function CommentInput () {
             <Grid container className='comment-input-container'>
                 <Grid xs={11}>
                     <BasicInput
-                        placeholder={t('Enter your message here...')}
+                        placeholder={t('Enter your comment here...')}
                         name='prompt'
                     />
                 </Grid>
@@ -108,6 +108,7 @@ export function PromptInput
     onSend: (content: string)=>void}
 ){
     const [message, setMessage] = useState('');
+    const {t} = useTranslation();
     return (
         <Box className="prompt-input-container">
             <Fab
@@ -120,7 +121,7 @@ export function PromptInput
             </Fab>
             <div style={{width: '604px', margin: '20px'}}>
                 <BasicInput
-                    placeholder="Enter your message here..."
+                    placeholder={t('Enter your message here...')}
                     name="message"
                     onChange={(event)=> {
                         setMessage(event.target.value);

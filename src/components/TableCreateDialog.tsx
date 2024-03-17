@@ -7,6 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {TableCreateInput} from "./Inputs";
 import '../css/BotChatPage.css'
 import theme from "./theme";
+import {useTranslation} from "react-i18next";
 
 const TableCreateDialog =
     ({
@@ -18,11 +19,12 @@ const TableCreateDialog =
         handleClose: ()=> void;
         handleSubmit: ()=> void;
     }) => {
+
+    const { t } = useTranslation();
     return (
         <Dialog
             open={open}
             onClose={()=> {handleClose();}}
-            // className="table-create-dialog"
             PaperProps={{
                 component: 'form',
                 onSubmit: (event: React.FormEvent<HTMLFormElement>)=> {
@@ -61,7 +63,7 @@ const TableCreateDialog =
                         color: 'white',
                     }}
                     onClick={handleClose}
-                >Cancel
+                >{t('Cancel')}
                 </Button>
                 <Button
                     className="drawer-button"
@@ -70,7 +72,7 @@ const TableCreateDialog =
                         color: 'white',
                     }}
                     type="submit"
-                >Submit
+                >{t('Submit')}
                 </Button>
             </DialogActions>
         </Dialog>

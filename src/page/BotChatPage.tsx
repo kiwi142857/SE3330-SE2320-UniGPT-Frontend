@@ -28,7 +28,6 @@ const BotChatPage = () => {
         setBotChatHistoryList(list);
     };
 
-
     useEffect(() => {
         getChatHistoryList();
     }, []);
