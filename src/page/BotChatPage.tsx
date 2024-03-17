@@ -70,7 +70,12 @@ const BotChatPage = () => {
                     display="flex"
                     width="100%"
                 >
-                    <Box>{
+                    <Box sx={{
+                        width:"80%",
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center'
+                    }}>{
                             botChatList.map((botChat)=>
                                 <OneChat
                                     id={botChat.id}
@@ -78,7 +83,8 @@ const BotChatPage = () => {
                                     avatar={botChat.avatar}
                                     content={botChat.content}
                                 />)
-                        }</Box>
+                        }
+                    </Box>
                     <PromptInput
                         onAltTable={()=>{setTableCreateOpen(true);}}
                         onSend={(text)=>{
