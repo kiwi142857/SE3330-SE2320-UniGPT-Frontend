@@ -83,7 +83,7 @@ const BotChatPage = () => {
                                         name={botChat.name}
                                         avatar={botChat.avatar}
                                         content={botChat.content}
-                                    />
+                                    />:
                                 </React.Fragment>)
                         }
                     </Box>

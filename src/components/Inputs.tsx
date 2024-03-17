@@ -129,6 +129,7 @@ export function PromptInput
                 />
             </div>
             <Fab
+                disabled={message === ''}
                 onClick={() => {
                     onSend(message);
                     setMessage('');
