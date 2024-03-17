@@ -76,13 +76,15 @@ const BotChatPage = () => {
                         flexDirection: 'column',
                         alignItems: 'center'
                     }}>{
-                            botChatList.map((botChat)=>
-                                <OneChat
-                                    id={botChat.id}
-                                    name={botChat.name}
-                                    avatar={botChat.avatar}
-                                    content={botChat.content}
-                                />)
+                            botChatList.map((botChat, index)=>
+                                <React.Fragment key={index} >
+                                    <OneChat
+                                        id={botChat.id}
+                                        name={botChat.name}
+                                        avatar={botChat.avatar}
+                                        content={botChat.content}
+                                    />
+                                </React.Fragment>)
                         }
                     </Box>
                     <PromptInput
@@ -97,6 +99,7 @@ const BotChatPage = () => {
                                     avatar:'',
                                     content: text
                                 }]);
+                            window.scrollTo(0, document.body.scrollHeight);
                         }} />
                     <TableCreateDialog
                         open={tableCreateOpen}

@@ -7,10 +7,12 @@ type BasicInputProps = {
     placeholder: string;
     name: string;
     required?: boolean;
-    value?: any;
 
     // 可选的onChange参数，传入内部TextField的onChange
     onChange?:  ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+
+    // 传入内部TextField的value
+    value?: any;
 };
 
 const BasicInput: React.FC<BasicInputProps> =
