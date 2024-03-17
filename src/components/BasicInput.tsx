@@ -7,6 +7,7 @@ type BasicInputProps = {
     placeholder: string;
     name: string;
     required?: boolean;
+    value?: any;
 
     // 可选的onChange参数，传入内部TextField的onChange
     onChange?:  ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -17,7 +18,8 @@ const BasicInput: React.FC<BasicInputProps> =
          placeholder,
          name,
          required = false ,
-         onChange
+         onChange,
+         value,
     }) => {
 
     return (
@@ -29,6 +31,7 @@ const BasicInput: React.FC<BasicInputProps> =
             style={{width: '100%'}}
             multiline
             maxRows={5}
+            value={value}
             onChange={onChange ?? (()=>{})}
         />
     );

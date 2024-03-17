@@ -125,10 +125,14 @@ export function PromptInput
                     onChange={(event)=> {
                         setMessage(event.target.value);
                     }}
+                    value={message}
                 />
             </div>
             <Fab
-                onClick={() => {onSend(message);}}
+                onClick={() => {
+                    onSend(message);
+                    setMessage('');
+                }}
                 variant="extended"
                 size="large"
                 style={{color: 'white'}}>
