@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useState, useRef } from 'react';
 import { Avatar, Grid, Typography, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+import { LanguageContext } from "../provider/LanguageProvider";
 import '../css/Profile.css';
 
 export default function UserCard() {
@@ -17,7 +19,6 @@ export default function UserCard() {
         setIsDescriptionFocused(false);
     };
     const [avatarSrc, setAvatarSrc] = useState('/assets/user-default.png');
-    const { t } = useTranslation();
 
     const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setDescription(event.target.value);
@@ -32,6 +33,13 @@ export default function UserCard() {
     const handleUsenameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUsename(event.target.value);
     };
+
+    const {t , i18n} = useTranslation();
+    const context = React.useContext(LanguageContext);
+
+    useEffect(() => {
+        i18n.changeLanguage(context?.language);
+    }, [context?.language, i18n]);
 
     return (
 
@@ -53,7 +61,7 @@ export default function UserCard() {
                 <Grid container spacing={2} className='user-box'>
                     <TextField
                         className='user-name'
-                        label="Username"
+                        label={t("Username")}
                         required
                         variant="standard"
                         value={usename}
