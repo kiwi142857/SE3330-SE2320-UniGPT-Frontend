@@ -81,7 +81,17 @@ const BotChatPage = () => {
                         }</Box>
                     <PromptInput
                         onAltTable={()=>{setTableCreateOpen(true);}}
-                        onSend={()=>{alert("send")}} />
+                        onSend={(text)=>{
+                            setBotChatList([
+                                ...botChatList,
+                                {
+                                    id: '',
+                                    name: '你',
+                                    historyId: selectedHistory,
+                                    avatar:'',
+                                    content: text
+                                }]);
+                        }} />
                     <TableCreateDialog
                         open={tableCreateOpen}
                         handleClose={()=>{setTableCreateOpen(false);}}

@@ -2,7 +2,7 @@ import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import ArticleIcon from "@mui/icons-material/Article";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import Fab from '@mui/material/Fab';
-import React from "react";
+import React, {useState} from "react";
 import { useTranslation } from "react-i18next";
 import "../css/BotChatPage.css";
 import "../css/BotDetailPage.css";
@@ -72,21 +72,21 @@ export function PromptListInput ({onPromptClick}:{onPromptClick:()=>void}) {
         <Grid container spacing={2}>
             <Grid item xs={1}/>
             <Grid item xs={2}>
-                <BasicInput 
-                    placeholder={t('Item Name')}  
+                <BasicInput
+                    placeholder={t('Item Name')}
                     name='itemName'
                 />
             </Grid>
             <Grid item xs={8}>
-                <BasicInput 
-                    placeholder={t('Prompt for this item' )}  
+                <BasicInput
+                    placeholder={t('Prompt for this item' )}
                     name='prompt'
                 />
             </Grid>
             <Grid item xs={5}/>
             <Grid item xs={2}>
-                <Button 
-                    variant="contained" 
+                <Button
+                    variant="contained"
                     onClick={onPromptClick}
                     sx={{backgroundColor: 'primary.light'}}
                 >
@@ -105,8 +105,9 @@ export function PromptInput
      onSend
 }: {
     onAltTable: ()=>void,
-    onSend: ()=>void}
+    onSend: (content: string)=>void}
 ){
+    const [message, setMessage] = useState('');
     return (
         <Box className="prompt-input-container">
             <Fab
@@ -118,10 +119,16 @@ export function PromptInput
                 <ArticleIcon fontSize='large'/>
             </Fab>
             <div style={{width: '604px', margin: '20px'}}>
-                <BasicInput placeholder="Enter your message here..." name="message"/>
+                <BasicInput
+                    placeholder="Enter your message here..."
+                    name="message"
+                    onChange={(event)=> {
+                        setMessage(event.target.value);
+                    }}
+                />
             </div>
             <Fab
-                onClick={onSend}
+                onClick={() => {onSend(message);}}
                 variant="extended"
                 size="large"
                 style={{color: 'white'}}>

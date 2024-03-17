@@ -1,5 +1,5 @@
 import { TextField } from "@mui/material";
-import React from "react";
+import React, {ChangeEventHandler} from "react";
 import "../css/BasicInput.css";
 
 // 基本输入框，通用
@@ -7,9 +7,19 @@ type BasicInputProps = {
     placeholder: string;
     name: string;
     required?: boolean;
+
+    // 可选的onChange参数，传入内部TextField的onChange
+    onChange?:  ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 };
 
-const BasicInput: React.FC<BasicInputProps> = ({placeholder, name, required = false}) => {
+const BasicInput: React.FC<BasicInputProps> =
+    ({
+         placeholder,
+         name,
+         required = false ,
+         onChange
+    }) => {
+
     return (
         <TextField
             required={required}
@@ -19,6 +29,7 @@ const BasicInput: React.FC<BasicInputProps> = ({placeholder, name, required = fa
             style={{width: '100%'}}
             multiline
             maxRows={5}
+            onChange={onChange ?? (()=>{})}
         />
     );
 };
@@ -41,8 +52,8 @@ export default BasicInput;
 //         name: { value: string };
 //         email: { value: string };
 //     };
-//     const name = target.name.value; 
-//     const email = target.email.value; 
+//     const name = target.name.value;
+//     const email = target.email.value;
 
 //     console.log(name, email);
 // };
