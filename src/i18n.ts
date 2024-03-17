@@ -25,6 +25,7 @@ const resources = {
       "Your description for your assistant": "Your description for your assistant",
       "Define your own prompt list": "Define your own prompt list",
       "Publish to market": "Publish to market",
+      "Cancel": "Cancel",
       "Submit": "Submit",
       "add image": "add image",
       "Photos": "Photos",
@@ -33,8 +34,10 @@ const resources = {
       "Item Name": "Item Name",
       "Prompt for this item": "Prompt for this item",
       "add prompt": "add prompt",
+      "Enter your comment here...": "Enter your comment here...",
       "Enter your message here...": "Enter your message here...",
       "Use": "Use",
+      "Modify": "Modify",
     }
   },
   zh: {
@@ -60,6 +63,7 @@ const resources = {
       "Your description for your assistant": "简要介绍你的机器人",
       "Define your own prompt list": "定义机器人的提示列表",
       "Publish to market": "发布到市场",
+      "Cancel": "取消",
       "Submit": "提交",
       "add image": "添加图片",
       "Photos": "详情图片",
@@ -68,8 +72,10 @@ const resources = {
       "Item Name": "项目名称",
       "Prompt for this item": "项目对应的提示",
       "add prompt": "添加提示",
-      "Enter your message here...": "在这里输入你的评论...",
+      "Enter your message here...": "发送消息...",
+      "Enter your comment here...": "在这里输入你的评论...",
       "Use": "去使用",
+      "Modify": "修改",
     }
   }
 };
