@@ -18,6 +18,7 @@ const resources = {
       "Created": "Created",
       "Latest": "Latest",
       "Hottest": "Hottest",
+      
       "Change photo for your assistant": "Change photo for your assistant",
       "Assistant Name" : "Assistant Name",
       "Your assistant name": "Your assistant name",
@@ -35,6 +36,7 @@ const resources = {
       "Item Name": "Item Name",
       "Prompt for this item": "Prompt for this item",
       "add prompt": "add prompt",
+
       "Enter your comment here...": "Enter your comment here...",
       "Enter your message here...": "Enter your message here...",
       "Use": "Use",
@@ -71,6 +73,7 @@ const resources = {
       "Created": "已创建",
       "Latest": "最新",
       "Hottest": "最热",
+
       "Change photo for your assistant": "为你的机器人更换头像",
       "Assistant Name" : "机器人名称",
       "Your assistant name": "为你的机器人取名",
@@ -88,6 +91,7 @@ const resources = {
       "Item Name": "项目名称",
       "Prompt for this item": "项目对应的提示",
       "add prompt": "添加提示",
+
       "Enter your message here...": "发送消息...",
       "Enter your comment here...": "在这里输入你的评论...",
       "Use": "去使用",
