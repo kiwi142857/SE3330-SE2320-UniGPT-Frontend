@@ -1,9 +1,10 @@
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import ArticleIcon from "@mui/icons-material/Article";
 import RemoveIcon from '@mui/icons-material/Remove';
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, FormControl, Grid, MenuItem, Select, Typography } from "@mui/material";
 import Fab from '@mui/material/Fab';
 import IconButton from '@mui/material/IconButton';
+import { SelectChangeEvent } from '@mui/material/Select';
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "../css/BotChatPage.css";
@@ -77,6 +78,48 @@ export function EditInput({ title, placeholder, name }: { title: string; placeho
                     name={name}
                     required
                 />
+            </Grid>
+        </Grid>
+    );
+}
+
+// botEdit页的项目输入框
+export function EditSelect ({title, name}:{title:string; name:string}) {
+    const [value, setValue] = React.useState('');
+
+    const handleChange = (event: SelectChangeEvent) => {
+        setValue(event.target.value as string);
+    };
+
+    return (
+        <Grid container>
+            <Grid item xs={2}>
+                    <Typography
+                        className='edit-label'
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}
+                        sx={{color: 'primary.main'}}
+                    >
+                        <p>{title}</p>
+                    </Typography>
+            </Grid>
+            <Grid item xs={2}>
+                <FormControl fullWidth>
+                    <Select
+                        value={value}
+                        name={name}
+                        onChange={handleChange}
+                        style={{borderRadius: '20px'}}
+                        required
+                    >
+                        <MenuItem value={'GPT-4'}>GPT-4</MenuItem>
+                        <MenuItem value={'chatGLM'}>chatGLM</MenuItem>
+                        <MenuItem value={'llama'}>llama</MenuItem>
+                        <MenuItem value={'kimiAI'}>kimiAI</MenuItem>
+                    </Select>
+                </FormControl>
             </Grid>
         </Grid>
     );
