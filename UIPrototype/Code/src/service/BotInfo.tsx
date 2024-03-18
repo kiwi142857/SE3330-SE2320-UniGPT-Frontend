@@ -25,21 +25,21 @@ export default function GetBotInfo(id: string) {
         id: '2',
         name: 'bot2',
         author: 'user2',
-        avator: '/assets/bot-default.png',
+        avator: '/assets/bot2.png',
         description: 'Write your description here...',
     };
     let BotInfo3: BotInfo = {
         id: '3',
         name: 'bot3',
         author: 'user3',
-        avator: '/assets/bot-default.png',
+        avator: '/assets/bot3.png',
         description: 'Write your description here...',
     };
     let BotInfo4: BotInfo = {
         id: '4',
         name: 'bot4',
         author: 'user4',
-        avator: '/assets/bot-default.png',
+        avator: '/assets/bot4.png',
         description: 'Write your description here...',
     };
     let BotInfo5: BotInfo =
@@ -47,7 +47,7 @@ export default function GetBotInfo(id: string) {
         id: '5',
         name: 'bot5',
         author: 'user5',
-        avator: '/assets/bot-default.png',
+        avator: '/assets/bot5.png',
         description: 'Write your description here...Write your description here...Write your description here...Write your description here...Write your description here...Write your description here...Write your description here...',
     };
     let BotInfo6: BotInfo =
@@ -55,7 +55,7 @@ export default function GetBotInfo(id: string) {
         id: '6',
         name: 'bot6',
         author: 'user6',
-        avator: '/assets/bot-default.png',
+        avator: '/assets/bot6.png',
         description: 'Write your description here...',
     };
 
