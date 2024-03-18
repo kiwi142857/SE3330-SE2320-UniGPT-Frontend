@@ -42,14 +42,14 @@ const botChatList: BotChat[] = [
         id: '1',
         historyId: 1,
         name: '你',
-        avatar:'',
+        avatar:'/assets/user-default.png',
         content: '如何用Python实现冒泡排序',
     },
     {
         id: '2',
         historyId: 1,
-        name: 'ChatGPT',
-        avatar: '',
+        name: 'Programming Debug Assistant',
+        avatar: '/assets/bot-default.png',
         content: '以下是使用Python实现冒泡排序的示例代码：\n' +
             '\n' +
             '```python\n' +
@@ -72,17 +72,31 @@ const botChatList: BotChat[] = [
             '这段代码首先定义了一个名为 `bubble_sort` 的函数，接受一个数组作为参数。在该函数中，通过嵌套的循环遍历数组元素，并比较相邻元素的大小，如果顺序不对，则交换它们的位置。外层循环控制排序的轮数，内层循环负责比较和交换元素。'
     },
     {
+        id: '10',
+        historyId: 1,
+        name: '你',
+        avatar:'/assets/user-default.png',
+        content: '谢谢！',
+    },
+    {
+        id: '11',
+        historyId: 1,
+        name: 'Programming Debug Assistant',
+        avatar: '/assets/bot-default.png',
+        content: '不客气，这里是Programming Debug Assistant，欢迎您下次使用~',
+    },
+    {
         id: '3',
         historyId: 2,
         name: '你',
-        avatar:'',
+        avatar:'/assets/user-default.png',
         content: '你能为一款含有可乐和石榴糖浆的无酒精鸡尾酒（mocktail）想出一些名字吗？',
     },
     {
         id: '4',
         historyId: 2,
-        name: 'ChatGPT',
-        avatar: '',
+        name: 'Design Assistant',
+        avatar: '/assets/bot-default.png',
         content: '当然可以！这里有一些含有可乐和石榴糖浆的无酒精鸡尾酒的可能名字：\n' +
             '\n' +
             '1. 石榴泡泡（Pomegranate Fizz）\n' +
@@ -102,14 +116,14 @@ const botChatList: BotChat[] = [
         id: '5',
         historyId: 3,
         name:'你',
-        avatar: '',
+        avatar:'/assets/user-default.png',
         content: '为我关于城市设计的新播客构思5个节目主题。',
     },
     {
         id: '6',
         historyId: 3,
-        name:'ChatGPT',
-        avatar: '',
+        name:'Design Assistant',
+        avatar: '/assets/bot-default.png',
         content: '当涉及城市设计时，有很多激动人心的话题可以探讨。以下是五个可以作为新播客节目主题的构思：\n' +
             '\n' +
             '1. **未来之城：**\n' +
@@ -133,14 +147,14 @@ const botChatList: BotChat[] = [
         id: '7',
         historyId: 4,
         name:'你',
-        avatar: '',
+        avatar: '/assets/user-default.png',
         content: '如果我熟悉买卖股票，那么请用简单的术语解释期权交易。',
     },
     {
         id: '8',
         historyId: 4,
-        name:'ChatGPT',
-        avatar: '',
+        name:'Finance Assistant',
+        avatar: '/assets/bot-default.png',
         content: '期权交易是一种金融衍生品交易，允许买方在未来某个特定时间内，以事先约定的价格购买或出售某个资产（通常是股票）的权利，而不是必须在该时间购买或出售。期权交易中的买方支付给卖方一笔费用（称为期权费），以获得这种权利。买方在购买期权时，称为持有期权。而卖方则在出售期权时，承诺在期权到期时按约定的价格出售或购买资产。期权交易可以用来对冲投资组合的风险、进行投机，或者作为一种策略来获利。',
     },
 ];

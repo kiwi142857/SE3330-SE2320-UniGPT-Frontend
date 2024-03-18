@@ -34,13 +34,14 @@ const BotBriefCard = () => {
                     </Button>
                 </div>
                 <div className="drawer-item-title">
-                    name
+                    {t('Programming Debug Assistant')}
                 </div>
                 <div
                     className="drawer-item-content"
                     style={{color: theme.palette.primary.light}}
                 >
-                    description
+                    {t('The robot can help you debug your code. It can help you find the bug in your ...')}
+                   
                 </div>
             </div>
         </ListItem>
