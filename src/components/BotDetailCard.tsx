@@ -33,7 +33,7 @@ const BotDetailCard = ({id, name, author, avatar, description, like, collect}
             <div className='detail-card-right'>
                 <Typography sx={{color: 'primary.main'}}>
                     <p className='detail-card-name'>
-                        {name}
+                        {t(name)}
                     </p>
                 </Typography>
                 <Typography sx={{color: 'primary.light'}}>
@@ -43,7 +43,7 @@ const BotDetailCard = ({id, name, author, avatar, description, like, collect}
                 </Typography>
                 <Typography sx={{color: 'primary.light'}}>
                     <p className='detail-card-description'>
-                        {description}
+                        {t(description)}
                     </p>
                 </Typography>
                 <div className='detail-card-btn-group'>
