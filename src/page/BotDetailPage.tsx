@@ -90,7 +90,7 @@ const BotDetailPage: React.FC = () => {
                     setComments([
                         {
                             id: '123',
-                            name: 'userTest',
+                            name: 'AAA 互联网应用 bug 维修',
                             avatar: '/assets/user-default.png',
                             content: content
                         },

@@ -13,10 +13,10 @@ import { LanguageContext } from "../provider/LanguageProvider";
 import BasicInput from './BasicInput';
 
 // botDetail页的评论输入框
-export function CommentInput ({onSend}:{onSend: (content: string)=>void}) {
+export function CommentInput({ onSend }: { onSend: (content: string) => void }) {
     const context = React.useContext(LanguageContext);
     const { t, i18n } = useTranslation();
-    
+
     useEffect(() => {
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
@@ -24,52 +24,52 @@ export function CommentInput ({onSend}:{onSend: (content: string)=>void}) {
     const [message, setMessage] = useState('');
 
     return (
-            <Grid container className='comment-input-container'>
-                <Grid xs={11}>
-                    <BasicInput
-                        placeholder={t('Enter your comment here...')}
-                        name='prompt'
-                        onChange={(event)=> {
-                            setMessage(event.target.value);
-                        }}
-                        value={message}
-                    />
-                </Grid>
-                <Grid xs={1}>
-                    <Fab
-                        variant="extended"
-                        size="large"
-                        sx={{color:'secondary.main'}}
-                        onClick={() => {
-                                onSend(message);
-                                setMessage('');
-                            }}
-                    >
-                        <ArrowCircleUpIcon
-                            fontSize='large'
-                            style={{ color:'white' }}
-                        />
-                    </Fab>
-                </Grid>
+        <Grid container className='comment-input-container'>
+            <Grid xs={11}>
+                <BasicInput
+                    placeholder={t('Enter your comment here...')}
+                    name='prompt'
+                    onChange={(event) => {
+                        setMessage(event.target.value);
+                    }}
+                    value={message}
+                />
             </Grid>
+            <Grid xs={1}>
+                <Fab
+                    variant="extended"
+                    size="large"
+                    sx={{ color: 'secondary.main' }}
+                    onClick={() => {
+                        onSend(message);
+                        setMessage('');
+                    }}
+                >
+                    <ArrowCircleUpIcon
+                        fontSize='large'
+                        style={{ color: 'white' }}
+                    />
+                </Fab>
+            </Grid>
+        </Grid>
     );
 };
 
 // botEdit页的项目输入框
-export function EditInput ({title, placeholder, name}:{title:string; placeholder:string; name:string}) {
+export function EditInput({ title, placeholder, name }: { title: string; placeholder: string; name: string }) {
     return (
         <Grid container>
             <Grid item xs={2}>
-                    <Typography
-                        className='edit-label'
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                        }}
-                        sx={{color: 'primary.main'}}
-                    >
-                        <p>{title}</p>
-                    </Typography>
+                <Typography
+                    className='edit-label'
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                    }}
+                    sx={{ color: 'primary.main' }}
+                >
+                    <p>{title}</p>
+                </Typography>
             </Grid>
             <Grid item xs={10}>
                 <BasicInput
@@ -83,35 +83,35 @@ export function EditInput ({title, placeholder, name}:{title:string; placeholder
 }
 
 // botEdit页的promptList中的单条prompt（可修改，删除）
-export function OnePromptInput 
-({
-    item, 
-    index,
-    onItemNameChange, 
-    onPromptChange,
-    handleDelete
-}: {
-    item: {itemName: string, prompt: string}, 
-    index: number, 
-    onItemNameChange: (event: React.ChangeEvent<HTMLInputElement>)=>void, 
-    onPromptChange: (event: React.ChangeEvent<HTMLInputElement>)=>void,
-    handleDelete: (index: number)=>void
-}){
+export function OnePromptInput
+    ({
+        item,
+        index,
+        onItemNameChange,
+        onPromptChange,
+        handleDelete
+    }: {
+        item: { itemName: string, prompt: string },
+        index: number,
+        onItemNameChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
+        onPromptChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
+        handleDelete: (index: number) => void
+    }) {
     const context = React.useContext(LanguageContext);
     const { t, i18n } = useTranslation();
-    
+
     useEffect(() => {
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
 
     return (
         <Grid container spacing={2}>
-            <Grid item xs={1}/>
+            <Grid item xs={1} />
             <Grid item xs={1}>
                 <div className='oneprompt-element'>
                     <IconButton
-                        sx={{backgroundColor: 'secondary.main'}}
-                        onClick={()=>handleDelete(index)}
+                        sx={{ backgroundColor: 'secondary.main' }}
+                        onClick={() => handleDelete(index)}
                     >
                         <RemoveIcon />
                     </IconButton>
@@ -131,7 +131,7 @@ export function OnePromptInput
             <Grid item xs={7}>
                 <div className='oneprompt-element'>
                     <BasicInput
-                        placeholder={t('Prompt for this item' )}
+                        placeholder={t('Prompt for this item')}
                         name='onePrompt'
                         value={item.prompt}
                         onChange={onPromptChange}
@@ -146,30 +146,31 @@ export function OnePromptInput
 
 // BotChat页的终端输入框
 export function PromptInput
-({
-     onAltTable,
-     onSend
-}: {
-    onAltTable: ()=>void,
-    onSend: (content: string)=>void}
-){
+    ({
+        onAltTable,
+        onSend
+    }: {
+        onAltTable: () => void,
+        onSend: (content: string) => void
+    }
+    ) {
     const [message, setMessage] = useState('');
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     return (
         <Box className="prompt-input-container">
             <Fab
                 onClick={onAltTable}
                 variant="extended"
                 size="large"
-                style={{color: 'white'}}
+                style={{ color: 'white' }}
             >
-                <ArticleIcon fontSize='large'/>
+                <ArticleIcon fontSize='large' />
             </Fab>
-            <div style={{width: '604px', margin: '20px'}}>
+            <div style={{ width: '604px', margin: '20px' }}>
                 <BasicInput
                     placeholder={t('Enter your message here...')}
                     name="message"
-                    onChange={(event)=> {
+                    onChange={(event) => {
                         setMessage(event.target.value);
                     }}
                     value={message}
@@ -183,21 +184,22 @@ export function PromptInput
                 }}
                 variant="extended"
                 size="large"
-                style={{color: 'white'}}>
-                <ArrowCircleUpIcon fontSize='large'/>
+                style={{ color: 'white' }}>
+                <ArrowCircleUpIcon fontSize='large' />
             </Fab>
         </Box>
     );
 }
 
 export function TableCreateInput({
-         title,
-         placeholder,
-         name
-    }:{
-        title: string,
-        placeholder: string,
-        name:string}) {
+    title,
+    placeholder,
+    name
+}: {
+    title: string,
+    placeholder: string,
+    name: string
+}) {
     return (
         <Box
             style={{
@@ -209,14 +211,15 @@ export function TableCreateInput({
                 className='table-create-edit-label'
                 style={{
                     display: 'flex',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    width: '140px'
                 }}
-                sx={{color: 'primary.main'}}
+                sx={{ color: 'primary.main' }}
             >
                 {title}
             </Typography>
-            <div style={{width: '604px', margin: '20px'}}>
-                <BasicInput placeholder={placeholder} name={name}/>
+            <div style={{ width: '604px', margin: '20px' }}>
+                <BasicInput placeholder={placeholder} name={name} />
             </div>
         </Box>);
 }

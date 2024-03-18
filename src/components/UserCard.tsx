@@ -8,7 +8,7 @@ import '../css/Profile.css';
 
 export default function UserCard() {
     const [description, setDescription] = useState('');
-    const [usename, setUsename] = useState('user');
+    const [usename, setUsename] = useState('AAA 互联网应用 bug 维修');
     const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
     const [isUsernameFocused, setIsUsernameFocused] = useState(false);
 
@@ -87,7 +87,7 @@ export default function UserCard() {
                             style: {
                                 border: 'none',
                             },
-                            disableUnderline: isUsernameFocused? false : true
+                            disableUnderline: isUsernameFocused ? false : true
                         }}
                     />
                 </Grid>

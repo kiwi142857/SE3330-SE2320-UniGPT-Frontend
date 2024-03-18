@@ -7,7 +7,7 @@ export async function getBotDetail(id: string) {
         author: 'UniGPT official',
         avatar: '/assets/bot-default.png',
         description: "The robot can help you debug your code. It can help you find the bug in your code and give you some suggestions.",
-        detail: '还在为代码bug重重而烦恼吗？还在与AI反复拉扯？代码debug小助手【Programming Debug Assistant】助你快速debug。只需要在表单内粘贴入你的报错代码、报错信息（非必填），填写代码本应当发挥的作用（非必填）、你的debug猜想（非必填）、debug要求（非必填），一键提交，AI会帮你快速定位问题所在，给出解决方案。除了填写表单之外也可以和AI自由交流。祝各位day day bug-free！',
+        detail: '还在为代码 bug 重重而烦恼吗？还在与 AI 反复拉扯？代码 debug 小助手 Programming Debug Assistant 助你快速 debug。只需要在表单内粘贴入你的报错代码、报错信息（非必填），填写代码本应当发挥的作用（非必填）、你的 debug 猜想（非必填）、debug 要求（非必填），一键提交，AI 会帮你快速定位问题所在，给出解决方案。除了填写表单之外也可以和AI自由交流。祝各位day day bug-free！',
         photos: ['/assets/bot-detail-1.png', '/assets/bot-detail-2.png', '/assets/bot-detail-3.png', '/assets/bot-detail-4.png'],
         like: 100,
         collect: 100
@@ -46,7 +46,7 @@ export async function getBotComments(id: string) {
                 avatar: '/assets/user-3.png',
                 content: '好好好，和直接问助教一样及时',
             },
-            
+
             {
                 id: '4',
                 name: '楼上是我大哥',

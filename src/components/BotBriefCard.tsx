@@ -1,14 +1,14 @@
 import React from "react";
-import {Button, ListItem} from "@mui/material";
+import { Button, ListItem } from "@mui/material";
 import theme from "./theme";
 import '../css/BotChatPage.css'
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 const BotBriefCard = () => {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     return (
         <ListItem
             className="drawer-item"
-            style={{backgroundColor: theme.palette.secondary.main}}
+            style={{ backgroundColor: theme.palette.secondary.main }}
         >
             <div className="drawer-item-container">
                 <div style={{
@@ -33,15 +33,15 @@ const BotBriefCard = () => {
                         {t('Modify')}
                     </Button>
                 </div>
-                <div className="drawer-item-title">
+                <div className="drawer-item-title" style={{ marginTop: 10 }}>
                     {t('Programming Debug Assistant')}
                 </div>
                 <div
                     className="drawer-item-content"
-                    style={{color: theme.palette.primary.light}}
+                    style={{ color: theme.palette.primary.light }}
                 >
                     {t('The robot can help you debug your code. It can help you find the bug in your ...')}
-                   
+
                 </div>
             </div>
         </ListItem>

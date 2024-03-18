@@ -3,19 +3,20 @@ import {
     Toolbar, Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import OneChat from "../components/OneChat";
 
 import '../css/App.css'
 import '../css/BotChatPage.css'
-import {PromptInput} from "../components/Inputs";
+import { PromptInput } from "../components/Inputs";
 import Navigator from "../components/Navigator";
 import ChatHistoryList from "../components/ChatHistoryList";
 import BotBriefCard from "../components/BotBriefCard";
 import TableCreateDialog from "../components/TableCreateDialog";
-import {BotChat, BotChatHistory, getBotChatHistoryList, getBotChatList} from "../service/BotChat";
-import {useTranslation} from "react-i18next";
+import { BotChat, BotChatHistory, getBotChatHistoryList, getBotChatList } from "../service/BotChat";
+import { useTranslation } from "react-i18next";
 import theme from "../components/theme";
+import { WidthFull } from "@mui/icons-material";
 
 // bot聊天页
 // 侧边栏宽度
@@ -26,7 +27,7 @@ const BotChatPage = () => {
     const [botChatHistoryList, setBotChatHistoryList] = useState<BotChatHistory[]>([]);
     const [botChatList, setBotChatList] = useState<BotChat[]>([]);
 
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const getChatHistoryList = async () => {
         const list = await getBotChatHistoryList();
         setBotChatHistoryList(list);
@@ -42,9 +43,9 @@ const BotChatPage = () => {
             <Navigator />
             <div
                 style={{
-                    display: 'flex' ,
+                    display: 'flex',
                     flexDirection: 'row',
-            }}>
+                }}>
                 <Drawer
                     variant="permanent"
                     sx={{
@@ -53,13 +54,13 @@ const BotChatPage = () => {
                     }}
                 >
                     <Toolbar
-                        style={{height: 100,}}
+                        style={{ height: 100, }}
                     />
                     <BotBriefCard />
                     <ChatHistoryList
-                        botChatHistoryList={ botChatHistoryList }
-                        selectedId={ selectedHistory }
-                        onItemClicked={async (id)=>{
+                        botChatHistoryList={botChatHistoryList}
+                        selectedId={selectedHistory}
+                        onItemClicked={async (id) => {
                             setSelectedHistory(id);
                             const list = await getBotChatList(id);
                             setBotChatList(list);
@@ -73,7 +74,7 @@ const BotChatPage = () => {
                     display="flex"
                     width="100%"
                 >
-                    { botChatList.length ? (
+                    {botChatList.length ? (
                         <Box sx={{
                             width: '90%',
                             height: '100%',
@@ -90,7 +91,7 @@ const BotChatPage = () => {
                                         content={botChat.content}
                                     />
                                 </React.Fragment>))}
-                        </Box> ):(
+                        </Box>) : (
                         <div className="chat-hint-container">
                             <div
                                 className="chat-hint-text"
@@ -99,7 +100,7 @@ const BotChatPage = () => {
                                 {t('Fill the table template and start messaging with your own assistant!')}
                             </div>
                         </div>
-                        )
+                    )
                     }
                     <PromptInput
                         onAltTable={() => {
@@ -116,7 +117,7 @@ const BotChatPage = () => {
                                     content: text
                                 }]);
                             window.scrollTo(0, document.body.scrollHeight);
-                        }}/>
+                        }} />
                     <TableCreateDialog
                         open={tableCreateOpen}
                         handleClose={() => {
@@ -124,7 +125,7 @@ const BotChatPage = () => {
                         }}
                         handleSubmit={() => {
                             alert("submit finished");
-                        }}/>
+                        }} />
                 </Box>
             </div>
         </>
