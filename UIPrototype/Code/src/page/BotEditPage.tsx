@@ -1,12 +1,16 @@
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import { Button, Divider, Grid } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { Button, Divider, Grid } from "@mui/material";
+import Avatar from '@mui/material/Avatar';
+import Checkbox from '@mui/material/Checkbox';
+import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import React, { ChangeEvent, useState } from 'react';
-import BasicInput from '../components/BasicInput';
-import { EditInput } from '../components/Inputs';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { EditInput, OnePromptInput } from '../components/Inputs';
 import Navigator from '../components/Navigator';
 import '../css/App.css';
 import '../css/BotEditPage.css';
+import { LanguageContext } from "../provider/LanguageProvider";
 
 // bot创建/修改页
 
@@ -21,9 +25,18 @@ interface item {
 }
 
 const BotEditPage: React.FC = () => {
+    const context = React.useContext(LanguageContext);
+    const { t, i18n } = useTranslation();
+    
+    useEffect(() => {
+        i18n.changeLanguage(context?.language);
+    }, [context?.language, i18n]);
+
     const [avatarImg, setAvatarImg] = useState<string>('/assets/bot-default.png');
     const [photoImgs, setPhotoImgs] = useState<image[]>([]);
-    const [items, setItems] = useState<item[]>([]);
+    const [items, setItems] = useState<item[]>([{itemName: '', prompt: ''}]);
+    const [promptCheck, setPromptCheck] = useState<boolean>(false);
+    const [publishCheck, setPublishCheck] = useState<boolean>(false);
 
     const onAvatarUpload = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -47,16 +60,23 @@ const BotEditPage: React.FC = () => {
         
             reader.readAsDataURL(file);
         }
-        
     };
 
-    const onPromptClick = () => {
-        const itemName = document.querySelector<HTMLInputElement>('[name="itemName"]')?.value;
-        const prompt = document.querySelector<HTMLInputElement>('[name="prompt"]')?.value;
-        if (!itemName || !prompt) {
-            return;
+    const onPromptCheck = (event: ChangeEvent<HTMLInputElement>) => {
+        setPromptCheck(event.target.checked);
+        if (!event.target.checked) {
+            setItems([]);
+        } else {
+            setItems([{itemName: '', prompt: ''}]);
         }
-        setItems(prevItems => [...prevItems, { itemName, prompt }]);
+    }
+
+    const onItemNameChange = (index: number, newValue: string) => {
+        setItems(items.map((item, i) => i === index ? {...item, itemName: newValue} : item));
+    };
+    
+    const onPromptChange = (index: number, newValue: string) => {
+        setItems(items.map((item, i) => i === index ? {...item, prompt: newValue} : item));
     };
 
     const fileInputRef = React.useRef<HTMLInputElement>(null);
@@ -69,14 +89,29 @@ const BotEditPage: React.FC = () => {
 
     const onSubmit = (event: React.FormEvent) => {
         event.preventDefault();
+
         const target = event.target as typeof event.target & {
             name: { value: string };
             description: { value: string };
         };
+
         const name = target.name.value; 
         const description = target.description.value; 
 
-        console.log(`name:${name}, description:${description}, avatar:${avatarImg}, photos:${photoImgs}`);
+        if (promptCheck && items.length === 0) {
+            alert('Please add at least one item when prompt check is enabled.');
+            return;
+        }
+
+        console.log(`name:${name}, description:${description}`);
+
+        items.forEach((item, index) => {
+            console.log(`item${index}: ${item.itemName}, prompt${index}: ${item.prompt}`);
+        });
+
+        setTimeout(() => {
+            window.location.href = '/botchat';
+        }, 1000);
     };
 
     return [
@@ -86,34 +121,34 @@ const BotEditPage: React.FC = () => {
 
                  {/* 第一层，基本信息 */}
                 <div className='edit-basic-container'>
-                    <input 
-                        type="file" 
-                        accept="image/*" 
-                        onChange={onAvatarUpload} 
-                        style={{display: 'none'}} 
-                        id="imageUpload" 
-                    />
-                    <label htmlFor="imageUpload">
-                        <div style={{ position: 'relative' }}>
-                            <img 
-                                src={avatarImg} 
-                                alt="Selected" 
-                                className='edit-avatar'
-                            />
-                            <Typography className='edit-avatar-text'>
-                                Change photo for your assistant
+                    <div style={{ position: 'relative' }}>
+                        <Avatar 
+                            alt="bot-default" 
+                            src={avatarImg} 
+                            sx={{ width: 200, height: 200, borderRadius: 0 }} 
+                        />
+                        <input 
+                            type="file" 
+                            accept="image/*" 
+                            onChange={onAvatarUpload} 
+                            style={{display: 'none'}} 
+                            id="imageUpload" 
+                        />
+                        <label htmlFor="avatar-input">
+                            <Typography className='avatar-overlay'>
+                                {t("Change photo for your assistant")}
                             </Typography>
-                        </div>
-                    </label>
+                        </label>
+                    </div>
                     <div className='edit-basic-right'>
                         <EditInput 
-                            title='Assistant Name' 
-                            placeholder='Your assistant name'  
+                            title= {t('Assistant Name')}
+                            placeholder={t("Your assistant name")}
                             name='name' 
                         />
                         <EditInput 
-                            title='Description' 
-                            placeholder='Your description for your assistant'  
+                            title={t('Description')}
+                            placeholder={t('Your description for your assistant')} 
                             name='description' 
                         />
                     </div>
@@ -124,118 +159,109 @@ const BotEditPage: React.FC = () => {
                 {/* 第二层，自定义prompt */}
                 <div className='edit-prompts-container'>
                     <div className='edit-title-container'>
-                        <CheckCircleOutlineIcon sx={{ fontSize: 60 }} />
+                        <Checkbox
+                            checked={promptCheck}
+                            onChange={onPromptCheck}
+                        />
                         <Typography 
                             className='edit-label' 
                             style={{ display: 'flex', alignItems: 'center' }}
                             sx={{color: 'primary.main'}}
                         >
-                            Define your own prompt list
+                            {t('Define your own prompt list')}
                         </Typography>
                     </div>
-                    {items.map((item, index) => (
-                        <Grid container spacing={2} key={index}>
-                            <Grid item xs={1.1}/>
-                            <Grid item xs={2}>
-                                <Typography 
-                                    className='edit-prompt-label'
-                                    sx={{color: 'primary.light'}}
-                                >
-                                    {item.itemName}
-                                </Typography>
+                    {promptCheck && (
+                        <div className='prompts-list-container'>
+                            {items.map((item, index) => (
+                                <OnePromptInput 
+                                    key={index}
+                                    index={index} 
+                                    item={item} 
+                                    onItemNameChange={(event) => onItemNameChange(index, event.target.value)} 
+                                    onPromptChange={(event) => onPromptChange(index, event.target.value)}
+                                    handleDelete={() => setItems(items.filter((_, i) => i !== index))}
+                                />
+                            ))}
+                            <Grid container spacing={2}>
+                                <Grid item xs={1}/>
+                                <Grid item xs={1}>
+                                    <IconButton
+                                        sx={{backgroundColor: 'secondary.main'}}
+                                        onClick={() => setItems([...items, {itemName: '', prompt: ''}])}
+                                    >
+                                        <AddIcon />
+                                    </IconButton>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={8}>
-                                <Typography 
-                                    className='edit-prompt'
-                                    sx={{color: 'primary.light'}}
-                                >
-                                    {item.prompt}
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    ))}
-                    <Grid container spacing={2}>
-                        <Grid item xs={1}/>
-                        <Grid item xs={2}>
-                            <BasicInput 
-                                placeholder='Item name'  
-                                name='itemName'
-                            />
-                        </Grid>
-                        <Grid item xs={8}>
-                            <BasicInput 
-                                placeholder='Prompt for this item'  
-                                name='prompt'
-                            />
-                        </Grid>
-                    </Grid>
+                        </div>
+                    )}
                 </div>
-
-                <Button 
-                        variant="contained" 
-                        sx={{backgroundColor: 'primary.light'}}
-                        onClick={onPromptClick}
-                    >
-                        Add Prompt
-                </Button>
 
                 <Divider style={{marginTop:'20px'}}/>
 
                 {/* 第三层，发布market的信息 */}
                 <div className='edit-publish-container'>
                     <div className='edit-title-container'>
-                        <CheckCircleOutlineIcon sx={{ fontSize: 60 }} />
+                        <Checkbox
+                            checked={publishCheck}
+                            onChange={(event) => setPublishCheck(event.target.checked)}
+                        />
                         <Typography 
                             className='edit-label' 
                             style={{ display: 'flex', alignItems: 'center' }}
                             sx={{color: 'primary.main'}}
                         >
-                            Publish to market
+                            {t('Publish to market')}
                         </Typography>
                     </div>
                     
-                    <EditInput 
-                        title='Detailed Description' 
-                        placeholder='Your description for your assistant'  
-                        name='detail' 
-                    />
-                    <div>
-                        <input 
-                            type="file" 
-                            ref={fileInputRef} 
-                            style={{ display: 'none' }} 
-                            onChange={onPhotoUpload} 
-                        />
-                        <Grid container>
-                            <Grid item xs={2}>
-                                <Typography 
-                                    className='edit-label' 
-                                    style={{ display: 'flex', alignItems: 'center' }}
-                                    sx={{color: 'primary.main'}}
-                                >
-                                    Photos
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={4}>
-                                {photoImgs.map((image, index) => (
-                                    <div key={index} className='edit-photo-container'>
-                                        <img src={image.src} alt={image.name} style={{width: '30px'}} />
-                                        <Typography sx={{color:'primary.light'}}>
-                                            {image.name}
+                    {publishCheck && (
+                        <div>
+                            <EditInput 
+                                title={t('Detailed Description')}
+                                placeholder={t('Your detail description for your assistant')} 
+                                name='detail' 
+                            />
+                            <div>
+                                <input 
+                                    type="file" 
+                                    ref={fileInputRef} 
+                                    style={{ display: 'none' }} 
+                                    onChange={onPhotoUpload} 
+                                />
+                                <Grid container>
+                                    <Grid item xs={2}>
+                                        <Typography 
+                                            className='edit-label' 
+                                            style={{ display: 'flex', alignItems: 'center' }}
+                                            sx={{color: 'primary.main'}}
+                                        >
+                                            {t('Photos')}
                                         </Typography>
-                                    </div>
-                                ))}
-                                <br/>
-                                <Button 
-                                    variant="contained" 
-                                    onClick={onPhotoClick}
-                                    sx={{backgroundColor: 'primary.light'}}
-                                >
-                                    ADD Image
-                                </Button>
-                            </Grid>
-                        </Grid>
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        {photoImgs.map((image, index) => (
+                                            <div key={index} className='edit-photo-container'>
+                                                <img src={image.src} alt={image.name} style={{width: '30px'}} />
+                                                <Typography sx={{color:'primary.light'}}>
+                                                    {image.name}
+                                                </Typography>
+                                            </div>
+                                        ))}
+                                        <br/>
+                                        <Button 
+                                            variant="contained" 
+                                            onClick={onPhotoClick}
+                                            sx={{backgroundColor: 'primary.light'}}
+                                        >
+                                            {t('add image')}
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </div>
                     </div>
+                    )}
                 </div>
 
                 <Button 
@@ -244,7 +270,7 @@ const BotEditPage: React.FC = () => {
                     variant="contained" 
                     sx={{backgroundColor: 'primary.main'}}
                 >
-                    Submit
+                    {t('Submit')}
                 </Button>
             </form>
         </div>

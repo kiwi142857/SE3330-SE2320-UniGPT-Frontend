@@ -1,5 +1,5 @@
-import { Comment } from '@mui/icons-material';
-import { List, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useParams } from 'react-router-dom';
@@ -38,13 +38,8 @@ interface Comment {
 const BotDetailPage: React.FC = () => {
     const [bot, setBot] = useState<BotDetail | null>(null);
     const [comments, setComments] = useState<Comment[] | null>(null);
-    const [newComment, setNewComment] = useState<string>('');
 
-    const handleCommentSubmit = () => {
-        console.log('submit comment:', newComment);
-    };
-
-    let { id } = useParams<{id: string}>();
+    let { id } = useParams<{ id: string }>();
 
     const getBot = async () => {
         if (id) {
@@ -65,43 +60,57 @@ const BotDetailPage: React.FC = () => {
         getComments();
     }, [id]);
 
-        return [
-            <Navigator/>,
-            <div className="main-container bot-detail-container">
+    return [
+        <Navigator />,
+        <div className="main-container bot-detail-container">
 
-                <BotDetailCard
-                    id={bot?.id || ''}
-                    name={bot?.name || ''}
-                    author={bot?.author || ''}
-                    avatar={bot?.avatar || ''}
-                    description={bot?.description || ''}
-                    like={bot?.like.toString() || ''}
-                    collect={bot?.collect.toString() || ''}
-                />
-                <BotCarousel photos={bot?.photos || []} />
-                <Typography
-                    sx={{color: 'primary.light'}}
-                    align='left'
-                >
-                    <p className='bot-detail-long'>
-                        {bot?.detail}
-                    </p>
-                </Typography>
+            <BotDetailCard
+                id={bot?.id || ''}
+                name={bot?.name || ''}
+                author={bot?.author || ''}
+                avatar={bot?.avatar || ''}
+                description={bot?.description || ''}
+                like={bot?.like.toString() || ''}
+                collect={bot?.collect.toString() || ''}
+            />
 
-                <CommentInput/>
+            <BotCarousel photos={bot?.photos || []} />
 
-                <List>
-                    {comments?.map((comment) => (
-                        <OneChat
-                            id={comment.id}
-                            name={comment.name}
-                            avatar={comment.avatar}
-                            content={comment.content}
-                        />
-                    ))}
-                </List>
-            </div>
-        ];
+            <Typography
+                sx={{ color: 'primary.light' }}
+                align='left'
+            >
+                <p className='bot-detail-long'>
+                    {bot?.detail}
+                </p>
+            </Typography>
+
+            <CommentInput onSend={
+                (content: string) => {
+                    setComments([
+                        {
+                            id: '123',
+                            name: 'userTest',
+                            avatar: '/assets/user-default.png',
+                            content: content
+                        },
+                        ...comments || []
+                    ]);
+                }
+            } />
+
+            <Box>
+                {comments?.map((comment) => (
+                    <OneChat
+                        id={comment.id}
+                        name={comment.name}
+                        avatar={comment.avatar}
+                        content={comment.content}
+                    />
+                ))}
+            </Box>
+        </div>
+    ];
 }
 
 export default BotDetailPage;

@@ -23,20 +23,20 @@ export async function getBotComments(id: string) {
         items: [
             {
                 id: '1',
-                name: 'user1',
-                avatar: '/assets/user-default.jpg',
-                content: 'CommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentComment....',
+                name: 'Sue',
+                avatar: '/assets/user-1.png',
+                content: 'CommentCommentComment CommentCommentComment CommentCommentComment CommentCommentComment CommentCommentComment CommentCommentComment CommentCommentComment CommentCommentComment CommentCommentComment CommentCommentComment CommentCommentComment....',
             },
             {
                 id: '2',
-                name: 'user2',
-                avatar: '/assets/user-default.jpg',
+                name: 'Frank',
+                avatar: '/assets/user-2.png',
                 content: 'CommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentComment....',
             },
             {
                 id: '3',
-                name: 'user3',
-                avatar: '/assets/user-default.jpg',
+                name: 'Steve',
+                avatar: '/assets/user-3.png',
                 content: 'CommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentComment....',
             },
         ]

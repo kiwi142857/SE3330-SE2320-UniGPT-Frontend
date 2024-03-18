@@ -1,51 +1,41 @@
 import ChatHistoryItem from "./ChatHistoryItem";
 import {Divider, List} from "@mui/material";
-import React, {useState} from "react";
+import React from "react";
 import theme from './theme';
 import '../css/BotChatPage.css'
+import { BotChatHistory } from "../service/BotChat";
 
-interface ChatHistory {
-    title: string,
-    message: string,
-}
-//暂时将数据写死
-const chatHistoryData: ChatHistory[] = [
-    {
-        title: "History1",
-        message: "message1...",
-    },
-    {
-        title: "History2",
-        message: "message2...",
-    },
-    {
-        title: "History3",
-        message: "message3...",
-    },
-    {
-        title: "History4",
-        message: "message4...",
-    },
-];
 
-const ChatHistoryList = ()=> {
-    const [selectedIndex, setSelectedIndex] = useState(-1);
+const ChatHistoryList = (
+    {
+        botChatHistoryList,
+        selectedId ,
+        onItemClicked,
+    }: {
+        botChatHistoryList: BotChatHistory[];
+        selectedId: number ;
+        onItemClicked: (id: number) => void;
+    })=> {
+
     return (
         <List>
-            {chatHistoryData.map((chatHistory: ChatHistory,index) =>
-                <React.Fragment key={index}>
-                    <ChatHistoryItem
-                        title={chatHistory.title}
-                        message={chatHistory.message}
-                        selected={false}
-                    />
-                    {index !== chatHistoryData.length - 1 &&
-                        <Divider
-                            className="drawer-divider"
-                            style={{ backgroundColor: theme.palette.secondary.main}}
-                        />}
-                </React.Fragment>
-            )}
+            {botChatHistoryList.map((botChatHistory, index)=>
+                    <React.Fragment key={index}>
+                        <ChatHistoryItem
+                            title={botChatHistory.title}
+                            message={botChatHistory.message}
+                            selected={selectedId === botChatHistory.id}
+                            onClick={()=>{onItemClicked(botChatHistory.id); } }
+                        />
+                        {index !== botChatHistoryList.length - 1 &&
+                            <Divider
+                                className="drawer-divider"
+                                style={{ backgroundColor: theme.palette.secondary.main}}
+                            />
+                        }
+                    </React.Fragment>
+                )
+            }
         </List>
     )
 };
