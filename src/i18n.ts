@@ -23,6 +23,7 @@ const resources = {
       "Your assistant name": "Your assistant name",
       "Description" : "Description",
       "Your description for your assistant": "Your description for your assistant",
+      "Base Model": "Base Model",
       "Define your own prompt list": "Define your own prompt list",
       "Publish to market": "Publish to market",
       "Cancel": "Cancel",
@@ -39,6 +40,7 @@ const resources = {
       "Use": "Use",
       "Modify": "Modify",
       "Fill the table template and start messaging with your own assistant!": "Fill the table template and start messaging with your own assistant!",
+      
       "bot0": "bot0",
       "Programming Debug Assistant": "Programming Debug Assistant",
       "Paper Abstract Assistant": "Paper Abstract Assistant",
@@ -74,6 +76,7 @@ const resources = {
       "Your assistant name": "为你的机器人取名",
       "Description" : "简介",
       "Your description for your assistant": "简要介绍你的机器人",
+      "Base Model": "基础模型",
       "Define your own prompt list": "定义机器人的提示列表",
       "Publish to market": "发布到市场",
       "Cancel": "取消",
@@ -90,6 +93,7 @@ const resources = {
       "Use": "去使用",
       "Modify": "修改",
       "Fill the table template and start messaging with your own assistant!": "填写模板表单，开始你和AI助手的对话吧！",
+
       "bot0": "机器人0",
       "Programming Debug Assistant": "编程调试助手",
       "Paper Abstract Assistant": "论文摘要助手",
