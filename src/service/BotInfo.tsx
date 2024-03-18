@@ -16,47 +16,47 @@ export default function GetBotInfo(id: string) {
     };
     let BotInfo1: BotInfo = {
         id: '1',
-        name: 'bot1',
-        author: 'user1',
-        avator: '/assets/bot-default.png',
-        description: 'Write your description here...',
+        name: 'Programming Debug Assistant',
+        author: '@UniGPT official',
+        avator: '/assets/bot1.png',
+        description: 'The robot can help you debug your code. It can help you find the bug in your code and give you some suggestions.',
     };
     let BotInfo2: BotInfo = {
         id: '2',
-        name: 'bot2',
-        author: 'user2',
+        name: 'Paper Proofreading Assistant',
+        author: '@UniGPT official',
         avator: '/assets/bot2.png',
-        description: 'Write your description here...',
+        description: 'The robot can help you polish your paper. It can help you find the grammar mistakes and give you some suggestions.',
     };
     let BotInfo3: BotInfo = {
         id: '3',
-        name: 'bot3',
-        author: 'user3',
+        name: "Paper Translation Assistant",
+        author: '@UniGPT official',
         avator: '/assets/bot3.png',
-        description: 'Write your description here...',
+        description: 'The robot can help you translate your paper. It can help you translate the paper to the language you want and give you some suggestions.',
     };
     let BotInfo4: BotInfo = {
         id: '4',
-        name: 'bot4',
-        author: 'user4',
+        name: 'Paper Abstract Assistant',
+        author: '@UniGPT official',
         avator: '/assets/bot4.png',
-        description: 'Write your description here...',
+        description: 'The robot can help you write the abstract of your paper. It can help you write the abstract and give you some suggestions.',
     };
     let BotInfo5: BotInfo =
     {
         id: '5',
-        name: 'bot5',
-        author: 'user5',
+        name: 'Emotional Communication Robot',
+        author: '@UniGPT official',
         avator: '/assets/bot5.png',
-        description: 'Write your description here...Write your description here...Write your description here...Write your description here...Write your description here...Write your description here...Write your description here...',
+        description: 'The robot can play a role in emotional communication. It can communicate with you and give you some suggestions.',
     };
     let BotInfo6: BotInfo =
     {
         id: '6',
-        name: 'bot6',
+        name: '红课论文小助手',
         author: 'user6',
         avator: '/assets/bot6.png',
-        description: 'Write your description here...',
+        description: '本机器人为你的红课论文提供修改建议，快来试试吧~',
     };
 
     let BotInfoList = [BotInfo1, BotInfo2, BotInfo3, BotInfo4, BotInfo5, BotInfo6];
