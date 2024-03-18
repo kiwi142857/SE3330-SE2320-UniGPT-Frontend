@@ -38,6 +38,7 @@ const resources = {
       "Enter your message here...": "Enter your message here...",
       "Use": "Use",
       "Modify": "Modify",
+      "Fill the table template and start messaging with your own assistant!": "Fill the table template and start messaging with your own assistant!",
     }
   },
   zh: {
@@ -76,6 +77,7 @@ const resources = {
       "Enter your comment here...": "在这里输入你的评论...",
       "Use": "去使用",
       "Modify": "修改",
+      "Fill the table template and start messaging with your own assistant!": "填写模板表单，开始你和AI助手的对话吧！"
     }
   }
 };
