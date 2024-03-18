@@ -39,6 +39,18 @@ const resources = {
       "Use": "Use",
       "Modify": "Modify",
       "Fill the table template and start messaging with your own assistant!": "Fill the table template and start messaging with your own assistant!",
+      "bot0": "bot0",
+      "Programming Debug Assistant": "Programming Debug Assistant",
+      "Paper Abstract Assistant": "Paper Abstract Assistant",
+      "Emotional Communication Robot": "Emotional Communication Robot",
+      "Paper Proofreading Assistant": "Paper Proofreading Assistant",
+      "Paper Translation Assistant": "Paper Translation Assistant",
+      "The robot can help you debug your code. It can help you find the bug in your code and give you some suggestions.": "The robot can help you debug your code. It can help you find the bug in your code and give you some suggestions.",
+      "The robot can help you polish your paper. It can help you find the grammar mistakes and give you some suggestions.": "The robot can help you polish your paper. It can help you find the grammar mistakes and give you some suggestions.",
+      "The robot can help you translate your paper. It can help you translate the paper to the language you want and give you some suggestions.": "The robot can help you translate your paper. It can help you translate the paper to the language you want and give you some suggestions.",
+      "The robot can help you write the abstract of your paper. It can help you write the abstract and give you some suggestions.": "The robot can help you write the abstract of your paper. It can help you write the abstract and give you some suggestions.",
+      "The robot can help you communicate with others. It can help you communicate with others and give you some suggestions.": "The robot can help you communicate with others. It can help you communicate with others and give you some suggestions.",
+      
     }
   },
   zh: {
@@ -77,7 +89,18 @@ const resources = {
       "Enter your comment here...": "在这里输入你的评论...",
       "Use": "去使用",
       "Modify": "修改",
-      "Fill the table template and start messaging with your own assistant!": "填写模板表单，开始你和AI助手的对话吧！"
+      "Fill the table template and start messaging with your own assistant!": "填写模板表单，开始你和AI助手的对话吧！",
+      "bot0": "机器人0",
+      "Programming Debug Assistant": "编程调试助手",
+      "Paper Abstract Assistant": "论文摘要助手",
+      "Emotional Communication Robot": "情感交流机器人",
+      "Paper Proofreading Assistant": "论文润色助手",
+      "Paper Translation Assistant": "论文翻译助手",
+      "The robot can help you debug your code. It can help you find the bug in your code and give you some suggestions.": "这个机器人可以帮你调试代码，找到代码中的bug并给出一些建议。",
+      "The robot can help you polish your paper. It can help you find the grammar mistakes and give you some suggestions.": "这个机器人可以帮你润色论文，找到语法错误并给出一些建议。",
+      "The robot can help you translate your paper. It can help you translate the paper to the language you want and give you some suggestions.": "这个机器人可以帮你翻译论文，将论文翻译成你想要的语言并给出一些建议。",
+      "The robot can help you write the abstract of your paper. It can help you write the abstract and give you some suggestions.": "这个机器人可以帮你写论文摘要，并给出一些建议。",
+      "The robot can play a role in emotional communication. It can communicate with you and give you some suggestions.": "这个机器人可以扮演角色与你交流并给出一些建议。",
     }
   }
 };
