@@ -1,3 +1,8 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+import { LanguageContext } from "../provider/LanguageProvider";
+
 export type BotInfo = {
     id: string;
     name: string;
@@ -7,56 +12,63 @@ export type BotInfo = {
 };
 
 export default function GetBotInfo(id: string) {
+    const { t, i18n } = useTranslation();
+    const context = React.useContext(LanguageContext);
+
+    useEffect(() => {
+        i18n.changeLanguage(context?.language);
+    }, [context?.language, i18n]);
+
     let BotDefault: BotInfo = {
         id: '0',
-        name: 'bot0',
+        name: t("bot0"),
         author: 'user0',
         avator: '/assets/bot-default.png',
-        description: 'Write your description here...',
+        description: t('Write your description here...'),
     };
     let BotInfo1: BotInfo = {
         id: '1',
-        name: 'bot1',
-        author: 'user1',
-        avator: '/assets/bot-default.png',
-        description: 'Write your description here...',
+        name: t('Programming Debug Assistant'),
+        author: '@UniGPT official',
+        avator: '/assets/bot1.png',
+        description: t('The robot can help you debug your code. It can help you find the bug in your code and give you some suggestions.'),
     };
     let BotInfo2: BotInfo = {
         id: '2',
-        name: 'bot2',
-        author: 'user2',
+        name: t('Paper Proofreading Assistant'),
+        author: '@UniGPT official',
         avator: '/assets/bot2.png',
-        description: 'Write your description here...',
+        description: t('The robot can help you polish your paper. It can help you find the grammar mistakes and give you some suggestions.'),
     };
     let BotInfo3: BotInfo = {
         id: '3',
-        name: 'bot3',
-        author: 'user3',
+        name: t("Paper Translation Assistant"),
+        author: '@UniGPT official',
         avator: '/assets/bot3.png',
-        description: 'Write your description here...',
+        description: t('The robot can help you translate your paper. It can help you translate the paper to the language you want and give you some suggestions.'),
     };
     let BotInfo4: BotInfo = {
         id: '4',
-        name: 'bot4',
-        author: 'user4',
+        name: t('Paper Abstract Assistant'),
+        author: '@UniGPT official',
         avator: '/assets/bot4.png',
-        description: 'Write your description here...',
+        description: t('The robot can help you write the abstract of your paper. It can help you write the abstract and give you some suggestions.'),
     };
     let BotInfo5: BotInfo =
     {
         id: '5',
-        name: 'bot5',
-        author: 'user5',
+        name: t('Emotional Communication Robot'),
+        author: '@UniGPT official',
         avator: '/assets/bot5.png',
-        description: 'Write your description here...Write your description here...Write your description here...Write your description here...Write your description here...Write your description here...Write your description here...',
+        description: t('The robot can play a role in emotional communication. It can communicate with you and give you some suggestions.'),
     };
     let BotInfo6: BotInfo =
     {
         id: '6',
-        name: 'bot6',
+        name: '红课论文小助手',
         author: 'user6',
         avator: '/assets/bot6.png',
-        description: 'Write your description here...',
+        description: '本机器人为你的红课论文提供修改建议，快来试试吧~',
     };
 
     let BotInfoList = [BotInfo1, BotInfo2, BotInfo3, BotInfo4, BotInfo5, BotInfo6];

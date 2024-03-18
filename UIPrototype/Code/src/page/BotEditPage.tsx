@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { EditInput, OnePromptInput } from '../components/Inputs';
+import { EditInput, EditSelect, OnePromptInput } from '../components/Inputs';
 import Navigator from '../components/Navigator';
 import '../css/App.css';
 import '../css/BotEditPage.css';
@@ -34,7 +34,7 @@ const BotEditPage: React.FC = () => {
 
     const [avatarImg, setAvatarImg] = useState<string>('/assets/bot-default.png');
     const [photoImgs, setPhotoImgs] = useState<image[]>([]);
-    const [items, setItems] = useState<item[]>([{itemName: '', prompt: ''}]);
+    const [items, setItems] = useState<item[]>([]);
     const [promptCheck, setPromptCheck] = useState<boolean>(false);
     const [publishCheck, setPublishCheck] = useState<boolean>(false);
 
@@ -93,17 +93,19 @@ const BotEditPage: React.FC = () => {
         const target = event.target as typeof event.target & {
             name: { value: string };
             description: { value: string };
+            api: { value: string };
         };
 
         const name = target.name.value; 
         const description = target.description.value; 
+        const api = target.api.value;
 
         if (promptCheck && items.length === 0) {
             alert('Please add at least one item when prompt check is enabled.');
             return;
         }
 
-        console.log(`name:${name}, description:${description}`);
+        console.log(`name:${name}, description:${description}`, `api:${api}`);
 
         items.forEach((item, index) => {
             console.log(`item${index}: ${item.itemName}, prompt${index}: ${item.prompt}`);
@@ -125,7 +127,7 @@ const BotEditPage: React.FC = () => {
                         <Avatar 
                             alt="bot-default" 
                             src={avatarImg} 
-                            sx={{ width: 200, height: 200, borderRadius: 0 }} 
+                            sx={{ width: 200, height: 200, borderRadius: '20px' }} 
                         />
                         <input 
                             type="file" 
@@ -134,8 +136,9 @@ const BotEditPage: React.FC = () => {
                             style={{display: 'none'}} 
                             id="imageUpload" 
                         />
-                        <label htmlFor="avatar-input">
-                            <Typography className='avatar-overlay'>
+                        {/* 这里的htmlFor和input的id必须是一样的，否则无法选择文件！ */}
+                        <label htmlFor="imageUpload">
+                            <Typography className='avatar-overlay' style={{height: 200}}>
                                 {t("Change photo for your assistant")}
                             </Typography>
                         </label>
@@ -150,6 +153,10 @@ const BotEditPage: React.FC = () => {
                             title={t('Description')}
                             placeholder={t('Your description for your assistant')} 
                             name='description' 
+                        />
+                        <EditSelect
+                            title={t('Base Model')}
+                            name='api'
                         />
                     </div>
                 </div>

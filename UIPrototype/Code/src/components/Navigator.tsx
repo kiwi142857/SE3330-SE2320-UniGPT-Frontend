@@ -43,10 +43,11 @@ const Navigator: React.FC<{}> = () => {
 
                 {/* 用户头像 */}
                 <Link href="/profile">
-                    <IconButton className='navigator-user'>
+                    <IconButton className='navigator-user' size='medium'>
                         <Avatar
                             alt="/assets/user-default.png"
                             src="/assets/user-default.png"
+                            sx={{ width: 50, height: 50 }}
                         />
                     </IconButton>
                 </Link>

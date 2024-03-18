@@ -1,5 +1,5 @@
 import { TextField } from "@mui/material";
-import React, {ChangeEventHandler} from "react";
+import React, { ChangeEventHandler } from "react";
 import "../css/BasicInput.css";
 
 // 基本输入框，通用
