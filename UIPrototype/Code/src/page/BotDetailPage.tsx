@@ -1,5 +1,5 @@
-import { Comment } from '@mui/icons-material';
-import { List, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useParams } from 'react-router-dom';
@@ -38,11 +38,6 @@ interface Comment {
 const BotDetailPage: React.FC = () => {
     const [bot, setBot] = useState<BotDetail | null>(null);
     const [comments, setComments] = useState<Comment[] | null>(null);
-    const [newComment, setNewComment] = useState<string>('');
-
-    const handleCommentSubmit = () => {
-        console.log('submit comment:', newComment);
-    };
 
     let { id } = useParams<{id: string}>();
 
@@ -78,7 +73,9 @@ const BotDetailPage: React.FC = () => {
                     like={bot?.like.toString() || ''}
                     collect={bot?.collect.toString() || ''}
                 />
+
                 <BotCarousel photos={bot?.photos || []} />
+                
                 <Typography
                     sx={{color: 'primary.light'}}
                     align='left'
@@ -88,9 +85,21 @@ const BotDetailPage: React.FC = () => {
                     </p>
                 </Typography>
 
-                <CommentInput/>
+                <CommentInput onSend={
+                    (content: string) => {
+                        setComments([
+                            {
+                                id: '123',
+                                name: 'userTest',
+                                avatar: '/assets/user-default.jpg',
+                                content: content
+                            },
+                            ...comments || []
+                        ]);
+                    }
+                }/>
 
-                <List>
+                <Box>
                     {comments?.map((comment) => (
                         <OneChat
                             id={comment.id}
@@ -99,7 +108,7 @@ const BotDetailPage: React.FC = () => {
                             content={comment.content}
                         />
                     ))}
-                </List>
+                </Box>
             </div>
         ];
 }

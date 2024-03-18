@@ -3,6 +3,7 @@ import React from 'react';
 import '../css/OneChat.css';
 
 // 聊天或评论区的一句对话
+// 注意，只有一个单词的时候是不会换行的！
 const OneChat = ({ id, name, avatar, content }: { id:string, name:string, avatar:string, content:string }) => {
   return (
       <>

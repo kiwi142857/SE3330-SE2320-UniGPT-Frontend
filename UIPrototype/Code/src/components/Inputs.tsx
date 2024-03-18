@@ -1,21 +1,38 @@
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
-import {Box, Grid, Typography} from "@mui/material";
+import ArticleIcon from "@mui/icons-material/Article";
+import RemoveIcon from '@mui/icons-material/Remove';
+import { Box, Grid, Typography } from "@mui/material";
 import Fab from '@mui/material/Fab';
-import React from "react";
+import IconButton from '@mui/material/IconButton';
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import "../css/BotChatPage.css";
 import "../css/BotDetailPage.css";
 import "../css/BotEditPage.css";
-import "../css/BotChatPage.css";
+import { LanguageContext } from "../provider/LanguageProvider";
 import BasicInput from './BasicInput';
-import ArticleIcon from "@mui/icons-material/Article";
 
 // botDetail页的评论输入框
-export function CommentInput () {
+export function CommentInput ({onSend}:{onSend: (content: string)=>void}) {
+    const context = React.useContext(LanguageContext);
+    const { t, i18n } = useTranslation();
+    
+    useEffect(() => {
+        i18n.changeLanguage(context?.language);
+    }, [context?.language, i18n]);
+
+    const [message, setMessage] = useState('');
+
     return (
             <Grid container className='comment-input-container'>
                 <Grid xs={11}>
                     <BasicInput
-                        placeholder='Enter your message here...'
+                        placeholder={t('Enter your comment here...')}
                         name='prompt'
+                        onChange={(event)=> {
+                            setMessage(event.target.value);
+                        }}
+                        value={message}
                     />
                 </Grid>
                 <Grid xs={1}>
@@ -23,6 +40,10 @@ export function CommentInput () {
                         variant="extended"
                         size="large"
                         sx={{color:'secondary.main'}}
+                        onClick={() => {
+                                onSend(message);
+                                setMessage('');
+                            }}
                     >
                         <ArrowCircleUpIcon
                             fontSize='large'
@@ -34,27 +55,89 @@ export function CommentInput () {
     );
 };
 
-// botCreate页的项目输入框
+// botEdit页的项目输入框
 export function EditInput ({title, placeholder, name}:{title:string; placeholder:string; name:string}) {
     return (
         <Grid container>
             <Grid item xs={2}>
-                <Typography
-                    className='edit-label'
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center'
-                    }}
-                    sx={{color: 'primary.main'}}
-                >
-                    {title}
-                </Typography>
+                    <Typography
+                        className='edit-label'
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}
+                        sx={{color: 'primary.main'}}
+                    >
+                        <p>{title}</p>
+                    </Typography>
             </Grid>
             <Grid item xs={10}>
                 <BasicInput
                     placeholder={placeholder}
                     name={name}
+                    required
                 />
+            </Grid>
+        </Grid>
+    );
+}
+
+// botEdit页的promptList中的单条prompt（可修改，删除）
+export function OnePromptInput 
+({
+    item, 
+    index,
+    onItemNameChange, 
+    onPromptChange,
+    handleDelete
+}: {
+    item: {itemName: string, prompt: string}, 
+    index: number, 
+    onItemNameChange: (event: React.ChangeEvent<HTMLInputElement>)=>void, 
+    onPromptChange: (event: React.ChangeEvent<HTMLInputElement>)=>void,
+    handleDelete: (index: number)=>void
+}){
+    const context = React.useContext(LanguageContext);
+    const { t, i18n } = useTranslation();
+    
+    useEffect(() => {
+        i18n.changeLanguage(context?.language);
+    }, [context?.language, i18n]);
+
+    return (
+        <Grid container spacing={2}>
+            <Grid item xs={1}/>
+            <Grid item xs={1}>
+                <div className='oneprompt-element'>
+                    <IconButton
+                        sx={{backgroundColor: 'secondary.main'}}
+                        onClick={()=>handleDelete(index)}
+                    >
+                        <RemoveIcon />
+                    </IconButton>
+                </div>
+            </Grid>
+            <Grid item xs={2}>
+                <div className='oneprompt-element'>
+                    <BasicInput
+                        placeholder={t('Item Name')}
+                        name='oneItemName'
+                        value={item.itemName}
+                        onChange={onItemNameChange}
+                        required
+                    />
+                </div>
+            </Grid>
+            <Grid item xs={7}>
+                <div className='oneprompt-element'>
+                    <BasicInput
+                        placeholder={t('Prompt for this item' )}
+                        name='onePrompt'
+                        value={item.prompt}
+                        onChange={onPromptChange}
+                        required
+                    />
+                </div>
             </Grid>
         </Grid>
     );
@@ -68,8 +151,10 @@ export function PromptInput
      onSend
 }: {
     onAltTable: ()=>void,
-    onSend: ()=>void}
+    onSend: (content: string)=>void}
 ){
+    const [message, setMessage] = useState('');
+    const {t} = useTranslation();
     return (
         <Box className="prompt-input-container">
             <Fab
@@ -81,10 +166,21 @@ export function PromptInput
                 <ArticleIcon fontSize='large'/>
             </Fab>
             <div style={{width: '604px', margin: '20px'}}>
-                <BasicInput placeholder="Enter your message here..." name="message"/>
+                <BasicInput
+                    placeholder={t('Enter your message here...')}
+                    name="message"
+                    onChange={(event)=> {
+                        setMessage(event.target.value);
+                    }}
+                    value={message}
+                />
             </div>
             <Fab
-                onClick={onSend}
+                disabled={message === ''}
+                onClick={() => {
+                    onSend(message);
+                    setMessage('');
+                }}
                 variant="extended"
                 size="large"
                 style={{color: 'white'}}>

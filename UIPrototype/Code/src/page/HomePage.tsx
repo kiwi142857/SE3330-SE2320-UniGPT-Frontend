@@ -1,18 +1,26 @@
-import React from 'react';
-import Navigator from '../components/Navigator';
-import BotList from "../components/BotList";
-import Grid from '@mui/material/Grid';
 import { Typography } from '@mui/material';
-import { FavoriteHeader, RecentUsedHeader } from '../components/BotList';
+import Grid from '@mui/material/Grid';
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import BotList, { FavoriteHeader, RecentUsedHeader } from "../components/BotList";
+import Navigator from '../components/Navigator';
 import '../css/Home.css';
-// 首页
+import { LanguageContext } from "../provider/LanguageProvider";
+
 const HomePage: React.FC = () => {
+    const context = React.useContext(LanguageContext);
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        i18n.changeLanguage(context?.language);
+    }, [context?.language, i18n]);
+    
     return (
         <div>
             <Navigator></Navigator>
             <div>
                 <img src="/assets/home-background.png" alt="home-bg" className='home-bg' />
-                <Typography className='home-image-text'>Welcome to your own AI assistant.</Typography>
+                <Typography className='home-image-text'>{t("Welcome to UniGPT")}</Typography>
             </div>
 
             <Grid container spacing={8} className='bot-box' >

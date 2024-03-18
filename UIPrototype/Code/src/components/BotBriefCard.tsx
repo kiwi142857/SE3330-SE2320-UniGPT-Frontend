@@ -2,7 +2,9 @@ import React from "react";
 import {Button, ListItem} from "@mui/material";
 import theme from "./theme";
 import '../css/BotChatPage.css'
+import {useTranslation} from "react-i18next";
 const BotBriefCard = () => {
+    const {t} = useTranslation();
     return (
         <ListItem
             className="drawer-item"
@@ -26,8 +28,9 @@ const BotBriefCard = () => {
                             backgroundColor: theme.palette.primary.main,
                             color: 'white',
                         }}
+                        href="/botedit"
                     >
-                        Modify
+                        {t('Modify')}
                     </Button>
                 </div>
                 <div className="drawer-item-title">
