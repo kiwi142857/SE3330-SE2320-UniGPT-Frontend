@@ -14,13 +14,13 @@ const HomePage: React.FC = () => {
     useEffect(() => {
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
-    
+
     return (
         <div>
             <Navigator></Navigator>
             <div>
                 <img src="/assets/home-background.png" alt="home-bg" className='home-bg' />
-                <Typography className='home-image-text'>{t("Welcome to UniGPT")}</Typography>
+                <Typography className='home-image-text'>{t("Unique AI Assitant,\nUni - engineering Prompts,\nUni - synthesized Wisdom,\nUniversity Life.")}</Typography>
             </div>
 
             <Grid container spacing={8} className='bot-box' >
@@ -35,7 +35,7 @@ const HomePage: React.FC = () => {
             </Grid>
         </div>
     );
-    }
+}
     ;
 ;
 ;
