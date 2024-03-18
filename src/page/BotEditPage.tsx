@@ -125,7 +125,7 @@ const BotEditPage: React.FC = () => {
                         <Avatar 
                             alt="bot-default" 
                             src={avatarImg} 
-                            sx={{ width: 200, height: 200, borderRadius: 0 }} 
+                            sx={{ width: 200, height: 200, borderRadius: '20px' }} 
                         />
                         <input 
                             type="file" 
