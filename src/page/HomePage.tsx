@@ -19,7 +19,9 @@ const HomePage: React.FC = () => {
         <div>
             <Navigator></Navigator>
             <div>
-                <img src="/assets/home-background.png" alt="home-bg" className='home-bg' />
+                <video className='home-bg' autoPlay loop muted>
+                    <source src="/assets/homepage.mp4" type="video/mp4" />
+                </video>
             </div>
 
             <Grid container spacing={8} className='bot-box' >
