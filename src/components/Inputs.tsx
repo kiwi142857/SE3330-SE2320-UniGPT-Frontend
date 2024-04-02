@@ -84,7 +84,7 @@ export function EditInput({ title, placeholder, name }: { title: string; placeho
 }
 
 // botEdit页的项目输入框
-export function EditSelect ({title, name}:{title:string; name:string}) {
+export function EditSelect({ title, name }: { title: string; name: string }) {
     const [value, setValue] = React.useState('');
 
     const handleChange = (event: SelectChangeEvent) => {
@@ -94,16 +94,16 @@ export function EditSelect ({title, name}:{title:string; name:string}) {
     return (
         <Grid container>
             <Grid item xs={2}>
-                    <Typography
-                        className='edit-label'
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                        }}
-                        sx={{color: 'primary.main'}}
-                    >
-                        <p>{title}</p>
-                    </Typography>
+                <Typography
+                    className='edit-label'
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                    }}
+                    sx={{ color: 'primary.main' }}
+                >
+                    <p>{title}</p>
+                </Typography>
             </Grid>
             <Grid item xs={2}>
                 <FormControl fullWidth>
@@ -111,11 +111,11 @@ export function EditSelect ({title, name}:{title:string; name:string}) {
                         value={value}
                         name={name}
                         onChange={handleChange}
-                        style={{borderRadius: '20px'}}
+                        style={{ borderRadius: '20px' }}
                         required
                     >
                         <MenuItem value={'GPT-4'}>GPT-4</MenuItem>
-                        <MenuItem value={'chatGLM'}>chatGLM</MenuItem>
+                        <MenuItem value={'ChatGLM'}>ChatGLM</MenuItem>
                         <MenuItem value={'llama'}>llama</MenuItem>
                         <MenuItem value={'kimiAI'}>kimiAI</MenuItem>
                     </Select>

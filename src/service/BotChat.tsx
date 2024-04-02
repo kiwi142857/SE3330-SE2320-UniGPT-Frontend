@@ -42,7 +42,7 @@ const botChatList: BotChat[] = [
         id: '1',
         historyId: 1,
         name: '你',
-        avatar:'/assets/user-default.png',
+        avatar: '/assets/user-default.png',
         content: '如何用Python实现冒泡排序',
     },
     {
@@ -50,32 +50,39 @@ const botChatList: BotChat[] = [
         historyId: 1,
         name: 'Programming Debug Assistant',
         avatar: '/assets/bot-default.png',
-        content: '以下是使用Python实现冒泡排序的示例代码：\n' +
+        content: '冒泡排序是一种简单的排序算法，它重复地遍历待排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。遍历数列的工作是重复地进行，直到没有再需要交换的元素为止，这意味着数列已经排序完成。\n' +
+            '\n' +
+            '以下是用Python实现冒泡排序的一个例子：\n' +
             '\n' +
             '```python\n' +
             'def bubble_sort(arr):\n' +
             '    n = len(arr)\n' +
-            '    # 遍历数组元素\n' +
             '    for i in range(n):\n' +
-            '        # 最后i个元素已经排好序了，不需要再次比较\n' +
+            '        # 提前退出冒泡循环的标志位\n' +
+            '        swapped = False\n' +
             '        for j in range(0, n-i-1):\n' +
-            '            # 通过比较相邻元素，如果顺序不对，则交换它们\n' +
             '            if arr[j] > arr[j+1]:\n' +
             '                arr[j], arr[j+1] = arr[j+1], arr[j]\n' +
+            '                swapped = True\n' +
+            '        if not swapped:\n' +
+            '            break\n' +
+            '    return arr\n' +
             '\n' +
-            '# 测试\n' +
+            '# 示例数组\n' +
             'arr = [64, 34, 25, 12, 22, 11, 90]\n' +
-            'bubble_sort(arr)\n' +
-            'print("排序后的数组:", arr)\n' +
-            '```\n' +
             '\n' +
-            '这段代码首先定义了一个名为 `bubble_sort` 的函数，接受一个数组作为参数。在该函数中，通过嵌套的循环遍历数组元素，并比较相邻元素的大小，如果顺序不对，则交换它们的位置。外层循环控制排序的轮数，内层循环负责比较和交换元素。'
+            'bubble_sort(arr)\n' +
+            '\n' +
+            'print("排序后的数组:")\n' +
+            'print(arr)\n' +
+            '```\n' +
+            '这段代码首先定义了一个bubble_sort函数，它接受一个列表arr作为参数。然后，该函数使用两层嵌套循环进行排序：\n'
     },
     {
         id: '10',
         historyId: 1,
         name: '你',
-        avatar:'/assets/user-default.png',
+        avatar: '/assets/user-default.png',
         content: '谢谢！',
     },
     {
@@ -89,7 +96,7 @@ const botChatList: BotChat[] = [
         id: '3',
         historyId: 2,
         name: '你',
-        avatar:'/assets/user-default.png',
+        avatar: '/assets/user-default.png',
         content: '你能为一款含有可乐和石榴糖浆的无酒精鸡尾酒（mocktail）想出一些名字吗？',
     },
     {
@@ -115,14 +122,14 @@ const botChatList: BotChat[] = [
     {
         id: '5',
         historyId: 3,
-        name:'你',
-        avatar:'/assets/user-default.png',
+        name: '你',
+        avatar: '/assets/user-default.png',
         content: '为我关于城市设计的新播客构思5个节目主题。',
     },
     {
         id: '6',
         historyId: 3,
-        name:'Design Assistant',
+        name: 'Design Assistant',
         avatar: '/assets/bot-default.png',
         content: '当涉及城市设计时，有很多激动人心的话题可以探讨。以下是五个可以作为新播客节目主题的构思：\n' +
             '\n' +
@@ -146,14 +153,14 @@ const botChatList: BotChat[] = [
     {
         id: '7',
         historyId: 4,
-        name:'你',
+        name: '你',
         avatar: '/assets/user-default.png',
         content: '如果我熟悉买卖股票，那么请用简单的术语解释期权交易。',
     },
     {
         id: '8',
         historyId: 4,
-        name:'Finance Assistant',
+        name: 'Finance Assistant',
         avatar: '/assets/bot-default.png',
         content: '期权交易是一种金融衍生品交易，允许买方在未来某个特定时间内，以事先约定的价格购买或出售某个资产（通常是股票）的权利，而不是必须在该时间购买或出售。期权交易中的买方支付给卖方一笔费用（称为期权费），以获得这种权利。买方在购买期权时，称为持有期权。而卖方则在出售期权时，承诺在期权到期时按约定的价格出售或购买资产。期权交易可以用来对冲投资组合的风险、进行投机，或者作为一种策略来获利。',
     },

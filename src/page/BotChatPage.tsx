@@ -124,7 +124,6 @@ const BotChatPage = () => {
                             setTableCreateOpen(false);
                         }}
                         handleSubmit={() => {
-                            alert("submit finished");
                         }} />
                 </Box>
             </div>

@@ -23,14 +23,14 @@ export default function GetBotInfo(id: string) {
         id: '0',
         name: t("bot0"),
         author: 'user0',
-        avator: '/assets/bot-default.png',
+        avator: '/assets/bot0.png',
         description: t('Write your description here...'),
     };
     let BotInfo1: BotInfo = {
         id: '1',
         name: t('Programming Debug Assistant'),
         author: '@UniGPT official',
-        avator: '/assets/bot1.png',
+        avator: '/assets/bot0.png',
         description: t('The robot can help you debug your code. It can help you find the bug in your code and give you some suggestions.'),
     };
     let BotInfo2: BotInfo = {
