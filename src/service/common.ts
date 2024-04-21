@@ -1,0 +1,62 @@
+type FetchOptions = {
+    method: string;
+    body?: string;
+    headers?: {
+        'Content-Type': string;
+    };
+    credentials: RequestCredentials;
+};
+
+interface ResponseData {
+    ok: boolean;
+    message: string;
+}
+
+export async function getJson(url: string): Promise<any> {
+    let res = await fetch(url, { method: "GET", credentials: "include" });
+    return res.json();
+}
+
+export async function get(url: string): Promise<Response> {
+    let res = await fetch(url, { method: "GET", credentials: "include" });
+    return res;
+}
+
+export async function put(url: string, data: any): Promise<any> {
+    let opts: FetchOptions = {
+        method: "PUT",
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: "include"
+    };
+    let res = await fetch(url, opts);
+    return res.json();
+}
+
+export async function del(url: string, data: any): Promise<any> {
+    let res = await fetch(url, { method: "DELETE", credentials: "include", body: JSON.stringify(data) });
+    return res.json();
+}
+
+export async function post(url: string, data: any): Promise<any> {
+    let opts: FetchOptions = {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: "include"
+    };
+    let res = await fetch(url, opts);
+    return res.json();
+}
+
+export const BASEURL: string = process.env.REACT_APP_BASE_URL ?? 'http://localhost:8080';
+export const PREFIX: string = `${BASEURL}/api`;
+export const API_DOCS_URL: string = `${BASEURL}/api-docs`;
+export const DUMMY_RESPONSE: ResponseData = {
+    ok: false,
+    message: "网络错误！"
+}
