@@ -3,7 +3,6 @@ import Grid from '@mui/material/Grid';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import BotList, { FavoriteHeader, RecentUsedHeader } from "../components/BotList";
-import Navigator from '../components/Navigator';
 import '../css/Home.css';
 import { LanguageContext } from "../provider/LanguageProvider";
 
@@ -17,7 +16,6 @@ const HomePage: React.FC = () => {
 
     return (
         <div>
-            <Navigator></Navigator>
             <div>
                 <video className='home-bg' autoPlay loop muted>
                     <source src="/assets/homepage.mp4" type="video/mp4" />

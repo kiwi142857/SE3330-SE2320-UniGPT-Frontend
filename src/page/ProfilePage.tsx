@@ -1,5 +1,4 @@
 import React from 'react';
-import Navigator from '../components/Navigator';
 import '../css/Profile.css';
 import UserCard from '../components/UserCard';
 import { Tab, Tabs } from '@mui/material';
@@ -19,7 +18,7 @@ export function BotListTabs() {
     useEffect(() => {
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
-    
+
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -30,7 +29,7 @@ export function BotListTabs() {
         <div>
             <Tabs value={value} onChange={handleChange}>
                 <Tab label={t("Created")} className='botlist-tab' />
-                <Tab label={t("Favorite")}  className='botlist-tab' />
+                <Tab label={t("Favorite")} className='botlist-tab' />
             </Tabs>
         </div>
     );
@@ -57,7 +56,6 @@ const ProfilePage: React.FC = () => {
 
     return (
         <>
-            <Navigator></Navigator>
             <div className='profile-container'>
                 <UserCard></UserCard>
             </div>
