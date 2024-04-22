@@ -57,33 +57,6 @@ export function CommentInput({ onSend }: { onSend: (content: string) => void }) 
 };
 
 // botEdit页的项目输入框
-export function EditInput({ title, placeholder, name }: { title: string; placeholder: string; name: string }) {
-    return (
-        <Grid container>
-            <Grid item xs={2}>
-                <Typography
-                    className='edit-label'
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                    }}
-                    sx={{ color: 'primary.main' }}
-                >
-                    <p>{title}</p>
-                </Typography>
-            </Grid>
-            <Grid item xs={10}>
-                <BasicInput
-                    placeholder={placeholder}
-                    name={name}
-                    required
-                />
-            </Grid>
-        </Grid>
-    );
-}
-
-// botEdit页的项目输入框
 export function EditSelect({ title, name }: { title: string; name: string }) {
     const [value, setValue] = React.useState('');
 
@@ -149,7 +122,6 @@ export function OnePromptInput
 
     return (
         <Grid container spacing={2}>
-            <Grid item xs={1} />
             <Grid item xs={1}>
                 <div className='oneprompt-element'>
                     <IconButton
@@ -158,6 +130,17 @@ export function OnePromptInput
                     >
                         <RemoveIcon />
                     </IconButton>
+                </div>
+            </Grid>
+            <Grid item xs={4}>
+                <div className='oneprompt-element'>
+                    <BasicInput
+                        placeholder={t('Prompt for this item')}
+                        name='onePrompt'
+                        value={item.prompt}
+                        onChange={onPromptChange}
+                        required
+                    />
                 </div>
             </Grid>
             <Grid item xs={2}>
@@ -171,7 +154,7 @@ export function OnePromptInput
                     />
                 </div>
             </Grid>
-            <Grid item xs={7}>
+            <Grid item xs={4}>
                 <div className='oneprompt-element'>
                     <BasicInput
                         placeholder={t('Prompt for this item')}
