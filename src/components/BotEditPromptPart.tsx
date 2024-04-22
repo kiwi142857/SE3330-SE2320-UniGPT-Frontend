@@ -5,9 +5,8 @@ import { useTranslation } from 'react-i18next';
 import '../css/BotEditPage.css';
 import { LanguageContext } from '../provider/LanguageProvider';
 import { PromptType, fewShot } from '../service/BotEdit';
-import BasicInput from './BasicInput';
 import EditLayout from './EditLayout';
-import { OneFewShotInput, OnePromptInput } from './Inputs';
+import { MarkdownInput, OneFewShotInput, OnePromptInput } from './Inputs';
 
 interface item {
     itemName: string;
@@ -80,11 +79,11 @@ function BotEditPromptPart(
             {promptCheck && (
                 <div className='prompts-list-container'>
                     <EditLayout title={t('System Prompt')}>
-                        <BasicInput
+                        <MarkdownInput
                             placeholder={t("System prompt for your assistant")}
                             name='system-prompt'
-                            defaultValue={fewShots[0]?.content}
-                            required
+                            value={fewShots[0]?.content}
+                            onChange={(event) => onFewShotChange(0, event.target.value)}
                         />
                     </EditLayout>
 

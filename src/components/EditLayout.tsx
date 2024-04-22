@@ -4,13 +4,14 @@ import '../css/BotEditPage.css';
 
 interface LayoutProps {
     title: string;
+    leftSpace?: number;
     children: React.ReactNode;
 }
 
-const EditLayout: React.FC<LayoutProps> = ({ title, children }) => {
+const EditLayout: React.FC<LayoutProps> = ({ title, leftSpace = 2, children }) => {
     return (
         <Grid container>
-            <Grid item xs={2}>
+            <Grid item xs={leftSpace}>
                 <Typography
                     className='edit-label'
                     style={{
@@ -22,7 +23,7 @@ const EditLayout: React.FC<LayoutProps> = ({ title, children }) => {
                     <p>{title}</p>
                 </Typography>
             </Grid>
-            <Grid item xs={10}>
+            <Grid item xs={12 - leftSpace}>
                 {children}
             </Grid>
         </Grid>

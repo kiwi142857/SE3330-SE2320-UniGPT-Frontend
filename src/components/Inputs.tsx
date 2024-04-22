@@ -1,9 +1,11 @@
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import ArticleIcon from "@mui/icons-material/Article";
+import EditIcon from '@mui/icons-material/Edit';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Box, FormControl, Grid, MenuItem, Select, Typography } from "@mui/material";
 import Fab from '@mui/material/Fab';
 import IconButton from '@mui/material/IconButton';
+import Modal from '@mui/material/Modal';
 import { SelectChangeEvent } from '@mui/material/Select';
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,6 +15,7 @@ import "../css/BotEditPage.css";
 import { LanguageContext } from "../provider/LanguageProvider";
 import BasicInput from './BasicInput';
 import EditLayout from './EditLayout';
+import MdEditor from './MdEditor';
 
 // botDetail页的评论输入框
 export function CommentInput({ onSend }: { onSend: (content: string) => void }) {
@@ -57,52 +60,132 @@ export function CommentInput({ onSend }: { onSend: (content: string) => void }) 
     );
 };
 
-// botEdit页的项目输入框
-export function EditSelect({ title, name, defaultSelect }: { title: string; name: string, defaultSelect: string}) {
-    const [value, setValue] = React.useState(defaultSelect);
+export function MarkdownInput
+    ({
+        placeholder,
+        name,
+        value,
+        onChange
+    } : {
+        placeholder: string,
+        name: string,
+        value: string,
+        onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    }) {
+        const [open, setOpen] = useState(false);
 
-    useEffect(() => {
-        setValue(defaultSelect);
-    }
-    , [defaultSelect]);
+        const handleOpen = () => {
+            setOpen(true);
+        };
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setValue(event.target.value as string);
-    };
+        const handleClose = () => {
+            setOpen(false);
+        };
 
-    return (
-        <Grid container>
-            <Grid item xs={2}>
-                <Typography
-                    className='edit-label'
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                    }}
-                    sx={{ color: 'primary.main' }}
-                >
-                    <p>{title}</p>
-                </Typography>
-            </Grid>
-            <Grid item xs={2}>
-                <FormControl fullWidth>
-                    <Select
-                        value={value}
+        return [
+            <Grid container>
+                <Grid item xs={11}>
+                    <BasicInput
+                        placeholder={placeholder}
                         name={name}
-                        onChange={handleChange}
-                        style={{ borderRadius: '20px' }}
+                        value={value}
+                        multiline={false}
+                        onChange={onChange}
                         required
+                        maxRows={1}
+                    />
+                </Grid>
+                <Grid item xs={1}>
+                    <div className='oneprompt-element'>
+                        <IconButton
+                            sx={{ backgroundColor: 'secondary.main' }}
+                            onClick={handleOpen}
+                        >
+                            <EditIcon />
+                        </IconButton>
+                    </div>
+                </Grid>
+            </Grid>,
+
+            <Modal
+                open={open}
+                onClose={handleClose}
+            >
+                <Box sx={
+                    {
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        p: 4,
+                    }
+                }>
+                    <MdEditor
+                        onChange={onChange}
+                        value={value}
+                    />
+                </Box>
+            </Modal>
+        ];
+    }
+
+// botEdit页的项目输入框
+export function EditSelect
+    ({ 
+        title, 
+        name, 
+        defaultSelect 
+    }: { 
+        title: string; 
+        name: string, 
+        defaultSelect: string
+    }) {
+        const [value, setValue] = React.useState(defaultSelect);
+
+        useEffect(() => {
+            setValue(defaultSelect);
+        }
+        , [defaultSelect]);
+
+        const handleChange = (event: SelectChangeEvent) => {
+            setValue(event.target.value as string);
+        };
+
+        return (
+            <Grid container>
+                <Grid item xs={2}>
+                    <Typography
+                        className='edit-label'
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}
+                        sx={{ color: 'primary.main' }}
                     >
-                        <MenuItem value={'GPT-4'}>GPT-4</MenuItem>
-                        <MenuItem value={'ChatGLM'}>ChatGLM</MenuItem>
-                        <MenuItem value={'llama'}>llama</MenuItem>
-                        <MenuItem value={'kimiAI'}>kimiAI</MenuItem>
-                    </Select>
-                </FormControl>
+                        <p>{title}</p>
+                    </Typography>
+                </Grid>
+                <Grid item xs={2}>
+                    <FormControl fullWidth>
+                        <Select
+                            value={value}
+                            name={name}
+                            onChange={handleChange}
+                            style={{ borderRadius: '20px' }}
+                            required
+                        >
+                            <MenuItem value={'GPT-4'}>GPT-4</MenuItem>
+                            <MenuItem value={'ChatGLM'}>ChatGLM</MenuItem>
+                            <MenuItem value={'llama'}>llama</MenuItem>
+                            <MenuItem value={'kimiAI'}>kimiAI</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Grid>
             </Grid>
-        </Grid>
-    );
-}
+        );
+    }
 
 export function OneFewShotInput
     ({
@@ -139,13 +222,12 @@ export function OneFewShotInput
                 </div>
             </Grid>
             <Grid item xs={11}>
-                <EditLayout title={select}>
-                    <BasicInput
+                <EditLayout title={select} leftSpace={1}>
+                    <MarkdownInput
                         placeholder={t('Prompt for this item')}
                         name='oneFewShot'
                         value={content}
                         onChange={onFewShotChange}
-                        required
                     />
                 </EditLayout>
             </Grid>
