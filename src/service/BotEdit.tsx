@@ -1,4 +1,4 @@
-enum PromptType {
+export enum PromptType {
   USER, BOT, SYSTEM
 }
 
@@ -26,7 +26,7 @@ export async function getBotEditInfo(id: string): Promise<botEditInfo> {
         "name": "aaa",
         "avatar": '/assets/bot-default.png',
         "description": "bbbb",
-        "baseModelAPI": "GPT-4",
+        "baseModelAPI": 'GPT-4',
         "isPublished": true,
         "detail": "cccccccccccccccccccccccccccccc",
         "photos": [],

@@ -8,7 +8,7 @@ import Navigator from '../components/Navigator';
 import '../css/App.css';
 import '../css/BotEditPage.css';
 import { LanguageContext } from "../provider/LanguageProvider";
-import { botEditInfo, fewShot, getBotEditInfo } from '../service/BotEdit';
+import { PromptType, botEditInfo, fewShot, getBotEditInfo } from '../service/BotEdit';
 
 // bot创建/修改页
 
@@ -46,7 +46,12 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
     const [avatarImg, setAvatarImg] = useState<string>('/assets/bot-default.png');
     const [photoImgs, setPhotoImgs] = useState<string[]>([]);
     const [items, setItems] = useState<item[]>([]);
-    const [fewShots, setFewShots] = useState<fewShot[]>([]);
+    const [fewShots, setFewShots] = useState<fewShot[]>([
+        {
+            type: PromptType.SYSTEM,
+            content: ''
+        }
+    ]);
     const [promptCheck, setPromptCheck] = useState<boolean>(false);
     const [publishCheck, setPublishCheck] = useState<boolean>(false);
 
@@ -69,6 +74,7 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
             name: { value: string };
             description: { value: string };
             api: { value: string };
+
         };
 
         const name = target.name.value; 
@@ -99,6 +105,9 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
                 <BotEditBasicPart  
                     avatarImg={avatarImg} 
                     setAvatarImg={setAvatarImg} 
+                    defaultName={botEditInfo.name}
+                    defaultDescription={botEditInfo.description}
+                    defaultApi={botEditInfo.baseModelAPI}
                 />
                 <Divider/>
 
@@ -107,6 +116,8 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
                     setPromptCheck={setPromptCheck}
                     items={items}
                     setItems={setItems}
+                    fewShots={fewShots}
+                    setFewShots={setFewShots}
                 />
 
                 <Divider style={{marginTop:'20px'}}/>
@@ -116,6 +127,7 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
                     setPublishCheck={setPublishCheck}
                     photoImgs={photoImgs}
                     setPhotoImgs={setPhotoImgs}
+                    defaultDetail={botEditInfo.detail}
                 />
 
                 <Button 

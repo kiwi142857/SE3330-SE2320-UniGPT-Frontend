@@ -8,8 +8,21 @@ import BasicInput from './BasicInput';
 import EditLayout from './EditLayout';
 import { EditSelect } from './Inputs';
 
-function BotEditBasicPart ({avatarImg, setAvatarImg} : 
-    {avatarImg: string, setAvatarImg: React.Dispatch<React.SetStateAction<string>>}) {
+function BotEditBasicPart (
+    {
+        avatarImg, 
+        setAvatarImg,
+        defaultName,
+        defaultDescription,
+        defaultApi
+    } : 
+    {
+        avatarImg: string, 
+        setAvatarImg: React.Dispatch<React.SetStateAction<string>>,
+        defaultName: string,
+        defaultDescription: string,
+        defaultApi: string
+    }) {
 
     const context = React.useContext(LanguageContext);
     const { t, i18n } = useTranslation();
@@ -56,6 +69,7 @@ function BotEditBasicPart ({avatarImg, setAvatarImg} :
                     <BasicInput
                         placeholder={t("Your assistant name")}
                         name='name'
+                        defaultValue={defaultName}
                         required
                     />
                 </EditLayout>
@@ -63,11 +77,13 @@ function BotEditBasicPart ({avatarImg, setAvatarImg} :
                     <BasicInput
                         placeholder={t("Your description for your assistant")}
                         name='description'
+                        defaultValue={defaultDescription}
                         required
                     />
                 </EditLayout>
                 <EditSelect
                     title={t('Base Model')}
+                    defaultSelect={defaultApi}
                     name='api'
                 />
             </div>

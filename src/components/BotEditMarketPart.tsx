@@ -10,8 +10,21 @@ interface image{
     src: string;
 };
 
-function BotEditMarketPart({publishCheck, setPublishCheck, photoImgs, setPhotoImgs} :
-    {publishCheck: boolean, setPublishCheck: React.Dispatch<React.SetStateAction<boolean>>, photoImgs: string[], setPhotoImgs: React.Dispatch<React.SetStateAction<string[]>>}
+function BotEditMarketPart(
+    {
+        publishCheck, 
+        setPublishCheck, 
+        photoImgs, 
+        setPhotoImgs,
+        defaultDetail
+    } :
+    {
+        publishCheck: boolean, 
+        setPublishCheck: React.Dispatch<React.SetStateAction<boolean>>, 
+        photoImgs: string[], 
+        setPhotoImgs: React.Dispatch<React.SetStateAction<string[]>>
+        defaultDetail: string
+    }
 ) {
     
     const context = React.useContext(LanguageContext);
@@ -64,6 +77,7 @@ function BotEditMarketPart({publishCheck, setPublishCheck, photoImgs, setPhotoIm
                         <BasicInput
                             placeholder={t('Your detail description for your assistant')}
                             name='detail'
+                            defaultValue={defaultDetail}
                             required
                         />
                     </EditLayout>

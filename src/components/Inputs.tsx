@@ -12,6 +12,7 @@ import "../css/BotDetailPage.css";
 import "../css/BotEditPage.css";
 import { LanguageContext } from "../provider/LanguageProvider";
 import BasicInput from './BasicInput';
+import EditLayout from './EditLayout';
 
 // botDetail页的评论输入框
 export function CommentInput({ onSend }: { onSend: (content: string) => void }) {
@@ -57,8 +58,13 @@ export function CommentInput({ onSend }: { onSend: (content: string) => void }) 
 };
 
 // botEdit页的项目输入框
-export function EditSelect({ title, name }: { title: string; name: string }) {
-    const [value, setValue] = React.useState('');
+export function EditSelect({ title, name, defaultSelect }: { title: string; name: string, defaultSelect: string}) {
+    const [value, setValue] = React.useState(defaultSelect);
+
+    useEffect(() => {
+        setValue(defaultSelect);
+    }
+    , [defaultSelect]);
 
     const handleChange = (event: SelectChangeEvent) => {
         setValue(event.target.value as string);
@@ -93,6 +99,55 @@ export function EditSelect({ title, name }: { title: string; name: string }) {
                         <MenuItem value={'kimiAI'}>kimiAI</MenuItem>
                     </Select>
                 </FormControl>
+            </Grid>
+        </Grid>
+    );
+}
+
+export function OneFewShotInput
+    ({
+        index,
+        select, 
+        content,
+        onFewShotChange,
+        handleDelete
+    } : {
+        index: number,
+        select: string, 
+        content: string,
+        onFewShotChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
+        handleDelete: (index: number) => void
+    }){
+
+    const context = React.useContext(LanguageContext);
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        i18n.changeLanguage(context?.language);
+    }, [context?.language, i18n]);
+
+    return (
+        <Grid container spacing={2}>
+            <Grid item xs={1}>
+                <div className='oneprompt-element'>
+                    <IconButton
+                        sx={{ backgroundColor: 'secondary.main' }}
+                        onClick={() => handleDelete(index)}
+                    >
+                        <RemoveIcon />
+                    </IconButton>
+                </div>
+            </Grid>
+            <Grid item xs={11}>
+                <EditLayout title={select}>
+                    <BasicInput
+                        placeholder={t('Prompt for this item')}
+                        name='oneFewShot'
+                        value={content}
+                        onChange={onFewShotChange}
+                        required
+                    />
+                </EditLayout>
             </Grid>
         </Grid>
     );
