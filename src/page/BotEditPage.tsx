@@ -14,7 +14,7 @@ import { botEditInfo, fewShot, getBotEditInfo } from '../service/BotEdit';
 const BotEditPage = ({edit} : {edit: boolean}) => {
     const context = React.useContext(LanguageContext);
     const { t, i18n } = useTranslation();
-    
+
     useEffect(() => {
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
@@ -42,6 +42,7 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
     const [fewShots, setFewShots] = useState<fewShot[]>([]);
     const [promptCheck, setPromptCheck] = useState<boolean>(false);
     const [publishCheck, setPublishCheck] = useState<boolean>(false);
+
     const [promptKeys, setPromptKeys] = useState<string[]>([]);
 
     const initInfo = async () => {
@@ -64,8 +65,8 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
             detail: { value: string };
         };
 
-        const name = target.name.value; 
-        const description = target.description.value; 
+        const name = target.name.value;
+        const description = target.description.value;
         const api = target.api.value;
         const detail = target.detail.value;
 
@@ -106,9 +107,8 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
     }, [fewShots]);
 
     return [
-        <Navigator/>,
         <div className='main-container bot-edit-container'>
-             <form onSubmit={onSubmit}>
+            <form onSubmit={onSubmit}>
 
                 <BotEditBasicPart  
                     avatarImg={avatarImg} 
@@ -127,7 +127,7 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
                     setFewShots={setFewShots}
                 />
 
-                <Divider style={{marginTop:'20px'}}/>
+                <Divider style={{ marginTop: '20px' }} />
 
                 <BotEditMarketPart
                     publishCheck={publishCheck}
@@ -137,11 +137,11 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
                     defaultDetail={botEditInfo.detail}
                 />
 
-                <Button 
+                <Button
                     type="submit"
-                    size='large' 
-                    variant="contained" 
-                    sx={{backgroundColor: 'primary.main'}}
+                    size='large'
+                    variant="contained"
+                    sx={{ backgroundColor: 'primary.main' }}
                 >
                     {t('Submit')}
                 </Button>

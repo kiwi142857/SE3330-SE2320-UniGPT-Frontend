@@ -1,5 +1,4 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import BotChatPage from '../page/BotChatPage';
 import BotDetailPage from '../page/BotDetailPage';
 import BotEditPage from '../page/BotEditPage';
@@ -7,51 +6,66 @@ import HomePage from '../page/HomePage';
 import LoginPage from '../page/LoginPage';
 import MarketPage from '../page/MarketPage';
 import ProfilePage from '../page/ProfilePage';
+import LoginPage from '../page/LoginPage';
+import Navigator from './Navigator';
+
+import {
+    createBrowserRouter,
+    RouterProvider,
+    Navigate,
+    Outlet
+} from "react-router-dom";
+
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element:
+            <div>
+                <Navigator />
+                <Outlet />
+            </div>,
+        children: [
+            {
+                index: true,
+                element: <HomePage />,
+            },
+            {
+                path: "/botchat",
+                element: <BotChatPage />
+            },
+            {
+                path: "/market",
+                element: <MarketPage />
+            },
+            {
+                path: "/botdetail/:id",
+                element: <BotDetailPage />
+            },
+            {
+                path: "/profile",
+                element: <ProfilePage />
+            },
+            {
+                path: "/botcreate",
+                element: <BotEditPage edit={false}/>
+            },
+            {
+                path: "/botedit/:id",
+                element: <BotEditPage edit={true}/>
+            },
+            {
+                path: "/login",
+                element: <LoginPage />
+            }
+        ],
+    }
+]);
 
 // react路由，根据url显示不同的页面
 const AppRouter = () => {
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route
-                    path="/"
-                    element={<HomePage />}
-                    index
-                />
-                <Route
-                    path="/botchat"
-                    element={<BotChatPage />}
-                />
-                <Route
-                    path="/market"
-                    element={<MarketPage />}
-                />
-                <Route
-                    path="/botdetail/:id"
-                    element={<BotDetailPage />}
-                />
-                <Route
-                    path="/profile"
-                    element={<ProfilePage />}
-                />
-                <Route
-                    path="/botcreate"
-                    element={<BotEditPage edit={false}/>}
-                />
-                <Route
-                    path="/botedit/:id"
-                    element={<BotEditPage edit={true}/>}
-                />
-                <Route
-                    path="/*"
-                    element={<HomePage />}
-                />
-                <Route
-                    path="/login"
-                    element={<LoginPage />}
-                />
-            </Routes>
-        </BrowserRouter>
+        <RouterProvider router={router} />
     );
 }
 

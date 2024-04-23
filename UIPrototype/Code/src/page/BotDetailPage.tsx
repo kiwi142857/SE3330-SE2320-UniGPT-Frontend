@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 import BotCarousel from '../components/BotCarousel';
 import BotDetailCard from '../components/BotDetailCard';
 import { CommentInput } from '../components/Inputs';
-import Navigator from '../components/Navigator';
 import OneChat from '../components/OneChat';
 import { getBotComments, getBotDetail } from '../service/BotDetail';
 
@@ -61,7 +60,6 @@ const BotDetailPage: React.FC = () => {
     }, [id]);
 
     return [
-        <Navigator />,
         <div className="main-container bot-detail-container">
 
             <BotDetailCard
