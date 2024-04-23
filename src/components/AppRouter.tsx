@@ -6,14 +6,12 @@ import HomePage from '../page/HomePage';
 import LoginPage from '../page/LoginPage';
 import MarketPage from '../page/MarketPage';
 import ProfilePage from '../page/ProfilePage';
-import LoginPage from '../page/LoginPage';
 import Navigator from './Navigator';
 
 import {
-    createBrowserRouter,
+    Outlet,
     RouterProvider,
-    Navigate,
-    Outlet
+    createBrowserRouter
 } from "react-router-dom";
 
 
