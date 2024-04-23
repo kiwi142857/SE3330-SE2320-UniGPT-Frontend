@@ -3,6 +3,7 @@ import BotChatPage from '../page/BotChatPage';
 import BotDetailPage from '../page/BotDetailPage';
 import BotEditPage from '../page/BotEditPage';
 import HomePage from '../page/HomePage';
+import LoginPage from '../page/LoginPage';
 import MarketPage from '../page/MarketPage';
 import ProfilePage from '../page/ProfilePage';
 import LoginPage from '../page/LoginPage';
@@ -46,8 +47,12 @@ const router = createBrowserRouter([
                 element: <ProfilePage />
             },
             {
-                path: "/botedit",
-                element: <BotEditPage />
+                path: "/botcreate",
+                element: <BotEditPage edit={false}/>
+            },
+            {
+                path: "/botedit/:id",
+                element: <BotEditPage edit={true}/>
             },
             {
                 path: "/login",

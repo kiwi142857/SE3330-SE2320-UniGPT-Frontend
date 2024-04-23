@@ -17,15 +17,24 @@ type BasicInputProps = {
 
     // 传入内部TextField的value
     value?: any;
+
+    defaultValue?: any;
+
+    maxRows?: number;
+
+    multiline?: boolean;
 };
 
 const BasicInput: React.FC<BasicInputProps> =
     ({
-         placeholder,
-         name,
-         required = false ,
-         onChange,
-         value,
+        placeholder,
+        name,
+        required = false ,
+        onChange,
+        value,
+        defaultValue,
+        maxRows = 5,
+        multiline = true
     }) => {
 
     return (
@@ -35,9 +44,10 @@ const BasicInput: React.FC<BasicInputProps> =
             placeholder={placeholder}
             InputProps={{className: 'basic-input'}}
             style={{width: '100%'}}
-            multiline
-            maxRows={5}
+            multiline={multiline}
+            maxRows={maxRows}
             value={value}
+            defaultValue={defaultValue}
             onChange={onChange ?? (()=>{})}
         />
     );
