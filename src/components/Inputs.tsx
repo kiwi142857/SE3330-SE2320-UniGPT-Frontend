@@ -60,6 +60,7 @@ export function CommentInput({ onSend }: { onSend: (content: string) => void }) 
     );
 };
 
+// botEdit页的markDown输入框
 export function MarkdownInput
     ({
         placeholder,
@@ -131,7 +132,7 @@ export function MarkdownInput
         ];
     }
 
-// botEdit页的项目输入框
+// botEdit页的baseModel选项框
 export function EditSelect
     ({ 
         title, 
@@ -187,6 +188,7 @@ export function EditSelect
         );
     }
 
+// botEdit页的promptList中的few-shot
 export function OneFewShotInput
     ({
         index,

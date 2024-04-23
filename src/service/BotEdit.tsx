@@ -24,12 +24,17 @@ export async function getBotEditInfo(id: string): Promise<botEditInfo> {
 
     let botDetail = {
         "name": "aaa",
-        "avatar": '/assets/bot-default.png',
+        "avatar": '/assets/bot6.png',
         "description": "bbbb",
         "baseModelAPI": 'GPT-4',
         "isPublished": true,
         "detail": "cccccccccccccccccccccccccccccc",
-        "photos": [],
+        "photos": [
+          '/assets/bot-detail-1.png',
+          '/assets/bot-detail-2.png',
+          '/assets/bot-detail-3.png',
+          '/assets/bot-detail-4.png'
+        ],
         "isPrompted": true,
         "promptChats": [
             {
@@ -60,4 +65,8 @@ export async function getBotEditInfo(id: string): Promise<botEditInfo> {
     }
 
     return botDetail;
+}
+
+export async function postBotEditInfo(id: string, info: botEditInfo): Promise<void> {
+    
 }

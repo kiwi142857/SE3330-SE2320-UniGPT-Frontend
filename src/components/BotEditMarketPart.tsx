@@ -1,14 +1,11 @@
-import { Button, Checkbox, Grid, Typography } from '@mui/material';
+import RemoveIcon from '@mui/icons-material/Remove';
+import { Button, Checkbox, Grid, IconButton, Typography } from '@mui/material';
 import React, { ChangeEvent, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import '../css/BotEditPage.css';
 import { LanguageContext } from '../provider/LanguageProvider';
 import BasicInput from './BasicInput';
 import EditLayout from './EditLayout';
-
-interface image{
-    name: string;
-    src: string;
-};
 
 function BotEditMarketPart(
     {
@@ -99,11 +96,25 @@ function BotEditMarketPart(
                                 </Typography>
                             </Grid>
                             <Grid item xs={4}>
-                                {photoImgs.map((image, index) => (
-                                    <div key={index} className='edit-photo-container'>
-                                        <img src={image} style={{width: '300px'}} />
-                                    </div>
-                                ))}
+                                {photoImgs.map((image, index) => [
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={1}>
+                                            <div className='oneprompt-element'>
+                                                <IconButton
+                                                    sx={{ backgroundColor: 'secondary.main' }}
+                                                    onClick={() => setPhotoImgs(photoImgs.filter((_, i) => i !== index))}
+                                                >
+                                                    <RemoveIcon />
+                                                </IconButton>
+                                            </div>
+                                        </Grid>
+                                        <Grid item xs={11}>
+                                            <div key={index} className='edit-photo-container'>
+                                                <img src={image} style={{width: '100%'}} />
+                                            </div>
+                                        </Grid>
+                                    </Grid>
+                                ])}
                                 <br/>
                                 <Button 
                                     variant="contained" 

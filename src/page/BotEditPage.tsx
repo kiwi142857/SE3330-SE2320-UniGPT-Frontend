@@ -8,7 +8,7 @@ import Navigator from '../components/Navigator';
 import '../css/App.css';
 import '../css/BotEditPage.css';
 import { LanguageContext } from "../provider/LanguageProvider";
-import { PromptType, botEditInfo, fewShot, getBotEditInfo } from '../service/BotEdit';
+import { PromptType, botEditInfo, fewShot, getBotEditInfo, postBotEditInfo } from '../service/BotEdit';
 
 // bot创建/修改页
 
@@ -56,7 +56,6 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
     const [publishCheck, setPublishCheck] = useState<boolean>(false);
 
     const setInfo = async () => {
-        console.log('setInfo');
         let info = await getBotEditInfo("1")
         setBotEditInfo(info);
         setAvatarImg(info.avatar);
@@ -74,27 +73,34 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
             name: { value: string };
             description: { value: string };
             api: { value: string };
-
+            detail: { value: string };
         };
 
         const name = target.name.value; 
         const description = target.description.value; 
         const api = target.api.value;
+        const detail = target.detail.value;
 
-        if (promptCheck && items.length === 0) {
-            alert('Please add at least one item when prompt check is enabled.');
-            return;
-        }
-
-        console.log(`name:${name}, description:${description}`, `api:${api}`);
-
-        items.forEach((item, index) => {
-            console.log(`item${index}: ${item.itemName}, prompt${index}: ${item.prompt}`);
+        setBotEditInfo({
+            name: name,
+            avatar: avatarImg,
+            description: description,
+            baseModelAPI: api,
+            isPublished: publishCheck,
+            detail: detail,
+            photos: photoImgs,
+            isPrompted: promptCheck,
+            promptChats: fewShots,
+            promptKeys: botEditInfo.promptKeys
         });
 
-        setTimeout(() => {
-            window.location.href = '/botchat';
-        }, 1000);
+        console.log(botEditInfo);
+
+        postBotEditInfo("1", botEditInfo);
+
+        // setTimeout(() => {
+        //     window.location.href = '/botchat';
+        // }, 1000);
     };
 
     return [
