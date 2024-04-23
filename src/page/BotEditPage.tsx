@@ -8,15 +8,9 @@ import Navigator from '../components/Navigator';
 import '../css/App.css';
 import '../css/BotEditPage.css';
 import { LanguageContext } from "../provider/LanguageProvider";
-import { PromptType, botEditInfo, fewShot, getBotEditInfo, postBotEditInfo } from '../service/BotEdit';
+import { botEditInfo, fewShot, getBotEditInfo } from '../service/BotEdit';
 
 // bot创建/修改页
-
-interface item {
-    itemName: string;
-    prompt: string;
-}
-
 const BotEditPage = ({edit} : {edit: boolean}) => {
     const context = React.useContext(LanguageContext);
     const { t, i18n } = useTranslation();
@@ -27,7 +21,7 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
 
     useEffect(() => {
         if (edit) {
-            setInfo();
+            initInfo();
         }
     }, [edit]);
 
@@ -45,25 +39,19 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
     });
     const [avatarImg, setAvatarImg] = useState<string>('/assets/bot-default.png');
     const [photoImgs, setPhotoImgs] = useState<string[]>([]);
-    const [items, setItems] = useState<item[]>([]);
-    const [fewShots, setFewShots] = useState<fewShot[]>([
-        {
-            type: PromptType.SYSTEM,
-            content: ''
-        }
-    ]);
+    const [fewShots, setFewShots] = useState<fewShot[]>([]);
     const [promptCheck, setPromptCheck] = useState<boolean>(false);
     const [publishCheck, setPublishCheck] = useState<boolean>(false);
+    const [promptKeys, setPromptKeys] = useState<string[]>([]);
 
-    const setInfo = async () => {
+    const initInfo = async () => {
         let info = await getBotEditInfo("1")
         setBotEditInfo(info);
         setAvatarImg(info.avatar);
         setPhotoImgs(info.photos);
         setPromptCheck(info.isPrompted);
-        //setItems
-        setFewShots(info.promptChats);
         setPublishCheck(info.isPublished);
+        setFewShots(info.promptChats);
     }
 
     const onSubmit = (event: React.FormEvent) => {
@@ -81,7 +69,7 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
         const api = target.api.value;
         const detail = target.detail.value;
 
-        setBotEditInfo({
+        let newInfo : botEditInfo = {
             name: name,
             avatar: avatarImg,
             description: description,
@@ -91,17 +79,31 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
             photos: photoImgs,
             isPrompted: promptCheck,
             promptChats: fewShots,
-            promptKeys: botEditInfo.promptKeys
-        });
+            promptKeys: promptKeys
+        };
 
-        console.log(botEditInfo);
+        console.log(newInfo);
 
-        postBotEditInfo("1", botEditInfo);
+        // postBotEditInfo("1", botEditInfo);
 
         // setTimeout(() => {
         //     window.location.href = '/botchat';
         // }, 1000);
     };
+
+    useEffect(() => {
+        const regex = /\+\+\{(.+?)\}/g;
+        let newPromptKeys: string[] = [];
+
+        fewShots.forEach(fewShot => {
+            let match;
+            while ((match = regex.exec(fewShot.content)) !== null) {
+                newPromptKeys.push(match[1]);
+            }
+        });
+
+        setPromptKeys(newPromptKeys);
+    }, [fewShots]);
 
     return [
         <Navigator/>,
@@ -120,8 +122,7 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
                 <BotEditPromptPart
                     promptCheck={promptCheck}
                     setPromptCheck={setPromptCheck}
-                    items={items}
-                    setItems={setItems}
+                    promptKeys={promptKeys}
                     fewShots={fewShots}
                     setFewShots={setFewShots}
                 />

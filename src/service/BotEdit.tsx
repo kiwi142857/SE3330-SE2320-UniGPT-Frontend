@@ -39,7 +39,7 @@ export async function getBotEditInfo(id: string): Promise<botEditInfo> {
         "promptChats": [
             {
               "type": PromptType.SYSTEM,
-              "content": "you are a bot."
+              "content": "you are a bot expert at math, your name is ++{bot name}."
             },
             {
               "type": PromptType.USER,
@@ -57,10 +57,14 @@ export async function getBotEditInfo(id: string): Promise<botEditInfo> {
                 "type": PromptType.BOT,
                 "content": "1 + 1 = 2"
             },
+            {
+              "type": PromptType.USER,
+              "content": "I want to ask ++{question}"
+            },
             
         ],
         "promptKeys": [
-          "aaa", "bbb", "ccc", "ddd", "eee"
+          "bot name","question"
         ]
     }
 

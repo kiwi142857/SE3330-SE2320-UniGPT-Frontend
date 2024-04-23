@@ -1,9 +1,12 @@
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import React, { useEffect } from 'react';
+import { renderToString } from 'react-dom/server';
 import Vditor from 'vditor';
 import 'vditor/dist/index.css';
 
 function MdEditor({ value, onChange } : { value: string, onChange: (event: React.ChangeEvent<HTMLInputElement>) => void}) {
     useEffect(() => {
+        const addIconSvgString = renderToString(<AddCircleIcon />);
         const vditor = new Vditor('vditor', {
             height :360,
             cache:{
@@ -12,6 +15,16 @@ function MdEditor({ value, onChange } : { value: string, onChange: (event: React
             value: value,
             mode: "sv",
             toolbar: [
+                {
+                    name: "add-prompt",
+                    tipPosition: "ne",
+                    tip: "Add promptKey",
+                    icon: addIconSvgString,
+                    click: () => {
+                        vditor.insertValue(' ++{} ');
+                    },
+                },
+                "|",
                 "emoji",
                 "headings",
                 "bold",

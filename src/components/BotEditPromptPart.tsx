@@ -5,28 +5,22 @@ import { useTranslation } from 'react-i18next';
 import '../css/BotEditPage.css';
 import { LanguageContext } from '../provider/LanguageProvider';
 import { PromptType, fewShot } from '../service/BotEdit';
+import BasicInput from './BasicInput';
 import EditLayout from './EditLayout';
-import { MarkdownInput, OneFewShotInput, OnePromptInput } from './Inputs';
-
-interface item {
-    itemName: string;
-    prompt: string;
-}
+import { MarkdownInput, OneFewShotInput } from './Inputs';
 
 function BotEditPromptPart(
     {
         promptCheck, 
         setPromptCheck, 
-        items, 
-        setItems,
+        promptKeys,
         fewShots,
         setFewShots
     } :
     {
         promptCheck: boolean, 
         setPromptCheck: React.Dispatch<React.SetStateAction<boolean>>, 
-        items: item[], 
-        setItems: React.Dispatch<React.SetStateAction<item[]>> 
+        promptKeys: string[],
         fewShots: fewShot[],
         setFewShots: React.Dispatch<React.SetStateAction<fewShot[]>>
     }
@@ -41,24 +35,28 @@ function BotEditPromptPart(
     const onPromptCheck = (event: ChangeEvent<HTMLInputElement>) => {
         setPromptCheck(event.target.checked);
         if (!event.target.checked) {
-            setItems([]);
             setFewShots([]);
         } else {
-            setItems([{itemName: '', prompt: ''}]);
-            setFewShots([{type: PromptType.SYSTEM, content: ''}, {type: PromptType.USER, content: ''}, {type: PromptType.BOT, content: ''}]);
+            setFewShots([{type: PromptType.SYSTEM, content: ''}, 
+                {type: PromptType.USER, content: ''}, 
+                {type: PromptType.BOT, content: ''},
+                {type: PromptType.USER, content: ''},
+            ]);
         }
     }
 
-    const onItemNameChange = (index: number, newValue: string) => {
-        setItems(items.map((item, i) => i === index ? {...item, itemName: newValue} : item));
-    };
-    
-    const onPromptChange = (index: number, newValue: string) => {
-        setItems(items.map((item, i) => i === index ? {...item, prompt: newValue} : item));
-    };
-
     const onFewShotChange = (index: number, newValue: string) => {
         setFewShots(fewShots.map((fewShot, i) => i === index ? {...fewShot, content: newValue} : fewShot));
+    }
+
+    const handleFewShotAdd = () => {
+        const newFewShots = [
+            ...fewShots.slice(0, fewShots.length - 1),
+            {type: PromptType.USER, content: ''},
+            {type: PromptType.BOT, content: ''},
+            fewShots[fewShots.length - 1]
+        ];
+        setFewShots(newFewShots);
     }
 
     return (
@@ -90,7 +88,7 @@ function BotEditPromptPart(
                     <EditLayout title={t('Few-shot')}>
                         <div className='prompts-list-container'>
                             {fewShots.map((fewShot, index) => {
-                                if (fewShot.type === PromptType.USER) {
+                                if (fewShot.type === PromptType.USER && index !== fewShots.length - 1) {
                                     return <OneFewShotInput
                                         key={index}
                                         index={index}
@@ -114,7 +112,7 @@ function BotEditPromptPart(
                                 <Grid item xs={1}>
                                     <IconButton
                                         sx={{backgroundColor: 'secondary.main'}}
-                                        onClick={() => setFewShots([...fewShots, {type: PromptType.USER, content: ''}, {type: PromptType.BOT, content: ''}])}
+                                        onClick={() => handleFewShotAdd()}
                                     >
                                         <AddIcon />
                                     </IconButton>
@@ -123,29 +121,31 @@ function BotEditPromptPart(
                         </div>
                     </EditLayout>
 
-                    <EditLayout title={t('User-Ask')}>
-                            <div className='prompts-list-container'>
-                                {items.map((item, index) => (
-                                    <OnePromptInput 
-                                        key={index}
-                                        index={index} 
-                                        item={item} 
-                                        onItemNameChange={(event) => onItemNameChange(index, event.target.value)} 
-                                        onPromptChange={(event) => onPromptChange(index, event.target.value)}
-                                        handleDelete={() => setItems(items.filter((_, i) => i !== index))}
-                                    />
-                                ))}
-                                <Grid container spacing={2}>
-                                    <Grid item xs={1}>
-                                        <IconButton
-                                            sx={{backgroundColor: 'secondary.main'}}
-                                            onClick={() => setItems([...items, {itemName: '', prompt: ''}])}
-                                        >
-                                            <AddIcon />
-                                        </IconButton>
+                    <EditLayout title={t('User Ask')}>
+                        <MarkdownInput
+                            placeholder={t("What User will Ask for your assistant")}
+                            name='user-ask'
+                            value={fewShots[fewShots.length - 1]?.content}
+                            onChange={(event) => onFewShotChange(fewShots.length - 1, event.target.value)}
+                        />
+                    </EditLayout>
+
+                    <EditLayout title={t('Prompt Key')}>
+                        {
+                            <Grid container spacing={2}>
+                                {promptKeys.map((key, index) => (
+                                    <Grid item xs={2}>
+                                        <BasicInput
+                                            key={index}
+                                            placeholder=""
+                                            name='prompt-key'
+                                            value={key}
+                                            required
+                                        />
                                     </Grid>
-                                </Grid>
-                            </div>
+                                ))}
+                            </Grid>
+                        }
                     </EditLayout>
                 </div>
             )}
