@@ -1,21 +1,21 @@
-import * as React from 'react';
+import { Favorite } from '@mui/icons-material';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import { Divider } from '@mui/material';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import BotCard from './BotCard';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import Link from '@mui/material/Link';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
-import GetBotInfo from '../service/BotInfo';
-import { Favorite } from '@mui/icons-material';
-import { Divider } from '@mui/material';
-import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
-import { useTranslation } from 'react-i18next';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
+import * as React from 'react';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { LanguageContext } from "../provider/LanguageProvider";
+import GetBotInfo from '../service/BotInfo';
+import BotCard from './BotCard';
 
 
 export type botListType = { Favorite: string, Recent: string; };
@@ -50,7 +50,7 @@ export function HomeCreateCard() {
     }, [context?.language, i18n]);
 
     return (
-        <Link href='/botedit' style={{ textDecoration: 'none' }} >
+        <Link href='/botcreate' style={{ textDecoration: 'none' }} >
             <Card elevation={0}>
                 <AddCircleOutlineIcon style={{ width: '30%', height: '30%', marginTop:'20%', color:'#666666' }} />
                 <CardContent>
