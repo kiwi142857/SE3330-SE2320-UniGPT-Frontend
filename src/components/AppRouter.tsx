@@ -14,6 +14,7 @@ import {
     Navigate,
     Outlet
 } from "react-router-dom";
+import { Home } from '@mui/icons-material';
 
 
 const router = createBrowserRouter([
@@ -52,7 +53,12 @@ const router = createBrowserRouter([
             {
                 path: "/login",
                 element: <LoginPage />
+            },
+            {
+                path: "/home",
+                element: <HomePage />
             }
+
         ],
     }
 ]);

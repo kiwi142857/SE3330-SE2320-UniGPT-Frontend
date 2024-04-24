@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Navigator from '../components/Navigator';
 import { useLocation } from 'react-router-dom';
 import '../css/LoginInPage.css';
+import { useNavigate } from 'react-router-dom';
 import { login, LoginResult } from '../service/auth'
 
 const LoginPage: React.FC = () => {
@@ -13,11 +14,18 @@ const LoginPage: React.FC = () => {
 
     const [loginResult, setLoginResult] = useState<LoginResult | null>(null);
 
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchLogin = async () => {
             if (code) {
                 const result = await login(code);
                 setLoginResult(result);
+                if (result.ok) {
+                    navigate('/home');
+                }
+                else {
+                    alert('login failed');
+                }
             }
         };
         fetchLogin();
