@@ -15,6 +15,9 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LanguageContext } from "../provider/LanguageProvider";
 import GetBotInfo from '../service/BotInfo';
+import { getUserFavoriteBots } from '../service/user';
+import { getUerUsedBots } from '../service/user';
+import { useState } from 'react';
 import BotCard from './BotCard';
 
 
@@ -116,8 +119,25 @@ export interface BotListProps {
     type: 'Favorite' | 'Recently used';
 }
 
-export default function BotList({ type }: BotListProps) {
-    const ids = ['1', '2', '3', '4', '5', '6'];
+
+export default function BotList({ type, userId, page, pageSize }: { type: 'Recently used' | 'Favorite', userId: number, page: number, pageSize: number }) {
+    
+    const [bots, setBots] = useState([]);
+
+    useEffect(() => {
+        const fetchBots = async () => {
+            let response;
+            if(type == "Recently used")
+                response = await getUerUsedBots(userId, page, pageSize);
+            else
+                response = await getUserFavoriteBots(userId, page, pageSize);
+                
+            setBots(response.bots);
+        };
+        fetchBots();
+    }, []);
+
+    console.log(bots);
     return (
         <Box sx={{ flexGrow: 1 }} style={{ marginLeft: type === 'Favorite' ? '60px' : '0', marginRight: type === 'Favorite' ? '0' : '80px' }}>
             <Grid container spacing={1}>
@@ -125,9 +145,9 @@ export default function BotList({ type }: BotListProps) {
                     <Grid item xs={4}>
                     {type === 'Favorite' ? <HomeMarketCard /> : <HomeCreateCard></HomeCreateCard>}
                     </Grid>
-                    {ids.map(id => (
-                        <Grid item xs={4} key={id}>
-                            <BotCard BotInfo={GetBotInfo(id)} />
+                    {bots.map(bot => (
+                        <Grid item xs={4} key={bot.id}>
+                            <BotCard BotInfo={bot} />
                         </Grid>
                     ))}
                 </Grid>

@@ -4,9 +4,17 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import BotList, { FavoriteHeader, RecentUsedHeader } from "../components/BotList";
 import '../css/Home.css';
+import { useSearchParams } from "react-router-dom";
 import { LanguageContext } from "../provider/LanguageProvider";
 
 const HomePage: React.FC = () => {
+
+    const [searchParams] = useSearchParams();
+    const pageIndexStr = searchParams.get("pageIndex");
+    const pageSizeStr = searchParams.get("pageSize");
+    const pageIndex = pageIndexStr != null ? Number.parseInt(pageIndexStr) : 0;
+    const pageSize = pageSizeStr != null ? Number.parseInt(pageSizeStr) : 10;
+
     const context = React.useContext(LanguageContext);
     const { t, i18n } = useTranslation();
 
@@ -25,11 +33,11 @@ const HomePage: React.FC = () => {
             <Grid container spacing={8} className='bot-box' >
                 <Grid item xs={6}>
                     <FavoriteHeader></FavoriteHeader>
-                    <BotList type='Favorite'></BotList>
+                    <BotList type='Favorite' page={pageIndex} pageSize={pageSize} userId={3}></BotList>
                 </Grid>
                 <Grid item xs={6}>
                     <RecentUsedHeader></RecentUsedHeader>
-                    <BotList type="Recently used"></BotList>
+                    <BotList type="Recently used" page={pageIndex} pageSize={pageSize} userId={3}></BotList>
                 </Grid>
             </Grid>
         </div>
