@@ -1,4 +1,4 @@
-import { PREFIX, getJson } from './common';
+import { PREFIX, del, getJson, put } from './common';
 
 export interface botDetailInfo{
     id: string;
@@ -11,8 +11,17 @@ export interface botDetailInfo{
     photos: string[] | [];
     likeNumber: number;
     starNumber: number;
-  }
+    liked: boolean;
+    starred: boolean;
+    asCreator: boolean;
+}
   
+export interface Comment {
+    id: string;
+    name: string;
+    avatar: string;
+    content: string;
+}
 
 export async function getBotDetail(id: string): Promise<botDetailInfo | null> {
 
@@ -21,6 +30,21 @@ export async function getBotDetail(id: string): Promise<botDetailInfo | null> {
 
     try{
         res = await getJson(url);
+        // console.log(res);
+    } catch (e) {
+        console.error(e);
+        res = null;
+    }
+
+    return res;
+}
+
+export async function likeBot(id: string) {
+    const url = `${PREFIX}/bots/${id}/likes`;
+    let res;
+
+    try{
+        res = await put(url, {});
         console.log(res);
     } catch (e) {
         console.error(e);
@@ -30,6 +54,50 @@ export async function getBotDetail(id: string): Promise<botDetailInfo | null> {
     return res;
 }
 
+export async function disLikeBot(id: string) {
+    const url = `${PREFIX}/bots/${id}/likes`;
+    let res;
+
+    try{
+        res = await del(url, {});
+        console.log(res);
+    } catch (e) {
+        console.error(e);
+        res = null;
+    }
+
+    return res;
+}
+
+export async function starBot(id: string) {
+    const url = `${PREFIX}/bots/${id}/stars`;
+    let res;
+
+    try{
+        res = await put(url, {});
+        console.log(res);
+    } catch (e) {
+        console.error(e);
+        res = null;
+    }
+
+    return res;
+}
+
+export async function unStarBot(id: string) {
+    const url = `${PREFIX}/bots/${id}/stars`;
+    let res;
+
+    try{
+        res = await del(url, {});
+        console.log(res);
+    } catch (e) {
+        console.error(e);
+        res = null;
+    }
+
+    return res;
+}
 
 export async function getBotComments(id: string) {
     let comments = {

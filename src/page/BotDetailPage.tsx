@@ -7,18 +7,13 @@ import BotCarousel from '../components/BotCarousel';
 import BotDetailCard from '../components/BotDetailCard';
 import { CommentInput } from '../components/Inputs';
 import OneChat from '../components/OneChat';
-import { botDetailInfo, getBotComments, getBotDetail } from '../service/BotDetail';
+import { Comment, botDetailInfo, getBotComments, getBotDetail } from '../service/BotDetail';
 
 import '../css/App.css';
 import '../css/BotDetailPage.css';
 
 // 评论
-interface Comment {
-    id: string;
-    name: string;
-    avatar: string;
-    content: string;
-}
+
 
 // bot详情页
 const BotDetailPage: React.FC = () => {
@@ -56,8 +51,11 @@ const BotDetailPage: React.FC = () => {
                 author={bot?.creator || ''}
                 avatar={bot?.avatar || ''}
                 description={bot?.description || ''}
-                like={bot ? bot.likeNumber.toString() : ''}
-                collect={bot ? bot.starNumber.toString() : ''}
+                likeNumber={bot ? bot.likeNumber.toString() : ''}
+                starNumber={bot ? bot.starNumber.toString() : ''}
+                isLiked={bot?.liked || false}
+                isStarred={bot?.starred || false}
+                isCreator={bot?.asCreator || false}
             />
 
             <BotCarousel photos={bot?.photos || []} />

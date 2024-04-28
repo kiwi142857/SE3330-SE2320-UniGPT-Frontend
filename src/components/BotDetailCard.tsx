@@ -9,19 +9,77 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../css/BotDetailPage.css';
 import { LanguageContext } from "../provider/LanguageProvider";
+import { disLikeBot, likeBot, starBot, unStarBot } from '../service/BotDetail';
 
 // bot详情页的最上方的简介
-const BotDetailCard = ({id, name, author, avatar, description, like, collect}
-    : {id:string ; name:string; author:string; avatar:string; description:string; like:string; collect:string;}) => {
+const BotDetailCard = (
+    {
+        id, 
+        name, 
+        author, 
+        avatar, 
+        description, 
+        likeNumber, 
+        starNumber,
+        isLiked,
+        isStarred,
+        isCreator
+    }
+    : {
+        id:string ; 
+        name:string; 
+        author:string; 
+        avatar:string; 
+        description:string; 
+        likeNumber:string; 
+        starNumber:string;
+        isLiked:boolean;
+        isStarred:boolean;
+        isCreator:boolean;
+
+    }) => {
+    const [liked, setLiked] = React.useState(isLiked);
+    const [starred, setStarred] = React.useState(isStarred);
+    const [localLikeNumber, setLocalLikeNumber] = React.useState(likeNumber);
+    const [localStarNumber, setLocalStarNumber] = React.useState(starNumber);
+
     const context = React.useContext(LanguageContext);
     const { t, i18n } = useTranslation();
+
+    const like = () => {
+        likeBot(id);
+        setLocalLikeNumber((parseInt(localLikeNumber) + 1).toString());
+        setLiked(true);
+    }
+
+    const disLike = () => {
+        disLikeBot(id);
+        setLocalLikeNumber((parseInt(localLikeNumber) - 1).toString());
+        setLiked(false);
+    }
+
+    const star = () => {
+        starBot(id);
+        setLocalStarNumber((parseInt(localStarNumber) + 1).toString());
+        setStarred(true);
+    }
+
+    const unStar = () => {
+        unStarBot(id);
+        setLocalStarNumber((parseInt(localStarNumber) - 1).toString());
+        setStarred(false);
+    }
     
     useEffect(() => {
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
-    
-    const [isLiked, setIsLiked] = React.useState(false);
-    const [isCollected, setIsCollected] = React.useState(false);
+
+    useEffect(() => {
+        setLocalLikeNumber(likeNumber);
+        setLocalStarNumber(starNumber);
+        setLiked(isLiked);
+        setStarred(isStarred);
+    }, [likeNumber, starNumber, isLiked, isStarred]);
 
     return (
         <div className='detail-card-container'>
@@ -47,37 +105,37 @@ const BotDetailCard = ({id, name, author, avatar, description, like, collect}
                     </p>
                 </Typography>
                 <div className='detail-card-btn-group'>
-                    {isLiked ? (
+                    {liked ? (
                             <FavoriteIcon
                                 sx={{color: 'primary.main'}}
                                 fontSize='large'
-                                onClick={() => setIsLiked(false)}
+                                onClick={() => disLike()}
                             />
                         ) : (
                             <FavoriteBorderIcon
                                 sx={{color: 'primary.main'}}
                                 fontSize='large'
-                                onClick={() => setIsLiked(true)}
+                                onClick={() => like()}
                             />
                     )}
                     <span className='detail-card-like'>
-                        {isLiked ? parseInt(like) + 1 : like}
+                        {localLikeNumber}
                     </span>
-                    {isCollected ? (
+                    {starred ? (
                             <StarIcon
                                 sx={{color: 'primary.main'}}
                                 fontSize='large'
-                                onClick={() => setIsCollected(false)}
+                                onClick={() => unStar()}
                             />
                         ) : (
                             <StarBorderIcon
                                 sx={{color: 'primary.main'}}
                                 fontSize='large'
-                                onClick={() => setIsCollected(true)}
+                                onClick={() => star()}
                             />
                     )}
                     <span className='detail-card-collect'>
-                        {isCollected ? parseInt(collect) + 1 : collect}
+                        {localStarNumber}
                     </span>
                     <Button 
                         variant="contained" 
@@ -87,6 +145,17 @@ const BotDetailCard = ({id, name, author, avatar, description, like, collect}
                     >
                         {t('Use')}
                     </Button>
+                    {
+                        isCreator && 
+                        <Button 
+                            variant="contained" 
+                            endIcon={<SendIcon />} 
+                            href={`/botedit/${id}`}
+                            size='large'
+                        >
+                            {t('Edit')}
+                        </Button>
+                    }
                 </div>
             </div>
         </div>
