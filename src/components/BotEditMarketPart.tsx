@@ -20,7 +20,7 @@ function BotEditMarketPart(
         setPublishCheck: React.Dispatch<React.SetStateAction<boolean>>, 
         photoImgs: string[], 
         setPhotoImgs: React.Dispatch<React.SetStateAction<string[]>>
-        defaultDetail: string
+        defaultDetail: string | null
     }
 ) {
     
