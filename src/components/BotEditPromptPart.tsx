@@ -4,7 +4,7 @@ import React, { ChangeEvent, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../css/BotEditPage.css';
 import { LanguageContext } from '../provider/LanguageProvider';
-import { PromptType, fewShot } from '../service/BotEdit';
+import { PromptChatType, fewShot } from '../service/BotEdit';
 import BasicInput from './BasicInput';
 import EditLayout from './EditLayout';
 import { MarkdownInput, OneFewShotInput } from './Inputs';
@@ -37,10 +37,10 @@ function BotEditPromptPart(
         if (!event.target.checked) {
             setFewShots([]);
         } else {
-            setFewShots([{type: PromptType.SYSTEM, content: ''}, 
-                {type: PromptType.USER, content: ''}, 
-                {type: PromptType.BOT, content: ''},
-                {type: PromptType.USER, content: ''},
+            setFewShots([{type: PromptChatType.SYSTEM, content: ''}, 
+                {type: PromptChatType.USER, content: ''}, 
+                {type: PromptChatType.ASSISTANT, content: ''},
+                {type: PromptChatType.USER, content: ''},
             ]);
         }
     }
@@ -52,8 +52,8 @@ function BotEditPromptPart(
     const handleFewShotAdd = () => {
         const newFewShots = [
             ...fewShots.slice(0, fewShots.length - 1),
-            {type: PromptType.USER, content: ''},
-            {type: PromptType.BOT, content: ''},
+            {type: PromptChatType.USER, content: ''},
+            {type: PromptChatType.ASSISTANT, content: ''},
             fewShots[fewShots.length - 1]
         ];
         setFewShots(newFewShots);
@@ -88,25 +88,25 @@ function BotEditPromptPart(
                     <EditLayout title={t('Few-shot')}>
                         <div className='prompts-list-container'>
                             {fewShots.map((fewShot, index) => {
-                                if (fewShot.type === PromptType.USER && index !== fewShots.length - 1) {
+                                if (fewShot.type === PromptChatType.USER && index !== fewShots.length - 1) {
                                     return <OneFewShotInput
                                         key={index}
                                         index={index}
                                         select={t('USER')}
-                                        content={fewShot.content}
+                                        content={fewShot?.content}
                                         onFewShotChange={(event) => onFewShotChange(index, event.target.value)}
                                         handleDelete={() => setFewShots(fewShots.filter((_, i) => i !== index && i !== (index + 1)))}
                                     />
-                                } else if (fewShot.type === PromptType.BOT) {
+                                } else if (fewShot.type === PromptChatType.ASSISTANT && index !== fewShots.length - 1) {
                                     return <OneFewShotInput
                                         key={index}
                                         index={index}
                                         select={t('BOT')}
-                                        content={fewShot.content}
+                                        content={fewShot?.content}
                                         onFewShotChange={(event) => onFewShotChange(index, event.target.value)}
                                         handleDelete={() => setFewShots(fewShots.filter((_, i) => i !== index && i !== (index - 1)))}
                                     />
-                                } 
+                                }
                             })}
                             <Grid container spacing={2}>
                                 <Grid item xs={1}>

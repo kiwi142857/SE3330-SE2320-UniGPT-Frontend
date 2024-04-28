@@ -11,51 +11,59 @@ const BotCarousel = ({ photos }: { photos: string[] }) => {
   let sideGap = '0%';
   let borderRadius = '20px';
     
-  return (
-    <Carousel 
-        showArrows={true}
-        showStatus={false}
-        showThumbs={false}
-    >
-      {photos?.length > 1 ? (
-        photos.map((photo, index, array) => (
-            <div 
-                key={index} 
-                style={{ display: 'flex'}}
-            >
-                <div style={{ 
-                        width: sideGap, 
-                        height: 'auto' 
-                    }} />
-                <img 
-                    src={photo} 
-                    alt='bot' 
-                    style={{ 
-                        width: imageWidth, 
-                        height: 'auto', 
-                        borderRadius: borderRadius
-                    }} 
-                />
-                <div style={{ 
-                        width: centerGap, 
-                        height: 'auto' 
-                    }} />
-                <img 
-                    src={array[(index + 1) % array.length]} 
-                    alt='bot' 
-                    style={{ 
-                        width: imageWidth, 
-                        height: 'auto',
-                        borderRadius: borderRadius 
-                    }} 
-                />
-                <div style={{ 
-                        width: sideGap, 
-                        height: 'auto' 
-                    }} />
-            </div>
-        ))
-      ) : (
+  if (photos && photos.length > 1) {
+    return (
+      <Carousel 
+          showArrows={true}
+          showStatus={false}
+          showThumbs={false}
+      >
+        {photos.map((photo, index, array) => (
+          <div 
+              key={index} 
+              style={{ display: 'flex'}}
+          >
+              <div style={{ 
+                      width: sideGap, 
+                      height: 'auto' 
+                  }} />
+              <img 
+                  src={photo} 
+                  alt='bot' 
+                  style={{ 
+                      width: imageWidth, 
+                      height: 'auto', 
+                      borderRadius: borderRadius
+                  }} 
+              />
+              <div style={{ 
+                      width: centerGap, 
+                      height: 'auto' 
+                  }} />
+              <img 
+                  src={array[(index + 1) % array.length]} 
+                  alt='bot' 
+                  style={{ 
+                      width: imageWidth, 
+                      height: 'auto',
+                      borderRadius: borderRadius 
+                  }} 
+              />
+              <div style={{ 
+                      width: sideGap, 
+                      height: 'auto' 
+                  }} />
+          </div>
+        ))}
+      </Carousel>
+    );
+  } else if (photos && photos.length === 1) {
+    return (
+      <Carousel 
+          showArrows={true}
+          showStatus={false}
+          showThumbs={false}
+      >
         [<div 
             key={0} 
             style={{ display: 'flex'}}
@@ -91,9 +99,11 @@ const BotCarousel = ({ photos }: { photos: string[] }) => {
                         height: 'auto' 
                     }} />
         </div>]
-      )}
-    </Carousel>
-  );
+      </Carousel>
+    );
+  } else {
+    return null;
+  }
 };
 
 export default BotCarousel;

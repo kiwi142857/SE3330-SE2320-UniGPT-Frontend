@@ -1,22 +1,35 @@
+import { PREFIX, getJson } from './common';
 
-export async function getBotDetail(id: string) {
+export interface botDetailInfo{
+    id: string;
+    name: string;
+    creator: string;
+    description: string;
+    detail: string;
+    avatar: string;
+    baseModelAPI: string;
+    photos: string[] | [];
+    likeNumber: number;
+    starNumber: number;
+  }
+  
 
-    let botDetail = {
-        id: '1',
-        name: 'Programming Debug Assistant',
-        author: 'UniGPT official',
-        avatar: '/assets/bot-default.png',
-        description: "The robot can help you debug your code. It can help you find the bug in your code and give you some suggestions.",
-        detail: '还在为代码 bug 重重而烦恼吗？还在与 AI 反复拉扯？代码 debug 小助手 Programming Debug Assistant 助你快速 debug。只需要在表单内粘贴入你的报错代码、报错信息（非必填），填写代码本应当发挥的作用（非必填）、你的 debug 猜想（非必填）、debug 要求（非必填），一键提交，AI 会帮你快速定位问题所在，给出解决方案。除了填写表单之外也可以和AI自由交流。祝各位day day bug-free！',
-        photos: ['/assets/bot-detail-1.png', '/assets/bot-detail-2.png', '/assets/bot-detail-3.png', '/assets/bot-detail-4.png'],
-        like: 100,
-        collect: 100
+export async function getBotDetail(id: string): Promise<botDetailInfo | null> {
+
+    const url = `${PREFIX}/bots/${id}?info=detail`;
+    let res;
+
+    try{
+        res = await getJson(url);
+        console.log(res);
+    } catch (e) {
+        console.error(e);
+        res = null;
     }
 
-    // const res = await get(`/bot/${id}`);
-
-    return botDetail;
+    return res;
 }
+
 
 export async function getBotComments(id: string) {
     let comments = {
