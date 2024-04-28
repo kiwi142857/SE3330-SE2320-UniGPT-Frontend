@@ -1,19 +1,21 @@
 import { Button, Divider } from "@mui/material";
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useParams } from "react-router-dom";
 import BotEditBasicPart from '../components/BotEditBasicPart';
 import BotEditMarketPart from "../components/BotEditMarketPart";
 import BotEditPromptPart from '../components/BotEditPromptPart';
-import Navigator from '../components/Navigator';
 import '../css/App.css';
 import '../css/BotEditPage.css';
 import { LanguageContext } from "../provider/LanguageProvider";
-import { botEditInfo, fewShot, getBotEditInfo } from '../service/BotEdit';
+import { botEditInfo, createBot, fewShot, getBotEditInfo, updateBot } from '../service/BotEdit';
 
 // bot创建/修改页
 const BotEditPage = ({edit} : {edit: boolean}) => {
     const context = React.useContext(LanguageContext);
     const { t, i18n } = useTranslation();
+
+    let {id} = useParams<{id: string}>();
 
     useEffect(() => {
         i18n.changeLanguage(context?.language);
@@ -30,10 +32,10 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
         avatar: '/assets/bot-default.png',
         description: '',
         baseModelAPI: '',
-        isPublished: false,
+        published: false,
         detail: '',
         photos: [],
-        isPrompted: false,
+        prompted: false,
         promptChats: [],
         promptKeys: []
     });
@@ -46,13 +48,18 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
     const [promptKeys, setPromptKeys] = useState<string[]>([]);
 
     const initInfo = async () => {
-        let info = await getBotEditInfo("1")
-        setBotEditInfo(info);
-        setAvatarImg(info.avatar);
-        setPhotoImgs(info.photos);
-        setPromptCheck(info.isPrompted);
-        setPublishCheck(info.isPublished);
-        setFewShots(info.promptChats);
+        if (!id) {
+            return;
+        }
+        let info = await getBotEditInfo(id)
+        if (info) {
+            setBotEditInfo(info);
+            setAvatarImg(info.avatar);
+            setPhotoImgs(info.photos);
+            setPromptCheck(info.prompted);
+            setPublishCheck(info.published);
+            setFewShots(info.promptChats);
+        }
     }
 
     const onSubmit = (event: React.FormEvent) => {
@@ -68,24 +75,36 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
         const name = target.name.value;
         const description = target.description.value;
         const api = target.api.value;
-        const detail = target.detail.value;
+        let detail;
+
+        if (publishCheck) {
+            detail = target.detail.value;
+        } else {
+            detail = null;
+        }
 
         let newInfo : botEditInfo = {
             name: name,
             avatar: avatarImg,
             description: description,
             baseModelAPI: api,
-            isPublished: publishCheck,
+            published: publishCheck,
             detail: detail,
             photos: photoImgs,
-            isPrompted: promptCheck,
+            prompted: promptCheck,
             promptChats: fewShots,
             promptKeys: promptKeys
         };
 
         console.log(newInfo);
 
-        // postBotEditInfo("1", botEditInfo);
+        if (edit) {
+            if (id) {
+                updateBot(id, newInfo);
+            }
+        } else {
+            createBot(newInfo);
+        }
 
         // setTimeout(() => {
         //     window.location.href = '/botchat';
@@ -96,12 +115,15 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
         const regex = /\+\+\{(.+?)\}/g;
         let newPromptKeys: string[] = [];
 
-        fewShots.forEach(fewShot => {
-            let match;
-            while ((match = regex.exec(fewShot.content)) !== null) {
-                newPromptKeys.push(match[1]);
-            }
-        });
+        if (fewShots) {
+            fewShots.forEach((fewShot) => {
+                const content = fewShot.content;
+                let match;
+                while ((match = regex.exec(content)) !== null) {
+                    newPromptKeys.push(match[1]);
+                }
+            });
+        }
 
         setPromptKeys(newPromptKeys);
     }, [fewShots]);

@@ -1,9 +1,11 @@
-export enum PromptType {
-  USER, BOT, SYSTEM
+import { DUMMY_RESPONSE, getJson, post, PREFIX, put } from './common';
+
+export enum PromptChatType {
+  USER, ASSISTANT, SYSTEM
 }
 
 export interface fewShot {
-  type : PromptType;
+  type : PromptChatType;
   content: string;
 }
 
@@ -12,65 +14,54 @@ export interface botEditInfo{
   avatar: string;
   description: string;
   baseModelAPI: string;
-  isPublished: boolean;
-  detail: string;
+  published: boolean;
+  detail: string | null;
   photos: string[] | [];
-  isPrompted: boolean;
+  prompted: boolean;
   promptChats: fewShot[] | [];
   promptKeys: string[] | [];
 }
 
-export async function getBotEditInfo(id: string): Promise<botEditInfo> {
+export async function createBot(data: botEditInfo): Promise<void> {
+    const url = `${PREFIX}/bots`;
+    let res;
 
-    let botDetail = {
-        "name": "aaa",
-        "avatar": '/assets/bot6.png',
-        "description": "bbbb",
-        "baseModelAPI": 'GPT-4',
-        "isPublished": true,
-        "detail": "cccccccccccccccccccccccccccccc",
-        "photos": [
-          '/assets/bot-detail-1.png',
-          '/assets/bot-detail-2.png',
-          '/assets/bot-detail-3.png',
-          '/assets/bot-detail-4.png'
-        ],
-        "isPrompted": true,
-        "promptChats": [
-            {
-              "type": PromptType.SYSTEM,
-              "content": "you are a bot expert at math, your name is ++{bot name}."
-            },
-            {
-              "type": PromptType.USER,
-              "content": "hello?"
-            },
-            {
-              "type": PromptType.BOT,
-              "content": "hello"
-            },
-            {
-                "type": PromptType.USER,
-                "content": "1 + 1 = ? "
-            },
-            {
-                "type": PromptType.BOT,
-                "content": "1 + 1 = 2"
-            },
-            {
-              "type": PromptType.USER,
-              "content": "I want to ask ++{question}"
-            },
-            
-        ],
-        "promptKeys": [
-          "bot name","question"
-        ]
+    try{
+        res = await post(url, data);
+    } catch (e) {
+        console.error(e);
+        res = DUMMY_RESPONSE;
     }
 
-    return botDetail;
+    console.log(res);
+    return res;
 }
 
-export async function postBotEditInfo(id: string, info: botEditInfo): Promise<void> {
-    
+export async function getBotEditInfo(id: string): Promise<botEditInfo | null> {
+    const url = `${PREFIX}/bots/${id}?info=edit`;
+    let res;
+
+    try{
+        res = await getJson(url);
+        // console.log(res);
+    } catch (e) {
+        console.error(e);
+        res = null;
+    }
+
+    return res;
+}
+
+export async function updateBot(id: string, info: botEditInfo): Promise<void> {
+    const url = `${PREFIX}/bots/${id}`;
+    let res;
+
+    try{
+        res = await put(url, info);
+    } catch (e) {
+        console.error(e);
+        res = DUMMY_RESPONSE;
+    }
+
+    return res;
 }

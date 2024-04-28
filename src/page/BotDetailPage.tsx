@@ -7,35 +7,17 @@ import BotCarousel from '../components/BotCarousel';
 import BotDetailCard from '../components/BotDetailCard';
 import { CommentInput } from '../components/Inputs';
 import OneChat from '../components/OneChat';
-import { getBotComments, getBotDetail } from '../service/BotDetail';
+import { Comment, botDetailInfo, getBotComments, getBotDetail } from '../service/BotDetail';
 
 import '../css/App.css';
 import '../css/BotDetailPage.css';
 
-// 并不是bot的全部信息，但是对于应用市场来说够用了
-interface BotDetail {
-    id: string;
-    name: string;
-    author: string;
-    avatar: string;
-    description: string;
-    detail: string;
-    photos: string[];
-    like: number;
-    collect: number;
-}
-
 // 评论
-interface Comment {
-    id: string;
-    name: string;
-    avatar: string;
-    content: string;
-}
+
 
 // bot详情页
 const BotDetailPage: React.FC = () => {
-    const [bot, setBot] = useState<BotDetail | null>(null);
+    const [bot, setBot] = useState<botDetailInfo | null>(null);
     const [comments, setComments] = useState<Comment[] | null>(null);
 
     let { id } = useParams<{ id: string }>();
@@ -43,7 +25,8 @@ const BotDetailPage: React.FC = () => {
     const getBot = async () => {
         if (id) {
             const bot = await getBotDetail(id);
-            setBot(bot);
+            if (bot)
+                setBot(bot);
         }
     }
 
@@ -65,11 +48,14 @@ const BotDetailPage: React.FC = () => {
             <BotDetailCard
                 id={bot?.id || ''}
                 name={bot?.name || ''}
-                author={bot?.author || ''}
+                author={bot?.creator || ''}
                 avatar={bot?.avatar || ''}
                 description={bot?.description || ''}
-                like={bot?.like.toString() || ''}
-                collect={bot?.collect.toString() || ''}
+                likeNumber={bot ? bot.likeNumber.toString() : ''}
+                starNumber={bot ? bot.starNumber.toString() : ''}
+                isLiked={bot?.liked || false}
+                isStarred={bot?.starred || false}
+                isCreator={bot?.asCreator || false}
             />
 
             <BotCarousel photos={bot?.photos || []} />
