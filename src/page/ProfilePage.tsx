@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Tab, Tabs, Box, Grid } from '@mui/material';
+import { Tab, Tabs } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from "react-router-dom";
 import UserCard from '../components/UserCard';
-import BotCard from '../components/BotCard';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { getUserCreatedBots, getUserFavoriteBots, getMe, putUser, User } from '../service/user';
-import { MyBotList, BotListProps } from '../components/BotList';
+import { BotList, BotListProps, BotListType } from '../components/BotList';
 import '../css/Profile.css';
 
 export function BotListTabs({ value, setValue }: { value: number, setValue: React.Dispatch<React.SetStateAction<number>>; }) {
@@ -19,7 +18,6 @@ export function BotListTabs({ value, setValue }: { value: number, setValue: Reac
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
-        console.log(newValue);
     };
 
     return (
@@ -29,23 +27,6 @@ export function BotListTabs({ value, setValue }: { value: number, setValue: Reac
                 <Tab label={t("Favorite")} className='botlist-tab' />
             </Tabs>
         </div>
-    );
-}
-
-function ProfileBotList({ bots }: { bots: any[] }) {
-
-    return (
-        <Box sx={{ flexGrow: 1 }} >
-            <Grid container spacing={1}>
-                <Grid container item spacing={6}>
-                    {bots.map(bot => (
-                        <Grid item xs={4} key={bot.id}>
-                            <BotCard Bot={bot} />
-                        </Grid>
-                    ))}
-                </Grid>
-            </Grid>
-        </Box>
     );
 }
 
@@ -99,7 +80,7 @@ const ProfilePage: React.FC = () => {
         fetchBots();
     }, [tabValue, me, pageIndex, pageSize]);
 
-    const botListType: BotListProps = {
+    const botListType: BotListType = {
         type: 'Profile'
     };
 
@@ -115,7 +96,7 @@ const ProfilePage: React.FC = () => {
                             <BotListTabs value={tabValue} setValue={setTabValue}></BotListTabs>
                         </div>
                         <div className='botlist-container'>
-                            <MyBotList type={botListType} bots={bots}></MyBotList>
+                            <BotList type={botListType} bots={bots}></BotList>
                         </div>
                     </>
             }
