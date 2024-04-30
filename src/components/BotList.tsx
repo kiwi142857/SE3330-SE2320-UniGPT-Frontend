@@ -19,9 +19,12 @@ import { getUserFavoriteBots } from '../service/user';
 import { getUerUsedBots } from '../service/user';
 import { useState } from 'react';
 import BotCard from './BotCard';
+import {Bot} from '../service/bot';
 
 
-export type botListType = { Favorite: string, Recent: string; };
+export interface BotListType {
+    type: 'Favorite' | 'Recently used' | 'Market' | 'Profile';
+}
 
 function HomeMarketCard() {
     const { t, i18n } = useTranslation();
@@ -116,7 +119,7 @@ export function FavoriteHeader() {
 }
 
 export interface BotListProps {
-    type: 'Favorite' | 'Recently used';
+    type: 'Favorite' | 'Recently used' | 'Market' | 'Profile';
 }
 
 
@@ -147,7 +150,28 @@ export default function BotList({ type, userId, page, pageSize }: { type: 'Recen
                     </Grid>
                     {bots.map(bot => (
                         <Grid item xs={4} key={bot.id}>
-                            <BotCard BotInfo={bot} />
+                            <BotCard Bot={bot} />
+                        </Grid>
+                    ))}
+                </Grid>
+            </Grid>
+        </Box>
+    );
+}
+
+export function MyBotList({type,bots}: {type: BotListType, bots: Bot[]}) {
+
+    const boxStyle = {
+        type : 'Favorite' ? {marginLeft:'60px', marginRight:'0'} : {marginLeft:'0', marginRight:'80px'}
+    };
+
+    return (
+        <Box sx={{ flexGrow: 1 }} >
+            <Grid container spacing={1}>
+                <Grid container item spacing={6}>
+                    {bots.map(bot => (
+                        <Grid item xs={4} key={bot.id}>
+                            <BotCard Bot={bot} />
                         </Grid>
                     ))}
                 </Grid>

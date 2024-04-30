@@ -2,10 +2,10 @@ import {get, PREFIX} from './common';
 
 export interface User {
     id: number;
-    username: string;
-    email: string;
+    name: string;
     avatar: string;
-    role: string;
+    description: string;
+    account: string;
 }
 
 export async function getUerUsedBots(userId: number, page: number, pageSize: number) {

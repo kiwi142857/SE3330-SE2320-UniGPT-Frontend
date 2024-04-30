@@ -23,7 +23,7 @@ export default function MarketCard({bots}: { bots: bot[]}) {
                     </Grid>
                     {bots.map(bot => (
                         <Grid item xs={4} key={bot.id}>
-                            <BotCard BotInfo={bot} />
+                            <BotCard Bot={bot} />
                         </Grid>
                     ))}
                 </Grid>
