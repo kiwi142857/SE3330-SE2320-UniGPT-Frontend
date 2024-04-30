@@ -14,6 +14,7 @@ import { getUserCreatedBots } from '../service/user';
 import { getUserFavoriteBots } from '../service/user';
 import { getMe } from '../service/user';
 import { use } from 'i18next';
+import { putUser } from '../service/user';
 // 个人主页
 
 export function BotListTabs({ value, setValue }: { value: number, setValue: React.Dispatch<React.SetStateAction<number>>; }) {

@@ -30,15 +30,16 @@ export function SearchTabs({tabValue, setTabValue}: {tabValue: number, setTabVal
     );
 }
 
-function SearchBox() {
+function SearchBox({onChange}: {onChange: (keyword: string) => void}) {
     return (
         <div className='search-box'>
-            <Input disableUnderline inputProps={{ 'aria-label': 'search' }} className='input-box'/>
+            <Input disableUnderline inputProps={{ 'aria-label': 'search' }} className='input-box'
+            onChange={(e) => onChange(e.target.value)}></Input>
         </div>
     );
 }
 
-export default function MarketSearch({tabValue, setTabValue}: {tabValue: number, setTabValue: React.Dispatch<React.SetStateAction<number>>}) {
+export default function MarketSearch({tabValue, setTabValue, onChange}: {tabValue: number, setTabValue: React.Dispatch<React.SetStateAction<number>>, onChange: (keyword: string) => void}) {
     return (
         <Grid container spacing={0} className='market-search' >
             <Grid item xs={2}>
@@ -47,7 +48,7 @@ export default function MarketSearch({tabValue, setTabValue}: {tabValue: number,
                 <SearchTabs tabValue={tabValue} setTabValue={setTabValue}></SearchTabs>
             </Grid>
             <Grid item xs={3}>
-                <SearchBox></SearchBox>
+                <SearchBox onChange={onChange}></SearchBox>
             </Grid>
             <Grid item xs={2}>
                 <IconButton style={{ backgroundColor: '#D9D9D9', color:'#FFFFFF', marginLeft:'-50%' }}>

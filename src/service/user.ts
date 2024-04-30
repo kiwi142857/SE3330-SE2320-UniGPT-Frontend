@@ -75,3 +75,26 @@ export async function getMe() {
         console.log("GetMeError: ", e);
     }
 }
+
+export async function putUser(user: User) {
+    const url = `${PREFIX}/users/${user.id}`;
+    try{
+        console.log("url", url);
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("response", data);
+        return data;
+    }
+    catch(e){
+        console.log("PutUserError: ", e);
+    }
+}
