@@ -102,8 +102,6 @@ const ProfilePage: React.FC = () => {
             setMe(response);
         };
         fetchMe();
-
-
     }, []);
     return (
         <>

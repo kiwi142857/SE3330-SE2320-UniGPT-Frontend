@@ -6,8 +6,9 @@ import '../css/Market.css';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 import { LanguageContext } from "../provider/LanguageProvider";
+import { tab } from '@testing-library/user-event/dist/tab';
 
-export function SearchTabs() {
+export function SearchTabs({tabValue, setTabValue}: {tabValue: number, setTabValue: React.Dispatch<React.SetStateAction<number>>}) {
     const { t, i18n } = useTranslation();
     const context = React.useContext(LanguageContext);
 
@@ -15,15 +16,13 @@ export function SearchTabs() {
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
 
-    const [value, setValue] = React.useState(0);
-
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-        setValue(newValue);
+        setTabValue(newValue);
     };
 
     return (
         <div>
-            <Tabs value={value} onChange={handleChange}>
+            <Tabs value={tabValue} onChange={handleChange}>
                 <Tab label={t("Latest")} className='search-tab'/>
                 <Tab label={t("Hottest")} className='search-tab'/>
             </Tabs>
@@ -39,13 +38,13 @@ function SearchBox() {
     );
 }
 
-export default function MarketSearch() {
+export default function MarketSearch({tabValue, setTabValue}: {tabValue: number, setTabValue: React.Dispatch<React.SetStateAction<number>>}) {
     return (
         <Grid container spacing={0} className='market-search' >
             <Grid item xs={2}>
             </Grid>
             <Grid item xs={4}>
-                <SearchTabs></SearchTabs>
+                <SearchTabs tabValue={tabValue} setTabValue={setTabValue}></SearchTabs>
             </Grid>
             <Grid item xs={3}>
                 <SearchBox></SearchBox>

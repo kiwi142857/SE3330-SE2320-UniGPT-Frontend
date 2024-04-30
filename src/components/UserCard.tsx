@@ -99,6 +99,9 @@ export default function UserCard({user}: {user: {name: string, description: stri
                             },
                             disableUnderline: isUsernameFocused ? false : true
                         }}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                     />
                 </Grid>
                 <Grid item >
