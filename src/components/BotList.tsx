@@ -14,14 +14,16 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LanguageContext } from "../provider/LanguageProvider";
-import GetBotInfo from '../service/BotInfo';
 import { getUserFavoriteBots } from '../service/user';
 import { getUerUsedBots } from '../service/user';
 import { useState } from 'react';
 import BotCard from './BotCard';
+import { Bot } from '../service/bot';
 
 
-export type botListType = { Favorite: string, Recent: string; };
+export interface BotListType {
+    type: 'Favorite' | 'Recently used' | 'Market' | 'Profile';
+}
 
 function HomeMarketCard() {
     const { t, i18n } = useTranslation();
@@ -33,7 +35,7 @@ function HomeMarketCard() {
     return (
         <Link href='/market' style={{ textDecoration: 'none', width: '30%', height: '30%', borderRadius: '20px' }}>
             <Card elevation={0}>
-                <ShoppingCartOutlinedIcon style={{ width: '30%', height: '30%', marginTop:'20%', color:'#666666' }} />
+                <ShoppingCartOutlinedIcon style={{ width: '30%', height: '30%', marginTop: '20%', color: '#666666' }} />
                 <CardContent>
                     <Typography className='card-discription' color="text.secondary">
                         {t("More from market")}
@@ -55,10 +57,10 @@ export function HomeCreateCard() {
     return (
         <Link href='/botcreate' style={{ textDecoration: 'none' }} >
             <Card elevation={0}>
-                <AddCircleOutlineIcon style={{ width: '30%', height: '30%', marginTop:'20%', color:'#666666' }} />
+                <AddCircleOutlineIcon style={{ width: '30%', height: '30%', marginTop: '20%', color: '#666666' }} />
                 <CardContent>
                     <Typography className='card-discription' color="text.secondary">
-                       {t(" Create your new bot")}
+                        {t(" Create your new bot")}
                     </Typography>
                 </CardContent>
             </Card>
@@ -75,18 +77,18 @@ export function RecentUsedHeader() {
     }, [context?.language, i18n]);
 
     return (
-        <div style={{marginLeft:'20px', marginTop:'10px'}}>
+        <div style={{ marginLeft: '20px', marginTop: '10px' }}>
             <Grid container alignItems="center" spacing={2}>
                 <Grid item>
                     <IconButton>
-                        <AccessTimeFilledIcon fontSize='large'/>
+                        <AccessTimeFilledIcon fontSize='large' />
                     </IconButton>
                 </Grid>
                 <Grid item>
                     <Typography className='list-header'>{t('Recently Used')}</Typography>
                 </Grid>
             </Grid>
-            <Divider  className='Divider'/>
+            <Divider className='Divider' />
         </div>
     );
 }
@@ -99,59 +101,64 @@ export function FavoriteHeader() {
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
     return (
-        <div style={{marginLeft:'60px', marginTop:'10px'}}>
+        <div style={{ marginLeft: '20px', marginTop: '10px' }}>
             <Grid container alignItems="center" spacing={3}>
                 <Grid item>
                     <IconButton>
-                        <Favorite fontSize='large'/>
+                        <Favorite fontSize='large' />
                     </IconButton>
                 </Grid>
                 <Grid item>
                     <Typography className='list-header'>{t('Favorite')}</Typography>
                 </Grid>
             </Grid>
-            <Divider  className='Divider'/>
+            <Divider className='Divider' />
         </div>
     );
 }
 
-export interface BotListProps {
-    type: 'Favorite' | 'Recently used';
-}
+export function BotList({ type, bots }: { type: BotListType, bots: Bot[] | null; }) {
 
+    const boxStyle = type.type === 'Favorite' ? { marginLeft: '20px', marginRight: '0' } : { marginLeft: '0', marginRight: '20px' };
 
-export default function BotList({ type, userId, page, pageSize }: { type: 'Recently used' | 'Favorite', userId: number, page: number, pageSize: number }) {
-    
-    const [bots, setBots] = useState([]);
-
-    useEffect(() => {
-        const fetchBots = async () => {
-            let response;
-            if(type == "Recently used")
-                response = await getUerUsedBots(userId, page, pageSize);
-            else
-                response = await getUserFavoriteBots(userId, page, pageSize);
-                
-            setBots(response.bots);
-        };
-        fetchBots();
-    }, []);
-
-    console.log(bots);
+    console.log("type", type, "boxStyle", boxStyle);
+    const PrefixComponent = () => {
+        if (type.type === 'Favorite') {
+            return <Grid item xs={4}>
+                <HomeMarketCard></HomeMarketCard>
+            </Grid>;
+        }
+        else if (type.type === 'Recently used') {
+            return <Grid item xs={4}>
+                <HomeCreateCard></HomeCreateCard>
+            </Grid>;
+        }
+        else if (type.type === 'Market') {
+            <Grid item xs={4}>
+                <Card className='create-bot-card'>
+                    <div style={{ height: '100%' }}>
+                        <HomeCreateCard></HomeCreateCard>
+                    </div>
+                </Card>
+            </Grid>;
+        }
+        else {
+            return <></>;
+        }
+    };
     return (
-        <Box sx={{ flexGrow: 1 }} style={{ marginLeft: type === 'Favorite' ? '60px' : '0', marginRight: type === 'Favorite' ? '0' : '80px' }}>
-            <Grid container spacing={1}>
-                <Grid container item spacing={2}>
-                    <Grid item xs={4}>
-                    {type === 'Favorite' ? <HomeMarketCard /> : <HomeCreateCard></HomeCreateCard>}
+        <>
+            {bots == null ? <></> :
+                <Box sx={{ flexGrow: 1 }} style={boxStyle}>
+                    <Grid container item spacing={4}>
+                        {PrefixComponent()}
+                        {bots.map(bot => (
+                            <Grid item xs={4} key={bot.id}>
+                                <BotCard Bot={bot} />
+                            </Grid>
+                        ))}
                     </Grid>
-                    {bots.map(bot => (
-                        <Grid item xs={4} key={bot.id}>
-                            <BotCard BotInfo={bot} />
-                        </Grid>
-                    ))}
-                </Grid>
-            </Grid>
-        </Box>
+                </Box>}
+        </>
     );
-}
+};

@@ -6,7 +6,6 @@ import '../css/Market.css';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 import { LanguageContext } from "../provider/LanguageProvider";
-import { tab } from '@testing-library/user-event/dist/tab';
 
 export function SearchTabs({tabValue, setTabValue}: {tabValue: number, setTabValue: React.Dispatch<React.SetStateAction<number>>}) {
     const { t, i18n } = useTranslation();

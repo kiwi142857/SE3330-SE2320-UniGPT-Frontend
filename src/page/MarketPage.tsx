@@ -1,12 +1,12 @@
 import React from 'react';
 import MarketSearch from '../components/MarketSearch';
-import MarketCard from '../components/MarketCard';
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { getSearchBotList } from '../service/bot';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { BotList, BotListType } from '../components/BotList';
 // bot市场
 const MarketPage: React.FC = () => {
 
@@ -36,7 +36,7 @@ const MarketPage: React.FC = () => {
         getSearchBots();
     }, [searchParams]);
 
-    console.log("tabValue", tabValue);
+    console.log("bots", bots);
 
     const keyword = searchParams.get("keyword");
 
@@ -44,16 +44,19 @@ const MarketPage: React.FC = () => {
         setSearchParams({ keyword: keyword });
     }
 
+    const botListType: BotListType = {
+        type: 'Market'
+    };
+
     return (
         <div className='nav'>
             <div style={{ marginTop: '100px' }}>
                 <MarketSearch tabValue={tabValue} setTabValue={setTabValue} onChange={handleSearch}></MarketSearch>
             </div>
-            <div style={{ marginTop: '20px' }}>
-                <MarketCard bots={bots}></MarketCard>
+            <div style={{ marginTop: '20px' }} className='market-card'>
+                <BotList type={botListType} bots={bots}></BotList>
             </div>
         </div>
     );
 };
-
 export default MarketPage;

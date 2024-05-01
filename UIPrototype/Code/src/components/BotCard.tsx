@@ -17,7 +17,7 @@ export default function BotCard({BotInfo}: HomeBotCardProps) {
       <Card className='bot-card' style={{ height: '100%' }}>
         <CardMedia style={{ width: '70px', height: '70px', marginLeft: '5%', borderRadius: '20px', marginBottom: '0px',marginTop: '25px'}}
           component="img"
-          image={BotInfo.avator}
+          image={BotInfo.avatar}
           alt="bot-default"
         />
         <CardContent >

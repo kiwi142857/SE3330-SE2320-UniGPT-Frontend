@@ -5,24 +5,22 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import '../css/Home.css';
-import { BotInfo } from '../service/BotInfo';
+import { Bot } from '../service/bot';
 
-type HomeBotCardProps = {
-  BotInfo: BotInfo;
-};
 
-export default function BotCard({BotInfo}: HomeBotCardProps) {
+export default function BotCard({ Bot }: { Bot: Bot }) {
+  
   return (
-    <Link href='/botdetail/bot1' style={{ textDecoration: 'none' }} >
+    <Link href='/botdetail/47' style={{ textDecoration: 'none' }} >
       <Card className='bot-card' style={{ height: '100%' }}>
         <CardMedia style={{ width: '70px', height: '70px', marginLeft: '5%', borderRadius: '20px', marginBottom: '0px',marginTop: '25px'}}
           component="img"
-          image={BotInfo.avator}
+          image={Bot.avatar}
           alt="bot-default"
         />
         <CardContent >
           <Typography className='bot-card-name'>
-            {BotInfo.name}
+            {Bot.name}
           </Typography>
           <Typography variant="body2" align="left" color="text.secondary" style={{
             display: '-webkit-box',
@@ -32,7 +30,7 @@ export default function BotCard({BotInfo}: HomeBotCardProps) {
             textOverflow: 'ellipsis',
             marginBottom: '0',
           }}>
-            {BotInfo.description}
+            {Bot.description}
           </Typography>
         </CardContent>
       </Card>
