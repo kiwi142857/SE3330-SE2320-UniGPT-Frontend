@@ -149,7 +149,14 @@ export default function UserCard({ user }: { user: User; }) {
                     />
                 </Grid>
                 <Grid item >
-                    <Button variant="contained" color="primary" style={{ width: '100%', marginTop: '10px' }} onClick={handleCommit}>{t("Save")}</Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        style={{ width: '50%', marginTop: '10px', alignSelf: 'flex-start', marginLeft: '-50%'}}
+                        onClick={handleCommit}
+                    >
+                        {t("Save")}
+                    </Button>
                 </Grid>
             </Grid>
             <Grid item >

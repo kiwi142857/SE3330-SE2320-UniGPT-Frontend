@@ -54,7 +54,7 @@ const resources = {
       "The robot can help you translate your paper. It can help you translate the paper to the language you want and give you some suggestions.": "The robot can help you translate your paper. It can help you translate the paper to the language you want and give you some suggestions.",
       "The robot can help you write the abstract of your paper. It can help you write the abstract and give you some suggestions.": "The robot can help you write the abstract of your paper. It can help you write the abstract and give you some suggestions.",
       "The robot can help you communicate with others. It can help you communicate with others and give you some suggestions.": "The robot can help you communicate with others. It can help you communicate with others and give you some suggestions.",
-      
+      "Save": "save",
     }
   },
   zh: {
@@ -110,6 +110,7 @@ const resources = {
       "The robot can help you write the abstract of your paper. It can help you write the abstract and give you some suggestions.": "这个机器人可以帮你写论文摘要，并给出一些建议。",
       "The robot can play a role in emotional communication. It can communicate with you and give you some suggestions.": "这个机器人可以扮演角色与你交流并给出一些建议。",
       "The robot can help you debug your code. It can help you find the bug in your ..." : "这个机器人可以帮你调试代码，找到代码中的bug并给出一些建议。",
+      "Save": "保存",
     }
   }
 };
