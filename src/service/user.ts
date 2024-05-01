@@ -1,4 +1,4 @@
-import {get, PREFIX} from './common';
+import {get, PREFIX, put} from './common';
 
 export interface User {
     id: number;
@@ -6,6 +6,12 @@ export interface User {
     avatar: string;
     description: string;
     account: string;
+}
+
+export interface PostUser {
+    name: string;
+    avatar: string;
+    description: string;
 }
 
 export async function getUerUsedBots(userId: number, page: number, pageSize: number) {
@@ -76,21 +82,17 @@ export async function getMe() {
     }
 }
 
-export async function putUser(user: User) {
-    const url = `${PREFIX}/users/${user.id}`;
+export async function putUser(user: PostUser, id : number) {
+    console.log("user", user);
+    const url = `${PREFIX}/users/${id}`;
     try{
         console.log("url", url);
-        const response = await fetch(url, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        });
+        console.log("body", JSON.stringify(user));
+        const response = await put(url, user);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
+        const data = response;
         console.log("response", data);
         return data;
     }

@@ -4,19 +4,18 @@ import { Avatar, Grid, Typography, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 import { LanguageContext } from "../provider/LanguageProvider";
+import { Button } from '@mui/material';
+import { putUser } from '../service/user';
 import '../css/Profile.css';
+import { User, PostUser } from '../service/user';
 
-export default function UserCard({user}: {user: {name: string, description: string, account: string, avatar: string}}) {
-    console.log(user);
-    console.log(user.name);
-    console.log(user.description);
-    console.log(user.account);
+export default function UserCard({ user }: { user: User; }) {
+
     const [description, setDescription] = useState(user.description);
     const [username, setUsername] = useState(user.name);
     const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
     const [isUsernameFocused, setIsUsernameFocused] = useState(false);
 
-    
     const handleUsernameFocus = () => {
         setIsUsernameFocused(true);
     };
@@ -47,6 +46,24 @@ export default function UserCard({user}: {user: {name: string, description: stri
     const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUsername(event.target.value);
     };
+
+    const handleCommit = async () => {
+        const updatedUser: PostUser = {
+            name: username,
+            avatar: avatarSrc,
+            description: description,
+            // avatar: avatarSrc, // This should be updated when the backend is ready
+        };
+
+        try {
+            console.log(updatedUser);
+            await putUser(updatedUser, user.id);
+            // Handle success (e.g., show a success message)
+        } catch (error) {
+            // Handle error (e.g., show an error message)
+        }
+    };
+
     const [isDiscriptionInputActive, setDiscriptionIsInputActive] = useState(false);
     const [isInputActive, setIsInputActive] = useState(false);
     const { t, i18n } = useTranslation();
@@ -60,7 +77,7 @@ export default function UserCard({user}: {user: {name: string, description: stri
         setUsername(user.name);
         setDescription(user.description);
     }, [user]);
-    
+
     return (
 
         <Grid container spacing={5} >
@@ -126,7 +143,13 @@ export default function UserCard({user}: {user: {name: string, description: stri
                             },
                             disableUnderline: isDescriptionFocused ? false : true
                         }}
+                        inputProps={{
+                            maxLength: 188, // Set the maximum input length to 100
+                        }}
                     />
+                </Grid>
+                <Grid item >
+                    <Button variant="contained" color="primary" style={{ width: '100%', marginTop: '10px' }} onClick={handleCommit}>{t("Save")}</Button>
                 </Grid>
             </Grid>
             <Grid item >
