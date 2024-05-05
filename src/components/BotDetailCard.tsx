@@ -70,6 +70,10 @@ const BotDetailCard = (
         setStarred(false);
     }
 
+    const use = () => {
+        // TODO
+    }
+
     useEffect(() => {
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
@@ -142,6 +146,7 @@ const BotDetailCard = (
                         endIcon={<SendIcon />}
                         href={`/botchat/${id}`}
                         size='large'
+                        onClick={() => use()}
                     >
                         {t('Use')}
                     </Button>

@@ -1,4 +1,4 @@
-import { PREFIX, getJson, post, put } from './common';
+import { PREFIX, getJson, post, put, get } from './common';
 
 // 聊天类
 export type BotChat = {
@@ -21,6 +21,11 @@ export interface BotBriefInfo {
     description: string;
     avatar: string;
     asCreator: boolean;
+}
+
+export interface Prompt {
+    promptKey: string;
+    promptValue: string;
 }
 
 // data
@@ -225,4 +230,48 @@ export async function createChat() {
 
 export async function getChat() {
     // TODO
+}
+
+export async function getHistoryId(botId: string | undefined): Promise<number> {
+    if (botId === undefined) return 0;
+
+    const url = `${PREFIX}/bots/${botId}/historyid`;
+    let res;
+
+    try {
+        res = (await get(url)).body;
+        console.log(res);
+    }
+    catch (e) {
+        console.error(e);
+    }
+    if (typeof res === 'number') return res;
+    return 0;
+}
+
+export async function getPromptList(historyId: number, botId: string | undefined): Promise<Prompt[] | null> {
+    const url = `${PREFIX}/histories/${historyId}/promptlist?botId=${botId}`;
+    console.log('getPromptList url: ', url);
+
+    let res;
+
+    try {
+        res = await getJson(url);
+    }
+    catch (e) {
+        console.error(e);
+        res = [];
+    }
+    console.log('getPromptList: ', res);
+    return res;
+}
+
+export async function createHistory(id: number) {
+    const url = `${PREFIX}/bots/${id}/histories`;
+    try {
+        console.log(await post(url, {}));
+    }
+    catch (e) {
+        console.error(e);
+    }
 }
