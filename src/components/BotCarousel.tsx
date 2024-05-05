@@ -64,41 +64,43 @@ const BotCarousel = ({ photos }: { photos: string[] }) => {
           showStatus={false}
           showThumbs={false}
       >
-        [<div 
-            key={0} 
-            style={{ display: 'flex'}}
-        >
-            <div style={{ 
-                        width: sideGap, 
-                        height: 'auto' 
-                    }} />
-            <img 
-                src={photos[0]} 
-                alt='bot' 
-                style={{ 
-                    width: imageWidth, 
-                    height: 'auto' ,
-                    borderRadius: borderRadius
-                    }} 
-            />
-            <div style={{ 
-                        width: centerGap, 
-                        height: 'auto' 
-                    }} />
-            <img 
-                src={photos[0]} 
-                alt='bot' 
-                style={{ 
-                    width: imageWidth, 
-                    height: 'auto' ,
-                    borderRadius: borderRadius
-                    }} 
-            />
-            <div style={{ 
-                        width: sideGap, 
-                        height: 'auto' 
-                    }} />
-        </div>]
+        {photos.map((photo, index, array) => (
+          <div 
+              key={0} 
+              style={{ display: 'flex'}}
+          >
+              <div style={{ 
+                          width: sideGap, 
+                          height: 'auto' 
+                      }} />
+              <img 
+                  src={photos[0]} 
+                  alt='bot' 
+                  style={{ 
+                      width: imageWidth, 
+                      height: 'auto' ,
+                      borderRadius: borderRadius
+                      }} 
+              />
+              <div style={{ 
+                          width: centerGap, 
+                          height: 'auto' 
+                      }} />
+              <img 
+                  src={photos[0]} 
+                  alt='bot' 
+                  style={{ 
+                      width: imageWidth, 
+                      height: 'auto' ,
+                      borderRadius: borderRadius
+                      }} 
+              />
+              <div style={{ 
+                          width: sideGap, 
+                          height: 'auto' 
+                      }} />
+          </div>
+        ))}
       </Carousel>
     );
   } else {

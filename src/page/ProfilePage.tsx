@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
 import { Tab, Tabs } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from "react-router-dom";
+import { BotList, BotListType } from '../components/BotList';
 import UserCard from '../components/UserCard';
-import { LanguageContext } from "../provider/LanguageProvider";
-import { getUserCreatedBots, getUserFavoriteBots, getMe, putUser, User } from '../service/user';
-import { BotList, BotListProps, BotListType } from '../components/BotList';
 import '../css/Profile.css';
+import { LanguageContext } from "../provider/LanguageProvider";
+import { User, getMe, getUserCreatedBots, getUserFavoriteBots } from '../service/user';
 
 export function BotListTabs({ value, setValue }: { value: number, setValue: React.Dispatch<React.SetStateAction<number>>; }) {
     const { t, i18n } = useTranslation();
