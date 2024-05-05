@@ -14,7 +14,7 @@ const MarketPage: React.FC = () => {
     const pageIndexStr = searchParams.get("pageIndex");
     const pageSizeStr = searchParams.get("pageSize");
     const pageIndex = pageIndexStr != null ? Number.parseInt(pageIndexStr) : 0;
-    const pageSize = pageSizeStr != null ? Number.parseInt(pageSizeStr) : 10;
+    const pageSize = pageSizeStr != null ? Number.parseInt(pageSizeStr) : 50;
 
     const [bots, setBots] = useState([]); // [botListType
     const getSearchBots = async () => {
