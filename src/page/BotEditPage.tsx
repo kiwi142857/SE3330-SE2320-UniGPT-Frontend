@@ -62,7 +62,7 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
         }
     }
 
-    const onSubmit = (event: React.FormEvent) => {
+    const onSubmit = async(event: React.FormEvent) => {
         event.preventDefault();
 
         const target = event.target as typeof event.target & {

@@ -4,6 +4,7 @@ import React, { ChangeEvent, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../css/BotEditPage.css';
 import { LanguageContext } from '../provider/LanguageProvider';
+import { imageUpload } from '../service/upload';
 import BasicInput from './BasicInput';
 import EditLayout from './EditLayout';
 
@@ -35,12 +36,11 @@ function BotEditMarketPart(
         const file = event.target.files?.[0];
 
         if (file){
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setPhotoImgs(prevImages => [...prevImages, reader.result as string]);
-            };
-        
-            reader.readAsDataURL(file);
+            imageUpload(file).then((res) => {
+                if (res.ok) {
+                    setPhotoImgs(prevImages => [...prevImages, res.message]);
+                }
+            });
         }
     };
 
