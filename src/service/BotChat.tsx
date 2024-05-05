@@ -1,6 +1,6 @@
 // 聊天类
 export type BotChat = {
-    id: string;
+    id: number;
     historyId: number;  // 聊天对应的历史记录id
     name: string;
     avatar: string;
@@ -39,14 +39,14 @@ const botChatHistoryList: BotChatHistory[] = [
 
 const botChatList: BotChat[] = [
     {
-        id: '1',
+        id: 1,
         historyId: 1,
         name: '你',
         avatar: '/assets/user-default.png',
         content: '如何用Python实现冒泡排序',
     },
     {
-        id: '2',
+        id: 2,
         historyId: 1,
         name: 'Programming Debug Assistant',
         avatar: '/assets/bot-default.png',
@@ -79,28 +79,28 @@ const botChatList: BotChat[] = [
             '这段代码首先定义了一个bubble_sort函数，它接受一个列表arr作为参数。然后，该函数使用两层嵌套循环进行排序：\n'
     },
     {
-        id: '10',
+        id: 10,
         historyId: 1,
         name: '你',
         avatar: '/assets/user-default.png',
         content: '谢谢！',
     },
     {
-        id: '11',
+        id: 11,
         historyId: 1,
         name: 'Programming Debug Assistant',
         avatar: '/assets/bot-default.png',
         content: '不客气，这里是Programming Debug Assistant，欢迎您下次使用~',
     },
     {
-        id: '3',
+        id: 3,
         historyId: 2,
         name: '你',
         avatar: '/assets/user-default.png',
         content: '你能为一款含有可乐和石榴糖浆的无酒精鸡尾酒（mocktail）想出一些名字吗？',
     },
     {
-        id: '4',
+        id: 4,
         historyId: 2,
         name: 'Design Assistant',
         avatar: '/assets/bot-default.png',
@@ -120,14 +120,14 @@ const botChatList: BotChat[] = [
             '希望这些名字能够激发灵感，让您的鸡尾酒更加引人注目！',
     },
     {
-        id: '5',
+        id: 5,
         historyId: 3,
         name: '你',
         avatar: '/assets/user-default.png',
         content: '为我关于城市设计的新播客构思5个节目主题。',
     },
     {
-        id: '6',
+        id: 6,
         historyId: 3,
         name: 'Design Assistant',
         avatar: '/assets/bot-default.png',
@@ -151,14 +151,14 @@ const botChatList: BotChat[] = [
             '以上节目主题涵盖了城市设计的多个方面，从未来发展到社区建设、城市更新、人性化设计以及生态保护，能够吸引听众对城市设计和发展的关注并提供有价值的信息和见解。',
     },
     {
-        id: '7',
+        id: 7,
         historyId: 4,
         name: '你',
         avatar: '/assets/user-default.png',
         content: '如果我熟悉买卖股票，那么请用简单的术语解释期权交易。',
     },
     {
-        id: '8',
+        id: 8,
         historyId: 4,
         name: 'Finance Assistant',
         avatar: '/assets/bot-default.png',

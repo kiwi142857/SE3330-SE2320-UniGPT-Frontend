@@ -6,15 +6,15 @@ import { Box } from "@mui/system";
 import React, { useEffect, useState } from 'react';
 import OneChat from "../components/OneChat";
 
-import '../css/App.css'
-import '../css/BotChatPage.css'
-import { PromptInput } from "../components/Inputs";
-import ChatHistoryList from "../components/ChatHistoryList";
-import BotBriefCard from "../components/BotBriefCard";
-import TableCreateDialog from "../components/TableCreateDialog";
-import { BotChat, BotChatHistory, getBotChatHistoryList, getBotChatList } from "../service/BotChat";
 import { useTranslation } from "react-i18next";
+import BotBriefCard from "../components/BotBriefCard";
+import ChatHistoryList from "../components/ChatHistoryList";
+import { PromptInput } from "../components/Inputs";
+import TableCreateDialog from "../components/TableCreateDialog";
 import theme from "../components/theme";
+import '../css/App.css';
+import '../css/BotChatPage.css';
+import { BotChat, BotChatHistory, getBotChatHistoryList, getBotChatList } from "../service/BotChat";
 
 // bot聊天页
 // 侧边栏宽度
@@ -119,7 +119,7 @@ const BotChatPage = () => {
                         setBotChatList([
                             ...botChatList,
                             {
-                                id: '',
+                                id: 0,
                                 name: '你',
                                 historyId: selectedHistory,
                                 avatar: '/assets/user-default.png',
