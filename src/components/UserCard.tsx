@@ -1,13 +1,11 @@
+import { Avatar, Button, Grid, TextField, Typography } from '@mui/material';
 import * as React from 'react';
-import { useState, useRef } from 'react';
-import { Avatar, Grid, Typography, TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useEffect } from 'react';
-import { LanguageContext } from "../provider/LanguageProvider";
-import { Button } from '@mui/material';
-import { putUser } from '../service/user';
 import '../css/Profile.css';
-import { User, PostUser } from '../service/user';
+import { LanguageContext } from "../provider/LanguageProvider";
+import { imageUpload } from '../service/upload';
+import { PostUser, User, putUser } from '../service/user';
 
 export default function UserCard({ user }: { user: User; }) {
 
@@ -38,8 +36,13 @@ export default function UserCard({ user }: { user: User; }) {
     };
 
     const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files[0]) {
-            setAvatarSrc(URL.createObjectURL(event.target.files[0]));
+        const file = event.target.files?.[0];
+        if (file) {
+            imageUpload(file).then((res) => {
+                if (res.ok) {
+                    setAvatarSrc(res.message);
+                }
+            });
         }
     };
 
@@ -52,7 +55,6 @@ export default function UserCard({ user }: { user: User; }) {
             name: username,
             avatar: avatarSrc,
             description: description,
-            // avatar: avatarSrc, // This should be updated when the backend is ready
         };
 
         try {
@@ -76,6 +78,8 @@ export default function UserCard({ user }: { user: User; }) {
     useEffect(() => {
         setUsername(user.name);
         setDescription(user.description);
+        if (user.avatar)
+            setAvatarSrc(user.avatar);
     }, [user]);
 
     return (

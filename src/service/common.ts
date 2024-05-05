@@ -7,7 +7,7 @@ type FetchOptions = {
     credentials: RequestCredentials;
 };
 
-interface ResponseData {
+export interface ResponseData {
     ok: boolean;
     message: string;
 }

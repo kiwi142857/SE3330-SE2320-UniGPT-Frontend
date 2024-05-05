@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import '../css/App.css';
 import '../css/BotEditPage.css';
 import { LanguageContext } from '../provider/LanguageProvider';
+import { imageUpload } from '../service/upload';
 import BasicInput from './BasicInput';
 import EditLayout from './EditLayout';
 import { EditSelect } from './Inputs';
@@ -31,16 +32,16 @@ function BotEditBasicPart (
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
 
-    const onAvatarUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const onAvatarUpload = async(event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setAvatarImg(reader.result as string);
-            };
-            reader.readAsDataURL(file);
+            imageUpload(file).then((res) => {
+                if (res.ok) {
+                    setAvatarImg(res.message);
+                }
+            });
         }
-    };
+    }
 
     return (
         <div className='edit-basic-container'>

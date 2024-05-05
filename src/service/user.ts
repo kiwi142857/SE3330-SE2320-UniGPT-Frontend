@@ -1,4 +1,4 @@
-import {get, PREFIX, put} from './common';
+import { get, PREFIX, put } from './common';
 
 export interface User {
     id: number;
