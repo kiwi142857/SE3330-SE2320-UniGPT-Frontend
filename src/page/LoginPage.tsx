@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Navigator from '../components/Navigator';
-import { useLocation } from 'react-router-dom';
+import SnackBar from '../components/Snackbar';
 import '../css/LoginInPage.css';
-import { useNavigate } from 'react-router-dom';
-import { login, LoginResult } from '../service/auth'
+import { LoginResult, login } from '../service/auth';
 
 const LoginPage: React.FC = () => {
     const loginRequestUrl = "http://jaccount.sjtu.edu.cn/oauth2/authorize?response_type=code&scope=profile&client_id=ov3SLrO4HyZSELxcHiqS&redirect_uri=http://localhost:3000/login";
@@ -13,6 +13,7 @@ const LoginPage: React.FC = () => {
     const code = searchParams.get('code');
 
     const [loginResult, setLoginResult] = useState<LoginResult | null>(null);
+    const [alert, setAlert] = useState<boolean>(false);
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -24,7 +25,7 @@ const LoginPage: React.FC = () => {
                     navigate('/home');
                 }
                 else {
-                    alert('login failed');
+                    setAlert(true);
                 }
             }
         };
@@ -41,6 +42,11 @@ const LoginPage: React.FC = () => {
             <video className='home-bg' autoPlay loop muted>
                 <source src="/assets/loginpage.mp4" type="video/mp4" />
             </video>
+            <SnackBar
+                open={alert}
+                setOpen={setAlert}
+                message="登录失败，请重试！"
+            />
         </div>
     );
 };
