@@ -53,6 +53,19 @@ const BotChatPage = () => {
                     style={{ height: 100, }}
                 />
                 <BotBriefCard />
+                <Typography
+                    className="drawer-item-content"
+                    style={{
+                        marginTop: 20,
+                        marginLeft: 25,
+                        color: theme.palette.primary.light,
+                        fontWeight: 'bold',
+                        fontFamily: 'Abril Face',
+                        fontSize: 20,
+                    }}
+                >
+                    {t('Chat History')}
+                </Typography>
                 <ChatHistoryList
                     botChatHistoryList={botChatHistoryList}
                     selectedId={selectedHistory}
