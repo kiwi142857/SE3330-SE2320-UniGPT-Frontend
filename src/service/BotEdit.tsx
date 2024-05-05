@@ -43,9 +43,7 @@ export async function getBotEditInfo(id: string): Promise<botEditInfo | null> {
 
     try{
         res = await getJson(url);
-        // console.log(res);
     } catch (e) {
-        console.error(e);
         res = null;
     }
 

@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import BotEditBasicPart from '../components/BotEditBasicPart';
 import BotEditMarketPart from "../components/BotEditMarketPart";
 import BotEditPromptPart from '../components/BotEditPromptPart';
+import SnackBar from "../components/Snackbar";
 import '../css/App.css';
 import '../css/BotEditPage.css';
 import { LanguageContext } from "../provider/LanguageProvider";
@@ -21,17 +22,11 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
 
-    useEffect(() => {
-        if (edit) {
-            initInfo();
-        }
-    }, [edit]);
-
     const [botEditInfo, setBotEditInfo] = useState<botEditInfo>({
         name: '',
         avatar: '/assets/bot-default.png',
         description: '',
-        baseModelAPI: '',
+        baseModelAPI: 'GPT-4',
         published: false,
         detail: '',
         photos: [],
@@ -44,21 +39,49 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
     const [fewShots, setFewShots] = useState<fewShot[]>([]);
     const [promptCheck, setPromptCheck] = useState<boolean>(false);
     const [publishCheck, setPublishCheck] = useState<boolean>(false);
-
     const [promptKeys, setPromptKeys] = useState<string[]>([]);
+
+    const [alert, setAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+
+    useEffect(() => {
+        if (edit) {
+            initInfo();
+        }
+    }, [edit]);
+
+    useEffect(() => {
+        const regex = /\+\+\{(.+?)\}/g;
+        let newPromptKeys: string[] = [];
+
+        if (fewShots) {
+            fewShots.forEach((fewShot) => {
+                const content = fewShot.content;
+                let match;
+                while ((match = regex.exec(content)) !== null) {
+                    newPromptKeys.push(match[1]);
+                }
+            });
+        }
+
+        setPromptKeys(newPromptKeys);
+    }, [fewShots]);
 
     const initInfo = async () => {
         if (!id) {
             return;
         }
-        let info = await getBotEditInfo(id)
-        if (info) {
+        let info = await getBotEditInfo(id);
+        if (info !== null) {
             setBotEditInfo(info);
             setAvatarImg(info.avatar);
             setPhotoImgs(info.photos);
             setPromptCheck(info.prompted);
             setPublishCheck(info.published);
             setFewShots(info.promptChats);
+        } else {
+            setAlert(true);
+            setAlertMessage("获取bot信息失败");
         }
     }
 
@@ -98,39 +121,37 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
 
         console.log(newInfo);
 
+        let res;
+
         if (edit) {
             if (id) {
-                updateBot(id, newInfo);
+                res = await updateBot(id, newInfo);
             }
         } else {
-            createBot(newInfo);
+            res = await createBot(newInfo);
         }
 
-        // setTimeout(() => {
-        //     window.location.href = '/botchat';
-        // }, 1000);
+        if (res) {
+            if (res.ok){
+                setTimeout(() => {
+                    window.location.href = '/botchat';
+                }, 1000);
+            } else {
+                setAlert(true);
+                setAlertMessage("bot创建/修改表单提交失败: " + res.message);
+            }
+        }
     };
-
-    useEffect(() => {
-        const regex = /\+\+\{(.+?)\}/g;
-        let newPromptKeys: string[] = [];
-
-        if (fewShots) {
-            fewShots.forEach((fewShot) => {
-                const content = fewShot.content;
-                let match;
-                while ((match = regex.exec(content)) !== null) {
-                    newPromptKeys.push(match[1]);
-                }
-            });
-        }
-
-        setPromptKeys(newPromptKeys);
-    }, [fewShots]);
 
     return [
         <div className='main-container bot-edit-container'>
             <form onSubmit={onSubmit}>
+
+                <SnackBar
+                    open={alert}
+                    setOpen={setAlert}
+                    message={alertMessage}
+                />
 
                 <BotEditBasicPart  
                     avatarImg={avatarImg} 
