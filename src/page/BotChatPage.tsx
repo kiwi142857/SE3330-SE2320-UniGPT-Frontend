@@ -16,6 +16,7 @@ import '../css/App.css';
 import '../css/BotChatPage.css';
 import { BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotChatList, getBotBrief } from "../service/BotChat";
 import { useParams } from "react-router-dom";
+import { Margin } from "@mui/icons-material";
 
 // bot聊天页
 // 侧边栏宽度
@@ -42,7 +43,7 @@ const BotChatPage = () => {
 
     useEffect(() => {
         const getChatHistoryList = async () => {
-            const list = await getBotChatHistoryList(botId);
+            const list = await getBotChatHistoryList(botId, 0, 20);
             setBotChatHistoryList(list);
         };
         getChatHistoryList();
@@ -91,13 +92,11 @@ const BotChatPage = () => {
                         }}
                     />
                 ) : (
-                    <div className="chat-hint-container">
-                        <div
-                            className="chat-hint-text"
-                            style={{ color: theme.palette.secondary.main }}
-                        >
-                            {t('No chat history yet.')}
-                        </div>
+                    <div
+                        className="drawer-item-title"
+                        style={{ color: theme.palette.secondary.dark, margin: 25 }}
+                    >
+                        {t('No chat history yet.')}
                     </div>
                 )}
             </Drawer>

@@ -194,10 +194,27 @@ export async function getBotBrief(botID: string | undefined): Promise<BotBriefIn
 }
 
 
-export async function getBotChatHistoryList(botID: string | undefined): Promise<BotChatHistory[] | null> {
-    // TODO
-    return botChatHistoryList;
+// export async function getBotChatHistoryList(botID: string | undefined): Promise<BotChatHistory[] | null> {
+//     // TODO
+//     return botChatHistoryList;
+// }
+
+export async function getBotChatHistoryList(botId: string | undefined, page: number, pagesize: number): Promise<BotChatHistory[] | null> {
+    const url = `${PREFIX}/bots/${botId}/histories?page=${page}&pageSize=${pagesize}`;
+
+    let res;
+
+    try {
+        res = await getJson(url);
+        console.log(res);
+    }
+    catch (e) {
+        console.error(e);
+        res = null;
+    }
+    return res.chats;
 }
+
 export async function getBotChatList(historyId: number) {
     return botChatList.filter((botChat: BotChat) => botChat.historyId === historyId);
 }
