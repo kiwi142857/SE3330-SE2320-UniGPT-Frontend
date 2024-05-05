@@ -14,24 +14,37 @@ import TableCreateDialog from "../components/TableCreateDialog";
 import theme from "../components/theme";
 import '../css/App.css';
 import '../css/BotChatPage.css';
-import { BotChat, BotChatHistory, getBotChatHistoryList, getBotChatList } from "../service/BotChat";
+import { BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotChatList, getBotBrief } from "../service/BotChat";
+import { useParams } from "react-router-dom";
 
 // bot聊天页
 // 侧边栏宽度
 let drawerWidth = 350;
 const BotChatPage = () => {
+    let { botId } = useParams<{ botId: string }>();
+
     const [tableCreateOpen, setTableCreateOpen] = useState(false);
     const [selectedHistory, setSelectedHistory] = useState(0);
-    const [botChatHistoryList, setBotChatHistoryList] = useState<BotChatHistory[]>([]);
+    const [botChatHistoryList, setBotChatHistoryList] = useState<BotChatHistory[] | null>([]);
     const [botChatList, setBotChatList] = useState<BotChat[]>([]);
+    const [botBriefInfo, setBotBriefInfo] = useState<BotBriefInfo | null>(null);
 
     const { t } = useTranslation();
-    const getChatHistoryList = async () => {
-        const list = await getBotChatHistoryList();
-        setBotChatHistoryList(list);
-    };
+    useEffect(() => {
+        const getBrief = async () => {
+            const brief = await getBotBrief(botId);
+            setBotBriefInfo(brief);
+        };
+        console.log(botId);
+        getBrief();
+    }, []);
+
 
     useEffect(() => {
+        const getChatHistoryList = async () => {
+            const list = await getBotChatHistoryList(botId);
+            setBotChatHistoryList(list);
+        };
         getChatHistoryList();
     }, []);
 
@@ -52,7 +65,7 @@ const BotChatPage = () => {
                 <Toolbar
                     style={{ height: 100, }}
                 />
-                <BotBriefCard />
+                <BotBriefCard botBriefInfo={botBriefInfo} />
                 <Typography
                     className="drawer-item-content"
                     style={{
@@ -66,15 +79,27 @@ const BotChatPage = () => {
                 >
                     {t('Chat History')}
                 </Typography>
-                <ChatHistoryList
-                    botChatHistoryList={botChatHistoryList}
-                    selectedId={selectedHistory}
-                    onItemClicked={async (id) => {
-                        setSelectedHistory(id);
-                        const list = await getBotChatList(id);
-                        setBotChatList(list);
-                    }}
-                />
+                {/* 判断 botChatHistoryList 是否为空*/}
+                {botChatHistoryList && botChatHistoryList.length ? (
+                    <ChatHistoryList
+                        botChatHistoryList={botChatHistoryList}
+                        selectedId={selectedHistory}
+                        onItemClicked={async (id) => {
+                            setSelectedHistory(id);
+                            const list = await getBotChatList(id);
+                            setBotChatList(list);
+                        }}
+                    />
+                ) : (
+                    <div className="chat-hint-container">
+                        <div
+                            className="chat-hint-text"
+                            style={{ color: theme.palette.secondary.main }}
+                        >
+                            {t('No chat history yet.')}
+                        </div>
+                    </div>
+                )}
             </Drawer>
             <Box
                 className="main-container bot-chat-container"
@@ -111,6 +136,7 @@ const BotChatPage = () => {
                     </div>
                 )
                 }
+                {/* 输入框，发送按钮，编辑按钮 */}
                 <PromptInput
                     onAltTable={() => {
                         setTableCreateOpen(true);
@@ -127,6 +153,7 @@ const BotChatPage = () => {
                             }]);
                         window.scrollTo(0, document.body.scrollHeight);
                     }} />
+                {/* 弹出 prompt 表格 */}
                 <TableCreateDialog
                     open={tableCreateOpen}
                     handleClose={() => {
