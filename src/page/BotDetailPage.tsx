@@ -9,6 +9,7 @@ import { CommentInput } from '../components/Inputs';
 import OneChat from '../components/OneChat';
 import { Comment, CommentList, botDetailInfo, getBotComments, getBotDetail, postComment } from '../service/BotDetail';
 
+import SnackBar from '../components/Snackbar';
 import '../css/App.css';
 import '../css/BotDetailPage.css';
 
@@ -18,6 +19,8 @@ const BotDetailPage: React.FC = () => {
     const [bot, setBot] = useState<botDetailInfo | null>(null);
     const [comments, setComments] = useState<CommentList>();
 
+    const [alert, setAlert] = useState(false);
+
     let { id } = useParams<{ id: string }>();
 
     const getBot = async () => {
@@ -25,6 +28,8 @@ const BotDetailPage: React.FC = () => {
             const bot = await getBotDetail(id);
             if (bot)
                 setBot(bot);
+            else
+                setAlert(true);
         }
     }
 
@@ -40,7 +45,13 @@ const BotDetailPage: React.FC = () => {
         getComments();
     }, [id]);
 
-    return [  bot && comments &&
+    return [  <SnackBar
+                    open={alert}
+                    message="获取详细信息失败！"
+                    setOpen={setAlert}
+                />,
+                
+        bot && comments &&
         <div className="main-container bot-detail-container">
 
             <BotDetailCard

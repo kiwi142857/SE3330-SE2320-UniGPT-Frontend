@@ -146,7 +146,9 @@ export function EditSelect
         const [value, setValue] = React.useState(defaultSelect);
 
         useEffect(() => {
-            setValue(defaultSelect);
+            if (defaultSelect) {
+                setValue(defaultSelect);
+            }
         }
         , [defaultSelect]);
 
