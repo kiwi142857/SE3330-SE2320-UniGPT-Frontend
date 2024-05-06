@@ -3,8 +3,11 @@ import { Button, ListItem } from "@mui/material";
 import theme from "./theme";
 import '../css/BotChatPage.css'
 import { useTranslation } from "react-i18next";
-const BotBriefCard = () => {
+import { BotBriefInfo } from "../service/BotChat";
+
+const BotBriefCard = ({ botBriefInfo }: { botBriefInfo: BotBriefInfo | null }) => {
     const { t } = useTranslation();
+    if (!botBriefInfo) return null;
     return (
         <ListItem
             className="drawer-item"
@@ -18,29 +21,33 @@ const BotBriefCard = () => {
                     gap: 20,
                 }}>
                     <img
-                        src={"/assets/bot-default.png"}
+                        src={botBriefInfo.avatar}
                         alt='bot'
                         className='brief-card-avatar'
                     ></img>
-                    <Button
-                        className="drawer-button"
-                        style={{
-                            backgroundColor: theme.palette.primary.main,
-                            color: 'white',
-                        }}
-                        href="/botcreate"
-                    >
-                        {t('Modify')}
-                    </Button>
+                    {
+                        botBriefInfo.asCreator &&
+                        <Button
+                            className="drawer-button"
+                            style={{
+                                backgroundColor: theme.palette.primary.main,
+                                color: 'white',
+                            }}
+                            href={'/botedit/' + botBriefInfo.id}
+                        >
+                            {t('Edit')}
+                        </Button>
+                    }
+
                 </div>
                 <div className="drawer-item-title" style={{ marginTop: 10 }}>
-                    {t('Programming Debug Assistant')}
+                    {botBriefInfo.name}
                 </div>
                 <div
                     className="drawer-item-content"
                     style={{ color: theme.palette.primary.light }}
                 >
-                    {t('The robot can help you debug your code. It can help you find the bug in your ...')}
+                    {botBriefInfo.description}
 
                 </div>
             </div>

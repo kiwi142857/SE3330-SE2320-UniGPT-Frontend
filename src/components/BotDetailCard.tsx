@@ -14,30 +14,30 @@ import { disLikeBot, likeBot, starBot, unStarBot } from '../service/BotDetail';
 // bot详情页的最上方的简介
 const BotDetailCard = (
     {
-        id, 
-        name, 
-        author, 
-        avatar, 
-        description, 
-        likeNumber, 
+        id,
+        name,
+        author,
+        avatar,
+        description,
+        likeNumber,
         starNumber,
         isLiked,
         isStarred,
         isCreator
     }
-    : {
-        id:string ; 
-        name:string; 
-        author:string; 
-        avatar:string; 
-        description:string; 
-        likeNumber:string; 
-        starNumber:string;
-        isLiked:boolean;
-        isStarred:boolean;
-        isCreator:boolean;
+        : {
+            id: string;
+            name: string;
+            author: string;
+            avatar: string;
+            description: string;
+            likeNumber: string;
+            starNumber: string;
+            isLiked: boolean;
+            isStarred: boolean;
+            isCreator: boolean;
 
-    }) => {
+        }) => {
     const [liked, setLiked] = React.useState(isLiked);
     const [starred, setStarred] = React.useState(isStarred);
     const [localLikeNumber, setLocalLikeNumber] = React.useState(likeNumber);
@@ -69,7 +69,11 @@ const BotDetailCard = (
         setLocalStarNumber((parseInt(localStarNumber) - 1).toString());
         setStarred(false);
     }
-    
+
+    const use = () => {
+        // TODO
+    }
+
     useEffect(() => {
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
@@ -89,67 +93,68 @@ const BotDetailCard = (
                 className='detail-card-avatar'
             ></img>
             <div className='detail-card-right'>
-                <Typography sx={{color: 'primary.main'}}>
+                <Typography sx={{ color: 'primary.main' }}>
                     <p className='detail-card-name'>
                         {t(name)}
                     </p>
                 </Typography>
-                <Typography sx={{color: 'primary.light'}}>
+                <Typography sx={{ color: 'primary.light' }}>
                     <p className='detail-card-author'>
                         {`@${author}`}
                     </p>
                 </Typography>
-                <Typography sx={{color: 'primary.light'}}>
+                <Typography sx={{ color: 'primary.light' }}>
                     <p className='detail-card-description'>
                         {t(description)}
                     </p>
                 </Typography>
                 <div className='detail-card-btn-group'>
                     {liked ? (
-                            <FavoriteIcon
-                                sx={{color: 'primary.main'}}
-                                fontSize='large'
-                                onClick={() => disLike()}
-                            />
-                        ) : (
-                            <FavoriteBorderIcon
-                                sx={{color: 'primary.main'}}
-                                fontSize='large'
-                                onClick={() => like()}
-                            />
+                        <FavoriteIcon
+                            sx={{ color: 'primary.main' }}
+                            fontSize='large'
+                            onClick={() => disLike()}
+                        />
+                    ) : (
+                        <FavoriteBorderIcon
+                            sx={{ color: 'primary.main' }}
+                            fontSize='large'
+                            onClick={() => like()}
+                        />
                     )}
                     <span className='detail-card-like'>
                         {localLikeNumber}
                     </span>
                     {starred ? (
-                            <StarIcon
-                                sx={{color: 'primary.main'}}
-                                fontSize='large'
-                                onClick={() => unStar()}
-                            />
-                        ) : (
-                            <StarBorderIcon
-                                sx={{color: 'primary.main'}}
-                                fontSize='large'
-                                onClick={() => star()}
-                            />
+                        <StarIcon
+                            sx={{ color: 'primary.main' }}
+                            fontSize='large'
+                            onClick={() => unStar()}
+                        />
+                    ) : (
+                        <StarBorderIcon
+                            sx={{ color: 'primary.main' }}
+                            fontSize='large'
+                            onClick={() => star()}
+                        />
                     )}
                     <span className='detail-card-collect'>
                         {localStarNumber}
                     </span>
-                    <Button 
-                        variant="contained" 
-                        endIcon={<SendIcon />} 
-                        href={'/botchat'}
+                    <Button
+                        variant="contained"
+                        endIcon={<SendIcon />}
+                        href={`/botchat/${id}`}
                         size='large'
+                        onClick={() => use()}
                     >
                         {t('Use')}
                     </Button>
                     {
-                        isCreator && 
-                        <Button 
-                            variant="contained" 
-                            endIcon={<SendIcon />} 
+                        isCreator &&
+                        <Button
+                            variant="contained"
+                            endIcon={<SendIcon />}
                             href={`/botedit/${id}`}
                             size='large'
                         >

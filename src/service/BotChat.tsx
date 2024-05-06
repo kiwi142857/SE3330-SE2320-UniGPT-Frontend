@@ -1,3 +1,5 @@
+import { PREFIX, getJson, post, put, get } from './common';
+
 // 聊天类
 export type BotChat = {
     id: number;
@@ -11,6 +13,19 @@ export type BotChatHistory = {
     id: number; // 聊天历史记录id，聊天生成时的UNIX时间戳
     title: string; // 侧边栏的历史标题
     message: string; // 侧边栏的历史信息
+}
+
+export interface BotBriefInfo {
+    id: string;
+    name: string;
+    description: string;
+    avatar: string;
+    asCreator: boolean;
+}
+
+export interface Prompt {
+    promptKey: string;
+    promptValue: string;
 }
 
 // data
@@ -165,9 +180,98 @@ const botChatList: BotChat[] = [
         content: '期权交易是一种金融衍生品交易，允许买方在未来某个特定时间内，以事先约定的价格购买或出售某个资产（通常是股票）的权利，而不是必须在该时间购买或出售。期权交易中的买方支付给卖方一笔费用（称为期权费），以获得这种权利。买方在购买期权时，称为持有期权。而卖方则在出售期权时，承诺在期权到期时按约定的价格出售或购买资产。期权交易可以用来对冲投资组合的风险、进行投机，或者作为一种策略来获利。',
     },
 ];
-export async function getBotChatHistoryList() {
-    return botChatHistoryList;
+
+export async function getBotBrief(botID: string | undefined): Promise<BotBriefInfo | null> {
+    if (botID === undefined) return null;
+
+    const url = `${PREFIX}/bots/${botID}?info=brief`;
+    let res;
+
+    try {
+        res = await getJson(url);
+        console.log(url);
+        console.log(res);
+    } catch (e) {
+        console.error(e);
+        res = null;
+    }
+    return res;
 }
+
+
+// export async function getBotChatHistoryList(botID: string | undefined): Promise<BotChatHistory[] | null> {
+//     // TODO
+//     return botChatHistoryList;
+// }
+
+export async function getBotChatHistoryList(botId: string | undefined, page: number, pagesize: number): Promise<BotChatHistory[] | null> {
+    const url = `${PREFIX}/bots/${botId}/histories?page=${page}&pageSize=${pagesize}`;
+
+    let res;
+
+    try {
+        res = await getJson(url);
+        console.log(res);
+    }
+    catch (e) {
+        console.error(e);
+        res = null;
+    }
+    return res.chats;
+}
+
 export async function getBotChatList(historyId: number) {
     return botChatList.filter((botChat: BotChat) => botChat.historyId === historyId);
+}
+
+export async function createChat() {
+    // TODO
+}
+
+export async function getChat() {
+    // TODO
+}
+
+export async function getHistoryId(botId: string | undefined): Promise<number> {
+    if (botId === undefined) return 0;
+
+    const url = `${PREFIX}/bots/${botId}/historyid`;
+    let res;
+
+    try {
+        res = (await get(url)).body;
+        console.log(res);
+    }
+    catch (e) {
+        console.error(e);
+    }
+    if (typeof res === 'number') return res;
+    return 0;
+}
+
+export async function getPromptList(historyId: number, botId: string | undefined): Promise<Prompt[] | null> {
+    const url = `${PREFIX}/histories/${historyId}/promptlist?botId=${botId}`;
+    console.log('getPromptList url: ', url);
+
+    let res;
+
+    try {
+        res = await getJson(url);
+    }
+    catch (e) {
+        console.error(e);
+        res = [];
+    }
+    console.log('getPromptList: ', res);
+    return res;
+}
+
+export async function createHistory(id: number) {
+    const url = `${PREFIX}/bots/${id}/histories`;
+    try {
+        console.log(await post(url, {}));
+    }
+    catch (e) {
+        console.error(e);
+    }
 }

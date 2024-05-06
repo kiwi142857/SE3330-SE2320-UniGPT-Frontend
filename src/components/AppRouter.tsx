@@ -30,7 +30,7 @@ const router = createBrowserRouter([
                 element: <HomePage />,
             },
             {
-                path: "/botchat",
+                path: "/botchat/:botId",
                 element: <BotChatPage />
             },
             {
@@ -47,11 +47,11 @@ const router = createBrowserRouter([
             },
             {
                 path: "/botcreate",
-                element: <BotEditPage edit={false}/>
+                element: <BotEditPage edit={false} />
             },
             {
                 path: "/botedit/:id",
-                element: <BotEditPage edit={true}/>
+                element: <BotEditPage edit={true} />
             },
             {
                 path: "/login",

@@ -1,27 +1,47 @@
-import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { TableCreateInput } from "./Inputs";
-import '../css/BotChatPage.css'
-import theme from "./theme";
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
+import '../css/BotChatPage.css';
+import { Prompt, getPromptList } from '../service/BotChat';
+import { TableCreateInput } from "./Inputs";
+import theme from "./theme";
 
 const TableCreateDialog =
     ({
+        botId,
+        historyId,
         open,
         handleClose,
         handleSubmit
     }: {
+        botId: string | undefined;
+        historyId: number;
         open: boolean;
         handleClose: () => void;
         handleSubmit: () => void;
     }) => {
 
         const { t } = useTranslation();
+        const [promptList, setPromptList] = useState<Prompt[]>([]);
+
+        useEffect(() => {
+            const getPrompt = async () => {
+                const list = await getPromptList(historyId, botId);
+                console.log('promptList:', list);
+                if (list !== null) {
+                    setPromptList(list);
+                }
+            };
+            getPrompt();
+        }, [historyId, botId]);
+
         return (
+            promptList.length === 0 ? <></> :
             <Dialog
                 open={open}
                 onClose={() => { handleClose(); }}
@@ -44,9 +64,14 @@ const TableCreateDialog =
                     {'Assistant Name'}
                 </DialogTitle>
                 <DialogContent>
-                    <TableCreateInput title={"报错代码"} placeholder={""} name={"item1"} />
-                    <TableCreateInput title={"报错信息"} placeholder={""} name={"item2"} />
-                    <TableCreateInput title={"debug 要求"} placeholder={""} name={"item3"} />
+                    {promptList.map((prompt, index) => (
+                        <TableCreateInput
+                            key={index}
+                            title={prompt.promptKey}
+                            placeholder={prompt.promptValue}
+                            name={`item${index + 1}`}
+                        />
+                    ))}
                 </DialogContent>
                 <DialogActions
                     style={{
