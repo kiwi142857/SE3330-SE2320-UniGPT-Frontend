@@ -14,6 +14,9 @@ interface ResponseData {
 
 export async function getJson(url: string): Promise<any> {
     let res = await fetch(url, { method: "GET", credentials: "include" });
+    if (!res.ok) {
+        throw new Error("Network error");
+    }
     return res.json();
 }
 

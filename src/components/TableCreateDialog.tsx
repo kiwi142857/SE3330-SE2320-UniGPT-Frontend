@@ -1,15 +1,15 @@
-import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { TableCreateInput } from "./Inputs";
-import '../css/BotChatPage.css'
-import theme from "./theme";
-import { useTranslation } from "react-i18next";
-import { Prompt, getPromptList } from '../service/BotChat';
+import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from "react-i18next";
+import '../css/BotChatPage.css';
+import { Prompt, getPromptList } from '../service/BotChat';
+import { TableCreateInput } from "./Inputs";
+import theme from "./theme";
 
 const TableCreateDialog =
     ({
@@ -41,6 +41,7 @@ const TableCreateDialog =
         }, [historyId, botId]);
 
         return (
+            promptList.length === 0 ? <></> :
             <Dialog
                 open={open}
                 onClose={() => { handleClose(); }}
