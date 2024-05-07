@@ -58,6 +58,7 @@ const BotDetailPage: React.FC = () => {
                 id={bot.id || ''}
                 name={bot.name || ''}
                 author={bot.creator || ''}
+                authorId={bot.creatorId || ''}
                 avatar={bot.avatar || ''}
                 description={bot.description || ''}
                 likeNumber={bot.likeNumber.toString()}

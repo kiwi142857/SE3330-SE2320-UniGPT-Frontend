@@ -1,12 +1,14 @@
 import { Tab, Tabs } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { BotList, BotListType } from '../components/BotList';
+import SnackBar from '../components/Snackbar';
 import UserCard from '../components/UserCard';
 import '../css/Profile.css';
 import { LanguageContext } from "../provider/LanguageProvider";
-import { User, getMe, getUserCreatedBots, getUserFavoriteBots } from '../service/user';
+import { User, getMe, getUser, getUserCreatedBots, getUserFavoriteBots } from '../service/user';
+
 
 export function BotListTabs({ value, setValue }: { value: number, setValue: React.Dispatch<React.SetStateAction<number>>; }) {
     const { t, i18n } = useTranslation();
@@ -30,7 +32,7 @@ export function BotListTabs({ value, setValue }: { value: number, setValue: Reac
     );
 }
 
-const ProfilePage: React.FC = () => {
+const ProfilePage = ({isMe}:{isMe : boolean}) => {
 
     const [searchParams] = useSearchParams();
     const pageIndexStr = searchParams.get("pageIndex");
@@ -44,18 +46,37 @@ const ProfilePage: React.FC = () => {
     const [tabValue, setTabValue] = React.useState(0);
     const [bots, setBots] = useState([]); 
 
+    const [alert, setAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+
     // 语言切换
     useEffect(() => {
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
 
+    let { id } = useParams<{ id: string }>();
+
     // 获取用户信息
     const [me, setMe] = useState<User | null>(null);
     useEffect(() => {
         const fetchMe = async () => {
-            const response = await getMe();
+            let response = null;
 
-            setMe(response);
+            if (isMe) {
+                response = await getMe();
+            } else { 
+                if (id) {
+                    response = await getUser(id);
+                }
+            }
+
+            if (response != null) {
+                setMe(response);
+            } else {
+                setMe(null);
+                setAlert(true);
+                setAlertMessage("获取用户信息失败！");
+            }
             console.log("me", me);
         };
         fetchMe();
@@ -75,7 +96,12 @@ const ProfilePage: React.FC = () => {
                 response = await getUserFavoriteBots(me.id, pageIndex, pageSize);
             }
 
-            setBots(response.bots);
+            if (response != null) {
+                setBots(response.bots);
+            } else {
+                setBots([]);
+            }
+            console.log("bots", bots);
         };
         fetchBots();
     }, [tabValue, me, pageIndex, pageSize]);
@@ -86,11 +112,16 @@ const ProfilePage: React.FC = () => {
 
     return (
         <>
+            <SnackBar
+                open={alert}
+                message={alertMessage}
+                setOpen={setAlert}
+            />
             {
                 me == null ? <></> :
                     <>
                         <div className='profile-container'>
-                            <UserCard user={me}></UserCard>
+                            <UserCard user={me} isMe={isMe}></UserCard>
                         </div>
                         <div className='botlist-tabs'>
                             <BotListTabs value={tabValue} setValue={setTabValue}></BotListTabs>

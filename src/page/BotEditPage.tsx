@@ -134,7 +134,7 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
         if (res) {
             if (res.ok){
                 setTimeout(() => {
-                    window.location.href = '/botchat';
+                    window.location.href = '/profile/me';
                 }, 1000);
             } else {
                 setAlert(true);

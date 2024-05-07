@@ -1,14 +1,12 @@
-import React from 'react';
-import MarketSearch from '../components/MarketSearch';
-import { useSearchParams } from "react-router-dom";
+import { Pagination } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSearchParams } from "react-router-dom";
+import { BotList, BotListType } from '../components/BotList';
+import MarketSearch from '../components/MarketSearch';
+import '../css/Market.css';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { getSearchBotList } from '../service/bot';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { BotList, BotListType } from '../components/BotList';
-import { Pagination } from '@mui/material';
-import '../css/Market.css';
 // bot市场
 const MarketPage: React.FC = () => {
 
@@ -17,10 +15,12 @@ const MarketPage: React.FC = () => {
     const pageSizeStr = searchParams.get("pageSize");
     const [pageIndex, setPageIndex] = useState(pageIndexStr != null ? Number.parseInt(pageIndexStr) -1  : 0);
     const pageSize = pageSizeStr != null ? Number.parseInt(pageSizeStr) : 15;
+    const [tabValue, setTabValue] = React.useState(0);
 
     const [bots, setBots] = useState([]); // [botListType
     const getSearchBots = async () => {
-        let response = await getSearchBotList(pageIndex, pageSize, searchParams.get("keyword") || "");
+        let order = tabValue === 0 ? "latest" : "star";
+        let response = await getSearchBotList(pageIndex, pageSize, searchParams.get("keyword") || "", order);
         console.log(response);
         setBots(response.bots);
     }
@@ -28,15 +28,13 @@ const MarketPage: React.FC = () => {
     const context = React.useContext(LanguageContext);
     const { t, i18n } = useTranslation();
 
-    const [tabValue, setTabValue] = React.useState(0);
-
     useEffect(() => {
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
 
     useEffect(() => {
         getSearchBots();
-    }, [searchParams]);
+    }, [searchParams,tabValue]);
 
     console.log("bots", bots);
 

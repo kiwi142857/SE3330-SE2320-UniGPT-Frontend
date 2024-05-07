@@ -1,4 +1,4 @@
-import {get, PREFIX} from './common';
+import { get, PREFIX } from './common';
 
 export interface Bot {
     id: number;
@@ -7,8 +7,8 @@ export interface Bot {
     avatar: string;
 }
 
-export async function getSearchBotList(page: number, pageSize: number, q: string) {
-    const url = `${PREFIX}/bots?page=${page}&pagesize=${pageSize}&q=${q}`;
+export async function getSearchBotList(page: number, pageSize: number, q: string, order: string) {
+    const url = `${PREFIX}/bots?page=${page}&pagesize=${pageSize}&q=${q}&order=${order}`;
     try{
         console.log("url", url);
         const response = await get(url);
