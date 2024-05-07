@@ -49,6 +49,7 @@
 
 .detail-card-author{
     align-self: flex-start;
+    color: #666666;
     font-family: "Inter";
     font-size: 18px;
     font-weight: 600;

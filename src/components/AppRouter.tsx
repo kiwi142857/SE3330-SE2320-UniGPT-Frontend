@@ -13,7 +13,6 @@ import {
     RouterProvider,
     createBrowserRouter
 } from "react-router-dom";
-import { Home } from '@mui/icons-material';
 
 
 const router = createBrowserRouter([
@@ -42,8 +41,12 @@ const router = createBrowserRouter([
                 element: <BotDetailPage />
             },
             {
-                path: "/profile",
-                element: <ProfilePage />
+                path: "/profile/me",
+                element: <ProfilePage isMe={true}/>
+            },
+            {
+                path: "/profile/:id",
+                element: <ProfilePage isMe={false}/>
             },
             {
                 path: "/botcreate",

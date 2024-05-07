@@ -6,13 +6,17 @@ import '../css/Profile.css';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { imageUpload } from '../service/upload';
 import { PostUser, User, putUser } from '../service/user';
+import SnackBar from './Snackbar';
 
-export default function UserCard({ user }: { user: User; }) {
+export default function UserCard({ user, isMe }: { user: User; isMe: boolean;}) {
 
     const [description, setDescription] = useState(user.description);
     const [username, setUsername] = useState(user.name);
     const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
     const [isUsernameFocused, setIsUsernameFocused] = useState(false);
+
+    const [alert, setAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
 
     const handleUsernameFocus = () => {
         setIsUsernameFocused(true);
@@ -57,12 +61,18 @@ export default function UserCard({ user }: { user: User; }) {
             description: description,
         };
 
+        if (username === '') {
+            setAlert(true);
+            setAlertMessage('用户名不能为空');
+            return;
+        }
+
         try {
             console.log(updatedUser);
             await putUser(updatedUser, user.id);
-            // Handle success (e.g., show a success message)
         } catch (error) {
-            // Handle error (e.g., show an error message)
+            setAlert(true);
+            setAlertMessage('更新信息失败');
         }
     };
 
@@ -82,7 +92,12 @@ export default function UserCard({ user }: { user: User; }) {
             setAvatarSrc(user.avatar);
     }, [user]);
 
-    return (
+    return [
+        <SnackBar
+            open={alert}
+            message={alertMessage}
+            setOpen={setAlert}
+        />,
 
         <Grid container spacing={5} >
             <Grid item >
@@ -94,6 +109,7 @@ export default function UserCard({ user }: { user: User; }) {
                         onChange={handleAvatarChange}
                         style={{ display: 'none' }}
                         id="avatar-input"
+                        disabled={!isMe}
                     />
                     <label htmlFor="avatar-input" className="avatar-overlay-profile">{t("change your avatar")}</label>
                 </div>
@@ -123,10 +139,13 @@ export default function UserCard({ user }: { user: User; }) {
                         InputLabelProps={{
                             shrink: true,
                         }}
+                        disabled={!isMe}
                     />
                 </Grid>
                 <Grid item >
-                    <Typography className='email'>{user.account}@sjtu.edu.cn</Typography>
+                    <Typography className='email' >
+                        {user.account}@sjtu.edu.cn
+                    </Typography>
                 </Grid>
                 <Grid item style={{ marginTop: '10px' }}>
                     <TextField
@@ -150,21 +169,25 @@ export default function UserCard({ user }: { user: User; }) {
                         inputProps={{
                             maxLength: 188, // Set the maximum input length to 100
                         }}
+                        disabled={!isMe}
                     />
                 </Grid>
-                <Grid item >
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        style={{ width: '50%', marginTop: '10px', alignSelf: 'flex-start', marginLeft: '-50%'}}
-                        onClick={handleCommit}
-                    >
-                        {t("Save")}
-                    </Button>
-                </Grid>
+                {
+                    isMe &&
+                    <Grid item >
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            style={{ width: '50%', marginTop: '10px', alignSelf: 'flex-start', marginLeft: '-50%'}}
+                            onClick={handleCommit}
+                        >
+                            {t("Save")}
+                        </Button>
+                    </Grid> 
+                }
             </Grid>
             <Grid item >
             </Grid>
         </Grid>
-    );
+    ];
 };

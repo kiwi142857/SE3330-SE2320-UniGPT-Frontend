@@ -4,6 +4,7 @@ export interface botDetailInfo{
     id: string;
     name: string;
     creator: string;
+    creatorId: string;
     description: string;
     detail: string;
     avatar: string;

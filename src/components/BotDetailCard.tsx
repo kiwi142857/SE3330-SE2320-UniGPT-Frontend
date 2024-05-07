@@ -7,6 +7,7 @@ import { Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import '../css/BotDetailPage.css';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { disLikeBot, likeBot, starBot, unStarBot } from '../service/BotDetail';
@@ -17,6 +18,7 @@ const BotDetailCard = (
         id,
         name,
         author,
+        authorId,
         avatar,
         description,
         likeNumber,
@@ -29,6 +31,7 @@ const BotDetailCard = (
             id: string;
             name: string;
             author: string;
+            authorId: string;
             avatar: string;
             description: string;
             likeNumber: string;
@@ -98,11 +101,11 @@ const BotDetailCard = (
                         {t(name)}
                     </p>
                 </Typography>
-                <Typography sx={{ color: 'primary.light' }}>
-                    <p className='detail-card-author'>
+                {/* <Typography sx={{ color: 'primary.light' }}> */}
+                    <Link className="detail-card-author" to={`/profile/${authorId}`}>
                         {`@${author}`}
-                    </p>
-                </Typography>
+                    </Link>
+                {/* </Typography> */}
                 <Typography sx={{ color: 'primary.light' }}>
                     <p className='detail-card-description'>
                         {t(description)}
