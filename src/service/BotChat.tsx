@@ -28,30 +28,6 @@ export interface Prompt {
     promptValue: string;
 }
 
-// data
-const botChatHistoryList: BotChatHistory[] = [
-    {
-        id: 1,
-        title: 'Python实现冒泡排序',
-        message: '这段代码首先定义了...',
-    },
-    {
-        id: 2,
-        title: '石榴可乐鸡尾酒名字',
-        message: '当然可以！这里有...',
-    },
-    {
-        id: 3,
-        title: '城市设计',
-        message: '当涉及城市设计时，...',
-    },
-    {
-        id: 4,
-        title: '解释期权交易',
-        message: '期权交易是一种金融衍生品交易...',
-    },
-];
-
 const botChatList: BotChat[] = [
     {
         id: 1,
@@ -184,9 +160,8 @@ const botChatList: BotChat[] = [
 export async function getBotBrief(botID: string | undefined): Promise<BotBriefInfo | null> {
     if (botID === undefined) return null;
 
-    const url = `${PREFIX}/bots/${botID}?info=brief`;
+    const url = `${PREFIX}/bots/${botID}?info=detail`;
     let res;
-
     try {
         res = await getJson(url);
         console.log(url);
@@ -198,8 +173,8 @@ export async function getBotBrief(botID: string | undefined): Promise<BotBriefIn
     return res;
 }
 
-export async function getBotChatHistoryList(botId: string | undefined, page: number, pagesize: number): Promise<BotChatHistory[] | null> {
-    const url = `${PREFIX}/bots/${botId}/histories?page=${page}&pagesize=${pagesize}`;
+export async function getBotChatHistoryList(botID: string | undefined, page: number, pagesize: number): Promise<BotChatHistory[] | null> {
+    const url = `${PREFIX}/bots/${botID}/histories?page=${page}&pagesize=${pagesize}`;
 
     let res;
 
@@ -211,37 +186,25 @@ export async function getBotChatHistoryList(botId: string | undefined, page: num
         console.error(e);
         res = null;
     }
-    return res;
+    return res["histories"];
 }
 
-export async function getBotChatList(historyId: number) {
-    // TODO
-    return botChatList;
-}
+export async function getPromptKeys(botID: string | undefined): Promise<string[] | null> {
+    if (botID === undefined) return null;
 
-export async function createChat() {
-    // TODO
-}
-
-export async function getChat() {
-    // TODO
-}
-
-export async function getPromptList(historyId: number, botId: string | undefined): Promise<Prompt[] | null> {
-    const url = `${PREFIX}/histories/${historyId}/promptlist?botId=${botId}`;
-    console.log('getPromptList url: ', url);
-
+    const url = `${PREFIX}/bots/${botID}?info=brief`;
     let res;
 
     try {
         res = await getJson(url);
-    }
-    catch (e) {
+        console.log(url);
+        console.log(res);
+    } catch (e) {
         console.error(e);
-        res = [];
+        res = null;
     }
-    console.log('getPromptList: ', res);
-    return res;
+    console.log(res.promptKeys);
+    return res.promptKeys;
 }
 
 export async function createHistory(id: number) {
@@ -252,4 +215,20 @@ export async function createHistory(id: number) {
     catch (e) {
         console.error(e);
     }
+}
+
+export async function getBotChatList(historyId: number): Promise<BotChat[]> {
+    const url = `${PREFIX}/bots/${historyId}/chats`;
+    let res;
+
+    try {
+        res = await getJson(url);
+        console.log(res);
+    }
+    catch (e) {
+        console.error(e);
+        res = null;
+    }
+    if (res === null) return [];
+    return res;
 }

@@ -13,13 +13,13 @@ import theme from "./theme";
 
 const TableCreateDialog =
     ({
-        botId,
+        botID,
         historyId,
         open,
         handleClose,
         handleSubmit
     }: {
-        botId: string | undefined;
+        botID: string | undefined;
         historyId: number;
         open: boolean;
         handleClose: () => void;
@@ -31,76 +31,73 @@ const TableCreateDialog =
 
         useEffect(() => {
             const getPrompt = async () => {
-                const list = await getPromptList(historyId, botId);
-                console.log('promptList:', list);
-                if (list !== null) {
-                    setPromptList(list);
-                }
+                const list = [];
+                // todo
             };
             getPrompt();
-        }, [historyId, botId]);
+        }, [historyId, botID]);
 
         return (
             promptList.length === 0 ? <></> :
-            <Dialog
-                open={open}
-                onClose={() => { handleClose(); }}
-                PaperProps={{
-                    component: 'form',
-                    onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-                        event.preventDefault();
-                        handleSubmit();
-                        handleClose();
-                    },
-                    style: {
-                        borderRadius: 32,
-                        padding: 50,
-                        display: 'flex',
-                        flexDirection: 'column',
-                    }
-                }}
-            >
-                <DialogTitle className="table-create-title">
-                    {'Assistant Name'}
-                </DialogTitle>
-                <DialogContent>
-                    {promptList.map((prompt, index) => (
-                        <TableCreateInput
-                            key={index}
-                            title={prompt.promptKey}
-                            placeholder={prompt.promptValue}
-                            name={`item${index + 1}`}
-                        />
-                    ))}
-                </DialogContent>
-                <DialogActions
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'center'
+                <Dialog
+                    open={open}
+                    onClose={() => { handleClose(); }}
+                    PaperProps={{
+                        component: 'form',
+                        onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
+                            event.preventDefault();
+                            handleSubmit();
+                            handleClose();
+                        },
+                        style: {
+                            borderRadius: 32,
+                            padding: 50,
+                            display: 'flex',
+                            flexDirection: 'column',
+                        }
                     }}
                 >
-                    <Button
-                        className="drawer-button"
+                    <DialogTitle className="table-create-title">
+                        {'Assistant Name'}
+                    </DialogTitle>
+                    <DialogContent>
+                        {promptList.map((prompt, index) => (
+                            <TableCreateInput
+                                key={index}
+                                title={prompt.promptKey}
+                                placeholder={prompt.promptValue}
+                                name={`item${index + 1}`}
+                            />
+                        ))}
+                    </DialogContent>
+                    <DialogActions
                         style={{
-                            backgroundColor: theme.palette.primary.main,
-                            color: 'white',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center'
                         }}
-                        onClick={handleClose}
-                    >{t('Cancel')}
-                    </Button>
-                    <Button
-                        className="drawer-button"
-                        style={{
-                            backgroundColor: theme.palette.primary.main,
-                            color: 'white',
-                        }}
-                        type="submit"
-                    >{t('Submit')}
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                    >
+                        <Button
+                            className="drawer-button"
+                            style={{
+                                backgroundColor: theme.palette.primary.main,
+                                color: 'white',
+                            }}
+                            onClick={handleClose}
+                        >{t('Cancel')}
+                        </Button>
+                        <Button
+                            className="drawer-button"
+                            style={{
+                                backgroundColor: theme.palette.primary.main,
+                                color: 'white',
+                            }}
+                            type="submit"
+                        >{t('Submit')}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
         );
     }
 

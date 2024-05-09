@@ -14,7 +14,7 @@ import TableCreateDialog from "../components/TableCreateDialog";
 import theme from "../components/theme";
 import '../css/App.css';
 import '../css/BotChatPage.css';
-import { BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotChatList, getBotBrief, getHistoryId } from "../service/BotChat";
+import { BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotBrief, getBotChatList } from "../service/BotChat";
 import { useParams } from "react-router-dom";
 import { Margin } from "@mui/icons-material";
 
@@ -22,7 +22,7 @@ import { Margin } from "@mui/icons-material";
 // 侧边栏宽度
 let drawerWidth = 350;
 const BotChatPage = () => {
-    let { botId } = useParams<{ botId: string }>();
+    let { botID } = useParams<{ botID: string }>();
 
 
     const [tableCreateOpen, setTableCreateOpen] = useState(false);
@@ -35,19 +35,19 @@ const BotChatPage = () => {
     const { t } = useTranslation();
     useEffect(() => {
         const getBrief = async () => {
-            const brief = await getBotBrief(botId);
+            const brief = await getBotBrief(botID);
             setBotBriefInfo(brief);
         };
-        console.log(botId);
+        console.log(botID);
         getBrief();
     }, []);
 
 
     useEffect(() => {
         const getChatHistoryList = async () => {
-            const list = await getBotChatHistoryList(botId, 0, 20);
+            const list = await getBotChatHistoryList(botID, 0, 20);
             setBotChatHistoryList(list);
-            console.log(list);
+            console.log("BotChatHistoryList: ", list);
         };
         getChatHistoryList();
     }, []);
@@ -156,7 +156,7 @@ const BotChatPage = () => {
                     }} />
                 {/* 弹出 prompt 表格 */}
                 <TableCreateDialog
-                    botId={botId}
+                    botID={botID}
                     historyId={historyId}
                     open={tableCreateOpen}
                     handleClose={() => {

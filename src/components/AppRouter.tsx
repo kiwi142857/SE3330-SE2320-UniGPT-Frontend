@@ -29,7 +29,7 @@ const router = createBrowserRouter([
                 element: <HomePage />,
             },
             {
-                path: "/botchat/:botId",
+                path: "/botchat/:botID",
                 element: <BotChatPage />
             },
             {
@@ -42,11 +42,11 @@ const router = createBrowserRouter([
             },
             {
                 path: "/profile/me",
-                element: <ProfilePage isMe={true}/>
+                element: <ProfilePage isMe={true} />
             },
             {
                 path: "/profile/:id",
-                element: <ProfilePage isMe={false}/>
+                element: <ProfilePage isMe={false} />
             },
             {
                 path: "/botcreate",
