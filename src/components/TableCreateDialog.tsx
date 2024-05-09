@@ -7,7 +7,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import '../css/BotChatPage.css';
-import { Prompt, getPromptList } from '../service/BotChat';
+import { Prompt, getEmptyPromptList, getPromptList } from '../service/BotChat';
 import { TableCreateInput } from "./Inputs";
 import theme from "./theme";
 
@@ -31,8 +31,7 @@ const TableCreateDialog =
 
         useEffect(() => {
             const getPrompt = async () => {
-                const list = [];
-                // todo
+                const list = historyId == 0 ? await getEmptyPromptList(botID) : await getPromptList(historyId);
             };
             getPrompt();
         }, [historyId, botID]);

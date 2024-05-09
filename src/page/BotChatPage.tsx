@@ -26,11 +26,10 @@ const BotChatPage = () => {
 
 
     const [tableCreateOpen, setTableCreateOpen] = useState(false);
-    const [selectedHistory, setSelectedHistory] = useState(0);
+    const [selectedHistoryId, setSelectedHistoryId] = useState(0);
     const [botChatHistoryList, setBotChatHistoryList] = useState<BotChatHistory[] | null>([]);
     const [botChatList, setBotChatList] = useState<BotChat[]>([]);
     const [botBriefInfo, setBotBriefInfo] = useState<BotBriefInfo | null>(null);
-    const [historyId, setHistoryId] = useState<number>(0);
 
     const { t } = useTranslation();
     useEffect(() => {
@@ -86,9 +85,9 @@ const BotChatPage = () => {
                 {botChatHistoryList && botChatHistoryList.length ? (
                     <ChatHistoryList
                         botChatHistoryList={botChatHistoryList}
-                        selectedId={selectedHistory}
+                        selectedId={selectedHistoryId}
                         onItemClicked={async (id) => {
-                            setSelectedHistory(id);
+                            setSelectedHistoryId(id);
                             const list = await getBotChatList(id);
                             setBotChatList(list);
                         }}
@@ -148,7 +147,7 @@ const BotChatPage = () => {
                             {
                                 id: 0,
                                 name: '你',
-                                historyId: selectedHistory,
+                                historyId: selectedHistoryId,
                                 avatar: '/assets/user-default.png',
                                 content: text
                             }]);
@@ -157,7 +156,7 @@ const BotChatPage = () => {
                 {/* 弹出 prompt 表格 */}
                 <TableCreateDialog
                     botID={botID}
-                    historyId={historyId}
+                    historyId={selectedHistoryId}
                     open={tableCreateOpen}
                     handleClose={() => {
                         setTableCreateOpen(false);

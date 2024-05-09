@@ -189,22 +189,44 @@ export async function getBotChatHistoryList(botID: string | undefined, page: num
     return res["histories"];
 }
 
-export async function getPromptKeys(botID: string | undefined): Promise<string[] | null> {
-    if (botID === undefined) return null;
+export async function getEmptyPromptList(botID: string | undefined): Promise<Prompt[]> {
+    if (botID === undefined) return [];
 
-    const url = `${PREFIX}/bots/${botID}?info=brief`;
+    const url = `${PREFIX}/bots/${botID}?info=detail`;
     let res;
 
     try {
         res = await getJson(url);
-        console.log(url);
-        console.log(res);
     } catch (e) {
         console.error(e);
         res = null;
     }
-    console.log(res.promptKeys);
-    return res.promptKeys;
+
+    //create a Prompt[] based on the promptKeys
+    let promptList: Prompt[] = [];
+    for (let i = 0; i < res.promptKeys.length; i++) {
+        promptList.push({ promptKey: res.promptKeys[i], promptValue: "" });
+    }
+
+    console.log("getEmptyPromptList: ", promptList);
+
+    return res.promptList;
+}
+
+export async function getPromptList(historyId: number): Promise<Prompt[]> {
+    const url = `${PREFIX}/histories/${historyId}/promptlist`;
+    let res;
+
+    try {
+        res = await getJson(url);
+        console.log(res);
+    }
+    catch (e) {
+        console.error(e);
+        res = null;
+    }
+    if (res === null) return [];
+    return res;
 }
 
 export async function createHistory(id: number) {
