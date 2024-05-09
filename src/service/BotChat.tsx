@@ -198,14 +198,8 @@ export async function getBotBrief(botID: string | undefined): Promise<BotBriefIn
     return res;
 }
 
-
-// export async function getBotChatHistoryList(botID: string | undefined): Promise<BotChatHistory[] | null> {
-//     // TODO
-//     return botChatHistoryList;
-// }
-
 export async function getBotChatHistoryList(botId: string | undefined, page: number, pagesize: number): Promise<BotChatHistory[] | null> {
-    const url = `${PREFIX}/bots/${botId}/histories?page=${page}&pageSize=${pagesize}`;
+    const url = `${PREFIX}/bots/${botId}/histories?page=${page}&pagesize=${pagesize}`;
 
     let res;
 
@@ -217,11 +211,12 @@ export async function getBotChatHistoryList(botId: string | undefined, page: num
         console.error(e);
         res = null;
     }
-    return res.chats;
+    return res;
 }
 
 export async function getBotChatList(historyId: number) {
-    return botChatList.filter((botChat: BotChat) => botChat.historyId === historyId);
+    // TODO
+    return botChatList;
 }
 
 export async function createChat() {
@@ -230,23 +225,6 @@ export async function createChat() {
 
 export async function getChat() {
     // TODO
-}
-
-export async function getHistoryId(botId: string | undefined): Promise<number> {
-    if (botId === undefined) return 0;
-
-    const url = `${PREFIX}/bots/${botId}/historyid`;
-    let res;
-
-    try {
-        res = (await get(url)).body;
-        console.log(res);
-    }
-    catch (e) {
-        console.error(e);
-    }
-    if (typeof res === 'number') return res;
-    return 0;
 }
 
 export async function getPromptList(historyId: number, botId: string | undefined): Promise<Prompt[] | null> {

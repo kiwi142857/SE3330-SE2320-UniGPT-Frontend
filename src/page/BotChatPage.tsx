@@ -47,17 +47,9 @@ const BotChatPage = () => {
         const getChatHistoryList = async () => {
             const list = await getBotChatHistoryList(botId, 0, 20);
             setBotChatHistoryList(list);
+            console.log(list);
         };
         getChatHistoryList();
-    }, []);
-
-
-    useEffect(() => {
-        const getBotHistoryId = async () => {
-            const id = await getHistoryId(botId);
-            setHistoryId(id);
-        };
-        getBotHistoryId();
     }, []);
 
     return (
