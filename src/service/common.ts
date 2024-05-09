@@ -59,6 +59,7 @@ export async function post(url: string, data: any): Promise<any> {
     return res.json();
 }
 
+export const websocketUrl = 'ws://localhost:8080/chat';
 export const BASEURL: string = process.env.REACT_APP_BASE_URL ?? 'http://localhost:8080';
 export const PREFIX: string = `${BASEURL}/api`;
 export const API_DOCS_URL: string = `${BASEURL}/api-docs`;
