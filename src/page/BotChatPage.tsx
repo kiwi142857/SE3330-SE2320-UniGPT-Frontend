@@ -14,15 +14,14 @@ import TableCreateDialog from "../components/TableCreateDialog";
 import theme from "../components/theme";
 import '../css/App.css';
 import '../css/BotChatPage.css';
-import { BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotBrief, getBotChatList } from "../service/BotChat";
+import { Prompt, BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotBrief, getBotChatList, createHistory } from "../service/BotChat";
 import { useParams } from "react-router-dom";
-import { Margin } from "@mui/icons-material";
-
 // bot聊天页
 // 侧边栏宽度
 let drawerWidth = 350;
 const BotChatPage = () => {
     let { botID } = useParams<{ botID: string }>();
+    botID === undefined ? botID = "" : botID = botID;
 
 
     const [tableCreateOpen, setTableCreateOpen] = useState(false);
@@ -49,7 +48,13 @@ const BotChatPage = () => {
             console.log("BotChatHistoryList: ", list);
         };
         getChatHistoryList();
-    }, []);
+    }, [selectedHistoryId]);
+
+    const onSubmit = async (promptlist: Prompt[]) => {
+        console.log("PromptList: ", promptlist);
+        const newHistoryId = await createHistory(botID, promptlist);
+        setSelectedHistoryId(newHistoryId);
+    }
 
     return (
         <div
@@ -161,8 +166,7 @@ const BotChatPage = () => {
                     handleClose={() => {
                         setTableCreateOpen(false);
                     }}
-                    handleSubmit={() => {
-                    }} />
+                    handleSubmit={onSubmit} />
             </Box>
         </div>
     );

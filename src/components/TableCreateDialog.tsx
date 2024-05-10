@@ -23,31 +23,56 @@ const TableCreateDialog =
         historyId: number;
         open: boolean;
         handleClose: () => void;
-        handleSubmit: () => void;
+        handleSubmit: (promptList: Prompt[]) => void;
     }) => {
 
         const { t } = useTranslation();
         const [promptList, setPromptList] = useState<Prompt[]>([]);
+        const [inputValues, setInputValues] = useState<string[]>([]);
 
         useEffect(() => {
             const getPrompt = async () => {
+                console.log("In getPrompt:");
+                console.log("historyId: ", historyId);
+                console.log("botID: ", botID);
+                console.log("cond: ", historyId == 0);
+
                 const list = historyId == 0 ? await getEmptyPromptList(botID) : await getPromptList(historyId);
+                setPromptList(list);
+
+                console.log("PromptList: ", list);
             };
             getPrompt();
         }, [historyId, botID]);
+
+        const handleInputChange = (index: number, value: string) => {
+            setInputValues(prevValues => {
+                const newInputValues = [...prevValues];
+                newInputValues[index] = value;
+                return newInputValues;
+            });
+            console.log("InputValues Changed: ", inputValues);
+        };
+
+        const onSubmit = async () => {
+            console.log("In Dialog onSubmit");
+            console.log("InputValues: ", inputValues);
+            let newPromptList = promptList;
+            // change the promptList
+            for (let i = 0; i < promptList.length; i++) {
+                newPromptList[i].promptValue = inputValues[i];
+            }
+            handleSubmit(newPromptList);
+            handleClose();
+        }
 
         return (
             promptList.length === 0 ? <></> :
                 <Dialog
                     open={open}
-                    onClose={() => { handleClose(); }}
+                    onClose={handleClose}
                     PaperProps={{
                         component: 'form',
-                        onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-                            event.preventDefault();
-                            handleSubmit();
-                            handleClose();
-                        },
                         style: {
                             borderRadius: 32,
                             padding: 50,
@@ -57,7 +82,7 @@ const TableCreateDialog =
                     }}
                 >
                     <DialogTitle className="table-create-title">
-                        {'Assistant Name'}
+                        {'Prompt Table'}
                     </DialogTitle>
                     <DialogContent>
                         {promptList.map((prompt, index) => (
@@ -66,6 +91,8 @@ const TableCreateDialog =
                                 title={prompt.promptKey}
                                 placeholder={prompt.promptValue}
                                 name={`item${index + 1}`}
+                                lock={historyId !== 0}
+                                onInputChange={(value: string) => handleInputChange(index, value)}
                             />
                         ))}
                     </DialogContent>
@@ -86,15 +113,17 @@ const TableCreateDialog =
                             onClick={handleClose}
                         >{t('Cancel')}
                         </Button>
-                        <Button
-                            className="drawer-button"
-                            style={{
-                                backgroundColor: theme.palette.primary.main,
-                                color: 'white',
-                            }}
-                            type="submit"
-                        >{t('Submit')}
-                        </Button>
+                        {
+                            historyId === 0 ? <Button
+                                className="drawer-button"
+                                style={{
+                                    backgroundColor: theme.palette.primary.main,
+                                    color: 'white',
+                                }}
+                                onClick={onSubmit}
+                            >{t('Submit')}
+                            </Button> : <></>
+                        }
                     </DialogActions>
                 </Dialog>
         );

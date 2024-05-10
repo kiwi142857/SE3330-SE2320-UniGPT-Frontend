@@ -13,7 +13,7 @@ type BasicInputProps = {
     required?: boolean;
 
     // 可选的onChange参数，传入内部TextField的onChange
-    onChange?:  ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 
     // 传入内部TextField的value
     value?: any;
@@ -23,34 +23,41 @@ type BasicInputProps = {
     maxRows?: number;
 
     multiline?: boolean;
+
+    // promptValue 不可编辑，且显示为输入样式
+    lock?: boolean;
 };
 
 const BasicInput: React.FC<BasicInputProps> =
     ({
         placeholder,
         name,
-        required = false ,
+        required = false,
         onChange,
         value,
         defaultValue,
         maxRows = 5,
-        multiline = true
+        multiline = true,
+        lock = false
     }) => {
 
-    return (
-        <TextField
-            required={required}
-            name={name}
-            placeholder={placeholder}
-            InputProps={{className: 'basic-input'}}
-            style={{width: '100%'}}
-            multiline={multiline}
-            maxRows={maxRows}
-            value={value}
-            defaultValue={defaultValue}
-            onChange={onChange ?? (()=>{})}
-        />
-    );
-};
+        return (
+            <TextField
+                required={required}
+                name={name}
+                placeholder={placeholder}
+                InputProps={{
+                    className: 'basic-input',
+                    readOnly: lock
+                }}
+                style={{ width: '100%' }}
+                multiline={multiline}
+                maxRows={maxRows}
+                value={value}
+                defaultValue={defaultValue}
+                onChange={onChange}
+            />
+        );
+    };
 
 export default BasicInput;

@@ -210,7 +210,7 @@ export async function getEmptyPromptList(botID: string | undefined): Promise<Pro
 
     console.log("getEmptyPromptList: ", promptList);
 
-    return res.promptList;
+    return promptList;
 }
 
 export async function getPromptList(historyId: number): Promise<Prompt[]> {
@@ -229,16 +229,6 @@ export async function getPromptList(historyId: number): Promise<Prompt[]> {
     return res;
 }
 
-export async function createHistory(id: number) {
-    const url = `${PREFIX}/bots/${id}/histories`;
-    try {
-        console.log(await post(url, {}));
-    }
-    catch (e) {
-        console.error(e);
-    }
-}
-
 export async function getBotChatList(historyId: number): Promise<BotChat[]> {
     const url = `${PREFIX}/bots/${historyId}/chats`;
     let res;
@@ -253,4 +243,22 @@ export async function getBotChatList(historyId: number): Promise<BotChat[]> {
     }
     if (res === null) return [];
     return res;
+}
+
+export async function createHistory(botID: string, promptList: Prompt[]): Promise<number> {
+
+    const url = `${PREFIX}/bots/${botID}/histories`
+
+    let res;
+
+    try {
+        res = await post(url, promptList);
+        console.log("In createHistory: POST GET", res);
+    }
+    catch (e) {
+        console.error(e);
+        res = null;
+    }
+    if (res === null) return 0;
+    return res.historyid;
 }
