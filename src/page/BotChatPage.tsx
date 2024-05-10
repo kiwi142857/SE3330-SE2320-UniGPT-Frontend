@@ -56,6 +56,11 @@ const BotChatPage = () => {
         setSelectedHistoryId(newHistoryId);
     }
 
+    const onChatButtonClick = () => {
+        console.log("Click Chat");
+        setSelectedHistoryId(0);
+    }
+
     return (
         <div
             style={{
@@ -72,7 +77,7 @@ const BotChatPage = () => {
                 <Toolbar
                     style={{ height: 100, }}
                 />
-                <BotBriefCard botBriefInfo={botBriefInfo} />
+                <BotBriefCard botBriefInfo={botBriefInfo} onChatButtonClick={onChatButtonClick} />
                 <Typography
                     className="drawer-item-content"
                     style={{
@@ -143,6 +148,7 @@ const BotChatPage = () => {
                 }
                 {/* 输入框，发送按钮，编辑按钮 */}
                 <PromptInput
+                    selectedHistoryId={selectedHistoryId}
                     onAltTable={() => {
                         setTableCreateOpen(true);
                     }}

@@ -230,7 +230,7 @@ export async function getPromptList(historyId: number): Promise<Prompt[]> {
 }
 
 export async function getBotChatList(historyId: number): Promise<BotChat[]> {
-    const url = `${PREFIX}/bots/${historyId}/chats`;
+    const url = `${PREFIX}/histories/${historyId}/chats`;
     let res;
 
     try {
