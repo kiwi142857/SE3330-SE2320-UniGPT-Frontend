@@ -2,7 +2,6 @@ import { websocketUrl } from "./common";
 
 export const createWebSocketConnection = (id: number) => {
     // Create a new WebSocket connection
-    console.log("In createWebSocketConnection", id, websocketUrl);
     const socket = new WebSocket(websocketUrl);
 
     // Send a message when the connection is open
