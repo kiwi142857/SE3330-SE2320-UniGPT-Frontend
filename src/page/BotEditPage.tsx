@@ -134,9 +134,17 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
 
         if (res) {
             if (res.ok){
+                let href = '/botChat/';
+
+                if (edit) {
+                    href += id;
+                } else {
+                    href += res.message;
+                }
+                
                 setTimeout(() => {
-                    window.location.href = '/profile/me';
-                }, 1000);
+                    window.location.href = href;
+                }, 100);
             } else {
                 setAlert(true);
                 setAlertMessage("bot创建/修改表单提交失败: " + res.message);
