@@ -5,7 +5,7 @@ import {
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from 'react';
 import OneChat from "../components/OneChat";
-
+import { createWebSocketConnection, sendMessage } from "../service/webSocket";
 import { useTranslation } from "react-i18next";
 import BotBriefCard from "../components/BotBriefCard";
 import ChatHistoryList from "../components/ChatHistoryList";
@@ -16,11 +16,12 @@ import '../css/App.css';
 import '../css/BotChatPage.css';
 import { Prompt, BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotBrief, getBotChatList, createHistory } from "../service/BotChat";
 import { useParams } from "react-router-dom";
+
 // bot聊天页
 // 侧边栏宽度
 let drawerWidth = 350;
 const BotChatPage = () => {
-    let { botID } = useParams<{ botID: string }>();
+    let { botID } = useParams<{ botID: string; }>();
     botID === undefined ? botID = "" : botID = botID;
 
 
@@ -29,6 +30,8 @@ const BotChatPage = () => {
     const [botChatHistoryList, setBotChatHistoryList] = useState<BotChatHistory[] | null>([]);
     const [botChatList, setBotChatList] = useState<BotChat[]>([]);
     const [botBriefInfo, setBotBriefInfo] = useState<BotBriefInfo | null>(null);
+    const [socket, setSocket] = useState<WebSocket | null>(null);
+
 
     const { t } = useTranslation();
     useEffect(() => {
@@ -54,7 +57,69 @@ const BotChatPage = () => {
         console.log("PromptList: ", promptlist);
         const newHistoryId = await createHistory(botID, promptlist);
         setSelectedHistoryId(newHistoryId);
-    }
+    };
+
+    // websocket
+    const WebSocketConnection = (id: number) => {
+        // Create a new WebSocket connection
+        // if websocket has been created, close it first
+        if (socket) {
+            console.log("WebSocketConnection close: ");
+            socket.close();
+        }
+        console.log("WebSocketConnection start: ", id);
+        setSocket(createWebSocketConnection(id));
+        console.log("WebSocketConnection: ", socket);
+
+    };
+    // update botChatList
+    useEffect(() => {
+        const getChatList = async () => {
+            const list = await getBotChatList(selectedHistoryId);
+
+            setBotChatList(list);
+            console.log("First BotChatList: ", list);
+        };
+        getChatList();
+    }, [selectedHistoryId]);
+
+    // update socket
+    useEffect(() => {
+        if (socket) {
+            // Handle incoming messages
+            socket.onmessage = (event) => {
+                console.log('Message from server: ', event.data);
+                let response;
+                try {
+                    response = JSON.parse(event.data);
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                    // Handle the error as needed
+                }
+                console.log('Message from server: ', response.replyMessage);
+                console.log('my botChatList: ', botChatList);
+                setBotChatList([
+                    ...botChatList,
+                    {
+                        id: 0,
+                        name: '机器人',
+                        historyId: selectedHistoryId,
+                        avatar: '/assets/bot-default.png',
+                        content: response.replyMessage
+                    }]);
+                console.log("set botChatList: ", botChatList);
+                window.scrollTo(0, document.body.scrollHeight);
+            };
+
+            // Handle any errors that occur.
+            socket.onerror = (error) => {
+                console.error('WebSocket Error: ', error);
+                // TODO: Update your state to indicate that an error occurred
+            };
+        }
+    }, [socket]); // Add socket as a dependency
+
+    
 
     const onChatButtonClick = () => {
         console.log("Click Chat");
@@ -100,6 +165,8 @@ const BotChatPage = () => {
                             setSelectedHistoryId(id);
                             const list = await getBotChatList(id);
                             setBotChatList(list);
+                            console.log("BotChatList 111: ", list);
+                            WebSocketConnection(id);
                         }}
                     />
                 ) : (
@@ -162,6 +229,7 @@ const BotChatPage = () => {
                                 avatar: '/assets/user-default.png',
                                 content: text
                             }]);
+                        sendMessage(socket, text);
                         window.scrollTo(0, document.body.scrollHeight);
                     }} />
                 {/* 弹出 prompt 表格 */}
@@ -176,6 +244,6 @@ const BotChatPage = () => {
             </Box>
         </div>
     );
-}
+};
 
 export default BotChatPage;
