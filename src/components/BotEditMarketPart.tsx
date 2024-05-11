@@ -72,9 +72,10 @@ function BotEditMarketPart(
                 <>
                     <EditLayout title={t('Detailed Description')}>
                         <BasicInput
-                            placeholder={t('Your detail description for your assistant')}
+                            placeholder={t('Your detail description for your assistant (max 255 characters)')}
                             name='detail'
                             defaultValue={defaultDetail}
+                            maxLength={255}
                             required
                         />
                     </EditLayout>

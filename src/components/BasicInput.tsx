@@ -22,6 +22,8 @@ type BasicInputProps = {
 
     maxRows?: number;
 
+    maxLength?: number;
+
     multiline?: boolean;
 
     onKeyDown?: any;
@@ -36,6 +38,7 @@ const BasicInput: React.FC<BasicInputProps> =
         value,
         defaultValue,
         maxRows = 5,
+        maxLength = 2000,
         multiline = true,
         onKeyDown
     }) => {
@@ -47,6 +50,7 @@ const BasicInput: React.FC<BasicInputProps> =
             placeholder={placeholder}
             InputProps={{className: 'basic-input'}}
             style={{width: '100%'}}
+            inputProps={{ maxLength: maxLength }}
             multiline={multiline}
             maxRows={maxRows}
             value={value}

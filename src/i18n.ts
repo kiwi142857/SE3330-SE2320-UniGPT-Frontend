@@ -76,9 +76,9 @@ const resources = {
 
       "Change photo for your assistant": "为你的机器人更换头像",
       "Assistant Name" : "机器人名称",
-      "Your assistant name": "为你的机器人取名",
+      "Your assistant name (max 50 characters)": "为你的机器人取名（最多50个字符）",
       "Description" : "简介",
-      "Your description for your assistant": "简要介绍你的机器人",
+      "Your description for your assistant (max 255 characters)": "简要介绍你的机器人（最多255个字符）",
       "Base Model": "基础模型",
       "Define your own prompt list": "定义机器人的提示列表",
       "Publish to market": "发布到市场",
@@ -87,7 +87,7 @@ const resources = {
       "add image": "添加图片",
       "Photos": "详情图片",
       "Detailed Description": "详细介绍",
-      "Your detail description for your assistant": "详细介绍你的机器人",
+      "Your detail description for your assistant (max 255 characters)": "详细介绍你的机器人（最多255个字符）",
       "Item Name": "项目名称",
       "Prompt for this item": "项目对应的提示",
       "add prompt": "添加提示",
@@ -121,7 +121,8 @@ const resources = {
       "The robot can help you debug your code. It can help you find the bug in your ..." : "这个机器人可以帮你调试代码，找到代码中的bug并给出一些建议。",
       "Save": "保存",
 
-
+      "Chat History": "对话历史",
+      "No chat history yet.": "暂无对话历史",
     }
   }
 };
