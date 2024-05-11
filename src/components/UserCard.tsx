@@ -111,7 +111,7 @@ export default function UserCard({ user, isMe }: { user: User; isMe: boolean;}) 
                         id="avatar-input"
                         disabled={!isMe}
                     />
-                    <label htmlFor="avatar-input" className="avatar-overlay-profile">{t("change your avatar")}</label>
+                    {isMe && <label htmlFor="avatar-input" className="avatar-overlay-profile">{t("change your avatar")}</label>}
                 </div>
             </Grid>
             <Grid item >
