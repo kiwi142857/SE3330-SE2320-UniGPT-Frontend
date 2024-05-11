@@ -5,8 +5,6 @@ export const createWebSocketConnection = (id: number) => {
     console.log("In createWebSocketConnection", id, websocketUrl);
     const socket = new WebSocket(websocketUrl);
 
-    console.log("In createWebSocketConnection", socket);
-
     // Send a message when the connection is open
     socket.onopen = () => {
         const message = JSON.stringify({

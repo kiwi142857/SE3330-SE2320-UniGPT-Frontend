@@ -16,6 +16,56 @@ import '../css/App.css';
 import '../css/BotChatPage.css';
 import { Prompt, BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotBrief, getBotChatList, createHistory } from "../service/BotChat";
 import { useParams } from "react-router-dom";
+import { use } from "i18next";
+
+
+const ChatWindow = (
+    { botChatList }: { botChatList: BotChat[] }
+) => {
+    // 判断 botChatList 是否为空, 如果为空则显示提示信息, 否则显示聊天记录
+    return (
+        <Box
+            sx={{
+                width: '90%',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+            }}
+        >
+            {botChatList.length ? (
+                <Box
+                    sx={{
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    {botChatList.map((botChat, index) => (
+                        <OneChat
+                            key={index}
+                            id={botChat.id}
+                            name={botChat.name}
+                            avatar={botChat.avatar}
+                            content={botChat.content}
+                        />
+                    ))}
+                </Box>
+            ) : (
+                <div className="chat-hint-container">
+                    <div
+                        className="chat-hint-text"
+                        style={{ color: theme.palette.secondary.main }}
+                    >
+                        Fill in the prompt table and start chatting!
+                    </div>
+                </div>
+            )}
+        </Box>
+    );
+}
 
 // bot聊天页
 // 侧边栏宽度
@@ -35,6 +85,10 @@ const BotChatPage = () => {
     const { t } = useTranslation();
 
     useEffect(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+    }, [setBotChatList]);
+
+    useEffect(() => {
         const getBrief = async () => {
             const brief = await getBotBrief(botID);
             setBotBriefInfo(brief);
@@ -43,7 +97,6 @@ const BotChatPage = () => {
         console.log(botID);
         getBrief();
     }, []);
-
 
     useEffect(() => {
         const getChatHistoryList = async () => {
@@ -91,26 +144,33 @@ const BotChatPage = () => {
             socket.onmessage = (event) => {
                 console.log("In onmessage: ", botChatList);
                 console.log('Message from server: ', event.data);
-                let response;
+                let response: { replyMessage: string };
                 try {
                     response = JSON.parse(event.data);
                 } catch (error) {
                     console.error('Error parsing JSON:', error);
+                    response = { replyMessage: 'Error parsing JSON' };
                     // Handle the error as needed
                 }
                 console.log('Message from server: ', response.replyMessage);
                 console.log('my botChatList: ', botChatList);
-                const updatedChatList = Array.isArray(botChatList) ? botChatList : botChatList['chats'];
-                setBotChatList([
-                    ...updatedChatList,
-                    {
+
+                setBotChatList((prev) => (
+                    Array.isArray(prev) ? [...prev, {
                         id: 0,
                         name: botBriefInfo ? botBriefInfo.name : "",
                         historyId: selectedHistoryId,
                         avatar: botBriefInfo ? botBriefInfo.avatar : "",
                         content: response.replyMessage
-                    }]);
-                console.log("set botChatList: ", botChatList);
+                    }] : [...prev['chats'], {
+                        id: 0,
+                        name: botBriefInfo ? botBriefInfo.name : "",
+                        historyId: selectedHistoryId,
+                        avatar: botBriefInfo ? botBriefInfo.avatar : "",
+                        content: response.replyMessage
+                    }]
+                ));
+
                 window.scrollTo(0, document.body.scrollHeight);
             };
 
@@ -129,6 +189,7 @@ const BotChatPage = () => {
         setSelectedHistoryId(0);
     }
 
+    window.scrollTo(0, document.body.scrollHeight);
     return (
         <div
             style={{
@@ -188,34 +249,7 @@ const BotChatPage = () => {
                 display="flex"
                 width="100%"
             >
-                {botChatList.length ? (
-                    <Box sx={{
-                        width: '90%',
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}>
-                        {(botChatList.map((botChat, index) =>
-                            <React.Fragment key={index}>
-                                <OneChat
-                                    id={botChat.id}
-                                    name={botChat.name}
-                                    avatar={botChat.avatar}
-                                    content={botChat.content}
-                                />
-                            </React.Fragment>))}
-                    </Box>) : (
-                    <div className="chat-hint-container">
-                        <div
-                            className="chat-hint-text"
-                            style={{ color: theme.palette.secondary.main }}
-                        >
-                            {t('Fill the table template and start messaging with your own assistant!')}
-                        </div>
-                    </div>
-                )
-                }
+                <ChatWindow botChatList={botChatList} />
                 {/* 输入框，发送按钮，编辑按钮 */}
                 <PromptInput
                     selectedHistoryId={selectedHistoryId}
@@ -223,20 +257,26 @@ const BotChatPage = () => {
                         setTableCreateOpen(true);
                     }}
                     onSend={(text) => {
-                        // 将 botChatList 转换为数组，如果不是数组的话
-                        const updatedChatList = Array.isArray(botChatList) ? botChatList : botChatList['chats'];
-                        // 添加新消息到数组中
-                        updatedChatList.push({
-                            id: 0,
-                            name: '你',
-                            historyId: selectedHistoryId,
-                            avatar: '/assets/user-default.png',
-                            content: text
-                        });
-                        // 更新 botChatList 状态
-                        setBotChatList(updatedChatList);
+
+                        setBotChatList((prev) => (
+                            Array.isArray(prev) ?
+                                [...prev, {
+                                    id: 0,
+                                    name: '你',
+                                    historyId: selectedHistoryId,
+                                    avatar: '/assets/user-default.png',
+                                    content: text
+                                }] : [...prev['chats'], {
+                                    id: 0,
+                                    name: '你',
+                                    historyId: selectedHistoryId,
+                                    avatar: '/assets/user-default.png',
+                                    content: text
+                                }]
+                        ));
+
+
                         // 向 WebSocket 发送消息
-                        console.log("In onSend: updatedChatList", updatedChatList);
                         sendMessage(socket, text);
                         window.scrollTo(0, document.body.scrollHeight);
                     }} />
