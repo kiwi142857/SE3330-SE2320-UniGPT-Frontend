@@ -32,8 +32,8 @@ const BotChatPage = () => {
     const [botBriefInfo, setBotBriefInfo] = useState<BotBriefInfo | null>(null);
     const [socket, setSocket] = useState<WebSocket | null>(null);
 
-
     const { t } = useTranslation();
+
     useEffect(() => {
         const getBrief = async () => {
             const brief = await getBotBrief(botID);
@@ -64,7 +64,7 @@ const BotChatPage = () => {
         // Create a new WebSocket connection
         // if websocket has been created, close it first
         if (socket) {
-            console.log("WebSocketConnection close: ");
+            console.log("WebSocketConnection close: ", socket);
             socket.close();
         }
         console.log("WebSocketConnection start: ", id);
@@ -88,6 +88,7 @@ const BotChatPage = () => {
         if (socket) {
             // Handle incoming messages
             socket.onmessage = (event) => {
+                console.log("In onmessage: ", botChatList);
                 console.log('Message from server: ', event.data);
                 let response;
                 try {
@@ -98,8 +99,12 @@ const BotChatPage = () => {
                 }
                 console.log('Message from server: ', response.replyMessage);
                 console.log('my botChatList: ', botChatList);
+                const updatedChatList = Array.isArray(botChatList) ? botChatList : [];
+                if (updatedChatList.length === 0) {
+                    console.log("In onmessage: botChatList", botChatList);
+                }
                 setBotChatList([
-                    ...botChatList,
+                    ...updatedChatList,
                     {
                         id: 0,
                         name: '机器人',
@@ -119,7 +124,7 @@ const BotChatPage = () => {
         }
     }, [socket]); // Add socket as a dependency
 
-    
+
 
     const onChatButtonClick = () => {
         console.log("Click Chat");
@@ -220,15 +225,23 @@ const BotChatPage = () => {
                         setTableCreateOpen(true);
                     }}
                     onSend={(text) => {
-                        setBotChatList([
-                            ...botChatList,
-                            {
-                                id: 0,
-                                name: '你',
-                                historyId: selectedHistoryId,
-                                avatar: '/assets/user-default.png',
-                                content: text
-                            }]);
+                        // 将 botChatList 转换为数组，如果不是数组的话
+                        const updatedChatList = Array.isArray(botChatList) ? botChatList : [];
+                        if (updatedChatList.length === 0) {
+                            console.log("In onSend: botChatList", botChatList);
+                        }
+                        // 添加新消息到数组中
+                        updatedChatList.push({
+                            id: 0,
+                            name: '你',
+                            historyId: selectedHistoryId,
+                            avatar: '/assets/user-default.png',
+                            content: text
+                        });
+                        // 更新 botChatList 状态
+                        setBotChatList(updatedChatList);
+                        // 向 WebSocket 发送消息
+                        console.log("In onSend: updatedChatList", updatedChatList);
                         sendMessage(socket, text);
                         window.scrollTo(0, document.body.scrollHeight);
                     }} />
