@@ -205,7 +205,7 @@ export async function getBotBrief(botID: string | undefined): Promise<BotBriefIn
 // }
 
 export async function getBotChatHistoryList(botId: string | undefined, page: number, pagesize: number): Promise<BotChatHistory[] | null> {
-    const url = `${PREFIX}/bots/${botId}/histories?page=${page}&pageSize=${pagesize}`;
+    const url = `${PREFIX}/bots/${botId}/histories?page=${page}&pagesize=${pagesize}`;
 
     let res;
 
