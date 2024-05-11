@@ -38,6 +38,7 @@ const BotChatPage = () => {
         const getBrief = async () => {
             const brief = await getBotBrief(botID);
             setBotBriefInfo(brief);
+            console.log("brief: ", brief);
         };
         console.log(botID);
         getBrief();
@@ -104,9 +105,9 @@ const BotChatPage = () => {
                     ...updatedChatList,
                     {
                         id: 0,
-                        name: '机器人',
+                        name: botBriefInfo ? botBriefInfo.name : "",
                         historyId: selectedHistoryId,
-                        avatar: '/assets/bot-default.png',
+                        avatar: botBriefInfo ? botBriefInfo.avatar : "",
                         content: response.replyMessage
                     }]);
                 console.log("set botChatList: ", botChatList);
