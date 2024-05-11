@@ -242,9 +242,11 @@ export function OneFewShotInput
 // BotChat页的终端输入框
 export function PromptInput
     ({
+        selectedHistoryId,
         onAltTable,
         onSend
     }: {
+        selectedHistoryId: number,
         onAltTable: () => void,
         onSend: (content: string) => void
     }
@@ -257,31 +259,38 @@ export function PromptInput
                 onClick={onAltTable}
                 variant="extended"
                 size="large"
-                style={{ color: 'white' }}
+                style={{ color: 'white', margin: '20px' }}
             >
                 <ArticleIcon fontSize='large' />
             </Fab>
-            <div style={{ width: '604px', margin: '20px' }}>
-                <BasicInput
-                    placeholder={t('Enter your message here...')}
-                    name="message"
-                    onChange={(event) => {
-                        setMessage(event.target.value);
-                    }}
-                    value={message}
-                />
-            </div>
-            <Fab
-                disabled={message === ''}
-                onClick={() => {
-                    onSend(message);
-                    setMessage('');
-                }}
-                variant="extended"
-                size="large"
-                style={{ color: 'white' }}>
-                <ArrowCircleUpIcon fontSize='large' />
-            </Fab>
+            {
+                selectedHistoryId === 0 ?
+                    <></> :
+                    <>
+                        <div style={{ width: '604px', margin: '20px' }}>
+                            <BasicInput
+                                placeholder={t('Enter your message here...')}
+                                name="message"
+                                onChange={(event) => {
+                                    setMessage(event.target.value);
+                                }}
+                                value={message}
+                            />
+                        </div>
+                        <Fab
+                            disabled={message === ''}
+                            onClick={() => {
+                                onSend(message);
+                                setMessage('');
+                            }}
+                            variant="extended"
+                            size="large"
+                            style={{ color: 'white' }}>
+                            <ArrowCircleUpIcon fontSize='large' />
+                        </Fab>
+                    </>
+            }
+
         </Box>
     );
 }

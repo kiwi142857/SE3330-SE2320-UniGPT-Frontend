@@ -5,7 +5,7 @@ import '../css/BotChatPage.css'
 import { useTranslation } from "react-i18next";
 import { BotBriefInfo } from "../service/BotChat";
 
-const BotBriefCard = ({ botBriefInfo }: { botBriefInfo: BotBriefInfo | null }) => {
+const BotBriefCard = ({ botBriefInfo, onChatButtonClick }: { botBriefInfo: BotBriefInfo | null; onChatButtonClick: () => void }) => {
     const { t } = useTranslation();
     if (!botBriefInfo) return null;
     return (
@@ -25,19 +25,37 @@ const BotBriefCard = ({ botBriefInfo }: { botBriefInfo: BotBriefInfo | null }) =
                         alt='bot'
                         className='brief-card-avatar'
                     ></img>
-                    {
-                        botBriefInfo.asCreator &&
+                    <div style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: 10,
+                    }}>
+                        {
+                            botBriefInfo.asCreator &&
+                            <Button
+                                className="drawer-button"
+                                style={{
+                                    backgroundColor: theme.palette.primary.main,
+                                    color: 'white',
+                                }}
+                                href={'/botedit/' + botBriefInfo.id}
+                            >
+                                {t('Edit')}
+                            </Button>
+                        }
                         <Button
                             className="drawer-button"
                             style={{
                                 backgroundColor: theme.palette.primary.main,
                                 color: 'white',
                             }}
-                            href={'/botedit/' + botBriefInfo.id}
+                            onClick={onChatButtonClick}
                         >
-                            {t('Edit')}
+                            {t('Chat')}
                         </Button>
-                    }
+                    </div>
+
 
                 </div>
                 <div className="drawer-item-title" style={{ marginTop: 10 }}>
