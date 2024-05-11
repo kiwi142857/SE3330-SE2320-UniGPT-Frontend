@@ -160,7 +160,7 @@ const botChatList: BotChat[] = [
 export async function getBotBrief(botID: string | undefined): Promise<BotBriefInfo | null> {
     if (botID === undefined) return null;
 
-    const url = `${PREFIX}/bots/${botID}?info=detail`;
+    const url = `${PREFIX}/bots/${botID}?info=brief`;
     let res;
     try {
         res = await getJson(url);
