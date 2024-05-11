@@ -59,7 +59,8 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
                 const content = fewShot.content;
                 let match;
                 while ((match = regex.exec(content)) !== null) {
-                    newPromptKeys.push(match[1]);
+                    if (match[1] !== '' && !newPromptKeys.includes(match[1]))
+                        newPromptKeys.push(match[1]);
                 }
             });
         }
