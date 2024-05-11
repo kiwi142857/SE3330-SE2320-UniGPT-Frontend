@@ -99,10 +99,7 @@ const BotChatPage = () => {
                 }
                 console.log('Message from server: ', response.replyMessage);
                 console.log('my botChatList: ', botChatList);
-                const updatedChatList = Array.isArray(botChatList) ? botChatList : [];
-                if (updatedChatList.length === 0) {
-                    console.log("In onmessage: botChatList", botChatList);
-                }
+                const updatedChatList = Array.isArray(botChatList) ? botChatList : botChatList['chats'];
                 setBotChatList([
                     ...updatedChatList,
                     {
@@ -226,10 +223,7 @@ const BotChatPage = () => {
                     }}
                     onSend={(text) => {
                         // 将 botChatList 转换为数组，如果不是数组的话
-                        const updatedChatList = Array.isArray(botChatList) ? botChatList : [];
-                        if (updatedChatList.length === 0) {
-                            console.log("In onSend: botChatList", botChatList);
-                        }
+                        const updatedChatList = Array.isArray(botChatList) ? botChatList : botChatList['chats'];
                         // 添加新消息到数组中
                         updatedChatList.push({
                             id: 0,
