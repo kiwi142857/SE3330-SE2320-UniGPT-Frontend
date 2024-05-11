@@ -1,11 +1,25 @@
-import { AppBar, Avatar, IconButton, Link, Toolbar, Typography } from '@mui/material';
+import { AppBar, Avatar, IconButton, Link, Toolbar } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../css/Navigator.css';
+import { getMe } from '../service/user';
 import LanguageButton from './LanguageButton';
 
 // 顶部导航栏
 const Navigator: React.FC<{}> = () => {
+
+    const [avatar, setAvatar] = React.useState<string>('/assets/user-default.png');
+
+    const getAvatar = async () => {
+        const user = await getMe();
+        if (user.avatar)
+            setAvatar(user.avatar);
+    }
+
+    useEffect(() => {
+        getAvatar();
+    }, []);
+
     return (
         <AppBar
             position="fixed"
@@ -46,7 +60,7 @@ const Navigator: React.FC<{}> = () => {
                     <IconButton className='navigator-user' size='medium'>
                         <Avatar
                             alt="/assets/user-default.png"
-                            src="/assets/user-default.png"
+                            src={avatar}
                             sx={{ width: 50, height: 50 }}
                         />
                     </IconButton>
