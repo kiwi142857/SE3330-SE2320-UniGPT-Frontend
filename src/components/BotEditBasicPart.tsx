@@ -68,17 +68,19 @@ function BotEditBasicPart (
             <div className='edit-basic-right'>
                 <EditLayout title={t('Assistant Name')}>
                     <BasicInput
-                        placeholder={t("Your assistant name")}
+                        placeholder={t("Your assistant name (max 50 characters)")}
                         name='name'
                         defaultValue={defaultName}
+                        maxLength={50}
                         required
                     />
                 </EditLayout>
                 <EditLayout title={t('Description')}>
                     <BasicInput
-                        placeholder={t("Your description for your assistant")}
+                        placeholder={t("Your description for your assistant (max 255 characters)")}
                         name='description'
                         defaultValue={defaultDescription}
+                        maxLength={255}
                         required
                     />
                 </EditLayout>
