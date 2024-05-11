@@ -32,7 +32,7 @@ export function BotListTabs({ value, setValue }: { value: number, setValue: Reac
     );
 }
 
-const ProfilePage = ({isMe}:{isMe : boolean}) => {
+const ProfilePage = () => {
 
     const [searchParams] = useSearchParams();
     const pageIndexStr = searchParams.get("pageIndex");
@@ -44,7 +44,7 @@ const ProfilePage = ({isMe}:{isMe : boolean}) => {
     const { t, i18n } = useTranslation();
 
     const [tabValue, setTabValue] = React.useState(0);
-    const [bots, setBots] = useState([]); 
+    const [bots, setBots] = useState([]);
 
     const [alert, setAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
@@ -54,46 +54,76 @@ const ProfilePage = ({isMe}:{isMe : boolean}) => {
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
 
-    let { id } = useParams<{ id: string }>();
-
+    let { id } = useParams<{ id: string; }>();
     // 获取用户信息
-    const [me, setMe] = useState<User | null>(null);
+    const [user, setUser] = useState<User | null>(null);
+
+    // if id == null, get me
     useEffect(() => {
-        const fetchMe = async () => {
+        const fetchUser = async () => {
             let response = null;
 
-            if (isMe) {
+            if (id) {
                 response = await getMe();
-            } else { 
-                if (id) {
-                    response = await getUser(id);
-                }
             }
 
             if (response != null) {
-                setMe(response);
+                setUser(response);
             } else {
-                setMe(null);
+                setUser(null);
                 setAlert(true);
                 setAlertMessage("获取用户信息失败！");
             }
-            console.log("me", me);
+            console.log("me", user);
+        };
+        fetchUser();
+    }, [id]);
+
+    
+    useEffect(() => {
+        const fetchUser = async () => {
+            let response = null;
+
+            if (id) {
+                response = await getUser(id);
+            }
+
+            if (response != null) {
+                setUser(response);
+            } else {
+                setUser(null);
+                setAlert(true);
+                setAlertMessage("获取用户信息失败！");
+            }
+            console.log("me", user);
+        };
+        fetchUser();
+    }, [id]);
+
+    const [isMe, setIsMe] = useState(false);
+
+    useEffect(() => {
+        const fetchMe = async () => {
+            const response = await getMe();
+            if (response != null) {
+                setIsMe(user?.id === response.id);
+            }
         };
         fetchMe();
-    }, []);
+    }, [user]);
 
     // 获取机器人列表
     useEffect(() => {
         const fetchBots = async () => {
-            if(me == null) return;
+            if (user == null) return;
             let response;
             if (tabValue === 0) {
                 console.log("Created");
-                response = await getUserCreatedBots(me.id, pageIndex, pageSize);
+                response = await getUserCreatedBots(user.id, pageIndex, pageSize);
             }
             else {
                 console.log("Favorite");
-                response = await getUserFavoriteBots(me.id, pageIndex, pageSize);
+                response = await getUserFavoriteBots(user.id, pageIndex, pageSize);
             }
 
             if (response != null) {
@@ -104,7 +134,7 @@ const ProfilePage = ({isMe}:{isMe : boolean}) => {
             console.log("bots", bots);
         };
         fetchBots();
-    }, [tabValue, me, pageIndex, pageSize]);
+    }, [tabValue, user, pageIndex, pageSize]);
 
     const botListType: BotListType = {
         type: 'Profile'
@@ -118,10 +148,10 @@ const ProfilePage = ({isMe}:{isMe : boolean}) => {
                 setOpen={setAlert}
             />
             {
-                me == null ? <></> :
+                user == null ? <></> :
                     <>
                         <div className='profile-container'>
-                            <UserCard user={me} isMe={isMe}></UserCard>
+                            <UserCard user={user} isMe={isMe}></UserCard>
                         </div>
                         <div className='botlist-tabs'>
                             <BotListTabs value={tabValue} setValue={setTabValue}></BotListTabs>

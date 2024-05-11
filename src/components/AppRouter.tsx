@@ -41,12 +41,8 @@ const router = createBrowserRouter([
                 element: <BotDetailPage />
             },
             {
-                path: "/profile/me",
-                element: <ProfilePage isMe={true}/>
-            },
-            {
                 path: "/profile/:id",
-                element: <ProfilePage isMe={false}/>
+                element: <ProfilePage/>
             },
             {
                 path: "/botcreate",
