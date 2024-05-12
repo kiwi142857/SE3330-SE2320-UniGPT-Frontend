@@ -44,7 +44,7 @@ const BasicInput: React.FC<BasicInputProps> =
         maxRows = 5,
         maxLength = 2000,
         multiline = true,
-        onKeyDown，
+        onKeyDown,
         lock = false
     }) => {
 
