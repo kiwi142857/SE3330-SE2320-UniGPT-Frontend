@@ -16,6 +16,7 @@ const MarketPage: React.FC = () => {
     const [pageIndex, setPageIndex] = useState(pageIndexStr != null ? Number.parseInt(pageIndexStr) -1  : 0);
     const pageSize = pageSizeStr != null ? Number.parseInt(pageSizeStr) : 15;
     const [tabValue, setTabValue] = React.useState(0);
+    const [totalPage, setTotalPage] = useState(0); 
 
     const [bots, setBots] = useState([]); // [botListType
     const getSearchBots = async () => {
@@ -23,6 +24,7 @@ const MarketPage: React.FC = () => {
         let response = await getSearchBotList(pageIndex, pageSize, searchParams.get("keyword") || "", order);
         console.log(response);
         setBots(response.bots);
+        setTotalPage(response.total % pageSize === 0 ? response.total / pageSize : Math.floor(response.total / pageSize) + 1);
     }
 
     const context = React.useContext(LanguageContext);
@@ -63,7 +65,7 @@ const MarketPage: React.FC = () => {
                 <BotList type={botListType} bots={bots}></BotList>
             </div>
             <div style={{ marginTop: '20px',display: 'flex', justifyContent: 'center'}}>
-                <Pagination count={10} page={pageIndex +1 } onChange={handlePageChange} className='pagination'/> 
+                <Pagination count={totalPage} page={pageIndex +1 } onChange={handlePageChange} className='pagination'/> 
             </div>
         </div>
     );
