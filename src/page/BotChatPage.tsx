@@ -5,7 +5,7 @@ import {
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from 'react';
 import OneChat from "../components/OneChat";
-
+import { createWebSocketConnection, sendMessage } from "../service/webSocket";
 import { useTranslation } from "react-i18next";
 import BotBriefCard from "../components/BotBriefCard";
 import ChatHistoryList from "../components/ChatHistoryList";
@@ -14,52 +14,182 @@ import TableCreateDialog from "../components/TableCreateDialog";
 import theme from "../components/theme";
 import '../css/App.css';
 import '../css/BotChatPage.css';
-import { BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotChatList, getBotBrief, getHistoryId } from "../service/BotChat";
+import { Prompt, BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotBrief, getBotChatList, createHistory } from "../service/BotChat";
 import { useParams } from "react-router-dom";
-import { Margin } from "@mui/icons-material";
+import { use } from "i18next";
+
+
+const ChatWindow = (
+    { botChatList }: { botChatList: BotChat[] }
+) => {
+    // 判断 botChatList 是否为空, 如果为空则显示提示信息, 否则显示聊天记录
+    return (
+        <Box
+            sx={{
+                width: '90%',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+            }}
+        >
+            {botChatList.length ? (
+                <Box
+                    sx={{
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    {botChatList.map((botChat, index) => (
+                        <OneChat
+                            key={index}
+                            id={botChat.id}
+                            name={botChat.name}
+                            avatar={botChat.avatar}
+                            content={botChat.content}
+                        />
+                    ))}
+                </Box>
+            ) : (
+                <div className="chat-hint-container">
+                    <div
+                        className="chat-hint-text"
+                        style={{ color: theme.palette.secondary.main }}
+                    >
+                        Fill in the prompt table and start chatting!
+                    </div>
+                </div>
+            )}
+        </Box>
+    );
+}
 
 // bot聊天页
 // 侧边栏宽度
 let drawerWidth = 350;
 const BotChatPage = () => {
-    let { botId } = useParams<{ botId: string }>();
+    let { botID } = useParams<{ botID: string; }>();
+    botID === undefined ? botID = "" : botID = botID;
 
 
     const [tableCreateOpen, setTableCreateOpen] = useState(false);
-    const [selectedHistory, setSelectedHistory] = useState(0);
+    const [selectedHistoryId, setSelectedHistoryId] = useState(0);
     const [botChatHistoryList, setBotChatHistoryList] = useState<BotChatHistory[] | null>([]);
     const [botChatList, setBotChatList] = useState<BotChat[]>([]);
     const [botBriefInfo, setBotBriefInfo] = useState<BotBriefInfo | null>(null);
-    const [historyId, setHistoryId] = useState<number>(0);
+    const [socket, setSocket] = useState<WebSocket | null>(null);
 
     const { t } = useTranslation();
+
+    useEffect(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+    }, [setBotChatList]);
+
     useEffect(() => {
         const getBrief = async () => {
-            const brief = await getBotBrief(botId);
+            const brief = await getBotBrief(botID);
             setBotBriefInfo(brief);
+            console.log("brief: ", brief);
         };
-        console.log(botId);
+        console.log(botID);
         getBrief();
     }, []);
 
-
     useEffect(() => {
         const getChatHistoryList = async () => {
-            const list = await getBotChatHistoryList(botId, 0, 20);
+            const list = await getBotChatHistoryList(botID, 0, 20);
             setBotChatHistoryList(list);
+            console.log("BotChatHistoryList: ", list);
         };
         getChatHistoryList();
-    }, []);
+    }, [selectedHistoryId]);
 
+    const onSubmit = async (promptlist: Prompt[]) => {
+        console.log("PromptList: ", promptlist);
+        const newHistoryId = await createHistory(botID, promptlist);
+        setSelectedHistoryId(newHistoryId);
+    };
 
+    // websocket
+    const WebSocketConnection = (id: number) => {
+        // Create a new WebSocket connection
+        // if websocket has been created, close it first
+        if (socket) {
+            console.log("WebSocketConnection close: ", socket);
+            socket.close();
+        }
+        console.log("WebSocketConnection start: ", id);
+        setSocket(createWebSocketConnection(id));
+        console.log("WebSocketConnection: ", socket);
+
+    };
+    // update botChatList
     useEffect(() => {
-        const getBotHistoryId = async () => {
-            const id = await getHistoryId(botId);
-            setHistoryId(id);
-        };
-        getBotHistoryId();
-    }, []);
+        const getChatList = async () => {
+            const list = await getBotChatList(selectedHistoryId);
 
+            setBotChatList(list);
+            console.log("First BotChatList: ", list);
+        };
+        getChatList();
+    }, [selectedHistoryId]);
+
+    // update socket
+    useEffect(() => {
+        if (socket) {
+            // Handle incoming messages
+            socket.onmessage = (event) => {
+                console.log("In onmessage: ", botChatList);
+                console.log('Message from server: ', event.data);
+                let response: { replyMessage: string };
+                try {
+                    response = JSON.parse(event.data);
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                    response = { replyMessage: 'Error parsing JSON' };
+                    // Handle the error as needed
+                }
+                console.log('Message from server: ', response.replyMessage);
+                console.log('my botChatList: ', botChatList);
+
+                setBotChatList((prev) => (
+                    Array.isArray(prev) ? [...prev, {
+                        id: 0,
+                        name: botBriefInfo ? botBriefInfo.name : "",
+                        historyId: selectedHistoryId,
+                        avatar: botBriefInfo ? botBriefInfo.avatar : "",
+                        content: response.replyMessage
+                    }] : [...prev['chats'], {
+                        id: 0,
+                        name: botBriefInfo ? botBriefInfo.name : "",
+                        historyId: selectedHistoryId,
+                        avatar: botBriefInfo ? botBriefInfo.avatar : "",
+                        content: response.replyMessage
+                    }]
+                ));
+
+                window.scrollTo(0, document.body.scrollHeight);
+            };
+
+            // Handle any errors that occur.
+            socket.onerror = (error) => {
+                console.error('WebSocket Error: ', error);
+                // TODO: Update your state to indicate that an error occurred
+            };
+        }
+    }, [socket]); // Add socket as a dependency
+
+
+
+    const onChatButtonClick = () => {
+        console.log("Click Chat");
+        setSelectedHistoryId(0);
+    }
+
+    window.scrollTo(0, document.body.scrollHeight);
     return (
         <div
             style={{
@@ -76,7 +206,7 @@ const BotChatPage = () => {
                 <Toolbar
                     style={{ height: 100, }}
                 />
-                <BotBriefCard botBriefInfo={botBriefInfo} />
+                <BotBriefCard botBriefInfo={botBriefInfo} onChatButtonClick={onChatButtonClick} />
                 <Typography
                     className="drawer-item-content"
                     style={{
@@ -94,11 +224,13 @@ const BotChatPage = () => {
                 {botChatHistoryList && botChatHistoryList.length ? (
                     <ChatHistoryList
                         botChatHistoryList={botChatHistoryList}
-                        selectedId={selectedHistory}
+                        selectedId={selectedHistoryId}
                         onItemClicked={async (id) => {
-                            setSelectedHistory(id);
+                            setSelectedHistoryId(id);
                             const list = await getBotChatList(id);
                             setBotChatList(list);
+                            console.log("BotChatList 111: ", list);
+                            WebSocketConnection(id);
                         }}
                     />
                 ) : (
@@ -117,64 +249,49 @@ const BotChatPage = () => {
                 display="flex"
                 width="100%"
             >
-                {botChatList.length ? (
-                    <Box sx={{
-                        width: '90%',
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}>
-                        {(botChatList.map((botChat, index) =>
-                            <React.Fragment key={index}>
-                                <OneChat
-                                    id={botChat.id}
-                                    name={botChat.name}
-                                    avatar={botChat.avatar}
-                                    content={botChat.content}
-                                />
-                            </React.Fragment>))}
-                    </Box>) : (
-                    <div className="chat-hint-container">
-                        <div
-                            className="chat-hint-text"
-                            style={{ color: theme.palette.secondary.main }}
-                        >
-                            {t('Fill the table template and start messaging with your own assistant!')}
-                        </div>
-                    </div>
-                )
-                }
+                <ChatWindow botChatList={botChatList} />
                 {/* 输入框，发送按钮，编辑按钮 */}
                 <PromptInput
+                    selectedHistoryId={selectedHistoryId}
                     onAltTable={() => {
                         setTableCreateOpen(true);
                     }}
                     onSend={(text) => {
-                        setBotChatList([
-                            ...botChatList,
-                            {
-                                id: 0,
-                                name: '你',
-                                historyId: selectedHistory,
-                                avatar: '/assets/user-default.png',
-                                content: text
-                            }]);
+
+                        setBotChatList((prev) => (
+                            Array.isArray(prev) ?
+                                [...prev, {
+                                    id: 0,
+                                    name: '你',
+                                    historyId: selectedHistoryId,
+                                    avatar: '/assets/user-default.png',
+                                    content: text
+                                }] : [...prev['chats'], {
+                                    id: 0,
+                                    name: '你',
+                                    historyId: selectedHistoryId,
+                                    avatar: '/assets/user-default.png',
+                                    content: text
+                                }]
+                        ));
+
+
+                        // 向 WebSocket 发送消息
+                        sendMessage(socket, text);
                         window.scrollTo(0, document.body.scrollHeight);
                     }} />
                 {/* 弹出 prompt 表格 */}
                 <TableCreateDialog
-                    botId={botId}
-                    historyId={historyId}
+                    botID={botID}
+                    historyId={selectedHistoryId}
                     open={tableCreateOpen}
                     handleClose={() => {
                         setTableCreateOpen(false);
                     }}
-                    handleSubmit={() => {
-                    }} />
+                    handleSubmit={onSubmit} />
             </Box>
         </div>
     );
-}
+};
 
 export default BotChatPage;
