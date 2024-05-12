@@ -11,8 +11,11 @@ const Navigator: React.FC<{}> = () => {
     const [avatar, setAvatar] = React.useState<string>('/assets/user-default.png');
 
     const getAvatar = async () => {
+        if (window.location.pathname === '/login') {
+            return;
+        }
         const user = await getMe();
-        if (user.avatar)
+        if (user && user.avatar)
             setAvatar(user.avatar);
     }
 
