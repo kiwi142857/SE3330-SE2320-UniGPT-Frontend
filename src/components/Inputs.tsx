@@ -28,6 +28,14 @@ export function CommentInput({ onSend }: { onSend: (content: string) => void }) 
 
     const [message, setMessage] = useState('');
 
+    const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event) => {
+        if (event.key === 'Enter' && !event.shiftKey && !event.ctrlKey) {
+            event.preventDefault();
+            onSend(message);
+            setMessage('');
+        }
+    };
+
     return (
         <Grid container className='comment-input-container'>
             <Grid xs={11}>
@@ -37,6 +45,7 @@ export function CommentInput({ onSend }: { onSend: (content: string) => void }) 
                     onChange={(event) => {
                         setMessage(event.target.value);
                     }}
+                    onKeyDown={handleKeyDown}
                     value={message}
                 />
             </Grid>
@@ -253,6 +262,15 @@ export function PromptInput
     ) {
     const [message, setMessage] = useState('');
     const { t } = useTranslation();
+
+    const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event) => {
+        if (event.key === 'Enter' && !event.shiftKey && !event.ctrlKey) {
+            event.preventDefault();
+            onSend(message);
+            setMessage('');
+        }
+    };
+
     return (
         <Box className="prompt-input-container">
             <Fab
@@ -275,6 +293,7 @@ export function PromptInput
                                     setMessage(event.target.value);
                                 }}
                                 value={message}
+                                onKeyDown={handleKeyDown}
                             />
                         </div>
                         <Fab
@@ -290,7 +309,6 @@ export function PromptInput
                         </Fab>
                     </>
             }
-
         </Box>
     );
 }

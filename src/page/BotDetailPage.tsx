@@ -8,6 +8,7 @@ import BotDetailCard from '../components/BotDetailCard';
 import { CommentInput } from '../components/Inputs';
 import OneChat from '../components/OneChat';
 import { Comment, CommentList, botDetailInfo, getBotComments, getBotDetail, postComment } from '../service/BotDetail';
+import { getMe } from '../service/user';
 
 import SnackBar from '../components/Snackbar';
 import '../css/App.css';
@@ -18,6 +19,7 @@ import '../css/BotDetailPage.css';
 const BotDetailPage: React.FC = () => {
     const [bot, setBot] = useState<botDetailInfo | null>(null);
     const [comments, setComments] = useState<CommentList>();
+    const [user, setUser] = useState({ id: 0, name: '', avatar: '' });
 
     const [alert, setAlert] = useState(false);
 
@@ -40,9 +42,16 @@ const BotDetailPage: React.FC = () => {
         }
     }
 
+    const getUser = async () => {
+        let me = await getMe();
+        if (me)
+            setUser(me);
+    }
+
     useEffect(() => {
         getBot();
         getComments();
+        getUser();
     }, [id]);
 
     return [  <SnackBar
@@ -80,9 +89,25 @@ const BotDetailPage: React.FC = () => {
             </Typography>
 
             <CommentInput onSend={
-                (content: string) => {
+                async (content: string) => {
                     if (id)
                         postComment(id,content);
+
+                    setComments({
+                        total: comments.total + 1,
+                        comments: [
+                            {
+                                id: 0,
+                                content: content,
+                                time: new Date().toISOString(),
+                                userId: user.id,
+                                userName: user.name,
+                                avatar: user.avatar,
+                                botId: id? parseInt(id) : 0
+                            },
+                            ...comments.comments
+                        ]
+                    });
                 }
             } />
 

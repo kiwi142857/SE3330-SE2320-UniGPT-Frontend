@@ -39,3 +39,13 @@
     text-align: left;
     white-space: pre-wrap;
 }
+
+.one-chat-markdown{
+    display: flex;
+    font-family: "Inter" ;
+    align-items: flex-start;
+    margin-left: 90px;
+    flex-direction: column;
+    text-align: left;
+    overflow-x: auto;
+}

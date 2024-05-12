@@ -14,6 +14,11 @@ export interface ResponseData {
 
 export async function getJson(url: string): Promise<any> {
     let res = await fetch(url, { method: "GET", credentials: "include" });
+    if (res.status === 401) {
+        console.log('Unauthorized');
+        window.location.href = '/login';
+        throw new Error('Unauthorized');
+    }
     if (!res.ok) {
         throw new Error("Network error");
     }
@@ -22,6 +27,11 @@ export async function getJson(url: string): Promise<any> {
 
 export async function get(url: string): Promise<Response> {
     let res = await fetch(url, { method: "GET", credentials: "include" });
+    if (res.status === 401) {
+        console.log('Unauthorized');
+        window.location.href = '/login';
+        throw new Error('Unauthorized');
+    }
     if (!res.ok) {
         throw new Error("Network error");
     }
@@ -38,11 +48,21 @@ export async function put(url: string, data: any): Promise<any> {
         credentials: "include"
     };
     let res = await fetch(url, opts);
+    if (res.status === 401) {
+        console.log('Unauthorized');
+        window.location.href = '/login';
+        throw new Error('Unauthorized');
+    }
     return res.json();
 }
 
 export async function del(url: string, data: any): Promise<any> {
     let res = await fetch(url, { method: "DELETE", credentials: "include", body: JSON.stringify(data) });
+    if (res.status === 401) {
+        console.log('Unauthorized');
+        window.location.href = '/login';
+        throw new Error('Unauthorized');
+    }
     return res.json();
 }
 
@@ -56,6 +76,11 @@ export async function post(url: string, data: any): Promise<any> {
         credentials: "include"
     };
     let res = await fetch(url, opts);
+    if (res.status === 401) {
+        console.log('Unauthorized');
+        window.location.href = '/login';
+        throw new Error('Unauthorized');
+    }
     return res.json();
 }
 

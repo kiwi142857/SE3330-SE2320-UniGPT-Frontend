@@ -1,5 +1,6 @@
 import { Avatar, Divider, Grid } from '@mui/material';
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 import '../css/OneChat.css';
 
 // 聊天或评论区的一句对话
@@ -22,8 +23,8 @@ const OneChat = ({ id, name, avatar, content }: { id:number, name:string, avatar
                         </Grid>
                     </Grid>
                 </div>
-                <div className='one-chat-content'>
-                    {content}
+                <div className='one-chat-markdown'>
+                    <ReactMarkdown>{content}</ReactMarkdown>
                 </div>
             </div>
             <br/>

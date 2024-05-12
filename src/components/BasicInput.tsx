@@ -22,10 +22,15 @@ type BasicInputProps = {
 
     maxRows?: number;
 
+    maxLength?: number;
+
     multiline?: boolean;
 
     // promptValue 不可编辑，且显示为输入样式
     lock?: boolean;
+
+    onKeyDown?: any;
+
 };
 
 const BasicInput: React.FC<BasicInputProps> =
@@ -37,27 +42,31 @@ const BasicInput: React.FC<BasicInputProps> =
         value,
         defaultValue,
         maxRows = 5,
+        maxLength = 2000,
         multiline = true,
+        onKeyDown，
         lock = false
     }) => {
 
-        return (
-            <TextField
-                required={required}
-                name={name}
-                placeholder={placeholder}
-                InputProps={{
-                    className: 'basic-input',
-                    readOnly: lock
-                }}
-                style={{ width: '100%' }}
-                multiline={multiline}
-                maxRows={maxRows}
-                value={value}
-                defaultValue={defaultValue}
-                onChange={onChange}
-            />
-        );
-    };
+    return (
+        <TextField
+            required={required}
+            name={name}
+            placeholder={placeholder}
+            InputProps={{
+                className: 'basic-input',
+                readOnly: lock
+            }}
+            style={{width: '100%'}}
+            inputProps={{ maxLength: maxLength }}
+            multiline={multiline}
+            maxRows={maxRows}
+            value={value}
+            defaultValue={defaultValue}
+            onChange={onChange ?? (()=>{})}
+            onKeyDown={onKeyDown}
+        />
+    );
+};
 
 export default BasicInput;
