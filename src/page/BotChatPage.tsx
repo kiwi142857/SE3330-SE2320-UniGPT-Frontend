@@ -18,55 +18,8 @@ import { Prompt, BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, g
 import { useParams } from "react-router-dom";
 import { use } from "i18next";
 import { getMe } from "../service/user";
+import ChatWindow from "../components/ChatWindow";
 
-
-const ChatWindow = (
-    { botChatList }: { botChatList: BotChat[] }
-) => {
-    // 判断 botChatList 是否为空, 如果为空则显示提示信息, 否则显示聊天记录
-    return (
-        <Box
-            sx={{
-                width: '90%',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-            }}
-        >
-            {botChatList.length ? (
-                <Box
-                    sx={{
-                        width: '100%',
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                    {botChatList.map((botChat, index) => (
-                        <OneChat
-                            key={index}
-                            id={botChat.id}
-                            name={botChat.name}
-                            avatar={botChat.avatar}
-                            content={botChat.content}
-                        />
-                    ))}
-                </Box>
-            ) : (
-                <div className="chat-hint-container">
-                    <div
-                        className="chat-hint-text"
-                        style={{ color: theme.palette.secondary.main }}
-                    >
-                        Fill in the prompt table and start chatting!
-                    </div>
-                </div>
-            )}
-        </Box>
-    );
-}
 
 // bot聊天页
 // 侧边栏宽度
@@ -85,12 +38,6 @@ const BotChatPage = () => {
     const [user, setUser] = useState({ id: 0, name: '', avatar: '' })
 
     const { t } = useTranslation();
-
-    
-
-    useEffect(() => {
-        window.scrollTo(0, document.body.scrollHeight);
-    }, [setBotChatList]);
 
     useEffect(() => {
         const getBrief = async () => {
@@ -175,8 +122,6 @@ const BotChatPage = () => {
                             avatar: botBriefInfo ? botBriefInfo.avatar : "",
                             content: response.replyMessage
                         }]);
-
-                window.scrollTo(0, document.body.scrollHeight);
             };
 
             // Handle any errors that occur.
@@ -193,8 +138,6 @@ const BotChatPage = () => {
         console.log("Click Chat");
         setSelectedHistoryId(0);
     }
-
-    window.scrollTo(0, document.body.scrollHeight);
     return (
         <div
             style={{
@@ -273,7 +216,6 @@ const BotChatPage = () => {
                                 }]);
                         // 向 WebSocket 发送消息
                         sendMessage(socket, text);
-                        window.scrollTo(0, document.body.scrollHeight);
                     }} />
                 {/* 弹出 prompt 表格 */}
                 <TableCreateDialog

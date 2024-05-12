@@ -54,74 +54,74 @@ const BotDetailPage: React.FC = () => {
         getUser();
     }, [id]);
 
-    return [  <SnackBar
-                    open={alert}
-                    message="获取详细信息失败！"
-                    setOpen={setAlert}
-                />,
-                
-        bot && comments &&
-        <div className="main-container bot-detail-container">
+    return [<SnackBar
+        open={alert}
+        message="获取详细信息失败！"
+        setOpen={setAlert}
+    />,
 
-            <BotDetailCard
-                id={bot.id || ''}
-                name={bot.name || ''}
-                author={bot.creator || ''}
-                authorId={bot.creatorId || ''}
-                avatar={bot.avatar || ''}
-                description={bot.description || ''}
-                likeNumber={bot.likeNumber.toString()}
-                starNumber={bot.starNumber.toString()}
-                isLiked={bot.liked || false}
-                isStarred={bot.starred || false}
-                isCreator={bot.asCreator || false}
-            />
+    bot && comments &&
+    <div className="main-container bot-detail-container">
 
-            <BotCarousel photos={bot.photos || []} />
+        <BotDetailCard
+            id={bot.id || ''}
+            name={bot.name || ''}
+            author={bot.creator || ''}
+            authorId={bot.creatorId || ''}
+            avatar={bot.avatar || ''}
+            description={bot.description || ''}
+            likeNumber={bot.likeNumber.toString()}
+            starNumber={bot.starNumber.toString()}
+            isLiked={bot.liked || false}
+            isStarred={bot.starred || false}
+            isCreator={bot.asCreator || false}
+        />
 
-            <Typography
-                sx={{ color: 'primary.light' }}
-                align='left'
-            >
-                <p className='bot-detail-long'>
-                    {bot.detail}
-                </p>
-            </Typography>
+        <BotCarousel photos={bot.photos || []} />
 
-            <CommentInput onSend={
-                async (content: string) => {
-                    if (id)
-                        postComment(id,content);
+        <Typography
+            sx={{ color: 'primary.light' }}
+            align='left'
+        >
+            <p className='bot-detail-long'>
+                {bot.detail}
+            </p>
+        </Typography>
 
-                    setComments({
-                        total: comments.total + 1,
-                        comments: [
-                            {
-                                id: 0,
-                                content: content,
-                                time: new Date().toISOString(),
-                                userId: user.id,
-                                userName: user.name,
-                                avatar: user.avatar,
-                                botId: id? parseInt(id) : 0
-                            },
-                            ...comments.comments
-                        ]
-                    });
-                }
-            } />
+        <CommentInput onSend={
+            async (content: string) => {
+                if (id)
+                    postComment(id, content);
 
-            <Box>
-                {comments.comments?.map((comment : Comment) => (
-                    <OneChat
-                        id={comment.id}
-                        name={comment.userName}
-                        avatar={comment.avatar}
-                        content={comment.content}
-                    />
-                ))}
-            </Box>
-        </div>
+                setComments({
+                    total: comments.total + 1,
+                    comments: [
+                        {
+                            id: 0,
+                            content: content,
+                            time: new Date().toISOString(),
+                            userId: user.id,
+                            userName: user.name,
+                            avatar: user.avatar,
+                            botID: id ? parseInt(id) : 0
+                        },
+                        ...comments.comments
+                    ]
+                });
+            }
+        } />
+
+        <Box>
+            {comments.comments?.map((comment: Comment) => (
+                <OneChat
+                    id={comment.id}
+                    name={comment.userName}
+                    avatar={comment.avatar}
+                    content={comment.content}
+                />
+            ))}
+        </Box>
+    </div>
     ];
 }
 
