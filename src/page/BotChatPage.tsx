@@ -90,10 +90,21 @@ const BotChatPage = () => {
             const list = await getBotChatList(selectedHistoryId);
 
             setBotChatList(list);
-            console.log("First BotChatList: ", list);
         };
         getChatList();
     }, [selectedHistoryId]);
+
+    useEffect(() => {
+        // 将 当前 selectedHistoryId 移动到 botChatHistoryList 的最前端
+        if (botChatHistoryList && selectedHistoryId) {
+            const index = botChatHistoryList.findIndex((item) => item.id === selectedHistoryId);
+            if (index !== -1) {
+                const temp = botChatHistoryList[index];
+                botChatHistoryList.splice(index, 1);
+                botChatHistoryList.unshift(temp);
+            }
+        }
+    }, [botChatList]);
 
     // update socket
     useEffect(() => {
