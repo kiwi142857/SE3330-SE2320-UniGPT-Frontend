@@ -63,28 +63,9 @@ const ProfilePage = () => {
         const fetchUser = async () => {
             let response = null;
 
-            if (id) {
+            if (id == null) {
                 response = await getMe();
-            }
-
-            if (response != null) {
-                setUser(response);
             } else {
-                setUser(null);
-                setAlert(true);
-                setAlertMessage("获取用户信息失败！");
-            }
-            console.log("me", user);
-        };
-        fetchUser();
-    }, [id]);
-
-    
-    useEffect(() => {
-        const fetchUser = async () => {
-            let response = null;
-
-            if (id) {
                 response = await getUser(id);
             }
 

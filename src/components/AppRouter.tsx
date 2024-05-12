@@ -42,11 +42,11 @@ const router = createBrowserRouter([
             },
             {
                 path: "/profile/me",
-                element: <ProfilePage isMe={true} />
+                element: <ProfilePage/>
             },
             {
                 path: "/profile/:id",
-                element: <ProfilePage isMe={false} />
+                element: <ProfilePage/>
             },
             {
                 path: "/botcreate",
