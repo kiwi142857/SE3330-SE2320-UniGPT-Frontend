@@ -102,18 +102,16 @@ export async function getPromptList(historyId: number): Promise<Prompt[]> {
 
 export async function getBotChatList(historyId: number): Promise<BotChat[]> {
     const url = `${PREFIX}/histories/${historyId}/chats`;
-    let res;
 
     try {
-        res = await getJson(url);
+        let res = await getJson(url);
         console.log(res);
+        
+        return res['chats'] as BotChat[];
     }
     catch (e) {
-        console.error(e);
-        res = null;
+        return [];
     }
-    if (res === null) return [];
-    return res;
 }
 
 export async function createHistory(botID: string, promptList: Prompt[]): Promise<number> {

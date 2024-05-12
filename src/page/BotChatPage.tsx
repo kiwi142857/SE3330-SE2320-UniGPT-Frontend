@@ -17,6 +17,7 @@ import '../css/BotChatPage.css';
 import { Prompt, BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotBrief, getBotChatList, createHistory } from "../service/BotChat";
 import { useParams } from "react-router-dom";
 import { use } from "i18next";
+import { getMe } from "../service/user";
 
 
 const ChatWindow = (
@@ -81,8 +82,11 @@ const BotChatPage = () => {
     const [botChatList, setBotChatList] = useState<BotChat[]>([]);
     const [botBriefInfo, setBotBriefInfo] = useState<BotBriefInfo | null>(null);
     const [socket, setSocket] = useState<WebSocket | null>(null);
+    const [user, setUser] = useState({ id: 0, name: '', avatar: '' })
 
     const { t } = useTranslation();
+
+    
 
     useEffect(() => {
         window.scrollTo(0, document.body.scrollHeight);
@@ -94,8 +98,15 @@ const BotChatPage = () => {
             setBotBriefInfo(brief);
             console.log("brief: ", brief);
         };
+        const getUser = async () => {
+            let me = await getMe();
+            if (me)
+                setUser(me);
+        }
+
         console.log(botID);
         getBrief();
+        getUser();
     }, []);
 
     useEffect(() => {
@@ -155,21 +166,15 @@ const BotChatPage = () => {
                 console.log('Message from server: ', response.replyMessage);
                 console.log('my botChatList: ', botChatList);
 
-                setBotChatList((prev) => (
-                    Array.isArray(prev) ? [...prev, {
-                        id: 0,
-                        name: botBriefInfo ? botBriefInfo.name : "",
-                        historyId: selectedHistoryId,
-                        avatar: botBriefInfo ? botBriefInfo.avatar : "",
-                        content: response.replyMessage
-                    }] : [...prev['chats'], {
-                        id: 0,
-                        name: botBriefInfo ? botBriefInfo.name : "",
-                        historyId: selectedHistoryId,
-                        avatar: botBriefInfo ? botBriefInfo.avatar : "",
-                        content: response.replyMessage
-                    }]
-                ));
+                setBotChatList(
+                    botChatList =>
+                        [...botChatList, {
+                            id: 0,
+                            name: botBriefInfo ? botBriefInfo.name : "",
+                            historyId: selectedHistoryId,
+                            avatar: botBriefInfo ? botBriefInfo.avatar : "",
+                            content: response.replyMessage
+                        }]);
 
                 window.scrollTo(0, document.body.scrollHeight);
             };
@@ -257,25 +262,15 @@ const BotChatPage = () => {
                         setTableCreateOpen(true);
                     }}
                     onSend={(text) => {
-
-                        setBotChatList((prev) => (
-                            Array.isArray(prev) ?
-                                [...prev, {
+                        setBotChatList(
+                            botChatList =>
+                                [...botChatList, {
                                     id: 0,
-                                    name: '你',
+                                    name: user.name,
                                     historyId: selectedHistoryId,
-                                    avatar: '/assets/user-default.png',
-                                    content: text
-                                }] : [...prev['chats'], {
-                                    id: 0,
-                                    name: '你',
-                                    historyId: selectedHistoryId,
-                                    avatar: '/assets/user-default.png',
-                                    content: text
-                                }]
-                        ));
-
-
+                                    avatar: user.avatar,
+                                    content: text,
+                                }]);
                         // 向 WebSocket 发送消息
                         sendMessage(socket, text);
                         window.scrollTo(0, document.body.scrollHeight);
