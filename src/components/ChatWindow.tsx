@@ -1,5 +1,6 @@
 import { Box } from "@mui/system";
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import OneChat from "../components/OneChat";
 import theme from "../components/theme";
 import '../css/App.css';
@@ -21,6 +22,8 @@ const ChatWindow = (
         window.scrollTo(0, document.body.scrollHeight + 1000);
 
     }
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         scrollToBottom();
@@ -63,7 +66,7 @@ const ChatWindow = (
                         className="chat-hint-text"
                         style={{ color: theme.palette.secondary.main }}
                     >
-                        Fill in the prompt table and start chatting!
+                        {t("Fill in the prompt table and start chatting!")}
                     </div>
                 </div>
             )}
