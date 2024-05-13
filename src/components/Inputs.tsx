@@ -254,12 +254,10 @@ export function PromptInput
         selectedHistoryId,
         onAltTable,
         onSend,
-        canSend
     }: {
         selectedHistoryId: number,
         onAltTable: () => void,
         onSend: (content: string) => void
-        canSend: boolean
     }
     ) {
     const [message, setMessage] = useState('');
@@ -296,11 +294,10 @@ export function PromptInput
                                 }}
                                 value={message}
                                 onKeyDown={handleKeyDown}
-                                lock={!canSend}
                             />
                         </div>
                         <Fab
-                            disabled={message === '' || !canSend}
+                            disabled={message === ''}
                             onClick={() => {
                                 onSend(message);
                                 setMessage('');
