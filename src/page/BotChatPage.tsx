@@ -170,11 +170,19 @@ const BotChatPage = () => {
                 variant="permanent"
                 sx={{
                     width: drawerWidth,
-                    [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+                    [`& .MuiDrawer-paper`]: {
+                        width: drawerWidth,
+                        boxSizing: 'border-box',
+                        overflowY: 'auto' // 添加垂直滚动条
+                    },
+                    height: '100vh',// 设置 Drawer 的高度为视窗的高度
                 }}
             >
                 <Toolbar
-                    style={{ height: 100, }}
+                    style={{
+                        minHeight: 100, // 设置最小高度
+                        flexShrink: 0, // 防止 Toolbar 在 flex 布局中被压缩
+                    }}
                 />
                 <BotBriefCard botBriefInfo={botBriefInfo} onChatButtonClick={onChatButtonClick} />
                 <Typography
