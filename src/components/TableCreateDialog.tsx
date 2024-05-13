@@ -82,7 +82,7 @@ const TableCreateDialog =
                     }}
                 >
                     <DialogTitle className="table-create-title">
-                        {'Prompt Table'}
+                        {t('Prompt Table')}
                     </DialogTitle>
                     <DialogContent>
                         {promptList.map((prompt, index) => (

@@ -105,7 +105,8 @@ const resources = {
       "Use": "去使用",
       "Modify": "修改",
       "Edit": "编辑",
-      "Fill the table template and start messaging with your own assistant!": "填写模板表单，开始你和AI助手的对话吧！",
+      "Chat": "聊天",
+      "Fill in the prompt table and start chatting!": "填写表格,然后开始聊天！",
 
       "bot0": "机器人0",
       "Programming Debug Assistant": "编程调试助手",
@@ -123,6 +124,7 @@ const resources = {
 
       "Chat History": "对话历史",
       "No chat history yet.": "暂无对话历史",
+      "Prompt Table": "提示词表",
     }
   }
 };
