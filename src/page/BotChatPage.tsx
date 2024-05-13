@@ -36,7 +36,6 @@ const BotChatPage = () => {
     const [botBriefInfo, setBotBriefInfo] = useState<BotBriefInfo | null>(null);
     const [socket, setSocket] = useState<WebSocket | null>(null);
     const [user, setUser] = useState({ id: 0, name: '', avatar: '' })
-    const [canSend, setCanSend] = useState(true);
 
     const { t } = useTranslation();
 
@@ -144,7 +143,6 @@ const BotChatPage = () => {
                             avatar: botBriefInfo ? botBriefInfo.avatar : "",
                             content: response.replyMessage
                         }]);
-                setCanSend(true);
             };
 
             // Handle any errors that occur.
@@ -247,9 +245,7 @@ const BotChatPage = () => {
                                 }]);
                         // 向 WebSocket 发送消息
                         sendMessage(socket, text);
-                        setCanSend(false);
                     }}
-                    canSend={canSend}
                 />
                 {/* 弹出 prompt 表格 */}
                 <TableCreateDialog
