@@ -12,7 +12,7 @@ export type BotChat = {
 export type BotChatHistory = {
     id: number; // 聊天历史记录id，聊天生成时的UNIX时间戳
     title: string; // 侧边栏的历史标题
-    message: string; // 侧边栏的历史信息
+    content: string; // 侧边栏的历史信息
 }
 
 export interface BotBriefInfo {
@@ -106,7 +106,7 @@ export async function getBotChatList(historyId: number): Promise<BotChat[]> {
     try {
         let res = await getJson(url);
         console.log(res);
-        
+
         return res['chats'] as BotChat[];
     }
     catch (e) {
