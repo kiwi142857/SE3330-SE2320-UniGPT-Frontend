@@ -22,7 +22,7 @@ const ChatHistoryList = (
                 <React.Fragment key={index}>
                     <ChatHistoryItem
                         title={botChatHistory.title}
-                        message={botChatHistory.message}
+                        message={botChatHistory.content}
                         selected={selectedId === botChatHistory.id}
                         onClick={() => { onItemClicked(botChatHistory.id); }}
                     />

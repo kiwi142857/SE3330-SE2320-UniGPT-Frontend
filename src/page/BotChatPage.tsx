@@ -31,7 +31,7 @@ const BotChatPage = () => {
 
     const [tableCreateOpen, setTableCreateOpen] = useState(false);
     const [selectedHistoryId, setSelectedHistoryId] = useState(0);
-    const [botChatHistoryList, setBotChatHistoryList] = useState<BotChatHistory[] | null>([]);
+    const [botChatHistoryList, setBotChatHistoryList] = useState<BotChatHistory[]>([]);
     const [botChatList, setBotChatList] = useState<BotChat[]>([]);
     const [botBriefInfo, setBotBriefInfo] = useState<BotBriefInfo | null>(null);
     const [socket, setSocket] = useState<WebSocket | null>(null);
@@ -59,7 +59,8 @@ const BotChatPage = () => {
     useEffect(() => {
         const getChatHistoryList = async () => {
             const list = await getBotChatHistoryList(botID, 0, 20);
-            setBotChatHistoryList(list);
+            if (list && list.length > 0) setBotChatHistoryList(list);
+            else setBotChatHistoryList([]);
             console.log("BotChatHistoryList: ", list);
         };
         getChatHistoryList();
@@ -103,6 +104,16 @@ const BotChatPage = () => {
                 botChatHistoryList.splice(index, 1);
                 botChatHistoryList.unshift(temp);
             }
+        }
+        if (botChatList.length > 0) {
+            const currentChat = botChatList[0], lastChat = botChatList[botChatList.length - 1];
+            // 设置 title 为 botChatList 第一条对话的前 10 个字符，如果长度大于 10 则加上省略号
+            const title = currentChat.content.length > 10 ? currentChat.content.substring(0, 10) + "..." : currentChat.content;
+            // 设置 content 为 botChatList 最后一条对话的前 20 个字符，如果长度大于 10 则加上省略号
+            const content = lastChat.content.length > 20 ? lastChat.content.substring(0, 20) + "..." : lastChat.content;
+
+            // 修改 botChatHistoryList 的第一条 title 和 content，并重新设置 botChatHistoryList
+            setBotChatHistoryList(prev => [{ ...prev[0], title: title, content: content }, ...prev.slice(1)]);
         }
     }, [botChatList]);
 
