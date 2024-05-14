@@ -102,9 +102,9 @@ const BotDetailCard = (
                     </p>
                 </Typography>
                 {/* <Typography sx={{ color: 'primary.light' }}> */}
-                    <Link className="detail-card-author" to={`/profile/${authorId}`}>
-                        {`@${author}`}
-                    </Link>
+                <Link className="detail-card-author" to={`/profile/${authorId}`}>
+                    {`@${author}`}
+                </Link>
                 {/* </Typography> */}
                 <Typography sx={{ color: 'primary.light' }}>
                     <p className='detail-card-description'>
