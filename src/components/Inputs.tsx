@@ -188,10 +188,10 @@ export function EditSelect
                         style={{ borderRadius: '20px' }}
                         required
                     >
-                        <MenuItem value={'GPT-4'}>GPT-4</MenuItem>
-                        <MenuItem value={'ChatGLM'}>ChatGLM</MenuItem>
+                        <MenuItem value={'GPT-4'}>GPT-3.5</MenuItem>
+                        {/* <MenuItem value={'ChatGLM'}>ChatGLM</MenuItem>
                         <MenuItem value={'llama'}>llama</MenuItem>
-                        <MenuItem value={'kimiAI'}>kimiAI</MenuItem>
+                        <MenuItem value={'kimiAI'}>kimiAI</MenuItem> */}
                     </Select>
                 </FormControl>
             </Grid>
