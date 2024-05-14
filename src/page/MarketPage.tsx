@@ -13,14 +13,14 @@ const MarketPage: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const pageIndexStr = searchParams.get("pageIndex");
     const pageSizeStr = searchParams.get("pageSize");
-    const [pageIndex, setPageIndex] = useState(pageIndexStr != null ? Number.parseInt(pageIndexStr) -1  : 0);
+    const [pageIndex, setPageIndex] = useState(pageIndexStr != null ? Number.parseInt(pageIndexStr) - 1 : 0);
     const pageSize = pageSizeStr != null ? Number.parseInt(pageSizeStr) : 15;
     const [tabValue, setTabValue] = React.useState(0);
-    const [totalPage, setTotalPage] = useState(0); 
+    const [totalPage, setTotalPage] = useState(0);
 
     const [bots, setBots] = useState([]); // [botListType
     const getSearchBots = async () => {
-        let order = tabValue === 0 ? "latest" : "star";
+        let order = tabValue === 0 ? "latest" : "like";
         let response = await getSearchBotList(pageIndex, pageSize, searchParams.get("keyword") || "", order);
         console.log(response);
         setBots(response.bots);
@@ -36,7 +36,7 @@ const MarketPage: React.FC = () => {
 
     useEffect(() => {
         getSearchBots();
-    }, [searchParams,tabValue]);
+    }, [searchParams, tabValue]);
 
     console.log("bots", bots);
 
@@ -47,7 +47,7 @@ const MarketPage: React.FC = () => {
     }
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        console.log("page change", value -1);
+        console.log("page change", value - 1);
         setPageIndex(value - 1);
         setSearchParams({ pageIndex: (value).toString() }); // Update the pageIndex when the page changes
     };
@@ -64,8 +64,8 @@ const MarketPage: React.FC = () => {
             <div style={{ marginTop: '20px' }} className='market-card'>
                 <BotList type={botListType} bots={bots}></BotList>
             </div>
-            <div style={{ marginTop: '20px',display: 'flex', justifyContent: 'center'}}>
-                <Pagination count={totalPage} page={pageIndex +1 } onChange={handlePageChange} className='pagination'/> 
+            <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
+                <Pagination count={totalPage} page={pageIndex + 1} onChange={handlePageChange} className='pagination' />
             </div>
         </div>
     );
