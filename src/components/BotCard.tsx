@@ -9,11 +9,11 @@ import { Bot } from '../service/bot';
 
 
 export default function BotCard({ Bot }: { Bot: Bot }) {
-  
+
   return (
-    <Link href={'/botdetail/'+Bot.id} style={{ textDecoration: 'none' }} >
+    <Link href={'/botdetail/' + Bot.id} style={{ textDecoration: 'none' }} >
       <Card className='bot-card' style={{ height: '100%' }}>
-        <CardMedia style={{ width: '70px', height: '70px', marginLeft: '5%', borderRadius: '20px', marginBottom: '0px',marginTop: '25px'}}
+        <CardMedia style={{ width: '70px', height: '70px', marginLeft: '5%', borderRadius: '20px', marginBottom: '0px', marginTop: '25px' }}
           component="img"
           image={Bot.avatar}
           alt="bot-default"
