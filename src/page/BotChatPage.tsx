@@ -39,6 +39,8 @@ const BotChatPage = () => {
     const [user, setUser] = useState({ id: 0, name: '', avatar: '' });
     const [tableCreateOpen, setTableCreateOpen] = useState(false);
 
+    const [botChatHistoryLoading, setBotChatHistoryLoading] = useState(true);
+
     const { t } = useTranslation();
 
     const fetchAndUpdateBrief = async () => {
@@ -134,7 +136,9 @@ const BotChatPage = () => {
         console.log(botID);
         fetchAndUpdateBrief();
         fetchAndSetUser().then(() => {console.log('username is ' + user.name)});
-        fetchAndSetBotChatHistoryList();
+        fetchAndSetBotChatHistoryList().then(() => {
+            setBotChatHistoryLoading(false);
+        })
     }, []);
 
     useEffect(() => {
@@ -235,21 +239,12 @@ const BotChatPage = () => {
                 >
                     {t('Chat History')}
                 </Typography>
-                {/* 判断 botChatHistoryList 是否为空*/}
-                {botChatHistoryList && botChatHistoryList.length ? (
-                    <ChatHistoryList
-                        botChatHistoryList={botChatHistoryList}
-                        selectedId={selectedHistoryId}
-                        onItemClicked={onHistoryItemClicked}
-                    />
-                ) : (
-                    <div
-                        className="drawer-item-title"
-                        style={{ color: theme.palette.secondary.dark, margin: 25 }}
-                    >
-                        {t('No chat history yet.')}
-                    </div>
-                )}
+                <ChatHistoryList
+                    botChatHistoryList={botChatHistoryList}
+                    selectedId={selectedHistoryId}
+                    onItemClicked={onHistoryItemClicked}
+                    loading={botChatHistoryLoading}
+                />
             </Drawer>
             <Box
                 className="main-container bot-chat-container"
