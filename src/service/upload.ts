@@ -7,7 +7,7 @@ export async function imageUpload(data: File): Promise<ResponseData> {
     formData.append('file', data);
 
     try{
-        let response = await fetch('http://localhost:8080/api/file/upload', {
+        let response = await fetch( `${PREFIX}/file/upload`, {
             method: 'POST',
             body: formData,
             credentials: "include"
