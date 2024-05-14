@@ -3,8 +3,7 @@ import {
     Toolbar, Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useEffect, useState } from 'react';
-import OneChat from "../components/OneChat";
+import React, { useEffect, useRef, useState } from 'react';
 import { createWebSocketConnection, sendMessage } from "../service/webSocket";
 import { useTranslation } from "react-i18next";
 import BotBriefCard from "../components/BotBriefCard";
@@ -16,115 +15,147 @@ import '../css/App.css';
 import '../css/BotChatPage.css';
 import { Prompt, BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotBrief, getBotChatList, createHistory } from "../service/BotChat";
 import { useParams } from "react-router-dom";
-import { use } from "i18next";
 import { getMe } from "../service/user";
 import ChatWindow from "../components/ChatWindow";
 
 
 // bot聊天页
 // 侧边栏宽度
-let drawerWidth = 350;
+const drawerWidth = 350;
 const BotChatPage = () => {
+    // TODO: 重构
     let { botID } = useParams<{ botID: string; }>();
     botID === undefined ? botID = "" : botID = botID;
 
 
-    const [tableCreateOpen, setTableCreateOpen] = useState(false);
-    const [selectedHistoryId, setSelectedHistoryId] = useState(0);
     const [botChatHistoryList, setBotChatHistoryList] = useState<BotChatHistory[]>([]);
+    const [selectedHistoryId, setSelectedHistoryId] = useState(0);
+    const botChatHistoryListRef = useRef(botChatHistoryList);
+    botChatHistoryListRef.current = botChatHistoryList;
+    
     const [botChatList, setBotChatList] = useState<BotChat[]>([]);
     const [botBriefInfo, setBotBriefInfo] = useState<BotBriefInfo | null>(null);
     const [socket, setSocket] = useState<WebSocket | null>(null);
-    const [user, setUser] = useState({ id: 0, name: '', avatar: '' })
+    const [user, setUser] = useState({ id: 0, name: '', avatar: '' });
+    const [tableCreateOpen, setTableCreateOpen] = useState(false);
 
     const { t } = useTranslation();
 
-    useEffect(() => {
-        const getBrief = async () => {
-            const brief = await getBotBrief(botID);
-            setBotBriefInfo(brief);
-            console.log("brief: ", brief);
-        };
-        const getUser = async () => {
-            let me = await getMe();
-            if (me)
-                setUser(me);
-        }
-        console.log(botID);
-        getBrief();
-        getUser();
-    }, []);
-
-    useEffect(() => {
-        const getChatHistoryList = async () => {
-            const list = await getBotChatHistoryList(botID, 0, 20);
-            if (list && list.length > 0) setBotChatHistoryList(list);
-            else setBotChatHistoryList([]);
-            console.log("BotChatHistoryList: ", list);
-        };
-        getChatHistoryList();
-    }, [selectedHistoryId]);
+    const fetchAndUpdateBrief = async () => {
+        const brief = await getBotBrief(botID);
+        setBotBriefInfo(brief);
+        console.log("brief: ", brief);
+    };
+    const fetchAndSetUser = async () => {
+        let me = await getMe();
+        setUser(me);
+    };
+    // 从后端获取 botChatHistoryList并更新state
+    const fetchAndSetBotChatHistoryList = async () => {
+        let list = await getBotChatHistoryList(botID, 0, 20);
+        setBotChatHistoryList(list ?? []);
+    }
+    const fetchAndSetBotChatList = async () => {
+        const list = selectedHistoryId ? await getBotChatList(selectedHistoryId) : [];
+        setBotChatList(list);
+    };
 
     const onSubmit = async (promptlist: Prompt[]) => {
         console.log("PromptList: ", promptlist);
         const newHistoryId = await createHistory(botID, promptlist);
+        setBotChatHistoryList([
+            {
+                id: newHistoryId, 
+                title: 'New Chat', 
+                content: ''
+            }, 
+            ...botChatHistoryList
+        ]);
         setSelectedHistoryId(newHistoryId);
     };
-
-    // websocket
-    const WebSocketConnection = (id: number) => {
-        // Create a new WebSocket connection
-        // if websocket has been created, close it first
-        if (socket) {
-            console.log("WebSocketConnection close: ", socket);
-            socket.close();
-        }
-        console.log("WebSocketConnection start: ", id);
-        setSocket(createWebSocketConnection(id));
-        console.log("WebSocketConnection: ", socket);
-
+    const onHistoryItemClicked = async (historyid: number) => {
+        setSelectedHistoryId(historyid);
     };
-    // update botChatList
-    useEffect(() => {
-        const getChatList = async () => {
-            const list = await getBotChatList(selectedHistoryId);
+    // 创建新的对话历史
+    const onChatClicked = () => {
+        console.log("Click Chat");
+        setSelectedHistoryId(0);
+    }
 
-            setBotChatList(list);
-        };
-        getChatList();
+    const onSendClicked = (text: string) => {
+        console.log('user.name' + user.name);
+        setBotChatList(
+            botChatList =>
+                [...botChatList, {
+                    id: 0,
+                    name: user.name,
+                    historyId: selectedHistoryId,
+                    avatar: user.avatar,
+                    content: text,
+                }]
+        );
+
+        const currentHistory: BotChatHistory = botChatHistoryList.find(item => item.id === selectedHistoryId) as BotChatHistory;
+        const newCurrentHistory: BotChatHistory = {
+            ...currentHistory,
+            content: ellipsisStr(text, 20),
+            // 如果当前历史没有对话，则使用输入的文本作为标题
+            title: botChatList.length ? currentHistory.title : ellipsisStr(text, 10)
+        }
+        const newBotChatHistoryList = botChatHistoryList.filter(item => item.id !== selectedHistoryId);
+        // 将当前历史记录置于历史列表顶端
+        newBotChatHistoryList.unshift(newCurrentHistory);
+        setBotChatHistoryList(newBotChatHistoryList);
+
+        // 向 WebSocket 发送消息
+        sendMessage(socket, text);
+    }
+
+    const closeWebSocketConnection = (socket: WebSocket) => {
+        console.log("WebSocketConnection close: ", socket);
+        socket.close();
+    };
+
+    // 创建一个新的WebSocket连接
+    const WebSocketConnection = (historyId: number) => {
+        console.log("WebSocketConnection start: ", historyId);
+        setSocket(createWebSocketConnection(historyId));
+        console.log("WebSocketConnection: ", socket);
+    };
+
+
+    const ellipsisStr = (str: string, length: number) => {
+        // 截取字符串，如果长度大于 length 则加上省略号
+        return str.length > length ? str.substring(0, length) + "..." : str;
+    }
+
+    useEffect(() => {
+        // 页面加载初始化
+        console.log(botID);
+        fetchAndUpdateBrief();
+        fetchAndSetUser().then(() => {console.log('username is ' + user.name)});
+        fetchAndSetBotChatHistoryList();
+    }, []);
+
+    useEffect(() => {
+        console.log("selectedHistoryId changed to " + selectedHistoryId);
+        selectedHistoryId && WebSocketConnection(selectedHistoryId);
+        fetchAndSetBotChatList();
+
+        return () => {
+            socket?.readyState === WebSocket.OPEN && closeWebSocketConnection(socket);
+        }
     }, [selectedHistoryId]);
 
     useEffect(() => {
-        // 将 当前 selectedHistoryId 移动到 botChatHistoryList 的最前端
-        if (botChatHistoryList && selectedHistoryId) {
-            const index = botChatHistoryList.findIndex((item) => item.id === selectedHistoryId);
-            if (index !== -1) {
-                const temp = botChatHistoryList[index];
-                botChatHistoryList.splice(index, 1);
-                botChatHistoryList.unshift(temp);
-            }
-        }
-        if (botChatList.length > 0) {
-            const currentChat = botChatList[0], lastChat = botChatList[botChatList.length - 1];
-            // 设置 title 为 botChatList 第一条对话的前 10 个字符，如果长度大于 10 则加上省略号
-            const title = currentChat.content.length > 10 ? currentChat.content.substring(0, 10) + "..." : currentChat.content;
-            // 设置 content 为 botChatList 最后一条对话的前 20 个字符，如果长度大于 10 则加上省略号
-            const content = lastChat.content.length > 20 ? lastChat.content.substring(0, 20) + "..." : lastChat.content;
-
-            // 修改 botChatHistoryList 的第一条 title 和 content，并重新设置 botChatHistoryList
-            setBotChatHistoryList(prev => [{ ...prev[0], title: title, content: content }, ...prev.slice(1)]);
-        }
-    }, [botChatList]);
-
-    // update socket
-    useEffect(() => {
         if (socket) {
-            // Handle incoming messages
+            // 新的WebSocket连接被创建
+            // 处理来自服务器的消息
             socket.onmessage = (event) => {
-                console.log("In onmessage: ", botChatList);
                 console.log('Message from server: ', event.data);
                 let response: { replyMessage: string };
                 try {
+                    console.log('event.data: ' + event.data);
                     response = JSON.parse(event.data);
                 } catch (error) {
                     console.error('Error parsing JSON:', error);
@@ -132,8 +163,18 @@ const BotChatPage = () => {
                     // Handle the error as needed
                 }
                 console.log('Message from server: ', response.replyMessage);
-                console.log('my botChatList: ', botChatList);
-
+                setBotChatHistoryList(
+                    botChatHistoryListRef
+                        .current
+                        .map(
+                            history => 
+                            history.id === selectedHistoryId ? 
+                            {
+                                ...history, 
+                                content: ellipsisStr(response.replyMessage, 20)
+                            } : history
+                        )
+                );
                 setBotChatList(
                     botChatList =>
                         [...botChatList, {
@@ -142,7 +183,8 @@ const BotChatPage = () => {
                             historyId: selectedHistoryId,
                             avatar: botBriefInfo ? botBriefInfo.avatar : "",
                             content: response.replyMessage
-                        }]);
+                        }]
+                );
             };
 
             // Handle any errors that occur.
@@ -151,14 +193,10 @@ const BotChatPage = () => {
                 // TODO: Update your state to indicate that an error occurred
             };
         }
-    }, [socket]); // Add socket as a dependency
+    }, [socket]); 
 
 
 
-    const onChatButtonClick = () => {
-        console.log("Click Chat");
-        setSelectedHistoryId(0);
-    }
     return (
         <div
             style={{
@@ -183,7 +221,7 @@ const BotChatPage = () => {
                         flexShrink: 0, // 防止 Toolbar 在 flex 布局中被压缩
                     }}
                 />
-                <BotBriefCard botBriefInfo={botBriefInfo} onChatButtonClick={onChatButtonClick} />
+                <BotBriefCard botBriefInfo={botBriefInfo} onChatButtonClick={onChatClicked} />
                 <Typography
                     className="drawer-item-content"
                     style={{
@@ -202,13 +240,7 @@ const BotChatPage = () => {
                     <ChatHistoryList
                         botChatHistoryList={botChatHistoryList}
                         selectedId={selectedHistoryId}
-                        onItemClicked={async (id) => {
-                            setSelectedHistoryId(id);
-                            const list = await getBotChatList(id);
-                            setBotChatList(list);
-                            console.log("BotChatList 111: ", list);
-                            WebSocketConnection(id);
-                        }}
+                        onItemClicked={onHistoryItemClicked}
                     />
                 ) : (
                     <div
@@ -233,19 +265,7 @@ const BotChatPage = () => {
                     onAltTable={() => {
                         setTableCreateOpen(true);
                     }}
-                    onSend={(text) => {
-                        setBotChatList(
-                            botChatList =>
-                                [...botChatList, {
-                                    id: 0,
-                                    name: user.name,
-                                    historyId: selectedHistoryId,
-                                    avatar: user.avatar,
-                                    content: text,
-                                }]);
-                        // 向 WebSocket 发送消息
-                        sendMessage(socket, text);
-                    }}
+                    onSend={onSendClicked}
                 />
                 {/* 弹出 prompt 表格 */}
                 <TableCreateDialog
