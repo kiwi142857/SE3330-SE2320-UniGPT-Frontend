@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import '../css/Navigator.css';
 import { getMe } from '../service/user';
 import LanguageButton from './LanguageButton';
+import { ListButton } from './ListButton';
 
 // 顶部导航栏
 const Navigator: React.FC<{}> = () => {
@@ -30,6 +31,7 @@ const Navigator: React.FC<{}> = () => {
             sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
         >
             <Toolbar>
+                <ListButton></ListButton>
                 <LanguageButton></LanguageButton>
                 {/* logo与标题 */}
                 <Box
