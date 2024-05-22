@@ -56,6 +56,7 @@ const resources = {
       "The robot can help you communicate with others. It can help you communicate with others and give you some suggestions.": "The robot can help you communicate with others. It can help you communicate with others and give you some suggestions.",
       "Save": "save",
       "Logout": "Logout",
+      "Comments": "Comments",
     }
   },
   zh: {
@@ -127,6 +128,7 @@ const resources = {
       "No chat history yet.": "暂无对话历史",
       "Prompt Table": "提示词表",
       "Logout": "登出",
+      "Comments": "评论区"
     }
   }
 };
