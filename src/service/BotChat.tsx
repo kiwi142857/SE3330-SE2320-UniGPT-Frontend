@@ -7,6 +7,7 @@ export type BotChat = {
     name: string;
     avatar: string;
     content: string;
+    type: boolean; // true: 机器人，false: 用户
 }
 // 聊天记录类
 export type BotChatHistory = {

@@ -84,8 +84,8 @@ export async function post(url: string, data: any): Promise<any> {
     return res.json();
 }
 
-export const websocketUrl = 'wss://10.119.12.131:8080/chat';
-export const BASEURL: string = 'https://10.119.12.131:8080';
+export const websocketUrl = 'wss://localhost:8080';//'wss://10.119.12.131:8080/chat';
+export const BASEURL: string = 'https://localhost:8080'; //'https://10.119.12.131:8080';
 export const PREFIX: string = `${BASEURL}/api`;
 export const API_DOCS_URL: string = `${BASEURL}/api-docs`;
 export const DUMMY_RESPONSE: ResponseData = {

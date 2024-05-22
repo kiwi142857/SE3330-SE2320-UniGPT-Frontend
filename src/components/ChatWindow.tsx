@@ -57,6 +57,7 @@ const ChatWindow = (
                             name={botChat.name}
                             avatar={botChat.avatar}
                             content={botChat.content}
+                            type={botChat.type}
                         />
                     ))}
                 </Box>
