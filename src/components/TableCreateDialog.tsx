@@ -60,6 +60,8 @@ const TableCreateDialog =
             let newPromptList = promptList;
             // change the promptList
             for (let i = 0; i < promptList.length; i++) {
+                if (inputValues[i] === "")
+                    return;
                 newPromptList[i].promptValue = inputValues[i];
             }
             handleSubmit(newPromptList);
@@ -93,6 +95,7 @@ const TableCreateDialog =
                                 name={`item${index + 1}`}
                                 lock={historyId !== 0}
                                 onInputChange={(value: string) => handleInputChange(index, value)}
+                                dealWithEnter={index === promptList.length - 1 ? onSubmit : () => {}}
                             />
                         ))}
                     </DialogContent>
