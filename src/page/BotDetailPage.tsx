@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Divider, Tab, Tabs, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -13,6 +13,7 @@ import { getMe } from '../service/user';
 import SnackBar from '../components/Snackbar';
 import '../css/App.css';
 import '../css/BotDetailPage.css';
+import { useTranslation } from 'react-i18next';
 
 
 // bot详情页
@@ -24,6 +25,8 @@ const BotDetailPage: React.FC = () => {
     const [alert, setAlert] = useState(false);
 
     let { id } = useParams<{ id: string }>();
+    const {t} = useTranslation();
+
 
     const getBot = async () => {
         if (id) {
@@ -87,6 +90,13 @@ const BotDetailPage: React.FC = () => {
                 {bot.detail}
             </p>
         </Typography>
+
+        <Tabs value="one">
+            <Tab value="one" label={
+            <div className='detail-comment-divider'>
+                {t('Comments')}
+            </div>} />
+        </Tabs>
 
         <CommentInput onSend={
             async (content: string) => {
