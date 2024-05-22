@@ -366,6 +366,7 @@ export function TableCreateInput({
                     lock={lock}
                     onChange={handleChange} // 触发 onChange 事件
                     onKeyDown={handleKeyDown}
+                    id={name}
                 />
             </div>
         </Box>);

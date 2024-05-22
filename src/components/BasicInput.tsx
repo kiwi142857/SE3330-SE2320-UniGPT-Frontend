@@ -31,6 +31,8 @@ type BasicInputProps = {
 
     onKeyDown?: any;
 
+    id?: string;
+
 };
 
 const BasicInput: React.FC<BasicInputProps> =
@@ -65,6 +67,7 @@ const BasicInput: React.FC<BasicInputProps> =
             defaultValue={defaultValue}
             onChange={onChange ?? (()=>{})}
             onKeyDown={onKeyDown}
+            id = {name}
         />
     );
 };
