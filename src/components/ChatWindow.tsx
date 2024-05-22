@@ -1,7 +1,7 @@
 import { Box } from "@mui/system";
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import OneChat from "../components/OneChat";
+import OneChat from "./OneChat";
 import theme from "../components/theme";
 import '../css/App.css';
 import '../css/BotChatPage.css';
