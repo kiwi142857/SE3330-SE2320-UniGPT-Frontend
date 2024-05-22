@@ -1,14 +1,16 @@
 import { Avatar, Button, Grid, TextField, Typography } from '@mui/material';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import '../css/Profile.css';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { imageUpload } from '../service/upload';
 import { PostUser, User, putUser } from '../service/user';
 import SnackBar from './Snackbar';
+import { logout } from '../service/auth';
 
-export default function UserCard({ user, isMe }: { user: User; isMe: boolean;}) {
+export default function UserCard({ user, isMe }: { user: User; isMe: boolean; }) {
 
     const [description, setDescription] = useState(user.description);
     const [username, setUsername] = useState(user.name);
@@ -17,7 +19,7 @@ export default function UserCard({ user, isMe }: { user: User; isMe: boolean;}) 
 
     const [alert, setAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
-
+    const navigate = useNavigate();
     const handleUsernameFocus = () => {
         setIsUsernameFocused(true);
     };
@@ -76,6 +78,18 @@ export default function UserCard({ user, isMe }: { user: User; isMe: boolean;}) 
         }
     };
 
+    const handleLogout = async () => {
+        const response =await logout();
+        if(response.ok){
+            
+            navigate('/login');
+        }
+        else{
+            setAlert(true);
+            setAlertMessage('登出失败');
+        };
+    }
+
     const [isDiscriptionInputActive, setDiscriptionIsInputActive] = useState(false);
     const [isInputActive, setIsInputActive] = useState(false);
     const { t, i18n } = useTranslation();
@@ -91,7 +105,7 @@ export default function UserCard({ user, isMe }: { user: User; isMe: boolean;}) 
         if (user.avatar)
             setAvatarSrc(user.avatar);
     }, [user]);
-
+    
     return [
         <SnackBar
             open={alert}
@@ -113,7 +127,13 @@ export default function UserCard({ user, isMe }: { user: User; isMe: boolean;}) 
                     />
                     {isMe && <label htmlFor="avatar-input" className="avatar-overlay-profile">{t("change your avatar")}</label>}
                 </div>
+                {isMe && (
+                    <Button variant="contained" color="secondary" style={{ width: '100%', marginTop: '108%' }} onClick={handleLogout}>
+                        {t("Logout")}
+                    </Button>
+                )}
             </Grid>
+
             <Grid item >
                 <Grid container spacing={2} className='user-box'>
                     <TextField
@@ -178,12 +198,12 @@ export default function UserCard({ user, isMe }: { user: User; isMe: boolean;}) 
                         <Button
                             variant="contained"
                             color="primary"
-                            style={{ width: '50%', marginTop: '10px', alignSelf: 'flex-start', marginLeft: '-50%'}}
+                            style={{ width: '50%', marginTop: '10px', alignSelf: 'flex-start', marginLeft: '-50%' }}
                             onClick={handleCommit}
                         >
                             {t("Save")}
                         </Button>
-                    </Grid> 
+                    </Grid>
                 }
             </Grid>
             <Grid item >
