@@ -55,6 +55,7 @@ const resources = {
       "The robot can help you write the abstract of your paper. It can help you write the abstract and give you some suggestions.": "The robot can help you write the abstract of your paper. It can help you write the abstract and give you some suggestions.",
       "The robot can help you communicate with others. It can help you communicate with others and give you some suggestions.": "The robot can help you communicate with others. It can help you communicate with others and give you some suggestions.",
       "Save": "save",
+      "Logout": "Logout",
       "Comments": "Comments",
     }
   },
@@ -126,6 +127,7 @@ const resources = {
       "Chat History": "对话历史",
       "No chat history yet.": "暂无对话历史",
       "Prompt Table": "提示词表",
+      "Logout": "登出",
       "Comments": "评论区"
     }
   }
