@@ -32,7 +32,7 @@ const BotChatPage = () => {
     const [selectedHistoryId, setSelectedHistoryId] = useState(0);
     const botChatHistoryListRef = useRef(botChatHistoryList);
     botChatHistoryListRef.current = botChatHistoryList;
-    
+
     const [botChatList, setBotChatList] = useState<BotChat[]>([]);
     const [botBriefInfo, setBotBriefInfo] = useState<BotBriefInfo | null>(null);
     const [socket, setSocket] = useState<WebSocket | null>(null);
@@ -65,10 +65,10 @@ const BotChatPage = () => {
         const newHistoryId = await createHistory(botID, promptlist);
         setBotChatHistoryList([
             {
-                id: newHistoryId, 
-                title: 'New Chat', 
+                id: newHistoryId,
+                title: 'New Chat',
                 content: ''
-            }, 
+            },
             ...botChatHistoryList
         ]);
         setSelectedHistoryId(newHistoryId);
@@ -133,7 +133,7 @@ const BotChatPage = () => {
         // 页面加载初始化
         console.log(botID);
         fetchAndUpdateBrief();
-        fetchAndSetUser().then(() => {console.log('username is ' + user.name)});
+        fetchAndSetUser().then(() => { console.log('username is ' + user.name) });
         fetchAndSetBotChatHistoryList();
     }, []);
 
@@ -167,12 +167,12 @@ const BotChatPage = () => {
                     botChatHistoryListRef
                         .current
                         .map(
-                            history => 
-                            history.id === selectedHistoryId ? 
-                            {
-                                ...history, 
-                                content: ellipsisStr(response.replyMessage, 20)
-                            } : history
+                            history =>
+                                history.id === selectedHistoryId ?
+                                    {
+                                        ...history,
+                                        content: ellipsisStr(response.replyMessage, 20)
+                                    } : history
                         )
                 );
                 setBotChatList(
@@ -193,7 +193,7 @@ const BotChatPage = () => {
                 // TODO: Update your state to indicate that an error occurred
             };
         }
-    }, [socket]); 
+    }, [socket]);
 
 
 

@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import BotCarousel from '../components/BotCarousel';
 import BotDetailCard from '../components/BotDetailCard';
 import { CommentInput } from '../components/Inputs';
-import OneChat from '../components/OneChat';
+import OneChat from '../components/OneComment';
 import { Comment, CommentList, botDetailInfo, getBotComments, getBotDetail, postComment } from '../service/BotDetail';
 import { getMe } from '../service/user';
 
