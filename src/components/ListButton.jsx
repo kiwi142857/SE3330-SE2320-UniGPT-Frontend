@@ -1,7 +1,7 @@
-import React from 'react';
 import { Button, Menu, MenuItem } from '@mui/material';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { LanguageContext } from "../provider/LanguageProvider";
 
 export function ListButton() {
@@ -35,7 +35,7 @@ export function ListButton() {
                     <Link to="/market" style={{ textDecoration: 'none', color: 'inherit' }}>{t("Market")}</Link>
                 </MenuItem>
                 <MenuItem onClick={handleMouseLeave}>
-                    <Link to="/botedit" style={{ textDecoration: 'none', color: 'inherit' }}>{t("Bot Create")}</Link>
+                    <Link to="/botcreate" style={{ textDecoration: 'none', color: 'inherit' }}>{t("Bot Create")}</Link>
                 </MenuItem>
             </Menu>
         </div>
