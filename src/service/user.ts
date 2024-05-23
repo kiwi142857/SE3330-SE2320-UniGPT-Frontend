@@ -114,3 +114,20 @@ export async function putUser(user: PostUser, id : number) {
         console.log("PutUserError: ", e);
     }
 }
+
+export async function getSearchUserList(page: number, pageSize: number, q: string, type: string){
+    const url = `${PREFIX}/users?page=${page}&pagesize=${pageSize}&q=${q}&type=${type}`;
+    try{
+        console.log("url", url);
+        const response = await get(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("response", data);
+        return data;
+    }
+    catch(e){
+        console.log("GetSearchUserListError: ", e);
+    }
+}

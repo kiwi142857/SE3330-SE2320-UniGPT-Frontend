@@ -6,6 +6,7 @@ import HomePage from '../page/HomePage';
 import LoginPage from '../page/LoginPage';
 import MarketPage from '../page/MarketPage';
 import ProfilePage from '../page/ProfilePage';
+import UserListPage from '../page/UserListPage';
 import Navigator from './Navigator';
 
 import {
@@ -63,7 +64,11 @@ const router = createBrowserRouter([
             {
                 path: "/home",
                 element: <HomePage />
-            }
+            },
+            {
+                path: "/userlist",
+                element: <UserListPage />
+            },
 
         ],
     }
