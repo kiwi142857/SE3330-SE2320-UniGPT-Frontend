@@ -10,14 +10,16 @@ import { ListButton } from './ListButton';
 const Navigator: React.FC<{}> = () => {
 
     const [avatar, setAvatar] = React.useState<string>('/assets/user-default.png');
-
+    const [isAdmin, setIsAdmin] = React.useState<boolean>(false);
     const getAvatar = async () => {
         if (window.location.pathname === '/login') {
             return;
         }
         const user = await getMe();
+        console.log("user", user);
         if (user && user.avatar)
             setAvatar(user.avatar);
+        if (user && user.asAdmin) setIsAdmin(true);
     }
 
     useEffect(() => {
@@ -31,7 +33,7 @@ const Navigator: React.FC<{}> = () => {
             sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
         >
             <Toolbar>
-                <ListButton></ListButton>
+                <ListButton isAdmin={isAdmin}></ListButton>
                 <LanguageButton></LanguageButton>
                 {/* logo与标题 */}
                 <Box

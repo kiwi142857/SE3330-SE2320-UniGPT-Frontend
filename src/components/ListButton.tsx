@@ -4,17 +4,18 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { LanguageContext } from "../provider/LanguageProvider";
 
-export function ListButton() {
+export function ListButton({isAdmin}:{isAdmin:boolean}) {
 
+    console.log("isAdmin", isAdmin);
     const { t, i18n } = useTranslation();
     const context = React.useContext(LanguageContext);
 
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = React.useState<EventTarget & HTMLButtonElement | null>(null);
     const unorderListIConUrl = process.env.PUBLIC_URL + '/assets/unordered_list.png';
 
-    const handleMouseEnter = (event) => {
+    const handleMouseEnter = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
-    };
+    }
 
     const handleMouseLeave = () => {
         setAnchorEl(null);
@@ -37,6 +38,9 @@ export function ListButton() {
                 <MenuItem onClick={handleMouseLeave}>
                     <Link to="/botcreate" style={{ textDecoration: 'none', color: 'inherit' }}>{t("Bot Create")}</Link>
                 </MenuItem>
+                {isAdmin && <MenuItem onClick={handleMouseLeave}>
+                    <Link to="/userlist" style={{ textDecoration: 'none', color: 'inherit' }}>{t("UserList")}</Link>
+                </MenuItem>}
             </Menu>
         </div>
     );
