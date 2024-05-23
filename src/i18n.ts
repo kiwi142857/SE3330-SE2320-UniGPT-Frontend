@@ -57,6 +57,8 @@ const resources = {
       "Save": "save",
       "Logout": "Logout",
       "Comments": "Comments",
+      "Delete": "Delete",
+      "Archive": "Archive",
     }
   },
   zh: {
@@ -128,7 +130,9 @@ const resources = {
       "No chat history yet.": "暂无对话历史",
       "Prompt Table": "提示词表",
       "Logout": "登出",
-      "Comments": "评论区"
+      "Comments": "评论区",
+      "Delete": "删除",
+      "Archive": "归档",
     }
   }
 };

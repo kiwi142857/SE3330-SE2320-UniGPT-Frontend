@@ -10,10 +10,12 @@ const ChatHistoryList = (
         botChatHistoryList,
         selectedId,
         onItemClicked,
+        onItemDeleted,
     }: {
         botChatHistoryList: BotChatHistory[];
         selectedId: number;
         onItemClicked: (id: number) => void;
+        onItemDeleted: (id: number) => void;
     }) => {
 
     return (
@@ -25,6 +27,7 @@ const ChatHistoryList = (
                         message={botChatHistory.content}
                         selected={selectedId === botChatHistory.id}
                         onClick={() => { onItemClicked(botChatHistory.id); }}
+                        onDelete={() => { onItemDeleted(botChatHistory.id);}}
                     />
                 </React.Fragment>
             )
