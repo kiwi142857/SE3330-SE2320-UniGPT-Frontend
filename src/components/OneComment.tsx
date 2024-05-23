@@ -1,30 +1,43 @@
 import { Avatar, Divider, Grid } from '@mui/material';
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
-import '../css/OneChat.css';
+import '../css/OneComment.css';
 
 // 评论区的一句对话
 // 注意，只有一个单词的时候是不会换行的！
-const OneComment = ({ id, name, avatar, content }: { id: number, name: string, avatar: string, content: string }) => {
+const OneComment = ({
+    id,
+    name,
+    avatar,
+    content,
+    time
+}:
+    {
+        id: number, 
+        name: string, 
+        avatar: string, 
+        content: string ,
+        time: Date,
+    }) => {
     return (
         <>
-            <div className='one-chat-container'>
-                <div>
-                    <Grid container className='one-chat-header'>
-                        <Grid>
-                            <Avatar
-                                alt={name}
-                                src={avatar}
-                                className='one-chat-avatar'
-                            />
-                        </Grid>
-                        <Grid className='one-chat-name'>
-                            {name}
-                        </Grid>
+            <div className='one-comment-container'>
+                <Grid container className='one-comment-header'>
+                    <Grid>
+                        <Avatar
+                            alt={name}
+                            src={avatar}
+                            className='one-comment-avatar'
+                        />
                     </Grid>
+                    <Grid className='one-comment-name'>
+                        {name}
+                    </Grid>
+                </Grid>
+                <div className="one-comment-content">
+                    {content}
                 </div>
-                <div className='one-chat-markdown'>
-                    <ReactMarkdown>{content}</ReactMarkdown>
+                <div className="one-comment-date">
+                    {time.toLocaleString("zh-CN")}
                 </div>
             </div>
             <br />

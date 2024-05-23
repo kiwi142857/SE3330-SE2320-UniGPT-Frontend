@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 import BotCarousel from '../components/BotCarousel';
 import BotDetailCard from '../components/BotDetailCard';
 import { CommentInput } from '../components/Inputs';
-import OneChat from '../components/OneComment';
 import { Comment, CommentList, botDetailInfo, getBotComments, getBotDetail, postComment } from '../service/BotDetail';
 import { getMe } from '../service/user';
 
@@ -14,6 +13,7 @@ import SnackBar from '../components/Snackbar';
 import '../css/App.css';
 import '../css/BotDetailPage.css';
 import { useTranslation } from 'react-i18next';
+import OneComment from '../components/OneComment';
 
 
 // bot详情页
@@ -109,7 +109,7 @@ const BotDetailPage: React.FC = () => {
                         {
                             id: 0,
                             content: content,
-                            time: new Date().toISOString(),
+                            time: new Date(),
                             userId: user.id,
                             userName: user.name,
                             avatar: user.avatar,
@@ -123,11 +123,12 @@ const BotDetailPage: React.FC = () => {
 
         <Box>
             {comments.comments?.map((comment: Comment) => (
-                <OneChat
+                <OneComment
                     id={comment.id}
                     name={comment.userName}
                     avatar={comment.avatar}
                     content={comment.content}
+                    time={comment.time}
                 />
             ))}
         </Box>
