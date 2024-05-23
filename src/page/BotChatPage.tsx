@@ -92,6 +92,7 @@ const BotChatPage = () => {
                     historyId: selectedHistoryId,
                     avatar: user.avatar,
                     content: text,
+                    type: false
                 }]
         );
 
@@ -182,7 +183,8 @@ const BotChatPage = () => {
                             name: botBriefInfo ? botBriefInfo.name : "",
                             historyId: selectedHistoryId,
                             avatar: botBriefInfo ? botBriefInfo.avatar : "",
-                            content: response.replyMessage
+                            content: response.replyMessage,
+                            type: true
                         }]
                 );
             };
