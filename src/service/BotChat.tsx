@@ -1,4 +1,4 @@
-import { PREFIX, getJson, post } from './common';
+import { PREFIX, del, getJson, post } from './common';
 
 // 聊天类
 export type BotChat = {
@@ -131,4 +131,16 @@ export async function createHistory(botID: string, promptList: Prompt[]): Promis
     }
     if (res === null) return 0;
     return res.historyid;
+}
+
+export async function deleteHistory(historyId: number) {
+    const url = `${PREFIX}/histories/${historyId}`;
+
+    try {
+        let res = await del(url, {});
+        console.log(res);
+    }
+    catch (e) {
+        console.error(e);
+    }
 }

@@ -113,3 +113,13 @@
     text-align: center;
     user-select: none;
 }
+
+.drawer-item-menu {
+    font-family: Inter;
+    font-size: 20px;
+    margin: 10px;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: left;
+}

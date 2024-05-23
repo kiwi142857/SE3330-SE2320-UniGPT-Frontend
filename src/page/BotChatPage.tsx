@@ -13,7 +13,7 @@ import TableCreateDialog from "../components/TableCreateDialog";
 import theme from "../components/theme";
 import '../css/App.css';
 import '../css/BotChatPage.css';
-import { Prompt, BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotBrief, getBotChatList, createHistory } from "../service/BotChat";
+import { Prompt, BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotBrief, getBotChatList, createHistory, deleteHistory } from "../service/BotChat";
 import { useParams } from "react-router-dom";
 import { getMe } from "../service/user";
 import ChatWindow from "../components/ChatWindow";
@@ -76,6 +76,11 @@ const BotChatPage = () => {
     const onHistoryItemClicked = async (historyid: number) => {
         setSelectedHistoryId(historyid);
     };
+    const onHistoryItemDeleted = async (historyid: number) => {
+        console.log('Delete History: ' + historyid);
+        setBotChatHistoryList(botChatHistoryList.filter(item => item.id !== historyid));
+        deleteHistory(historyid);
+    }
     // 创建新的对话历史
     const onChatClicked = () => {
         console.log("Click Chat");
@@ -241,6 +246,7 @@ const BotChatPage = () => {
                         botChatHistoryList={botChatHistoryList}
                         selectedId={selectedHistoryId}
                         onItemClicked={onHistoryItemClicked}
+                        onItemDeleted={onHistoryItemDeleted}
                     />
                 ) : (
                     <div
