@@ -2,7 +2,7 @@ import { Pagination } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from "react-router-dom";
-
+import UserListSearch from '../components/UserListSearch';
 import MarketSearch from '../components/MarketSearch';
 import '../css/Market.css';
 import { LanguageContext } from "../provider/LanguageProvider";
@@ -64,7 +64,7 @@ const UserListPage: React.FC = () => {
     return (
         <div className='nav'>
             <div style={{ marginTop: '100px' }}>
-                <MarketSearch tabValue={tabValue} setTabValue={setTabValue} onChange={handleSearch}></MarketSearch>
+                <UserListSearch tabValue={tabValue} setTabValue={setTabValue} onChange={handleSearch}></UserListSearch>
             </div>
             <div style={{ marginTop: '20px' }} className='market-card'>
                 <UserList type={userListType} users={users}></UserList>
