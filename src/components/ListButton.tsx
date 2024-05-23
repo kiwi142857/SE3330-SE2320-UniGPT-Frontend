@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { LanguageContext } from "../provider/LanguageProvider";
 
-export function ListButton({isAdmin}:{isAdmin:boolean}) {
+export function ListButton({ isAdmin }: { isAdmin: boolean; }) {
 
-    console.log("isAdmin", isAdmin);
+
     const { t, i18n } = useTranslation();
     const context = React.useContext(LanguageContext);
 
@@ -15,7 +15,7 @@ export function ListButton({isAdmin}:{isAdmin:boolean}) {
 
     const handleMouseEnter = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
-    }
+    };
 
     const handleMouseLeave = () => {
         setAnchorEl(null);
