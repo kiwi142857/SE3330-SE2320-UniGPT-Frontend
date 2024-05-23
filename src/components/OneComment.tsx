@@ -9,7 +9,8 @@ const OneComment = ({
     name,
     avatar,
     content,
-    time
+    time,
+    avatarLink
 }:
     {
         id: number, 
@@ -17,17 +18,21 @@ const OneComment = ({
         avatar: string, 
         content: string ,
         time: Date,
+        avatarLink?: string,
     }) => {
     return (
         <>
             <div className='one-comment-container'>
                 <Grid container className='one-comment-header'>
                     <Grid>
-                        <Avatar
-                            alt={name}
-                            src={avatar}
-                            className='one-comment-avatar'
-                        />
+                        <a href={avatarLink}>
+                            <Avatar
+                                alt={name}
+                                src={avatar}
+                                className='one-comment-avatar'
+                            />
+                        </a>
+                        
                     </Grid>
                     <Grid className='one-comment-name'>
                         {name}
