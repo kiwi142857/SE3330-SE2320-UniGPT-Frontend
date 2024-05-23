@@ -25,7 +25,8 @@ const BotDetailCard = (
         starNumber,
         isLiked,
         isStarred,
-        isCreator
+        isCreator,
+        isAdmin
     }
         : {
             id: string;
@@ -39,7 +40,7 @@ const BotDetailCard = (
             isLiked: boolean;
             isStarred: boolean;
             isCreator: boolean;
-
+            isAdmin: boolean;
         }) => {
     const [liked, setLiked] = React.useState(isLiked);
     const [starred, setStarred] = React.useState(isStarred);
@@ -154,7 +155,7 @@ const BotDetailCard = (
                         {t('Use')}
                     </Button>
                     {
-                        isCreator &&
+                        (isCreator || isAdmin) &&
                         <Button
                             variant="contained"
                             endIcon={<SendIcon />}
