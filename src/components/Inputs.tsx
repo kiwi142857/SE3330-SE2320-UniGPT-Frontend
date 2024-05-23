@@ -314,20 +314,31 @@ export function PromptInput
 }
 
 export function TableCreateInput({
+    key,
     title,
     placeholder,
     name,
     lock,
-    onInputChange
+    onInputChange,
+    dealWithEnter
 }: {
+    key: number,
     title: string,
     placeholder: string,
     name: string
     lock: boolean
     onInputChange: (value: string) => void
+    dealWithEnter: () => void
 }) {
     const handleChange = (event: { target: { value: string; }; }) => {
         onInputChange(event.target.value); // 将输入框的值传递给父组件
+    };
+
+    const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event) => {
+        if (event.key === 'Enter' && !event.shiftKey && !event.ctrlKey) {
+            event.preventDefault();
+            dealWithEnter();
+        }
     };
 
     return (
@@ -354,6 +365,8 @@ export function TableCreateInput({
                     name={name}
                     lock={lock}
                     onChange={handleChange} // 触发 onChange 事件
+                    onKeyDown={handleKeyDown}
+                    id={name}
                 />
             </div>
         </Box>);
