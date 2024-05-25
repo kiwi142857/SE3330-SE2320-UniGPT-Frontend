@@ -58,6 +58,7 @@ const ChatWindow = (
                             avatar={botChat.avatar}
                             content={botChat.content}
                             type={botChat.type}
+                            last={index >= botChatList.length - 2}
                         />
                     ))}
                 </Box>

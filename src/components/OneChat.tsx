@@ -35,7 +35,7 @@ const OneChat = ({ id, name, avatar, content, type, last = false }: { id: number
                     <ReactMarkdown>{content}</ReactMarkdown>
                 </div>
 
-                <Grid container sx={{ marginLeft: 11, marginTop: 2 }}>
+                <Grid container sx={{ marginLeft: 11, marginTop: 2 }} >
                     {
                         (type == true) &&
                         // 复制按钮，浅灰色，左对齐，小号
@@ -55,7 +55,7 @@ const OneChat = ({ id, name, avatar, content, type, last = false }: { id: number
                         // 重新生成按钮，浅灰色，小号
                         <Grid>
                             <ReplayIcon
-                                sx={{ color: pressReplay ? 'grey' : 'darkgrey', fontSize: 20 }}
+                                sx={{ color: pressReplay ? 'grey' : 'darkgrey', fontSize: 20, marginLeft: 2 }}
                                 onMouseDown={() => setPressReplay(true)}
                                 onMouseUp={() => setPressReplay(false)}
                             />
