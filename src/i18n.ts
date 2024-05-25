@@ -77,6 +77,10 @@ const resources = {
       "Created": "已创建",
       "Latest": "最新",
       "Hottest": "最热",
+      'Profile': '个人资料',
+      'Update': '更新',
+      'Canvas Url': 'Canvas 订阅',
+      "Log in to canvas, click \"Calendar\" - \"Calendar Subscription\", then copy the link to here": "登录到Canvas，点击\"日历\" - \"日历订阅\"，然后复制链接到这里",
 
       "Change photo for your assistant": "为你的机器人更换头像",
       "Assistant Name" : "机器人名称",

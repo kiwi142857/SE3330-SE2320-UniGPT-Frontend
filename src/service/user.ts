@@ -6,12 +6,14 @@ export interface User {
     avatar: string;
     description: string;
     account: string;
+    canvasUrl: string;
 }
 
 export interface PostUser {
     name: string;
     avatar: string;
     description: string;
+    canvasUrl: string;
 }
 
 export async function getUerUsedBots(userId: number, page: number, pageSize: number) {
