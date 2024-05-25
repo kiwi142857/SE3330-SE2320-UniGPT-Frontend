@@ -130,6 +130,7 @@ const BotDetailPage: React.FC = () => {
                     avatar={comment.avatar}
                     content={comment.content}
                     time={comment.time}
+                    avatarLink={`/profile/${comment.userId}`}
                 />
             ))}
         </Box>
