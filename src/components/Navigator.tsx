@@ -1,8 +1,9 @@
 import { AppBar, Avatar, IconButton, Link, Toolbar } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../css/Navigator.css';
-import { getMe } from '../service/user';
+import { getMe, getMeStatus } from '../service/user';
 import LanguageButton from './LanguageButton';
 import { ListButton } from './ListButton';
 
@@ -10,15 +11,25 @@ import { ListButton } from './ListButton';
 const Navigator: React.FC<{}> = () => {
 
     const [avatar, setAvatar] = React.useState<string>('/assets/user-default.png');
-
+    const [isAdmin, setIsAdmin] = React.useState<boolean>(false);
+    const navigate = useNavigate();
     const getAvatar = async () => {
         if (window.location.pathname === '/login') {
             return;
         }
         const user = await getMe();
+        const statusCode = await getMeStatus();
+        console.log("statusCode", statusCode);
+        if (statusCode === 403) {
+            alert("用户被封禁"); // 显示错误信息
+            navigate('/login');
+            return; // 退出函数，防止后续代码执行
+        }
+        console.log("user", user);
         if (user && user.avatar)
             setAvatar(user.avatar);
-    }
+        if (user && user.asAdmin) setIsAdmin(true);
+    };
 
     useEffect(() => {
         getAvatar();
@@ -31,7 +42,7 @@ const Navigator: React.FC<{}> = () => {
             sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
         >
             <Toolbar>
-                <ListButton></ListButton>
+                <ListButton isAdmin={isAdmin}></ListButton>
                 <LanguageButton></LanguageButton>
                 {/* logo与标题 */}
                 <Box

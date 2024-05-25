@@ -34,7 +34,7 @@ const BotBriefCard = ({ botBriefInfo, onChatButtonClick }: { botBriefInfo: BotBr
                         gap: 10,
                     }}>
                         {
-                            botBriefInfo.asCreator &&
+                            (botBriefInfo.asCreator || botBriefInfo.asAdmin) &&
                             <Button
                                 className="drawer-button"
                                 style={{
