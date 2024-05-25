@@ -131,3 +131,37 @@ export async function getSearchUserList(page: number, pageSize: number, q: strin
         console.log("GetSearchUserListError: ", e);
     }
 }
+
+export async function banUser({userId, isBan}: {userId: number; isBan: boolean}){
+    const url = `${PREFIX}/users/${userId}/ban?disable=${isBan}`;
+    try{
+        console.log("url", url);
+        const response = await put(url, {});
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = response;
+        console.log("response", data);
+        return data;
+    }
+    catch(e){
+        console.log("BanUserError: ", e);
+    }
+}
+
+export async function isUserBanned(userId: number){
+    const url = `${PREFIX}/users/${userId}/ban`;
+    try{
+        console.log("url", url);
+        const response = await get(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("response", data);
+        return data;
+    }
+    catch(e){
+        console.log("IsUserBannedError: ", e);
+    }
+}
