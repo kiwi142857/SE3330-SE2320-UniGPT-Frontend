@@ -6,11 +6,12 @@ import { useTranslation } from 'react-i18next';
 import '../css/Profile.css';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { imageUpload } from '../service/upload';
-import { PostUser, User, putUser } from '../service/user';
+import { PostUser, User, putUser, banUser, isUserBanned } from '../service/user';
 import SnackBar from './Snackbar';
 import { logout } from '../service/auth';
+import { get } from 'http';
 
-export default function UserCard({ user, isMe }: { user: User; isMe: boolean; }) {
+export default function UserCard({ user, isMe, isAdmin, userId }: { user: User; isMe: boolean; isAdmin: boolean; userId: number|null; }) {
 
     const [description, setDescription] = useState(user.description);
     const [username, setUsername] = useState(user.name);
@@ -36,7 +37,7 @@ export default function UserCard({ user, isMe }: { user: User; isMe: boolean; })
         setIsDescriptionFocused(false);
     };
     const [avatarSrc, setAvatarSrc] = useState('/assets/user-default.png');
-
+    const [isBanned, setIsBanned] = useState<boolean>(false);
     const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setDescription(event.target.value);
     };
@@ -78,17 +79,50 @@ export default function UserCard({ user, isMe }: { user: User; isMe: boolean; })
         }
     };
 
+    const getUserBanState = async () => {
+        console.log("get user ban state, userId:", userId);
+        if(userId === null) return;
+        const response = await isUserBanned(userId);
+        console.log("get user ban state, response:", response);
+        if (response.ok) {
+            setIsBanned(response.message == 'true');
+        }
+        else {
+            setAlert(true);
+            setAlertMessage('获取用户封禁状态失败');
+        }
+    };
+
+    useEffect(() => {
+        if(isAdmin && !isMe) {
+            getUserBanState();
+        }
+    }, [isAdmin, isMe]);
+
+    const handleBan = async () => {
+        if(userId === null) return;
+        const response = await banUser({ userId, isBan: !isBanned });
+        if (response.ok) {
+            setIsBanned(true);
+        }
+        else {
+            setAlert(true);
+            setAlertMessage('封禁用户失败');
+        }
+        getUserBanState();
+    };
+
     const handleLogout = async () => {
-        const response =await logout();
-        if(response.ok){
-            
+        const response = await logout();
+        if (response.ok) {
+
             navigate('/login');
         }
-        else{
+        else {
             setAlert(true);
             setAlertMessage('登出失败');
         };
-    }
+    };
 
     const [isDiscriptionInputActive, setDiscriptionIsInputActive] = useState(false);
     const [isInputActive, setIsInputActive] = useState(false);
@@ -105,7 +139,7 @@ export default function UserCard({ user, isMe }: { user: User; isMe: boolean; })
         if (user.avatar)
             setAvatarSrc(user.avatar);
     }, [user]);
-    
+
     return [
         <SnackBar
             open={alert}
@@ -202,6 +236,19 @@ export default function UserCard({ user, isMe }: { user: User; isMe: boolean; })
                             onClick={handleCommit}
                         >
                             {t("Save")}
+                        </Button>
+                    </Grid>
+                }
+                {
+                    isAdmin && !isMe &&
+                    <Grid item >
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            style={{ width: '50%', marginTop: '10px', alignSelf: 'flex-start', marginLeft: '-50%' }}
+                            onClick={handleBan}
+                        >
+                            {isBanned ? t("Unban") : t("Ban")}
                         </Button>
                     </Grid>
                 }

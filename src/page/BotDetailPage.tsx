@@ -78,6 +78,7 @@ const BotDetailPage: React.FC = () => {
             isLiked={bot.liked || false}
             isStarred={bot.starred || false}
             isCreator={bot.asCreator || false}
+            isAdmin={bot.asAdmin || false}
         />
 
         <BotCarousel photos={bot.photos || []} />

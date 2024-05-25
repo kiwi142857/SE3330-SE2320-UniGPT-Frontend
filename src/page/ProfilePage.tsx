@@ -8,6 +8,7 @@ import UserCard from '../components/UserCard';
 import '../css/Profile.css';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { User, getMe, getUser, getUserCreatedBots, getUserFavoriteBots } from '../service/user';
+import { use } from 'i18next';
 
 
 export function BotListTabs({ value, setValue }: { value: number, setValue: React.Dispatch<React.SetStateAction<number>>; }) {
@@ -58,6 +59,18 @@ const ProfilePage = () => {
     // 获取用户信息
     const [user, setUser] = useState<User | null>(null);
 
+    const [userId, setUserId] = useState<number | null>(null);
+    useEffect(() => {
+        const fetchUserid = async () => {
+            if(id == null) return;
+            const response = await getUser(id);
+            if (response != null) {
+                setUserId(response.id);
+            }
+        };
+        fetchUserid();
+    }, []);
+
     // if id == null, get me
     useEffect(() => {
         const fetchUser = async () => {
@@ -82,12 +95,15 @@ const ProfilePage = () => {
     }, [id]);
 
     const [isMe, setIsMe] = useState(false);
-
+    const [isAdmin, setIsAdmin] = useState(false);
     useEffect(() => {
         const fetchMe = async () => {
             const response = await getMe();
             if (response != null) {
                 setIsMe(user?.id === response.id);
+            }
+            if(response?.asAdmin != null){
+                setIsAdmin(response.asAdmin);
             }
         };
         fetchMe();
@@ -132,7 +148,7 @@ const ProfilePage = () => {
                 user == null ? <></> :
                     <>
                         <div className='profile-container'>
-                            <UserCard user={user} isMe={isMe}></UserCard>
+                            <UserCard user={user} isMe={isMe} isAdmin={isAdmin} userId={userId}></UserCard>
                         </div>
                         <div className='botlist-tabs'>
                             <BotListTabs value={tabValue} setValue={setTabValue}></BotListTabs>

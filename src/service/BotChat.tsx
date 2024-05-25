@@ -22,6 +22,7 @@ export interface BotBriefInfo {
     description: string;
     avatar: string;
     asCreator: boolean;
+    asAdmin: boolean;
 }
 
 export interface Prompt {

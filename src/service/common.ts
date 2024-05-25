@@ -32,6 +32,9 @@ export async function get(url: string): Promise<Response> {
         window.location.href = '/login';
         throw new Error('Unauthorized');
     }
+    if(res.status === 403){
+        return res;
+    }
     if (!res.ok) {
         throw new Error("Network error");
     }

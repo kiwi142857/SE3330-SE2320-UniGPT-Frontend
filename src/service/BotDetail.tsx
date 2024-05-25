@@ -15,6 +15,7 @@ export interface botDetailInfo {
     liked: boolean;
     starred: boolean;
     asCreator: boolean;
+    asAdmin: boolean;
 }
 
 export interface Comment {
