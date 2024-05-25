@@ -79,6 +79,21 @@ export async function getMe() {
     }
 }
 
+export async function getMeStatus() {
+    const url = `${PREFIX}/users/me`;
+    try{
+        console.log("url", url);
+        const response = await get(url);
+        const statusCode = response.status; // 获取状态码
+        console.log("Status Code: ", statusCode); // 打印状态码
+        
+        return statusCode;
+    }
+    catch(e){
+        console.log("GetMeError: ", e);
+    }
+}
+
 export async function getUser(userId: string) {
     const url = `${PREFIX}/users/${userId}`;
     try{
