@@ -108,6 +108,14 @@ const BotChatPage = () => {
                     avatar: user.avatar,
                     content: text,
                     type: false
+                },
+                {
+                    id: 0,
+                    name: botBriefInfo ? botBriefInfo.name : "",
+                    historyId: selectedHistoryId,
+                    avatar: botBriefInfo ? botBriefInfo.avatar : "",
+                    content: "loading...",
+                    type: true
                 }]
         );
 
@@ -125,14 +133,22 @@ const BotChatPage = () => {
         const lastUserChat = botChatList[botChatList.length - 2];
         setBotChatList(
             botChatList =>
-                botChatList.slice(0, botChatList.length - 2).concat({
+                botChatList.slice(0, botChatList.length - 2).concat([{
                     id: lastUserChat.id,
                     name: lastUserChat.name,
                     historyId: lastUserChat.historyId,
                     avatar: lastUserChat.avatar,
                     content: sendText,
                     type: false
-                })
+                },
+                {
+                    id: 0,
+                    name: botBriefInfo ? botBriefInfo.name : "",
+                    historyId: selectedHistoryId,
+                    avatar: botBriefInfo ? botBriefInfo.avatar : "",
+                    content: "loading...",
+                    type: true
+                }])
         );
 
         setCurrentHistory(sendText);
@@ -211,14 +227,15 @@ const BotChatPage = () => {
                 );
                 setBotChatList(
                     botChatList =>
-                        [...botChatList, {
-                            id: 0,
-                            name: botBriefInfo ? botBriefInfo.name : "",
-                            historyId: selectedHistoryId,
-                            avatar: botBriefInfo ? botBriefInfo.avatar : "",
-                            content: response.replyMessage,
-                            type: true
-                        }]
+                        botChatList.slice(0, botChatList.length - 1).concat(
+                            [{
+                                id: 0,
+                                name: botBriefInfo ? botBriefInfo.name : "",
+                                historyId: selectedHistoryId,
+                                avatar: botBriefInfo ? botBriefInfo.avatar : "",
+                                content: response.replyMessage,
+                                type: true
+                            }])
                 );
                 setResponding(false);
             };
