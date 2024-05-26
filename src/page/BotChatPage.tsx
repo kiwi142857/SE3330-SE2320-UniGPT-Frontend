@@ -17,6 +17,7 @@ import { Prompt, BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, g
 import { useParams } from "react-router-dom";
 import { getMe } from "../service/user";
 import ChatWindow from "../components/ChatWindow";
+import { use } from "i18next";
 
 
 // bot聊天页
@@ -60,20 +61,6 @@ const BotChatPage = () => {
         setBotChatList(list);
     };
 
-    const setCurrentHistory = (text: string) => {
-        const currentHistory: BotChatHistory = botChatHistoryList.find(item => item.id === selectedHistoryId) as BotChatHistory;
-        const newCurrentHistory: BotChatHistory = {
-            ...currentHistory,
-            content: ellipsisStr(text, 20),
-            // 如果当前历史没有对话，则使用输入的文本作为标题
-            title: botChatList.length ? currentHistory.title : ellipsisStr(text, 10)
-        }
-        const newBotChatHistoryList = botChatHistoryList.filter(item => item.id !== selectedHistoryId);
-        // 将当前历史记录置于历史列表顶端
-        newBotChatHistoryList.unshift(newCurrentHistory);
-        setBotChatHistoryList(newBotChatHistoryList);
-    }
-
     const onSubmit = async (promptlist: Prompt[]) => {
         console.log("PromptList: ", promptlist);
         const newHistoryId = await createHistory(botID, promptlist);
@@ -110,14 +97,12 @@ const BotChatPage = () => {
                 }]
         );
 
-        setCurrentHistory(text);
-
         // 向 WebSocket 发送消息
         sendMessage(socket, text);
     }
 
     const resendLast = (sendText: string) => {
-        console.log("Click Shuffle");
+        console.log("Resend: ", sendText);
         // 最后一条用户消息内容改为 sendText
         // 删除最后一条机器人消息
         const lastUserChat = botChatList[botChatList.length - 2];
@@ -132,8 +117,6 @@ const BotChatPage = () => {
                     type: false
                 })
         );
-
-        setCurrentHistory(sendText);
 
         // 向 WebSocket 发送消息
         sendMessage(socket, sendText, true);
@@ -224,6 +207,20 @@ const BotChatPage = () => {
             };
         }
     }, [socket]);
+
+    useEffect(() => {
+        const currentHistory: BotChatHistory = botChatHistoryList.find(item => item.id === selectedHistoryId) as BotChatHistory;
+        const newCurrentHistory: BotChatHistory = {
+            ...currentHistory,
+            content: botChatList.length ? ellipsisStr(botChatList[botChatList.length - 1].content, 20) : '',
+            // 如果当前历史没有对话，则使用输入的文本作为标题
+            title: botChatList.length ? ellipsisStr(botChatList[0].content, 10) : "New Chat"
+        }
+        const newBotChatHistoryList = botChatHistoryList.filter(item => item.id !== selectedHistoryId);
+        // 将当前历史记录置于历史列表顶端
+        newBotChatHistoryList.unshift(newCurrentHistory);
+        setBotChatHistoryList(newBotChatHistoryList);
+    }, [botChatList]);
 
 
 
