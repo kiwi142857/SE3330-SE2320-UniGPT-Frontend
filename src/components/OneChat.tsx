@@ -1,21 +1,30 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ReplayIcon from '@mui/icons-material/Replay';
 import EditIcon from '@mui/icons-material/Edit';
-import { Avatar, Divider, Grid } from '@mui/material';
-import React from 'react';
+import SaveIcon from '@mui/icons-material/Save';
+import { Avatar, Divider, Grid, TextField } from '@mui/material';
+import React, { useEffect } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import ReactMarkdown from 'react-markdown';
 import '../css/OneChat.css';
+import { useState } from 'react';
+import { use } from 'i18next';
 
 // 聊天或评论区的一句对话
 // 注意，只有一个单词的时候是不会换行的！
 const OneChat = (
-    { id, name, avatar, content, type, last = false, shuffleLast }:
-        { id: number, name: string, avatar: string, content: string, type: boolean, last: boolean, shuffleLast: () => void }
+    { id, name, avatar, content, type, last = false, shuffleLast, editLast }:
+        { id: number, name: string, avatar: string, content: string, type: boolean, last: boolean, shuffleLast: () => void, editLast: (editedContent: string) => void }
 ) => {
-    const [pressCopy, setPressCopy] = React.useState(false);
-    const [pressReplay, setPressReplay] = React.useState(false);
+    const [pressCopy, setPressCopy] = useState(false);
+    const [pressReplay, setPressReplay] = useState(false);
+    const [editing, setEditing] = useState(false);
+    const [editedContent, setEditedContent] = useState(content);
 
+    const onSave = () => {
+        editLast(editedContent);
+        setEditing(false);
+    }
 
     return (
         <>
@@ -35,7 +44,19 @@ const OneChat = (
                     </Grid>
                 </div>
                 <div className='one-chat-markdown'>
-                    <ReactMarkdown>{content}</ReactMarkdown>
+                    {
+                        editing ? (
+                            <TextField
+                                multiline
+                                fullWidth
+                                value={editedContent}
+                                onChange={(e) => setEditedContent(e.target.value)}
+                            />
+                        ) : (
+                            <ReactMarkdown>{content}</ReactMarkdown>
+                        )
+                    }
+
                 </div>
 
                 <Grid container sx={{ marginLeft: 11, marginTop: 2 }} >
@@ -67,13 +88,24 @@ const OneChat = (
                     }
 
                     {
-                        (type == false && last == true) &&
-                        // 编辑，浅灰色，小号
-                        <Grid>
-                            <EditIcon
-                                sx={{ color: 'grey', fontSize: 20 }}
-                            />
-                        </Grid>
+                        (type == false && last == true) && (
+                            editing ? (
+                                // 保存，浅灰色，小号
+                                <Grid>
+                                    <SaveIcon
+                                        sx={{ color: 'grey', fontSize: 20 }}
+                                        onClick={onSave}
+                                    />
+                                </Grid>
+                            ) : (
+                                // 编辑，浅灰色，小号
+                                <Grid>
+                                    <EditIcon
+                                        sx={{ color: 'grey', fontSize: 20 }}
+                                        onClick={() => setEditing(true)}
+                                    />
+                                </Grid>)
+                        )
                     }
                 </Grid>
             </div>

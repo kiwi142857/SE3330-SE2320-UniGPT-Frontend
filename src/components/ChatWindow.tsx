@@ -8,8 +8,8 @@ import '../css/BotChatPage.css';
 import { BotChat } from "../service/BotChat";
 
 const ChatWindow = (
-    { botChatList, onShuffleClicked }:
-        { botChatList: BotChat[], onShuffleClicked: (text: string) => void }
+    { botChatList, resendLast }:
+        { botChatList: BotChat[], resendLast: (text: string) => void }
 ) => {
 
     const chatWindowRef = useRef<HTMLDivElement>(null);
@@ -35,9 +35,19 @@ const ChatWindow = (
         if (botChatList.length >= 2) {
             const lastUserChat = botChatList[botChatList.length - 2];
             console.log("lastUserChat: ", lastUserChat);
-            onShuffleClicked(lastUserChat.content);
+            resendLast(lastUserChat.content);
         }
     }
+
+    const editLast = (editedContent: string) => {
+        console.log("editLast");
+        if (botChatList.length >= 2) {
+            const lastUserChat = botChatList[botChatList.length - 2];
+            console.log("lastUserChat: ", lastUserChat);
+            resendLast(editedContent);
+        }
+    }
+
 
     return (
         <Box
@@ -70,6 +80,7 @@ const ChatWindow = (
                             type={botChat.type}
                             last={index >= botChatList.length - 2}
                             shuffleLast={shuffleLast}
+                            editLast={editLast}
                         />
                     ))}
                 </Box>
