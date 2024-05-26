@@ -214,7 +214,10 @@ const BotChatPage = () => {
     }, [socket]);
 
     useEffect(() => {
-        const currentHistory: BotChatHistory = botChatHistoryList.find(item => item.id === selectedHistoryId) as BotChatHistory;
+        const currentHistory = botChatHistoryList
+                                .find(item => item.id === selectedHistoryId);
+        if(!currentHistory) return ;
+
         const newCurrentHistory: BotChatHistory = {
             ...currentHistory,
             content: botChatList.length ? ellipsisStr(botChatList[botChatList.length - 1].content, 20) : '',
