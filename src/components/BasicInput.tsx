@@ -50,26 +50,26 @@ const BasicInput: React.FC<BasicInputProps> =
         lock = false
     }) => {
 
-    return (
-        <TextField
-            required={required}
-            name={name}
-            placeholder={placeholder}
-            InputProps={{
-                className: 'basic-input',
-                readOnly: lock
-            }}
-            style={{width: '100%'}}
-            inputProps={{ maxLength: maxLength }}
-            multiline={multiline}
-            maxRows={maxRows}
-            value={value}
-            defaultValue={defaultValue}
-            onChange={onChange ?? (()=>{})}
-            onKeyDown={onKeyDown}
-            id = {name}
-        />
-    );
-};
+        return (
+            <TextField
+                required={required}
+                name={name}
+                placeholder={placeholder}
+                InputProps={{
+                    className: 'basic-input',
+                    readOnly: lock
+                }}
+                style={{ width: '100%' }}
+                inputProps={{ maxLength: maxLength }}
+                multiline={multiline}
+                maxRows={maxRows}
+                value={value}
+                defaultValue={defaultValue}
+                onChange={onChange ?? (() => { })}
+                onKeyDown={onKeyDown}
+                id={name}
+            />
+        );
+    };
 
 export default BasicInput;

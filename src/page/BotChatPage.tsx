@@ -38,6 +38,7 @@ const BotChatPage = () => {
     const [socket, setSocket] = useState<WebSocket | null>(null);
     const [user, setUser] = useState({ id: 0, name: '', avatar: '' });
     const [tableCreateOpen, setTableCreateOpen] = useState(false);
+    const [responding, setResponding] = useState(false);
 
     const { t } = useTranslation();
 
@@ -114,6 +115,7 @@ const BotChatPage = () => {
 
         // 向 WebSocket 发送消息
         sendMessage(socket, text);
+        setResponding(true);
     }
 
     const resendLast = (sendText: string) => {
@@ -137,6 +139,7 @@ const BotChatPage = () => {
 
         // 向 WebSocket 发送消息
         sendMessage(socket, sendText, true);
+        setResponding(true);
     }
 
 
@@ -170,6 +173,7 @@ const BotChatPage = () => {
         console.log("selectedHistoryId changed to " + selectedHistoryId);
         selectedHistoryId && WebSocketConnection(selectedHistoryId);
         fetchAndSetBotChatList();
+        setResponding(false);
 
         return () => {
             socket?.readyState === WebSocket.OPEN && closeWebSocketConnection(socket);
@@ -180,6 +184,7 @@ const BotChatPage = () => {
         if (socket) {
             // 新的WebSocket连接被创建
             // 处理来自服务器的消息
+            setResponding(false);
             socket.onmessage = (event) => {
                 console.log('Message from server: ', event.data);
                 let response: { replyMessage: string };
@@ -215,12 +220,14 @@ const BotChatPage = () => {
                             type: true
                         }]
                 );
+                setResponding(false);
             };
 
             // Handle any errors that occur.
             socket.onerror = (error) => {
                 console.error('WebSocket Error: ', error);
                 // TODO: Update your state to indicate that an error occurred
+                setResponding(false);
             };
         }
     }, [socket]);
@@ -288,7 +295,7 @@ const BotChatPage = () => {
                 display="flex"
                 width="100%"
             >
-                <ChatWindow botChatList={botChatList} resendLast={resendLast} />
+                <ChatWindow botChatList={botChatList} resendLast={resendLast} loading={responding} />
                 {/* 输入框，发送按钮，编辑按钮 */}
                 <PromptInput
                     selectedHistoryId={selectedHistoryId}
@@ -296,6 +303,8 @@ const BotChatPage = () => {
                         setTableCreateOpen(true);
                     }}
                     onSend={onSendClicked}
+                    // responding 时禁止编辑
+                    disabled={responding}
                 />
                 {/* 弹出 prompt 表格 */}
                 <TableCreateDialog

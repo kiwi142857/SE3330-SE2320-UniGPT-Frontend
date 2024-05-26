@@ -8,8 +8,8 @@ import '../css/BotChatPage.css';
 import { BotChat } from "../service/BotChat";
 
 const ChatWindow = (
-    { botChatList, resendLast }:
-        { botChatList: BotChat[], resendLast: (text: string) => void }
+    { botChatList, resendLast, loading }:
+        { botChatList: BotChat[], resendLast: (text: string) => void, loading: boolean }
 ) => {
 
     const chatWindowRef = useRef<HTMLDivElement>(null);
@@ -81,6 +81,7 @@ const ChatWindow = (
                             last={index >= botChatList.length - 2}
                             shuffleLast={shuffleLast}
                             editLast={editLast}
+                            loading={loading && index === botChatList.length - 1}
                         />
                     ))}
                 </Box>
