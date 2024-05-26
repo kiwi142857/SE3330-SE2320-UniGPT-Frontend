@@ -9,8 +9,7 @@ import ReactMarkdown from 'react-markdown';
 import '../css/OneChat.css';
 import { useState } from 'react';
 import { use } from 'i18next';
-import Loader from 'react-loader-spinner';
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import { TailSpin } from 'react-loader-spinner';
 
 // 聊天或评论区的一句对话
 // 注意，只有一个单词的时候是不会换行的！
@@ -55,12 +54,11 @@ const OneChat = (
                                 onChange={(e) => setEditedContent(e.target.value)}
                             />
                         ) : (
-                            loading ? (
-                                <Loader
-                                    type="TailSpin"
-                                    color="#00BFFF"
-                                    height={50}
-                                    width={50}
+                            loading && type ? (
+                                <TailSpin
+                                    color='grey'
+                                    height={20}
+                                    width={20}
                                 />
                             ) : (
                                 <ReactMarkdown>
