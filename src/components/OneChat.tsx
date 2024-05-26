@@ -9,12 +9,13 @@ import ReactMarkdown from 'react-markdown';
 import '../css/OneChat.css';
 import { useState } from 'react';
 import { use } from 'i18next';
+import { TailSpin } from 'react-loader-spinner';
 
 // 聊天或评论区的一句对话
 // 注意，只有一个单词的时候是不会换行的！
 const OneChat = (
-    { id, name, avatar, content, type, last = false, shuffleLast, editLast }:
-        { id: number, name: string, avatar: string, content: string, type: boolean, last: boolean, shuffleLast: () => void, editLast: (editedContent: string) => void }
+    { id, name, avatar, content, type, last = false, shuffleLast, editLast, loading }:
+        { id: number, name: string, avatar: string, content: string, type: boolean, last: boolean, shuffleLast: () => void, editLast: (editedContent: string) => void, loading: boolean }
 ) => {
     const [pressCopy, setPressCopy] = useState(false);
     const [pressReplay, setPressReplay] = useState(false);
@@ -53,7 +54,17 @@ const OneChat = (
                                 onChange={(e) => setEditedContent(e.target.value)}
                             />
                         ) : (
-                            <ReactMarkdown>{content}</ReactMarkdown>
+                            loading && type ? (
+                                <TailSpin
+                                    color='grey'
+                                    height={20}
+                                    width={20}
+                                />
+                            ) : (
+                                <ReactMarkdown>
+                                    {content}
+                                </ReactMarkdown>
+                            )
                         )
                     }
 
@@ -61,7 +72,7 @@ const OneChat = (
 
                 <Grid container sx={{ marginLeft: 11, marginTop: 2 }} >
                     {
-                        (type == true) &&
+                        (type == true && loading == false) &&
                         // 复制按钮，浅灰色，左对齐，小号
                         <Grid>
                             <CopyToClipboard text={content}>
@@ -108,7 +119,7 @@ const OneChat = (
                         )
                     }
                 </Grid>
-            </div>
+            </div >
             <br />
             <Divider />
         </>);
