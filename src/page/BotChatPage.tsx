@@ -116,12 +116,21 @@ const BotChatPage = () => {
         sendMessage(socket, text);
     }
 
-    const onShuffleClicked = (sendText: string) => {
+    const resendLast = (sendText: string) => {
         console.log("Click Shuffle");
-        // remove the last message in the chat list
+        // 最后一条用户消息内容改为 sendText
+        // 删除最后一条机器人消息
+        const lastUserChat = botChatList[botChatList.length - 2];
         setBotChatList(
             botChatList =>
-                botChatList.slice(0, botChatList.length - 1)
+                botChatList.slice(0, botChatList.length - 2).concat({
+                    id: lastUserChat.id,
+                    name: lastUserChat.name,
+                    historyId: lastUserChat.historyId,
+                    avatar: lastUserChat.avatar,
+                    content: sendText,
+                    type: false
+                })
         );
 
         setCurrentHistory(sendText);
@@ -279,7 +288,7 @@ const BotChatPage = () => {
                 display="flex"
                 width="100%"
             >
-                <ChatWindow botChatList={botChatList} onShuffleClicked={onShuffleClicked} />
+                <ChatWindow botChatList={botChatList} resendLast={resendLast} />
                 {/* 输入框，发送按钮，编辑按钮 */}
                 <PromptInput
                     selectedHistoryId={selectedHistoryId}
