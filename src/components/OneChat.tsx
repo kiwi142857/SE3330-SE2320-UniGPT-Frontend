@@ -86,7 +86,7 @@ const OneChat = (
                     }
 
                     {
-                        (type == true && last == true) &&
+                        (type == true && last == true && !loading) &&
                         // 重新生成按钮，浅灰色，小号
                         <Grid>
                             <ReplayIcon
