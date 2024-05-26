@@ -39,6 +39,15 @@ const ChatWindow = (
         }
     }
 
+    const editLast = (editedContent: string) => {
+        console.log("editLast");
+        if (botChatList.length >= 2) {
+            const lastUserChat = botChatList[botChatList.length - 2];
+            console.log("lastUserChat: ", lastUserChat);
+            resendLast(editedContent);
+        }
+    }
+
 
     return (
         <Box
@@ -71,6 +80,7 @@ const ChatWindow = (
                             type={botChat.type}
                             last={index >= botChatList.length - 2}
                             shuffleLast={shuffleLast}
+                            editLast={editLast}
                         />
                     ))}
                 </Box>
