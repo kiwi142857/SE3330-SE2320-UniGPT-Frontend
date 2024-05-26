@@ -9,7 +9,10 @@ import '../css/OneChat.css';
 
 // 聊天或评论区的一句对话
 // 注意，只有一个单词的时候是不会换行的！
-const OneChat = ({ id, name, avatar, content, type, last = false }: { id: number, name: string, avatar: string, content: string, type: boolean, last: boolean }) => {
+const OneChat = (
+    { id, name, avatar, content, type, last = false, shuffleLast }:
+        { id: number, name: string, avatar: string, content: string, type: boolean, last: boolean, shuffleLast: () => void }
+) => {
     const [pressCopy, setPressCopy] = React.useState(false);
     const [pressReplay, setPressReplay] = React.useState(false);
 
@@ -58,6 +61,7 @@ const OneChat = ({ id, name, avatar, content, type, last = false }: { id: number
                                 sx={{ color: pressReplay ? 'grey' : 'darkgrey', fontSize: 20, marginLeft: 2 }}
                                 onMouseDown={() => setPressReplay(true)}
                                 onMouseUp={() => setPressReplay(false)}
+                                onClick={() => shuffleLast()}
                             />
                         </Grid>
                     }
