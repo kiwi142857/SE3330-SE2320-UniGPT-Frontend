@@ -13,7 +13,7 @@ import TableCreateDialog from "../components/TableCreateDialog";
 import theme from "../components/theme";
 import '../css/App.css';
 import '../css/BotChatPage.css';
-import { Prompt, BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotBrief, getBotChatList, createHistory, deleteHistory } from "../service/BotChat";
+import { Prompt, BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotBrief, getBotChatList, createHistory } from "../service/BotChat";
 import { useParams } from "react-router-dom";
 import { getMe } from "../service/user";
 import ChatWindow from "../components/ChatWindow";
@@ -60,6 +60,20 @@ const BotChatPage = () => {
         setBotChatList(list);
     };
 
+    const setCurrentHistory = (text: string) => {
+        const currentHistory: BotChatHistory = botChatHistoryList.find(item => item.id === selectedHistoryId) as BotChatHistory;
+        const newCurrentHistory: BotChatHistory = {
+            ...currentHistory,
+            content: ellipsisStr(text, 20),
+            // 如果当前历史没有对话，则使用输入的文本作为标题
+            title: botChatList.length ? currentHistory.title : ellipsisStr(text, 10)
+        }
+        const newBotChatHistoryList = botChatHistoryList.filter(item => item.id !== selectedHistoryId);
+        // 将当前历史记录置于历史列表顶端
+        newBotChatHistoryList.unshift(newCurrentHistory);
+        setBotChatHistoryList(newBotChatHistoryList);
+    }
+
     const onSubmit = async (promptlist: Prompt[]) => {
         console.log("PromptList: ", promptlist);
         const newHistoryId = await createHistory(botID, promptlist);
@@ -76,11 +90,6 @@ const BotChatPage = () => {
     const onHistoryItemClicked = async (historyid: number) => {
         setSelectedHistoryId(historyid);
     };
-    const onHistoryItemDeleted = async (historyid: number) => {
-        console.log('Delete History: ' + historyid);
-        setBotChatHistoryList(botChatHistoryList.filter(item => item.id !== historyid));
-        deleteHistory(historyid);
-    }
     // 创建新的对话历史
     const onChatClicked = () => {
         console.log("Click Chat");
@@ -101,21 +110,26 @@ const BotChatPage = () => {
                 }]
         );
 
-        const currentHistory: BotChatHistory = botChatHistoryList.find(item => item.id === selectedHistoryId) as BotChatHistory;
-        const newCurrentHistory: BotChatHistory = {
-            ...currentHistory,
-            content: ellipsisStr(text, 20),
-            // 如果当前历史没有对话，则使用输入的文本作为标题
-            title: botChatList.length ? currentHistory.title : ellipsisStr(text, 10)
-        }
-        const newBotChatHistoryList = botChatHistoryList.filter(item => item.id !== selectedHistoryId);
-        // 将当前历史记录置于历史列表顶端
-        newBotChatHistoryList.unshift(newCurrentHistory);
-        setBotChatHistoryList(newBotChatHistoryList);
+        setCurrentHistory(text);
 
         // 向 WebSocket 发送消息
         sendMessage(socket, text);
     }
+
+    const onShuffleClicked = (sendText: string) => {
+        console.log("Click Shuffle");
+        // remove the last message in the chat list
+        setBotChatList(
+            botChatList =>
+                botChatList.slice(0, botChatList.length - 1)
+        );
+
+        setCurrentHistory(sendText);
+
+        // 向 WebSocket 发送消息
+        sendMessage(socket, sendText, true);
+    }
+
 
     const closeWebSocketConnection = (socket: WebSocket) => {
         console.log("WebSocketConnection close: ", socket);
@@ -248,7 +262,6 @@ const BotChatPage = () => {
                         botChatHistoryList={botChatHistoryList}
                         selectedId={selectedHistoryId}
                         onItemClicked={onHistoryItemClicked}
-                        onItemDeleted={onHistoryItemDeleted}
                     />
                 ) : (
                     <div
@@ -266,7 +279,7 @@ const BotChatPage = () => {
                 display="flex"
                 width="100%"
             >
-                <ChatWindow botChatList={botChatList} />
+                <ChatWindow botChatList={botChatList} onShuffleClicked={onShuffleClicked} />
                 {/* 输入框，发送按钮，编辑按钮 */}
                 <PromptInput
                     selectedHistoryId={selectedHistoryId}

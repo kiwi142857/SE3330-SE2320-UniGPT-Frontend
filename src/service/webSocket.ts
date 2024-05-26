@@ -17,10 +17,11 @@ export const createWebSocketConnection = (id: number) => {
     return socket;
 };
 
-export const sendMessage = (socket: WebSocket | null, message: string) => {
+export const sendMessage = (socket: WebSocket | null, message: string, cover: boolean = false) => {
     if (socket) {
         const sendContent = JSON.stringify({
-            chatContent: message
+            chatContent: message,
+            cover: cover
         });
         console.log("sendMessage: ", message);
         socket.send(sendContent);

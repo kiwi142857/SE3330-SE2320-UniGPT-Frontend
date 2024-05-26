@@ -8,7 +8,8 @@ import '../css/BotChatPage.css';
 import { BotChat } from "../service/BotChat";
 
 const ChatWindow = (
-    { botChatList }: { botChatList: BotChat[] }
+    { botChatList, onShuffleClicked }:
+        { botChatList: BotChat[], onShuffleClicked: (text: string) => void }
 ) => {
 
     const chatWindowRef = useRef<HTMLDivElement>(null);
@@ -28,6 +29,15 @@ const ChatWindow = (
     useEffect(() => {
         scrollToBottom();
     }, [botChatList]);
+
+    const shuffleLast = () => {
+        console.log("shuffleLast");
+        if (botChatList.length >= 2) {
+            const lastUserChat = botChatList[botChatList.length - 2];
+            console.log("lastUserChat: ", lastUserChat);
+            onShuffleClicked(lastUserChat.content);
+        }
+    }
 
     return (
         <Box
@@ -58,6 +68,8 @@ const ChatWindow = (
                             avatar={botChat.avatar}
                             content={botChat.content}
                             type={botChat.type}
+                            last={index >= botChatList.length - 2}
+                            shuffleLast={shuffleLast}
                         />
                     ))}
                 </Box>
