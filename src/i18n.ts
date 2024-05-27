@@ -59,6 +59,13 @@ const resources = {
       "Comments": "Comments",
       "Delete": "Delete",
       "Archive": "Archive",
+      "ID": "ID",
+      "Name": "Name",
+      "Ban": "ban",
+      "Unban": "unban",
+      "Market": "Market",
+      "Bot Create": "Bot Create",
+      "UserList": "UserList",
     }
   },
   zh: {
@@ -137,6 +144,13 @@ const resources = {
       "Comments": "评论区",
       "Delete": "删除",
       "Archive": "归档",
+      "ID": "ID",
+      "Name": "名称",
+      "Ban": "禁用",
+      "Unban": "解禁",
+      "Market": "市场",
+      "Bot Create": "创建机器人",
+      "UserList": "用户列表",
     }
   }
 };
