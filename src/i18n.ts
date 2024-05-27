@@ -55,6 +55,10 @@ const resources = {
       "The robot can help you write the abstract of your paper. It can help you write the abstract and give you some suggestions.": "The robot can help you write the abstract of your paper. It can help you write the abstract and give you some suggestions.",
       "The robot can help you communicate with others. It can help you communicate with others and give you some suggestions.": "The robot can help you communicate with others. It can help you communicate with others and give you some suggestions.",
       "Save": "save",
+      "Logout": "Logout",
+      "Comments": "Comments",
+      "Delete": "Delete",
+      "Archive": "Archive",
     }
   },
   zh: {
@@ -73,6 +77,10 @@ const resources = {
       "Created": "已创建",
       "Latest": "最新",
       "Hottest": "最热",
+      'Profile': '个人资料',
+      'Update': '更新',
+      'Canvas Url': 'Canvas 订阅',
+      "Log in to canvas, click \"Calendar\" - \"Calendar Subscription\", then copy the link to here": "登录到Canvas，点击\"日历\" - \"日历订阅\"，然后复制链接到这里",
 
       "Change photo for your assistant": "为你的机器人更换头像",
       "Assistant Name" : "机器人名称",
@@ -125,6 +133,10 @@ const resources = {
       "Chat History": "对话历史",
       "No chat history yet.": "暂无对话历史",
       "Prompt Table": "提示词表",
+      "Logout": "登出",
+      "Comments": "评论区",
+      "Delete": "删除",
+      "Archive": "归档",
     }
   }
 };

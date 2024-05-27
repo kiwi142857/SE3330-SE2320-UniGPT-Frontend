@@ -15,12 +15,13 @@ export interface botDetailInfo {
     liked: boolean;
     starred: boolean;
     asCreator: boolean;
+    asAdmin: boolean;
 }
 
 export interface Comment {
     id: number;
     content: string;
-    time: string;
+    time: Date;
     userId: number;
     userName: string;
     avatar: string;
@@ -110,16 +111,21 @@ export async function unStarBot(id: string) {
 
 export async function getBotComments(id: string, page: number, pageSize: number): Promise<CommentList> {
     const url = `${PREFIX}/bots/${id}/comments?page=${page}&pagesize=${pageSize}`;
-    let comments;
-
+    let comments: CommentList;
     try {
-        comments = await getJson(url);
-        console.log(comments);
+        let data = await getJson(url);
+        comments = {
+            ...data,
+            comments: data.comments.map((comment: any) => ({
+                ...comment,
+                time: new Date(comment.time)
+            }))
+        };
     } catch (e) {
         console.error(e);
         comments = {
             total: 0,
-            items: []
+            comments: []
         }
     }
 

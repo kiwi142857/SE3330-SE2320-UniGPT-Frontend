@@ -20,11 +20,13 @@ const BotBriefCard = ({ botBriefInfo, onChatButtonClick }: { botBriefInfo: BotBr
                     alignItems: "center",
                     gap: 20,
                 }}>
-                    <img
-                        src={botBriefInfo.avatar}
-                        alt='bot'
-                        className='brief-card-avatar'
-                    ></img>
+                    <a href={`/botdetail/${botBriefInfo.id}`}>
+                        <img
+                            src={botBriefInfo.avatar}
+                            alt='bot'
+                            className='brief-card-avatar'
+                        ></img>
+                    </a>
                     <div style={{
                         display: "flex",
                         flexDirection: "column",
@@ -32,7 +34,7 @@ const BotBriefCard = ({ botBriefInfo, onChatButtonClick }: { botBriefInfo: BotBr
                         gap: 10,
                     }}>
                         {
-                            botBriefInfo.asCreator &&
+                            (botBriefInfo.asCreator || botBriefInfo.asAdmin) &&
                             <Button
                                 className="drawer-button"
                                 style={{
@@ -69,7 +71,7 @@ const BotBriefCard = ({ botBriefInfo, onChatButtonClick }: { botBriefInfo: BotBr
 
                 </div>
             </div>
-        </ListItem>
+        </ListItem >
     );
 };
 

@@ -32,6 +32,9 @@ export async function get(url: string): Promise<Response> {
         window.location.href = '/login';
         throw new Error('Unauthorized');
     }
+    if(res.status === 403){
+        return res;
+    }
     if (!res.ok) {
         throw new Error("Network error");
     }
@@ -84,8 +87,9 @@ export async function post(url: string, data: any): Promise<any> {
     return res.json();
 }
 
-export const websocketUrl = 'wss://10.119.12.131:8080/chat';
-export const BASEURL: string = 'https://10.119.12.131:8080';
+export const BACKEND_SERVER_IP = process.env.REACT_APP_IP ?? 'localhost';
+export const websocketUrl = `wss://${BACKEND_SERVER_IP}:8080/chat`;
+export const BASEURL: string = `https://${BACKEND_SERVER_IP}:8080`; 
 export const PREFIX: string = `${BASEURL}/api`;
 export const API_DOCS_URL: string = `${BASEURL}/api-docs`;
 export const DUMMY_RESPONSE: ResponseData = {

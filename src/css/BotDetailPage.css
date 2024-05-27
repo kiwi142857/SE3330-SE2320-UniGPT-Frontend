@@ -96,3 +96,12 @@
     margin-top: 50px;
     margin-bottom: 10px;
 }
+
+.detail-comment-divider{
+    font-family: "Inter";
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+

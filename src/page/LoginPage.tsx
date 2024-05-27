@@ -6,7 +6,7 @@ import '../css/LoginInPage.css';
 import { LoginResult, login } from '../service/auth';
 
 const LoginPage: React.FC = () => {
-    const loginRequestUrl = "http://jaccount.sjtu.edu.cn/oauth2/authorize?response_type=code&scope=profile&client_id=ov3SLrO4HyZSELxcHiqS&redirect_uri=http://localhost:3000/login";
+    const loginRequestUrl = `http://jaccount.sjtu.edu.cn/oauth2/authorize?response_type=code&scope=profile&client_id=ov3SLrO4HyZSELxcHiqS&redirect_uri=${encodeURIComponent(window.location.origin)}/login`;
 
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);

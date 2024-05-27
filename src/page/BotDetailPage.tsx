@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Divider, Tab, Tabs, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -6,13 +6,14 @@ import { useParams } from 'react-router-dom';
 import BotCarousel from '../components/BotCarousel';
 import BotDetailCard from '../components/BotDetailCard';
 import { CommentInput } from '../components/Inputs';
-import OneChat from '../components/OneChat';
 import { Comment, CommentList, botDetailInfo, getBotComments, getBotDetail, postComment } from '../service/BotDetail';
 import { getMe } from '../service/user';
 
 import SnackBar from '../components/Snackbar';
 import '../css/App.css';
 import '../css/BotDetailPage.css';
+import { useTranslation } from 'react-i18next';
+import OneComment from '../components/OneComment';
 
 
 // bot详情页
@@ -24,6 +25,8 @@ const BotDetailPage: React.FC = () => {
     const [alert, setAlert] = useState(false);
 
     let { id } = useParams<{ id: string }>();
+    const {t} = useTranslation();
+
 
     const getBot = async () => {
         if (id) {
@@ -75,6 +78,7 @@ const BotDetailPage: React.FC = () => {
             isLiked={bot.liked || false}
             isStarred={bot.starred || false}
             isCreator={bot.asCreator || false}
+            isAdmin={bot.asAdmin || false}
         />
 
         <BotCarousel photos={bot.photos || []} />
@@ -88,6 +92,13 @@ const BotDetailPage: React.FC = () => {
             </p>
         </Typography>
 
+        <Tabs value="one">
+            <Tab value="one" label={
+            <div className='detail-comment-divider'>
+                {t('Comments')}
+            </div>} />
+        </Tabs>
+
         <CommentInput onSend={
             async (content: string) => {
                 if (id)
@@ -99,7 +110,7 @@ const BotDetailPage: React.FC = () => {
                         {
                             id: 0,
                             content: content,
-                            time: new Date().toISOString(),
+                            time: new Date(),
                             userId: user.id,
                             userName: user.name,
                             avatar: user.avatar,
@@ -113,11 +124,13 @@ const BotDetailPage: React.FC = () => {
 
         <Box>
             {comments.comments?.map((comment: Comment) => (
-                <OneChat
+                <OneComment
                     id={comment.id}
                     name={comment.userName}
                     avatar={comment.avatar}
                     content={comment.content}
+                    time={comment.time}
+                    avatarLink={`/profile/${comment.userId}`}
                 />
             ))}
         </Box>

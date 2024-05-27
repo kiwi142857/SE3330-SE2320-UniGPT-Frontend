@@ -13,10 +13,11 @@ import TableCreateDialog from "../components/TableCreateDialog";
 import theme from "../components/theme";
 import '../css/App.css';
 import '../css/BotChatPage.css';
-import { Prompt, BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotBrief, getBotChatList, createHistory } from "../service/BotChat";
+import { Prompt, BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotBrief, getBotChatList, createHistory, deleteHistory } from "../service/BotChat";
 import { useParams } from "react-router-dom";
 import { getMe } from "../service/user";
 import ChatWindow from "../components/ChatWindow";
+import { use } from "i18next";
 
 
 // bot聊天页
@@ -32,7 +33,7 @@ const BotChatPage = () => {
     const [selectedHistoryId, setSelectedHistoryId] = useState(0);
     const botChatHistoryListRef = useRef(botChatHistoryList);
     botChatHistoryListRef.current = botChatHistoryList;
-    
+
     const [botChatList, setBotChatList] = useState<BotChat[]>([]);
     const [botBriefInfo, setBotBriefInfo] = useState<BotBriefInfo | null>(null);
     const [socket, setSocket] = useState<WebSocket | null>(null);
@@ -67,10 +68,10 @@ const BotChatPage = () => {
         const newHistoryId = await createHistory(botID, promptlist);
         setBotChatHistoryList([
             {
-                id: newHistoryId, 
-                title: 'New Chat', 
+                id: newHistoryId,
+                title: 'New Chat',
                 content: ''
-            }, 
+            },
             ...botChatHistoryList
         ]);
         setSelectedHistoryId(newHistoryId);
@@ -78,6 +79,11 @@ const BotChatPage = () => {
     const onHistoryItemClicked = async (historyid: number) => {
         setSelectedHistoryId(historyid);
     };
+    const onHistoryItemDeleted = async (historyid: number) => {
+        console.log('Delete History: ' + historyid);
+        setBotChatHistoryList(botChatHistoryList.filter(item => item.id !== historyid));
+        deleteHistory(historyid);
+    }
     // 创建新的对话历史
     const onChatClicked = () => {
         console.log("Click Chat");
@@ -94,24 +100,35 @@ const BotChatPage = () => {
                     historyId: selectedHistoryId,
                     avatar: user.avatar,
                     content: text,
+                    type: false
                 }]
         );
-
-        const currentHistory: BotChatHistory = botChatHistoryList.find(item => item.id === selectedHistoryId) as BotChatHistory;
-        const newCurrentHistory: BotChatHistory = {
-            ...currentHistory,
-            content: ellipsisStr(text, 20),
-            // 如果当前历史没有对话，则使用输入的文本作为标题
-            title: botChatList.length ? currentHistory.title : ellipsisStr(text, 10)
-        }
-        const newBotChatHistoryList = botChatHistoryList.filter(item => item.id !== selectedHistoryId);
-        // 将当前历史记录置于历史列表顶端
-        newBotChatHistoryList.unshift(newCurrentHistory);
-        setBotChatHistoryList(newBotChatHistoryList);
 
         // 向 WebSocket 发送消息
         sendMessage(socket, text);
     }
+
+    const resendLast = (sendText: string) => {
+        console.log("Resend: ", sendText);
+        // 最后一条用户消息内容改为 sendText
+        // 删除最后一条机器人消息
+        const lastUserChat = botChatList[botChatList.length - 2];
+        setBotChatList(
+            botChatList =>
+                botChatList.slice(0, botChatList.length - 2).concat({
+                    id: lastUserChat.id,
+                    name: lastUserChat.name,
+                    historyId: lastUserChat.historyId,
+                    avatar: lastUserChat.avatar,
+                    content: sendText,
+                    type: false
+                })
+        );
+
+        // 向 WebSocket 发送消息
+        sendMessage(socket, sendText, true);
+    }
+
 
     const closeWebSocketConnection = (socket: WebSocket) => {
         console.log("WebSocketConnection close: ", socket);
@@ -138,7 +155,7 @@ const BotChatPage = () => {
         fetchAndSetUser().then(() => {console.log('username is ' + user.name)});
         fetchAndSetBotChatHistoryList().then(() => {
             setBotChatHistoryLoading(false);
-        })
+        });
     }, []);
 
     useEffect(() => {
@@ -171,12 +188,12 @@ const BotChatPage = () => {
                     botChatHistoryListRef
                         .current
                         .map(
-                            history => 
-                            history.id === selectedHistoryId ? 
-                            {
-                                ...history, 
-                                content: ellipsisStr(response.replyMessage, 20)
-                            } : history
+                            history =>
+                                history.id === selectedHistoryId ?
+                                    {
+                                        ...history,
+                                        content: ellipsisStr(response.replyMessage, 20)
+                                    } : history
                         )
                 );
                 setBotChatList(
@@ -186,7 +203,8 @@ const BotChatPage = () => {
                             name: botBriefInfo ? botBriefInfo.name : "",
                             historyId: selectedHistoryId,
                             avatar: botBriefInfo ? botBriefInfo.avatar : "",
-                            content: response.replyMessage
+                            content: response.replyMessage,
+                            type: true
                         }]
                 );
             };
@@ -197,7 +215,24 @@ const BotChatPage = () => {
                 // TODO: Update your state to indicate that an error occurred
             };
         }
-    }, [socket]); 
+    }, [socket]);
+
+    useEffect(() => {
+        const currentHistory = botChatHistoryList
+                                .find(item => item.id === selectedHistoryId);
+        if(!currentHistory) return ;
+
+        const newCurrentHistory: BotChatHistory = {
+            ...currentHistory,
+            content: botChatList.length ? ellipsisStr(botChatList[botChatList.length - 1].content, 20) : '',
+            // 如果当前历史没有对话，则使用输入的文本作为标题
+            title: botChatList.length ? ellipsisStr(botChatList[0].content, 10) : "New Chat"
+        }
+        const newBotChatHistoryList = botChatHistoryList.filter(item => item.id !== selectedHistoryId);
+        // 如果在对话中，将当前历史记录置于历史列表顶端
+        if (socket) newBotChatHistoryList.unshift(newCurrentHistory);
+        setBotChatHistoryList(newBotChatHistoryList);
+    }, [botChatList]);
 
 
 
@@ -239,12 +274,22 @@ const BotChatPage = () => {
                 >
                     {t('Chat History')}
                 </Typography>
-                <ChatHistoryList
-                    botChatHistoryList={botChatHistoryList}
-                    selectedId={selectedHistoryId}
-                    onItemClicked={onHistoryItemClicked}
-                    loading={botChatHistoryLoading}
-                />
+                {botChatHistoryList && botChatHistoryList.length ? (
+                    <ChatHistoryList
+                        botChatHistoryList={botChatHistoryList}
+                        selectedId={selectedHistoryId}
+                        onItemClicked={onHistoryItemClicked}
+                        onItemDeleted={onHistoryItemDeleted}
+                        loading={botChatHistoryLoading}
+                    />
+                ) : (
+                    <div
+                        className="drawer-item-title"
+                        style={{ color: theme.palette.secondary.dark, margin: 25 }}
+                    >
+                        {t('No chat history yet.')}
+                    </div>
+                )}
             </Drawer>
             <Box
                 className="main-container bot-chat-container"
@@ -253,7 +298,7 @@ const BotChatPage = () => {
                 display="flex"
                 width="100%"
             >
-                <ChatWindow botChatList={botChatList} />
+                <ChatWindow botChatList={botChatList} resendLast={resendLast} />
                 {/* 输入框，发送按钮，编辑按钮 */}
                 <PromptInput
                     selectedHistoryId={selectedHistoryId}

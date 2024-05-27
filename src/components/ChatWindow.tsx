@@ -1,14 +1,15 @@
 import { Box } from "@mui/system";
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import OneChat from "../components/OneChat";
+import OneChat from "./OneChat";
 import theme from "../components/theme";
 import '../css/App.css';
 import '../css/BotChatPage.css';
 import { BotChat } from "../service/BotChat";
 
 const ChatWindow = (
-    { botChatList }: { botChatList: BotChat[] }
+    { botChatList, resendLast }:
+        { botChatList: BotChat[], resendLast: (text: string) => void }
 ) => {
 
     const chatWindowRef = useRef<HTMLDivElement>(null);
@@ -28,6 +29,25 @@ const ChatWindow = (
     useEffect(() => {
         scrollToBottom();
     }, [botChatList]);
+
+    const shuffleLast = () => {
+        console.log("shuffleLast");
+        if (botChatList.length >= 2) {
+            const lastUserChat = botChatList[botChatList.length - 2];
+            console.log("lastUserChat: ", lastUserChat);
+            resendLast(lastUserChat.content);
+        }
+    }
+
+    const editLast = (editedContent: string) => {
+        console.log("editLast");
+        if (botChatList.length >= 2) {
+            const lastUserChat = botChatList[botChatList.length - 2];
+            console.log("lastUserChat: ", lastUserChat);
+            resendLast(editedContent);
+        }
+    }
+
 
     return (
         <Box
@@ -57,6 +77,10 @@ const ChatWindow = (
                             name={botChat.name}
                             avatar={botChat.avatar}
                             content={botChat.content}
+                            type={botChat.type}
+                            last={index >= botChatList.length - 2}
+                            shuffleLast={shuffleLast}
+                            editLast={editLast}
                         />
                     ))}
                 </Box>
