@@ -15,7 +15,7 @@ export default function UserListCard({ User }: { User: User }) {
       <Card className='bot-card' style={{ height: '100%' }}>
         <CardMedia style={{ width: '70px', height: '70px', marginLeft: '5%', borderRadius: '20px', marginBottom: '0px', marginTop: '25px' }}
           component="img"
-          image={User.avatar}
+          image={User.avatar ? User.avatar : '/assets/user-default.png'}
           alt="bot-default"
         />
         <CardContent >
