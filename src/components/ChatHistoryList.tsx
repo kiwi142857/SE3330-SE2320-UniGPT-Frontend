@@ -1,8 +1,10 @@
 import ChatHistoryItem from "./ChatHistoryItem";
-import { List } from "@mui/material";
+import { CircularProgress, List } from "@mui/material";
 import React from "react";
 import '../css/BotChatPage.css'
 import { BotChatHistory } from "../service/BotChat";
+import { useTranslation } from "react-i18next";
+import theme from "./theme";
 
 
 const ChatHistoryList = (
@@ -10,17 +12,22 @@ const ChatHistoryList = (
         botChatHistoryList,
         selectedId,
         onItemClicked,
-        onItemDeleted,
+        loading,
+        onItemDeleted
     }: {
         botChatHistoryList: BotChatHistory[];
         selectedId: number;
         onItemClicked: (id: number) => void;
+        loading: boolean;
         onItemDeleted: (id: number) => void;
     }) => {
 
+    const {t } = useTranslation();
     return (
-        <List>
-            {botChatHistoryList.map((botChatHistory, index) =>
+        <List>{
+                loading ? <CircularProgress /> : 
+                botChatHistoryList.length ? 
+                botChatHistoryList.map((botChatHistory, index) =>
                 <React.Fragment key={index}>
                     <ChatHistoryItem
                         title={botChatHistory.title}
@@ -30,9 +37,14 @@ const ChatHistoryList = (
                         onDelete={() => { onItemDeleted(botChatHistory.id);}}
                     />
                 </React.Fragment>
-            )
-            }
-        </List>
+            ) :
+            <div
+                className="drawer-item-title"
+                style={{ color: theme.palette.secondary.dark, margin: 25 }}
+            >
+                {t('No chat history yet.')}
+            </div>
+        } </List>
     )
 };
 

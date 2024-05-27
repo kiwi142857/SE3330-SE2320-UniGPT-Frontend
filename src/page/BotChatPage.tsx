@@ -40,6 +40,8 @@ const BotChatPage = () => {
     const [user, setUser] = useState({ id: 0, name: '', avatar: '' });
     const [tableCreateOpen, setTableCreateOpen] = useState(false);
 
+    const [botChatHistoryLoading, setBotChatHistoryLoading] = useState(true);
+
     const { t } = useTranslation();
 
     const fetchAndUpdateBrief = async () => {
@@ -150,8 +152,10 @@ const BotChatPage = () => {
         // 页面加载初始化
         console.log(botID);
         fetchAndUpdateBrief();
-        fetchAndSetUser().then(() => { console.log('username is ' + user.name) });
-        fetchAndSetBotChatHistoryList();
+        fetchAndSetUser().then(() => {console.log('username is ' + user.name)});
+        fetchAndSetBotChatHistoryList().then(() => {
+            setBotChatHistoryLoading(false);
+        });
     }, []);
 
     useEffect(() => {
@@ -270,13 +274,13 @@ const BotChatPage = () => {
                 >
                     {t('Chat History')}
                 </Typography>
-                {/* 判断 botChatHistoryList 是否为空*/}
                 {botChatHistoryList && botChatHistoryList.length ? (
                     <ChatHistoryList
                         botChatHistoryList={botChatHistoryList}
                         selectedId={selectedHistoryId}
                         onItemClicked={onHistoryItemClicked}
                         onItemDeleted={onHistoryItemDeleted}
+                        loading={botChatHistoryLoading}
                     />
                 ) : (
                     <div
