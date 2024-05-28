@@ -254,10 +254,12 @@ export function PromptInput
         selectedHistoryId,
         onAltTable,
         onSend,
+        disabled
     }: {
         selectedHistoryId: number,
         onAltTable: () => void,
-        onSend: (content: string) => void
+        onSend: (content: string) => void,
+        disabled: boolean
     }
     ) {
     const [message, setMessage] = useState('');
@@ -294,6 +296,7 @@ export function PromptInput
                                 }}
                                 value={message}
                                 onKeyDown={handleKeyDown}
+                                lock={disabled}
                             />
                         </div>
                         <Fab
