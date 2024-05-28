@@ -107,6 +107,12 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
             detail = null;
         }
 
+        if (promptCheck && promptKeys.length === 0) {
+            setAlert(true);
+            setAlertMessage("请至少添加一个变量");
+            return;
+        }
+
         let newInfo : botEditInfo = {
             name: name,
             avatar: avatarImg,
