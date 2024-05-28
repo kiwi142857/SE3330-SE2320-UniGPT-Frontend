@@ -298,22 +298,13 @@ const BotChatPage = () => {
                 >
                     {t('Chat History')}
                 </Typography>
-                {botChatHistoryList && botChatHistoryList.length ? (
-                    <ChatHistoryList
-                        botChatHistoryList={botChatHistoryList}
-                        selectedId={selectedHistoryId}
-                        onItemClicked={onHistoryItemClicked}
-                        onItemDeleted={onHistoryItemDeleted}
-                        loading={botChatHistoryLoading}
-                    />
-                ) : (
-                    <div
-                        className="drawer-item-title"
-                        style={{ color: theme.palette.secondary.dark, margin: 25 }}
-                    >
-                        {t('No chat history yet.')}
-                    </div>
-                )}
+                <ChatHistoryList
+                    botChatHistoryList={botChatHistoryList}
+                    selectedId={selectedHistoryId}
+                    onItemClicked={onHistoryItemClicked}
+                    onItemDeleted={onHistoryItemDeleted}
+                    loading={botChatHistoryLoading}
+                />
             </Drawer>
             <Box
                 className="main-container bot-chat-container"
