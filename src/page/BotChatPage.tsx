@@ -220,7 +220,6 @@ const BotChatPage = () => {
 
         !isFirstReply &&  fetchAndSetBotChatList();
         !isFirstReply && setResponding(false);
-        !isFirstReply && setIsFirstReply(true);
         !isFirstReply && console.log("set Responding to false here");
 
         return () => {
