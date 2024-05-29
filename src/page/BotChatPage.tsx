@@ -86,7 +86,7 @@ const BotChatPage = () => {
                     name: user.name,
                     historyId: selectedHistoryId,
                     avatar: user.avatar,
-                    content: userAsk,
+                    content: response.userAsk,
                     type: false
                 },
                 {
@@ -218,7 +218,7 @@ const BotChatPage = () => {
         console.log("selectedHistoryId changed to " + selectedHistoryId);
         selectedHistoryId && WebSocketConnection(selectedHistoryId);
 
-        !isFirstReply &&  fetchAndSetBotChatList();
+        !isFirstReply && fetchAndSetBotChatList();
         !isFirstReply && setResponding(false);
         !isFirstReply && console.log("set Responding to false here");
 
