@@ -98,6 +98,7 @@ const BotChatPage = () => {
                     type: true
                 }]
         );
+        setResponding(true);
         setSelectedHistoryId(newHistoryId);
         setIsFirstReply(true);
     };
@@ -217,8 +218,10 @@ const BotChatPage = () => {
         console.log("selectedHistoryId changed to " + selectedHistoryId);
         selectedHistoryId && WebSocketConnection(selectedHistoryId);
 
-        fetchAndSetBotChatList();
-        setResponding(false);
+        !isFirstReply &&  fetchAndSetBotChatList();
+        !isFirstReply && setResponding(false);
+        !isFirstReply && setIsFirstReply(true);
+        !isFirstReply && console.log("set Responding to false here");
 
         return () => {
             socket?.readyState === WebSocket.OPEN && closeWebSocketConnection(socket);
@@ -229,7 +232,7 @@ const BotChatPage = () => {
         if (socket) {
             // 新的WebSocket连接被创建
             // 处理来自服务器的消息
-            setResponding(false);
+            
             socket.onmessage = (event) => {
                 console.log('Message from server: ', event.data);
                 let response: { replyMessage: string; };
