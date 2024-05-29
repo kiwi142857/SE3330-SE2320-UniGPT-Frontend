@@ -295,7 +295,8 @@ const BotChatPage = () => {
         };
         const newBotChatHistoryList = botChatHistoryList.filter(item => item.id !== selectedHistoryId);
         // 如果在对话中，将当前历史记录置于历史列表顶端
-        if (socket) newBotChatHistoryList.unshift(newCurrentHistory);
+        // TODO: 先注释掉，之后再重构
+        /* if (socket) */ newBotChatHistoryList.unshift(newCurrentHistory);
         setBotChatHistoryList(newBotChatHistoryList);
     }, [botChatList]);
 
