@@ -31,6 +31,8 @@ const BotChatPage = () => {
 
     const [botChatHistoryList, setBotChatHistoryList] = useState<BotChatHistory[]>([]);
     const [selectedHistoryId, setSelectedHistoryId] = useState(0);
+    const [isFirstReply, setIsFirstReply] = useState(false);
+    const [userAsk, setUserAsk] = useState<string>("");
     const botChatHistoryListRef = useRef(botChatHistoryList);
     botChatHistoryListRef.current = botChatHistoryList;
 
@@ -58,7 +60,7 @@ const BotChatPage = () => {
     const fetchAndSetBotChatHistoryList = async () => {
         let list = await getBotChatHistoryList(botID, 0, 20);
         setBotChatHistoryList(list ?? []);
-    }
+    };
     const fetchAndSetBotChatList = async () => {
         const list = selectedHistoryId ? await getBotChatList(selectedHistoryId) : [];
         setBotChatList(list);
@@ -66,7 +68,9 @@ const BotChatPage = () => {
 
     const onSubmit = async (promptlist: Prompt[]) => {
         console.log("PromptList: ", promptlist);
-        const newHistoryId = await createHistory(botID, promptlist);
+        const response = await createHistory(botID, promptlist);
+        const newHistoryId = response.historyid;
+        setUserAsk(response.userAsk);
         setBotChatHistoryList([
             {
                 id: newHistoryId,
@@ -75,7 +79,28 @@ const BotChatPage = () => {
             },
             ...botChatHistoryList
         ]);
+        setBotChatList(
+            botChatList =>
+                [...botChatList, {
+                    id: 0,
+                    name: user.name,
+                    historyId: selectedHistoryId,
+                    avatar: user.avatar,
+                    content: response.userAsk,
+                    type: false
+                },
+                {
+                    id: 0,
+                    name: botBriefInfo ? botBriefInfo.name : "",
+                    historyId: selectedHistoryId,
+                    avatar: botBriefInfo ? botBriefInfo.avatar : "",
+                    content: "loading...",
+                    type: true
+                }]
+        );
+        setResponding(true);
         setSelectedHistoryId(newHistoryId);
+        setIsFirstReply(true);
     };
     const onHistoryItemClicked = async (historyid: number) => {
         setSelectedHistoryId(historyid);
@@ -84,12 +109,12 @@ const BotChatPage = () => {
         console.log('Delete History: ' + historyid);
         setBotChatHistoryList(botChatHistoryList.filter(item => item.id !== historyid));
         deleteHistory(historyid);
-    }
+    };
     // 创建新的对话历史
     const onChatClicked = () => {
         console.log("Click Chat");
         setSelectedHistoryId(0);
-    }
+    };
 
     const onSendClicked = (text: string) => {
         console.log('user.name' + user.name);
@@ -116,7 +141,7 @@ const BotChatPage = () => {
         // 向 WebSocket 发送消息
         sendMessage(socket, text);
         setResponding(true);
-    }
+    };
 
     const resendLast = (sendText: string) => {
         console.log("Resend: ", sendText);
@@ -146,7 +171,7 @@ const BotChatPage = () => {
         // 向 WebSocket 发送消息
         sendMessage(socket, sendText, true);
         setResponding(true);
-    }
+    };
 
 
     const closeWebSocketConnection = (socket: WebSocket) => {
@@ -155,47 +180,61 @@ const BotChatPage = () => {
     };
 
     // 创建一个新的WebSocket连接
-    const WebSocketConnection = (historyId: number) => {
+    const WebSocketConnection = async (historyId: number) => {
         console.log("WebSocketConnection start: ", historyId);
-        setSocket(createWebSocketConnection(historyId));
-        console.log("WebSocketConnection: ", socket);
+        try {
+            const socket = await createWebSocketConnection(historyId);
+            setSocket(socket);
+            console.log("WebSocketConnection: ", socket);
+            isFirstReply && sendUserAsk(socket);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
 
     const ellipsisStr = (str: string, length: number) => {
         // 截取字符串，如果长度大于 length 则加上省略号
         return str.length > length ? str.substring(0, length) + "..." : str;
-    }
+    };
 
     useEffect(() => {
         // 页面加载初始化
         console.log(botID);
         fetchAndUpdateBrief();
-        fetchAndSetUser().then(() => {console.log('username is ' + user.name)});
+        fetchAndSetUser().then(() => { console.log('username is ' + user.name); });
         fetchAndSetBotChatHistoryList().then(() => {
             setBotChatHistoryLoading(false);
         });
     }, []);
 
+    const sendUserAsk = (websocket: WebSocket | null) => {
+        console.log("send user ask:", socket, userAsk);
+        sendMessage(websocket, userAsk, false, true);
+        setIsFirstReply(false);
+    };
+
     useEffect(() => {
         console.log("selectedHistoryId changed to " + selectedHistoryId);
         selectedHistoryId && WebSocketConnection(selectedHistoryId);
-        fetchAndSetBotChatList();
-        setResponding(false);
+
+        !isFirstReply && fetchAndSetBotChatList();
+        !isFirstReply && setResponding(false);
+        !isFirstReply && console.log("set Responding to false here");
 
         return () => {
             socket?.readyState === WebSocket.OPEN && closeWebSocketConnection(socket);
-        }
+        };
     }, [selectedHistoryId]);
 
     useEffect(() => {
         if (socket) {
             // 新的WebSocket连接被创建
             // 处理来自服务器的消息
-            setResponding(false);
+            
             socket.onmessage = (event) => {
                 console.log('Message from server: ', event.data);
-                let response: { replyMessage: string };
+                let response: { replyMessage: string; };
                 try {
                     console.log('event.data: ' + event.data);
                     response = JSON.parse(event.data);
@@ -217,6 +256,8 @@ const BotChatPage = () => {
                                     } : history
                         )
                 );
+                console.log("before on message:", botChatList);
+                console.log("length",botChatList.length)
                 setBotChatList(
                     botChatList =>
                         botChatList.slice(0, botChatList.length - 1).concat(
@@ -243,18 +284,19 @@ const BotChatPage = () => {
 
     useEffect(() => {
         const currentHistory = botChatHistoryList
-                                .find(item => item.id === selectedHistoryId);
-        if(!currentHistory) return ;
+            .find(item => item.id === selectedHistoryId);
+        if (!currentHistory) return;
 
         const newCurrentHistory: BotChatHistory = {
             ...currentHistory,
             content: botChatList.length ? ellipsisStr(botChatList[botChatList.length - 1].content, 20) : '',
             // 如果当前历史没有对话，则使用输入的文本作为标题
             title: botChatList.length ? ellipsisStr(botChatList[0].content, 10) : "New Chat"
-        }
+        };
         const newBotChatHistoryList = botChatHistoryList.filter(item => item.id !== selectedHistoryId);
         // 如果在对话中，将当前历史记录置于历史列表顶端
-        if (socket) newBotChatHistoryList.unshift(newCurrentHistory);
+        // TODO: 先注释掉，之后再重构
+        /* if (socket) */ newBotChatHistoryList.unshift(newCurrentHistory);
         setBotChatHistoryList(newBotChatHistoryList);
     }, [botChatList]);
 

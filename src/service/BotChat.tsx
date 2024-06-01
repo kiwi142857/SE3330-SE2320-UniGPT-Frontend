@@ -116,7 +116,7 @@ export async function getBotChatList(historyId: number): Promise<BotChat[]> {
     }
 }
 
-export async function createHistory(botID: string, promptList: Prompt[]): Promise<number> {
+export async function createHistory(botID: string, promptList: Prompt[]) {
 
     const url = `${PREFIX}/bots/${botID}/histories`
 
@@ -131,7 +131,7 @@ export async function createHistory(botID: string, promptList: Prompt[]): Promis
         res = null;
     }
     if (res === null) return 0;
-    return res.historyid;
+    return res;
 }
 
 export async function deleteHistory(historyId: number) {
