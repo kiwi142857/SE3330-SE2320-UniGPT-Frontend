@@ -40,8 +40,8 @@ export async function getBotDetail(id: string): Promise<botDetailInfo | null> {
 
     try {
         res = await getJson(url);
-        // console.log(res);
     } catch (e) {
+        console.log("In getBotDetail");
         console.error(e);
         res = null;
     }
