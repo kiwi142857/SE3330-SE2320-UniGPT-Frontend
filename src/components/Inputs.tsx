@@ -179,7 +179,7 @@ export function EditSelect
                     <p>{title}</p>
                 </Typography>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={3}>
                 <FormControl fullWidth>
                     <Select
                         value={value}
@@ -188,10 +188,10 @@ export function EditSelect
                         style={{ borderRadius: '20px' }}
                         required
                     >
-                        <MenuItem value={'GPT-4'}>GPT-3.5</MenuItem>
-                        {/* <MenuItem value={'ChatGLM'}>ChatGLM</MenuItem>
-                        <MenuItem value={'llama'}>llama</MenuItem>
-                        <MenuItem value={'kimiAI'}>kimiAI</MenuItem> */}
+                        <MenuItem value={0}>gpt-3.5-turbo</MenuItem>
+                        <MenuItem value={1}>claude-instant-1.2</MenuItem>
+                        <MenuItem value={2}>llama3-70b-8192</MenuItem>
+                        <MenuItem value={3}>moonshot-v1-8k</MenuItem>
                     </Select>
                 </FormControl>
             </Grid>

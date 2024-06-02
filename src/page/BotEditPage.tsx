@@ -12,11 +12,11 @@ import { LanguageContext } from "../provider/LanguageProvider";
 import { botEditInfo, createBot, fewShot, getBotEditInfo, updateBot } from '../service/BotEdit';
 
 // bot创建/修改页
-const BotEditPage = ({edit} : {edit: boolean}) => {
+const BotEditPage = ({ edit }: { edit: boolean }) => {
     const context = React.useContext(LanguageContext);
     const { t, i18n } = useTranslation();
 
-    let {id} = useParams<{id: string}>();
+    let { id } = useParams<{ id: string }>();
 
     useEffect(() => {
         i18n.changeLanguage(context?.language);
@@ -26,7 +26,7 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
         name: '',
         avatar: '/assets/bot-default.png',
         description: '',
-        baseModelAPI: 'GPT-4',
+        baseModelAPI: 'GPT',
         published: false,
         detail: '',
         photos: [],
@@ -86,7 +86,7 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
         }
     }
 
-    const onSubmit = async(event: React.FormEvent) => {
+    const onSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
         const target = event.target as typeof event.target & {
@@ -113,7 +113,7 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
             return;
         }
 
-        let newInfo : botEditInfo = {
+        let newInfo: botEditInfo = {
             name: name,
             avatar: avatarImg,
             description: description,
@@ -139,7 +139,7 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
         }
 
         if (res) {
-            if (res.ok){
+            if (res.ok) {
                 let href = '/botChat/';
 
                 if (edit) {
@@ -147,7 +147,7 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
                 } else {
                     href += res.message;
                 }
-                
+
                 setTimeout(() => {
                     window.location.href = href;
                 }, 100);
@@ -168,14 +168,14 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
                     message={alertMessage}
                 />
 
-                <BotEditBasicPart  
-                    avatarImg={avatarImg} 
-                    setAvatarImg={setAvatarImg} 
+                <BotEditBasicPart
+                    avatarImg={avatarImg}
+                    setAvatarImg={setAvatarImg}
                     defaultName={botEditInfo.name}
                     defaultDescription={botEditInfo.description}
                     defaultApi={botEditInfo.baseModelAPI}
                 />
-                <Divider/>
+                <Divider />
 
                 <BotEditPromptPart
                     promptCheck={promptCheck}
