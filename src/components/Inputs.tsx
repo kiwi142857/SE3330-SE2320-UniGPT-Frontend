@@ -148,7 +148,7 @@ export function EditSelect
         name,
         defaultSelect
     }: {
-        title: string;
+        title: string,
         name: string,
         defaultSelect: string
     }) {
@@ -188,10 +188,10 @@ export function EditSelect
                         style={{ borderRadius: '20px' }}
                         required
                     >
-                        <MenuItem value={0}>gpt-3.5-turbo</MenuItem>
-                        <MenuItem value={1}>claude-instant-1.2</MenuItem>
-                        <MenuItem value={2}>llama3-70b-8192</MenuItem>
-                        <MenuItem value={3}>moonshot-v1-8k</MenuItem>
+                        <MenuItem value={"gpt-3.5-turbo"}>gpt-3.5-turbo</MenuItem>
+                        <MenuItem value={"claude-instant-1.2"}>claude-instant-1.2</MenuItem>
+                        <MenuItem value={"llama3-70b-8192"}>llama3-70b-8192</MenuItem>
+                        <MenuItem value={"moonshot-v1-8k"}>moonshot-v1-8k</MenuItem>
                     </Select>
                 </FormControl>
             </Grid>

@@ -1,32 +1,32 @@
 import { DUMMY_RESPONSE, getJson, post, PREFIX, put, ResponseData } from './common';
 
 export enum PromptChatType {
-  USER, ASSISTANT, SYSTEM
+    USER, ASSISTANT, SYSTEM
 }
 
 export interface fewShot {
-  type : PromptChatType;
-  content: string;
+    type: PromptChatType;
+    content: string;
 }
 
-export interface botEditInfo{
-  name: string;
-  avatar: string;
-  description: string;
-  baseModelAPI: string;
-  published: boolean;
-  detail: string | null;
-  photos: string[] | [];
-  prompted: boolean;
-  promptChats: fewShot[] | [];
-  promptKeys: string[] | [];
+export interface botEditInfo {
+    name: string;
+    avatar: string;
+    description: string;
+    baseModelAPI: number;
+    published: boolean;
+    detail: string | null;
+    photos: string[] | [];
+    prompted: boolean;
+    promptChats: fewShot[] | [];
+    promptKeys: string[] | [];
 }
 
 export async function createBot(data: botEditInfo): Promise<ResponseData> {
     const url = `${PREFIX}/bots`;
     let res;
 
-    try{
+    try {
         res = await post(url, data);
     } catch (e) {
         console.error(e);
@@ -41,7 +41,7 @@ export async function getBotEditInfo(id: string): Promise<botEditInfo | null> {
     const url = `${PREFIX}/bots/${id}?info=edit`;
     let res;
 
-    try{
+    try {
         res = await getJson(url);
     } catch (e) {
         res = null;
@@ -54,7 +54,7 @@ export async function updateBot(id: string, info: botEditInfo): Promise<Response
     const url = `${PREFIX}/bots/${id}`;
     let res;
 
-    try{
+    try {
         res = await put(url, info);
     } catch (e) {
         console.error(e);
