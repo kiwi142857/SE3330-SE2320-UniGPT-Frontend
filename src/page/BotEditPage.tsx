@@ -12,11 +12,11 @@ import { LanguageContext } from "../provider/LanguageProvider";
 import { botEditInfo, createBot, fewShot, getBotEditInfo, updateBot } from '../service/BotEdit';
 
 // bot创建/修改页
-const BotEditPage = ({edit} : {edit: boolean}) => {
+const BotEditPage = ({ edit }: { edit: boolean }) => {
     const context = React.useContext(LanguageContext);
     const { t, i18n } = useTranslation();
 
-    let {id} = useParams<{id: string}>();
+    let { id } = useParams<{ id: string }>();
 
     useEffect(() => {
         i18n.changeLanguage(context?.language);
@@ -26,7 +26,7 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
         name: '',
         avatar: '/assets/bot-default.png',
         description: '',
-        baseModelAPI: 'GPT-4',
+        baseModelAPI: 0,
         published: false,
         detail: '',
         photos: [],
@@ -68,6 +68,32 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
         setPromptKeys(newPromptKeys);
     }, [fewShots]);
 
+    const apiToString = (id: number) => {
+        switch (id) {
+            case 1:
+                return "claude-instant-1.2";
+            case 2:
+                return "llama3-70b-8192";
+            case 3:
+                return "moonshot-v1-8k";
+            default:
+                return "gpt-3.5-turbo";
+        }
+    }
+
+    const stringToApi = (api: string) => {
+        switch (api) {
+            case "claude-instant-1.2":
+                return 1;
+            case "llama3-70b-8192":
+                return 2;
+            case "moonshot-v1-8k":
+                return 3;
+            default:
+                return 0;
+        }
+    }
+
     const initInfo = async () => {
         if (!id) {
             return;
@@ -86,7 +112,7 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
         }
     }
 
-    const onSubmit = async(event: React.FormEvent) => {
+    const onSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
         const target = event.target as typeof event.target & {
@@ -113,11 +139,11 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
             return;
         }
 
-        let newInfo : botEditInfo = {
+        let newInfo: botEditInfo = {
             name: name,
             avatar: avatarImg,
             description: description,
-            baseModelAPI: api,
+            baseModelAPI: stringToApi(api),
             published: publishCheck,
             detail: detail,
             photos: photoImgs,
@@ -139,7 +165,7 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
         }
 
         if (res) {
-            if (res.ok){
+            if (res.ok) {
                 let href = '/botChat/';
 
                 if (edit) {
@@ -147,7 +173,7 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
                 } else {
                     href += res.message;
                 }
-                
+
                 setTimeout(() => {
                     window.location.href = href;
                 }, 100);
@@ -168,14 +194,14 @@ const BotEditPage = ({edit} : {edit: boolean}) => {
                     message={alertMessage}
                 />
 
-                <BotEditBasicPart  
-                    avatarImg={avatarImg} 
-                    setAvatarImg={setAvatarImg} 
+                <BotEditBasicPart
+                    avatarImg={avatarImg}
+                    setAvatarImg={setAvatarImg}
                     defaultName={botEditInfo.name}
                     defaultDescription={botEditInfo.description}
-                    defaultApi={botEditInfo.baseModelAPI}
+                    defaultApi={apiToString(botEditInfo.baseModelAPI)}
                 />
-                <Divider/>
+                <Divider />
 
                 <BotEditPromptPart
                     promptCheck={promptCheck}

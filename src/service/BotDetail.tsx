@@ -8,7 +8,7 @@ export interface botDetailInfo {
     description: string;
     detail: string;
     avatar: string;
-    baseModelAPI: string;
+    baseModelAPI: number;
     photos: string[] | [];
     likeNumber: number;
     starNumber: number;
