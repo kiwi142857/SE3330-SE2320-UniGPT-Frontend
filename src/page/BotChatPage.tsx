@@ -18,6 +18,7 @@ import { useParams } from "react-router-dom";
 import { getMe } from "../service/user";
 import ChatWindow from "../components/ChatWindow";
 import { use } from "i18next";
+import { ellipsisStr } from "../utils/strUtils.ts";
 
 
 // bot聊天页
@@ -190,12 +191,6 @@ const BotChatPage = () => {
         } catch (error) {
             console.error(error);
         }
-    };
-
-
-    const ellipsisStr = (str: string, length: number) => {
-        // 截取字符串，如果长度大于 length 则加上省略号
-        return str.length > length ? str.substring(0, length) + "..." : str;
     };
 
     useEffect(() => {

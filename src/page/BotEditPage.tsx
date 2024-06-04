@@ -10,6 +10,8 @@ import '../css/App.css';
 import '../css/BotEditPage.css';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { botEditInfo, createBot, fewShot, getBotEditInfo, updateBot } from '../service/BotEdit';
+import { apiToString, stringToApi } from "../utils/api";
+import { getPromptKeysFromFewShot } from "../utils/strUtils";
 
 // bot创建/修改页
 const BotEditPage = ({ edit }: { edit: boolean }) => {
@@ -51,48 +53,11 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
     }, [edit]);
 
     useEffect(() => {
-        const regex = /\+\+\{(.+?)\}/g;
-        let newPromptKeys: string[] = [];
-
-        if (fewShots) {
-            fewShots.forEach((fewShot) => {
-                const content = fewShot.content;
-                let match;
-                while ((match = regex.exec(content)) !== null) {
-                    if (match[1] !== '' && !newPromptKeys.includes(match[1]))
-                        newPromptKeys.push(match[1]);
-                }
-            });
-        }
-
+        let newPromptKeys = getPromptKeysFromFewShot(fewShots);
         setPromptKeys(newPromptKeys);
     }, [fewShots]);
 
-    const apiToString = (id: number) => {
-        switch (id) {
-            case 1:
-                return "claude-instant-1.2";
-            case 2:
-                return "llama3-70b-8192";
-            case 3:
-                return "moonshot-v1-8k";
-            default:
-                return "gpt-3.5-turbo";
-        }
-    }
-
-    const stringToApi = (api: string) => {
-        switch (api) {
-            case "claude-instant-1.2":
-                return 1;
-            case "llama3-70b-8192":
-                return 2;
-            case "moonshot-v1-8k":
-                return 3;
-            default:
-                return 0;
-        }
-    }
+    
 
     const initInfo = async () => {
         if (!id) {
@@ -100,6 +65,7 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
         }
         let info = await getBotEditInfo(id);
         if (info !== null) {
+            info.baseModelAPI = Number(info.baseModelAPI);
             setBotEditInfo(info);
             setAvatarImg(info.avatar);
             setPhotoImgs(info.photos);

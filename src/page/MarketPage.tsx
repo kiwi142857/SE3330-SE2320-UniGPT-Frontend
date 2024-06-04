@@ -40,8 +40,6 @@ const MarketPage: React.FC = () => {
 
     console.log("bots", bots);
 
-    const keyword = searchParams.get("keyword");
-
     const handleSearch = (keyword: string) => {
         setSearchParams({ keyword: keyword });
     }
