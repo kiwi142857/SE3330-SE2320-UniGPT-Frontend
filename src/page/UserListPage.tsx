@@ -23,7 +23,6 @@ const UserListPage: React.FC = () => {
     const [users, setUsers] = useState([]); // [botListType
     const getSearchUsers = async () => {
         let type = tabValue === 0 ? "id" : "name";
-        let keyword = searchParams.get("keyword") || "";
         
         let response = await getSearchUserList(pageIndex, pageSize, searchParams.get("keyword") || "", type);
         console.log(response);
@@ -44,8 +43,6 @@ const UserListPage: React.FC = () => {
     }, [searchParams, tabValue]);
 
     console.log("users", users);
-
-    const keyword = searchParams.get("keyword");
 
     const handleSearch = (keyword: string) => {
         setSearchParams({ keyword: keyword });
