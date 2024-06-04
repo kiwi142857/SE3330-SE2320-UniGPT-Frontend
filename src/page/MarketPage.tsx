@@ -6,7 +6,8 @@ import { BotList, BotListType } from '../components/BotList';
 import MarketSearch from '../components/MarketSearch';
 import '../css/Market.css';
 import { LanguageContext } from "../provider/LanguageProvider";
-import { getSearchBotList } from '../service/bot';
+import { Bot, getSearchBotList } from '../service/bot';
+
 // bot市场
 const MarketPage: React.FC = () => {
 
@@ -18,13 +19,14 @@ const MarketPage: React.FC = () => {
     const [tabValue, setTabValue] = React.useState(1);
     const [totalPage, setTotalPage] = useState(0);
 
-    const [bots, setBots] = useState([]); // [botListType
+    const [bots, setBots] = useState<Bot[]>([]); // [botListType
     const getSearchBots = async () => {
         let order = tabValue === 0 ? "latest" : "like";
         let response = await getSearchBotList(pageIndex, pageSize, searchParams.get("keyword") || "", order);
-        console.log(response);
-        setBots(response.bots);
-        setTotalPage(response.total % pageSize === 0 ? response.total / pageSize : Math.floor(response.total / pageSize) + 1);
+        if (response != null) {
+            setBots(response.bots);
+            setTotalPage(response.total % pageSize === 0 ? response.total / pageSize : Math.floor(response.total / pageSize) + 1);
+        }
     }
 
     const context = React.useContext(LanguageContext);
