@@ -2,11 +2,12 @@ import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import ArticleIcon from "@mui/icons-material/Article";
 import EditIcon from '@mui/icons-material/Edit';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { Box, CircularProgress, FormControl, Grid, MenuItem, Select, Typography } from "@mui/material";
+import { Box, FormControl, Grid, MenuItem, Select, Typography } from "@mui/material";
 import Fab from '@mui/material/Fab';
 import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
 import { SelectChangeEvent } from '@mui/material/Select';
+import Slider from '@mui/material/Slider';
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "../css/BotChatPage.css";
@@ -158,8 +159,7 @@ export function EditSelect
         if (defaultSelect) {
             setValue(defaultSelect);
         }
-    }
-        , [defaultSelect]);
+    }, [defaultSelect]);
 
     const handleChange = (event: SelectChangeEvent) => {
         setValue(event.target.value as string);
@@ -194,6 +194,67 @@ export function EditSelect
                         <MenuItem value={"moonshot-v1-8k"}>moonshot-v1-8k</MenuItem>
                     </Select>
                 </FormControl>
+            </Grid>
+        </Grid>
+    );
+}
+
+// botEdit页的baseModel选项框
+export function SliderSelect
+    ({
+        title,
+        name,
+        defaultValue,
+        min,
+        max,
+        step,
+    }: {
+        title: string,
+        name: string,
+        defaultValue: number,
+        min: number,
+        max: number,
+        step: number
+    }) {
+    const [value, setValue] = React.useState(defaultValue);
+
+    useEffect(() => {
+        if (defaultValue) {
+            setValue(defaultValue);
+        }
+    }, [defaultValue]);
+
+    const handleChange = (event: Event, newValue: number | number[]) => {
+        setValue(newValue as number);
+    }
+    
+    return (
+        <Grid container>
+            <Grid item xs={2}>
+                <Typography
+                    className='edit-label'
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                    }}
+                    sx={{ color: 'primary.main' }}
+                >
+                    <p>{title}</p>
+                </Typography>
+            </Grid>
+            <Grid item xs={3}>
+                <Box display="flex" alignItems="center" height="100%">
+                    <Slider
+                        name={name}
+                        aria-label="Always visible"
+                        value={value}
+                        onChange={handleChange}
+                        step={step}
+                        min={min}
+                        max={max}
+                        valueLabelDisplay="on"
+                    />
+                </Box>
             </Grid>
         </Grid>
     );

@@ -28,6 +28,7 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
         name: '',
         avatar: '/assets/bot-default.png',
         description: '',
+        temperature: 0.5,
         baseModelAPI: 0,
         published: false,
         detail: '',
@@ -66,6 +67,8 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
         let info = await getBotEditInfo(id);
         if (info !== null) {
             info.baseModelAPI = Number(info.baseModelAPI);
+            info.temperature = Number(info.temperature);
+            console.log(info);
             setBotEditInfo(info);
             setAvatarImg(info.avatar);
             setPhotoImgs(info.photos);
@@ -85,11 +88,13 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
             name: { value: string };
             description: { value: string };
             api: { value: string };
+            temperature: { value: number };
             detail: { value: string };
         };
 
         const name = target.name.value;
         const description = target.description.value;
+        const temperature = target.temperature.value;
         const api = target.api.value;
         let detail;
 
@@ -109,6 +114,7 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
             name: name,
             avatar: avatarImg,
             description: description,
+            temperature: temperature,
             baseModelAPI: stringToApi(api),
             published: publishCheck,
             detail: detail,
@@ -166,6 +172,7 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
                     defaultName={botEditInfo.name}
                     defaultDescription={botEditInfo.description}
                     defaultApi={apiToString(botEditInfo.baseModelAPI)}
+                    defaultTemperature={botEditInfo.temperature}
                 />
                 <Divider />
 
