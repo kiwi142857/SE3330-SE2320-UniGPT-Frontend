@@ -13,6 +13,7 @@ export interface botEditInfo {
     name: string;
     avatar: string;
     description: string;
+    temperature: number;
     baseModelAPI: number;
     published: boolean;
     detail: string | null;

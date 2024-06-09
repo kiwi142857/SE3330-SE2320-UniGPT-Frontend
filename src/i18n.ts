@@ -95,6 +95,7 @@ const resources = {
       "Description" : "简介",
       "Your description for your assistant (max 255 characters)": "简要介绍你的机器人（最多255个字符）",
       "Base Model": "基础模型",
+      "Temperature": "温度",
       "Define your own prompt list": "定义机器人的提示列表",
       "Publish to market": "发布到市场",
       "Cancel": "取消",

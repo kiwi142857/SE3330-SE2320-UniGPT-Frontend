@@ -7,7 +7,7 @@ import { LanguageContext } from '../provider/LanguageProvider';
 import { imageUpload } from '../service/upload';
 import BasicInput from './BasicInput';
 import EditLayout from './EditLayout';
-import { EditSelect } from './Inputs';
+import { EditSelect, SliderSelect } from './Inputs';
 
 function BotEditBasicPart (
     {
@@ -15,14 +15,16 @@ function BotEditBasicPart (
         setAvatarImg,
         defaultName,
         defaultDescription,
-        defaultApi
+        defaultApi,
+        defaultTemperature
     } : 
     {
         avatarImg: string, 
         setAvatarImg: React.Dispatch<React.SetStateAction<string>>,
         defaultName: string,
         defaultDescription: string,
-        defaultApi: string
+        defaultApi: string,
+        defaultTemperature: number
     }) {
 
     const context = React.useContext(LanguageContext);
@@ -41,7 +43,7 @@ function BotEditBasicPart (
                 }
             });
         }
-    }
+    };
 
     return (
         <div className='edit-basic-container'>
@@ -88,6 +90,14 @@ function BotEditBasicPart (
                     title={t('Base Model')}
                     defaultSelect={defaultApi}
                     name='api'
+                />
+                <SliderSelect
+                    title={t('Temperature')}
+                    name='temperature'
+                    min={0.1}
+                    max={1}
+                    step={0.025}
+                    defaultValue={defaultTemperature}
                 />
             </div>
         </div>
