@@ -109,6 +109,7 @@ const BotChatPage = () => {
     const onHistoryItemDeleted = async (historyid: number) => {
         console.log('Delete History: ' + historyid);
         setBotChatHistoryList(botChatHistoryList.filter(item => item.id !== historyid));
+        if (historyid === selectedHistoryId) setSelectedHistoryId(0);
         deleteHistory(historyid);
     };
     // 创建新的对话历史
@@ -226,7 +227,7 @@ const BotChatPage = () => {
         if (socket) {
             // 新的WebSocket连接被创建
             // 处理来自服务器的消息
-            
+
             socket.onmessage = (event) => {
                 console.log('Message from server: ', event.data);
                 let response: { replyMessage: string; };
@@ -252,7 +253,7 @@ const BotChatPage = () => {
                         )
                 );
                 console.log("before on message:", botChatList);
-                console.log("length",botChatList.length)
+                console.log("length", botChatList.length)
                 setBotChatList(
                     botChatList =>
                         botChatList.slice(0, botChatList.length - 1).concat(
