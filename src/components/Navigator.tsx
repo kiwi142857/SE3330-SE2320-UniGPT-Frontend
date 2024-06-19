@@ -29,6 +29,7 @@ const Navigator: React.FC<{}> = () => {
         if (user && user.avatar)
             setAvatar(user.avatar);
         if (user && user.asAdmin) setIsAdmin(true);
+        if(!user) navigate('/login');
     };
 
     useEffect(() => {
