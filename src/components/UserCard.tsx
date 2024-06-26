@@ -96,7 +96,7 @@ export default function UserCard({ user, isMe, isAdmin, userId }: { user: User; 
             navigate('/login');
         }
         else {
-            messageError('登出失败');
+            messageError("登出失败:" + response.message);
         };
     };
 

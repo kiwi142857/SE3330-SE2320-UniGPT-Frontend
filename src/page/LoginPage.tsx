@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Navigator from '../components/Navigator';
 import '../css/LoginInPage.css';
 import { useErrorHandler } from '../hooks/errorHandler';
-import { LoginResult, login } from '../service/auth';
+import { login } from '../service/auth';
 
 const LoginPage: React.FC = () => {
     const loginRequestUrl = `http://jaccount.sjtu.edu.cn/oauth2/authorize?response_type=code&scope=profile&client_id=ov3SLrO4HyZSELxcHiqS&redirect_uri=${encodeURIComponent(window.location.origin)}/login`;
@@ -12,7 +12,6 @@ const LoginPage: React.FC = () => {
     const searchParams = new URLSearchParams(location.search);
     const code = searchParams.get('code');
 
-    const [loginResult, setLoginResult] = useState<LoginResult | null>(null);
     const {messageError, ErrorSnackbar} = useErrorHandler();
 
     const navigate = useNavigate();
@@ -20,12 +19,10 @@ const LoginPage: React.FC = () => {
         const fetchLogin = async () => {
             if (code) {
                 const result = await login(code);
-                setLoginResult(result);
                 if (result.ok) {
                     navigate('/home');
-                }
-                else {
-                    messageError("登录失败");
+                } else {
+                    messageError("登录失败:" + result.message);
                 }
             }
         };
@@ -33,7 +30,6 @@ const LoginPage: React.FC = () => {
     }, [code]);
 
     console.log("code", code);
-    console.log("login result", loginResult);
 
     return (
         <div>

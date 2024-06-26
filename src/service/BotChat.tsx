@@ -1,4 +1,4 @@
-import { PREFIX, del, getJson, post } from './common';
+import { DUMMY_RESPONSE, PREFIX, del, getJson, post } from './common';
 
 // 聊天类
 export type BotChat = {
@@ -119,18 +119,14 @@ export async function getBotChatList(historyId: number): Promise<BotChat[]> {
 export async function createHistory(botID: string, promptList: Prompt[]) {
 
     const url = `${PREFIX}/bots/${botID}/histories`
-
     let res;
 
     try {
         res = await post(url, promptList);
-        console.log("In createHistory: POST GET", res);
-    }
-    catch (e) {
+    } catch (e) {
         console.error(e);
-        res = null;
+        res = DUMMY_RESPONSE;
     }
-    if (res === null) return 0;
     return res;
 }
 
