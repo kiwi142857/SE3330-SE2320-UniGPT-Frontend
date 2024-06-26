@@ -113,7 +113,10 @@ const BotChatPage = () => {
         console.log('Delete History: ' + historyid);
         setBotChatHistoryList(botChatHistoryList.filter(item => item.id !== historyid));
         if (historyid === selectedHistoryId) setSelectedHistoryId(0);
-        deleteHistory(historyid);
+        let res = await deleteHistory(historyid);
+        if (!res.ok) {
+            messageError("删除对话历史失败");
+        }
     };
     // 创建新的对话历史
     const onChatClicked = () => {

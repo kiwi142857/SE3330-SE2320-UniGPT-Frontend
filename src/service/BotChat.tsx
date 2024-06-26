@@ -1,4 +1,4 @@
-import { DUMMY_RESPONSE, PREFIX, del, getJson, post } from './common';
+import { DUMMY_RESPONSE, PREFIX, ResponseData, del, getJson, post } from './common';
 
 // 聊天类
 export type BotChat = {
@@ -127,17 +127,22 @@ export async function createHistory(botID: string, promptList: Prompt[]) {
         console.error(e);
         res = DUMMY_RESPONSE;
     }
+
     return res;
 }
 
-export async function deleteHistory(historyId: number) {
+export async function deleteHistory(historyId: number): Promise<ResponseData> {
     const url = `${PREFIX}/histories/${historyId}`;
+    let res;
 
     try {
-        let res = await del(url, {});
+        res = await del(url, {});
         console.log(res);
     }
     catch (e) {
         console.error(e);
+        res = DUMMY_RESPONSE;
     }
+
+    return res;
 }
