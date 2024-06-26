@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Navigator from '../components/Navigator';
-import SnackBar from '../components/Snackbar';
 import '../css/LoginInPage.css';
+import { useErrorHandler } from '../hooks/errorHandler';
 import { LoginResult, login } from '../service/auth';
 
 const LoginPage: React.FC = () => {
@@ -13,7 +13,7 @@ const LoginPage: React.FC = () => {
     const code = searchParams.get('code');
 
     const [loginResult, setLoginResult] = useState<LoginResult | null>(null);
-    const [alert, setAlert] = useState<boolean>(false);
+    const {messageError, ErrorSnackbar} = useErrorHandler();
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -25,7 +25,7 @@ const LoginPage: React.FC = () => {
                     navigate('/home');
                 }
                 else {
-                    setAlert(true);
+                    messageError("登录失败");
                 }
             }
         };
@@ -42,11 +42,7 @@ const LoginPage: React.FC = () => {
             <video className='home-bg' autoPlay loop muted>
                 <source src="/assets/loginpage.mp4" type="video/mp4" />
             </video>
-            <SnackBar
-                open={alert}
-                setOpen={setAlert}
-                message="登录失败，请重试！"
-            />
+            <ErrorSnackbar />
         </div>
     );
 };

@@ -3,12 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, useSearchParams } from "react-router-dom";
 import { BotList, BotListType } from '../components/BotList';
-import SnackBar from '../components/Snackbar';
 import UserCard from '../components/UserCard';
 import '../css/Profile.css';
+import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { User, getMe, getUser, getUserCreatedBots, getUserFavoriteBots } from '../service/user';
-import { use } from 'i18next';
 
 
 export function BotListTabs({ value, setValue }: { value: number, setValue: React.Dispatch<React.SetStateAction<number>>; }) {
@@ -47,8 +46,7 @@ const ProfilePage = () => {
     const [tabValue, setTabValue] = React.useState(0);
     const [bots, setBots] = useState([]);
 
-    const [alert, setAlert] = useState(false);
-    const [alertMessage, setAlertMessage] = useState('');
+    const {messageError, ErrorSnackbar} = useErrorHandler();
 
     // 语言切换
     useEffect(() => {
@@ -86,8 +84,7 @@ const ProfilePage = () => {
                 setUser(response);
             } else {
                 setUser(null);
-                setAlert(true);
-                setAlertMessage("获取用户信息失败！");
+                messageError("获取用户信息失败！");
             }
             console.log("me", user);
         };
@@ -139,11 +136,6 @@ const ProfilePage = () => {
 
     return (
         <>
-            <SnackBar
-                open={alert}
-                message={alertMessage}
-                setOpen={setAlert}
-            />
             {
                 user == null ? <></> :
                     <>

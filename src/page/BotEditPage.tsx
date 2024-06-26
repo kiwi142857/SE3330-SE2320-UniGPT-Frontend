@@ -5,9 +5,9 @@ import { useParams } from "react-router-dom";
 import BotEditBasicPart from '../components/BotEditBasicPart';
 import BotEditMarketPart from "../components/BotEditMarketPart";
 import BotEditPromptPart from '../components/BotEditPromptPart';
-import SnackBar from "../components/Snackbar";
 import '../css/App.css';
 import '../css/BotEditPage.css';
+import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { botEditInfo, createBot, fewShot, getBotEditInfo, updateBot } from '../service/BotEdit';
 import { apiToString, stringToApi } from "../utils/api";
@@ -44,8 +44,7 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
     const [publishCheck, setPublishCheck] = useState<boolean>(false);
     const [promptKeys, setPromptKeys] = useState<string[]>([]);
 
-    const [alert, setAlert] = useState(false);
-    const [alertMessage, setAlertMessage] = useState('');
+    const {messageError, ErrorSnackbar} = useErrorHandler();
 
     useEffect(() => {
         if (edit) {
@@ -76,8 +75,7 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
             setPublishCheck(info.published);
             setFewShots(info.promptChats);
         } else {
-            setAlert(true);
-            setAlertMessage("获取bot信息失败");
+            messageError("获取bot信息失败");
         }
     }
 
@@ -105,8 +103,7 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
         }
 
         if (promptCheck && promptKeys.length === 0) {
-            setAlert(true);
-            setAlertMessage("请至少添加一个变量");
+            messageError("请至少添加一个变量");
             return;
         }
 
@@ -150,22 +147,15 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
                     window.location.href = href;
                 }, 100);
             } else {
-                setAlert(true);
-                setAlertMessage("bot创建/修改表单提交失败: " + res.message);
+                messageError("bot创建/修改表单提交失败: " + res.message);
             }
         }
     };
 
     return [
+        <ErrorSnackbar/>,
         <div className='main-container bot-edit-container'>
             <form onSubmit={onSubmit}>
-
-                <SnackBar
-                    open={alert}
-                    setOpen={setAlert}
-                    message={alertMessage}
-                />
-
                 <BotEditBasicPart
                     avatarImg={avatarImg}
                     setAvatarImg={setAvatarImg}
