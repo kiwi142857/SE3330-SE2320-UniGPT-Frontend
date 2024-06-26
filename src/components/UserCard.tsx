@@ -49,12 +49,9 @@ export default function UserCard({ user, isMe, isAdmin, userId }: { user: User; 
             return;
         }
 
-        try {
-            console.log(updatedUser);
-            await putUser(updatedUser, user.id);
-        } catch (error) {
+        let res = await putUser(updatedUser, user.id);
+        if (!res.ok) 
             messageError('更新信息失败');
-        }
 
         setTableOpen(false);
     };
@@ -83,8 +80,7 @@ export default function UserCard({ user, isMe, isAdmin, userId }: { user: User; 
         const response = await banUser({ userId, isBan: !isBanned });
         if (response.ok) {
             setIsBanned(true);
-        }
-        else {
+        } else {
             messageError('封禁用户失败');
         }
         getUserBanState();

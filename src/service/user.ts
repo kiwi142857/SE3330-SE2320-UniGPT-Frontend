@@ -1,4 +1,4 @@
-import { get, getJson, PREFIX, put } from './common';
+import { DUMMY_RESPONSE, get, getJson, PREFIX, put } from './common';
 
 export interface User {
     id: number;
@@ -116,20 +116,16 @@ export async function getUser(userId: string) {
 export async function putUser(user: PostUser, id : number) {
     console.log("user", user);
     const url = `${PREFIX}/users/${id}`;
+    let res;
+
     try{
-        console.log("url", url);
-        console.log("body", JSON.stringify(user));
-        const response = await put(url, user);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = response;
-        console.log("response", data);
-        return data;
-    }
-    catch(e){
+        res = await put(url, user);
+    } catch (e){
         console.log("PutUserError: ", e);
+        res = DUMMY_RESPONSE;
     }
+
+    return res;
 }
 
 export async function getSearchUserList(page: number, pageSize: number, q: string, type: string){
@@ -151,19 +147,16 @@ export async function getSearchUserList(page: number, pageSize: number, q: strin
 
 export async function banUser({userId, isBan}: {userId: number; isBan: boolean}){
     const url = `${PREFIX}/users/${userId}/ban?disable=${isBan}`;
+    let res;
+
     try{
-        console.log("url", url);
-        const response = await put(url, {});
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = response;
-        console.log("response", data);
-        return data;
-    }
-    catch(e){
+        res = await put(url, {});
+    } catch(e){
         console.log("BanUserError: ", e);
+        res = DUMMY_RESPONSE;
     }
+
+    return res;
 }
 
 export async function isUserBanned(userId: number){
