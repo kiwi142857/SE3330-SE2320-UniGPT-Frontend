@@ -1,4 +1,4 @@
-import { DUMMY_RESPONSE, PREFIX, ResponseData, del, getJson, post } from './common';
+import { DUMMY_RESPONSE, PREFIX, ResponseData, del, getJsonOrThrow, post } from './common';
 
 // 聊天类
 export type BotChat = {
@@ -34,32 +34,14 @@ export async function getBotBrief(botID: string | undefined): Promise<BotBriefIn
     if (botID === undefined) return null;
 
     const url = `${PREFIX}/bots/${botID}?info=brief`;
-    let res;
-    try {
-        res = await getJson(url);
-        console.log(url);
-        console.log(res);
-    } catch (e) {
-        console.error(e);
-        res = null;
-    }
+    let res = getJsonOrThrow(url);
     return res;
 }
 
-export async function getBotChatHistoryList(botID: string | undefined, page: number, pagesize: number): Promise<BotChatHistory[] | null> {
+export async function getBotChatHistoryList(botID: string | undefined, page: number, pagesize: number){
     const url = `${PREFIX}/bots/${botID}/histories?page=${page}&pagesize=${pagesize}`;
-
-    let res;
-
-    try {
-        res = await getJson(url);
-        console.log(res);
-    }
-    catch (e) {
-        console.error(e);
-        res = null;
-    }
-    return res["histories"];
+    let res = getJsonOrThrow(url);
+    return res;
 }
 
 export async function getEmptyPromptList(botID: string | undefined): Promise<Prompt[]> {
@@ -69,19 +51,16 @@ export async function getEmptyPromptList(botID: string | undefined): Promise<Pro
     let res;
 
     try {
-        res = await getJson(url);
+        res = await getJsonOrThrow(url);
     } catch (e) {
-        console.error(e);
         res = null;
     }
 
     //create a Prompt[] based on the promptKeys
     let promptList: Prompt[] = [];
-    for (let i = 0; i < res.promptKeys.length; i++) {
+    for (let i = 0; i < res?.promptKeys.length; i++) {
         promptList.push({ promptKey: res.promptKeys[i], promptValue: "" });
     }
-
-    console.log("getEmptyPromptList: ", promptList);
 
     return promptList;
 }
@@ -91,14 +70,13 @@ export async function getPromptList(historyId: number): Promise<Prompt[]> {
     let res;
 
     try {
-        res = await getJson(url);
-        console.log(res);
+        res = await getJsonOrThrow(url);
     }
     catch (e) {
         console.error(e);
-        res = null;
+        res = [];
     }
-    if (res === null) return [];
+
     return res;
 }
 
@@ -106,7 +84,7 @@ export async function getBotChatList(historyId: number): Promise<BotChat[]> {
     const url = `${PREFIX}/histories/${historyId}/chats`;
 
     try {
-        let res = await getJson(url);
+        let res = await getJsonOrThrow(url);
         console.log(res);
 
         return res['chats'] as BotChat[];

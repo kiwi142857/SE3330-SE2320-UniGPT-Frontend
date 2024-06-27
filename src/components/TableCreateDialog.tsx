@@ -32,10 +32,6 @@ const TableCreateDialog =
 
         useEffect(() => {
             const getPrompt = async () => {
-                console.log("In getPrompt:");
-                console.log("historyId: ", historyId);
-                console.log("botID: ", botID);
-                console.log("cond: ", historyId == 0);
 
                 const list = historyId == 0 ? await getEmptyPromptList(botID) : await getPromptList(historyId);
                 setPromptList(list);

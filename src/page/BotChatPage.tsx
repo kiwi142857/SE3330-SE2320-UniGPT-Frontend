@@ -48,10 +48,14 @@ const BotChatPage = () => {
     const { t } = useTranslation();
 
     const fetchAndUpdateBrief = async () => {
-        const brief = await getBotBrief(botID);
-        setBotBriefInfo(brief);
-        console.log("brief: ", brief);
+        await getBotBrief(botID)
+            .then((brief) => setBotBriefInfo(brief))
+            .catch((e) => {
+                setBotBriefInfo(null);
+                messageError("Failed to get bot info: " + e.message)
+            });
     };
+
     const fetchAndSetUser = async () => {
         await getMe().then((res) => {
             setUser(res);
@@ -59,11 +63,17 @@ const BotChatPage = () => {
             messageError("Failed to get user info: " + e.message);
         });
     };
+
     // 从后端获取 botChatHistoryList并更新state
     const fetchAndSetBotChatHistoryList = async () => {
-        let list = await getBotChatHistoryList(botID, 0, 20);
-        setBotChatHistoryList(list ?? []);
+        await getBotChatHistoryList(botID, 0, 20)
+            .then((list) => setBotChatHistoryList(list.histories))
+            .catch((e) => {
+                setBotChatHistoryList([]);
+                messageError("Failed to get chat history list: " + e.message);
+            });
     };
+    
     const fetchAndSetBotChatList = async () => {
         const list = selectedHistoryId ? await getBotChatList(selectedHistoryId) : [];
         setBotChatList(list);

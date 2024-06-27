@@ -59,14 +59,13 @@ export default function UserCard({ user, isMe, isAdmin, userId }: { user: User; 
     const getUserBanState = async () => {
         console.log("get user ban state, userId:", userId);
         if(userId === null) return;
-        const response = await isUserBanned(userId);
-        console.log("get user ban state, response:", response);
-        if (response.ok) {
-            setIsBanned(response.message == 'true');
-        }
-        else {
-            messageError('获取用户封禁状态失败');
-        }
+        await isUserBanned(userId)
+            .then(response => {
+                if (response.ok)
+                    setIsBanned(response.message == 'true');
+            }).catch(e => {
+                messageError('获取用户封禁状态失败' + e.message);
+            });
     };
 
     useEffect(() => {

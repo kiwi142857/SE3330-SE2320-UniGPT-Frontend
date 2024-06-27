@@ -12,7 +12,7 @@ export interface ResponseData {
     message: string;
 }
 
-export async function getJsonOrThrow(url: string) {
+export async function getJsonOrThrow(url: string): Promise<any> {
     let result;
     try {
         result = await getJsonBasic(url);
