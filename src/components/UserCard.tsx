@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import '../css/Profile.css';
+import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { logout } from '../service/auth';
 import { imageUpload } from '../service/upload';
 import { PostUser, User, banUser, isUserBanned, putUser } from '../service/user';
 import ProfileDialog from './ProfileDialog';
-import SnackBar from './Snackbar';
 
 export default function UserCard({ user, isMe, isAdmin, userId }: { user: User; isMe: boolean; isAdmin: boolean; userId: number|null; }) {
 
@@ -18,18 +18,12 @@ export default function UserCard({ user, isMe, isAdmin, userId }: { user: User; 
     const [canvasUrl, setCanvasUrl] = useState('');
 
     const [tableOpen, setTableOpen] = useState(false);
+    const {messageError, ErrorSnackbar} = useErrorHandler();
 
-    const [alert, setAlert] = useState(false);
-    const [alertMessage, setAlertMessage] = useState('');
     const navigate = useNavigate();
 
     const [avatarSrc, setAvatarSrc] = useState('/assets/user-default.png');
     const [isBanned, setIsBanned] = useState<boolean>(false);
-
-    const Alert = (message: string) => {
-        setAlert(true);
-        setAlertMessage(message);
-    }
 
     const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -51,16 +45,13 @@ export default function UserCard({ user, isMe, isAdmin, userId }: { user: User; 
         };
 
         if (username === '') {
-            Alert('用户名不能为空');
+            messageError('用户名不能为空');
             return;
         }
 
-        try {
-            console.log(updatedUser);
-            await putUser(updatedUser, user.id);
-        } catch (error) {
-            Alert('更新信息失败');
-        }
+        let res = await putUser(updatedUser, user.id);
+        if (!res.ok) 
+            messageError('更新信息失败');
 
         setTableOpen(false);
     };
@@ -68,14 +59,13 @@ export default function UserCard({ user, isMe, isAdmin, userId }: { user: User; 
     const getUserBanState = async () => {
         console.log("get user ban state, userId:", userId);
         if(userId === null) return;
-        const response = await isUserBanned(userId);
-        console.log("get user ban state, response:", response);
-        if (response.ok) {
-            setIsBanned(response.message == 'true');
-        }
-        else {
-            Alert('获取用户封禁状态失败');
-        }
+        await isUserBanned(userId)
+            .then(response => {
+                if (response.ok)
+                    setIsBanned(response.message == 'true');
+            }).catch(e => {
+                messageError('获取用户封禁状态失败' + e.message);
+            });
     };
 
     useEffect(() => {
@@ -89,9 +79,8 @@ export default function UserCard({ user, isMe, isAdmin, userId }: { user: User; 
         const response = await banUser({ userId, isBan: !isBanned });
         if (response.ok) {
             setIsBanned(true);
-        }
-        else {
-            Alert('封禁用户失败');
+        } else {
+            messageError('封禁用户失败');
         }
         getUserBanState();
     };
@@ -102,7 +91,7 @@ export default function UserCard({ user, isMe, isAdmin, userId }: { user: User; 
             navigate('/login');
         }
         else {
-            Alert('登出失败');
+            messageError("登出失败:" + response.message);
         };
     };
 
@@ -123,12 +112,7 @@ export default function UserCard({ user, isMe, isAdmin, userId }: { user: User; 
     }, [user]);
 
     return [
-        <SnackBar
-            open={alert}
-            message={alertMessage}
-            setOpen={setAlert}
-        />,
-
+        <ErrorSnackbar/>,
         <ProfileDialog
             open={tableOpen}
             handleClose={() => { setTableOpen(false); window.location.reload(); }}

@@ -1,20 +1,17 @@
-import { Divider, Tab, Tabs, Typography } from '@mui/material';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Tab, Tabs, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useParams } from 'react-router-dom';
 import BotCarousel from '../components/BotCarousel';
 import BotDetailCard from '../components/BotDetailCard';
 import { CommentInput } from '../components/Inputs';
-import { Comment, CommentList, botDetailInfo, getBotComments, getBotDetail, postComment } from '../service/BotDetail';
-import { getMe } from '../service/user';
-
-import SnackBar from '../components/Snackbar';
+import OneComment from '../components/OneComment';
 import '../css/App.css';
 import '../css/BotDetailPage.css';
-import { useTranslation } from 'react-i18next';
-import OneComment from '../components/OneComment';
+import { Comment, CommentList, botDetailInfo, getBotComments, getBotDetail, postComment } from '../service/BotDetail';
+import { getMe } from '../service/user';
 
 
 // bot详情页
@@ -22,7 +19,6 @@ const BotDetailPage: React.FC = () => {
     const [bot, setBot] = useState<botDetailInfo | null>(null);
     const [comments, setComments] = useState<CommentList>();
     const [user, setUser] = useState({ id: 0, name: '', avatar: '' });
-
     const [alert, setAlert] = useState(false);
 
     let { id } = useParams<{ id: string }>();
@@ -31,25 +27,23 @@ const BotDetailPage: React.FC = () => {
 
     const getBot = async () => {
         if (id) {
-            const bot = await getBotDetail(id);
-            if (bot)
-                setBot(bot);
-            else
-                setAlert(true);
+            await getBotDetail(id)
+                .then((res) => setBot(res))
+                .catch(() => setAlert(true));
         }
     }
 
     const getComments = async () => {
         if (id) {
-            let com = await getBotComments(id, 0, 20);
-            setComments(com);
+            await getBotComments(id, 0, 20)
+                .then((com) => setComments(com))
+                .catch(() => setComments({ total: 0, comments: [] }));
         }
     }
 
     const getUser = async () => {
-        let me = await getMe();
-        if (me)
-            setUser(me);
+        await getMe().then((res) => setUser(res))
+            .catch(() => console.log('Failed to get user'));
     }
 
     const handleClose = () => {

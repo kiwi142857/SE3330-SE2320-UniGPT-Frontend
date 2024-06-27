@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/Navigator.css';
-import { getMe, getMeStatus } from '../service/user';
+import { getMe } from '../service/user';
 import LanguageButton from './LanguageButton';
 import { ListButton } from './ListButton';
 
@@ -17,19 +17,12 @@ const Navigator: React.FC<{}> = () => {
         if (window.location.pathname === '/login') {
             return;
         }
-        const user = await getMe();
-        const statusCode = await getMeStatus();
-        console.log("statusCode", statusCode);
-        if (statusCode === 403) {
-            alert("用户被封禁"); // 显示错误信息
+        await getMe().then((user) => {
+            if (user.avatar) setAvatar(user.avatar);
+            if (user.asAdmin) setIsAdmin(true);
+        }).catch(() => {
             navigate('/login');
-            return; // 退出函数，防止后续代码执行
-        }
-        console.log("user", user);
-        if (user && user.avatar)
-            setAvatar(user.avatar);
-        if (user && user.asAdmin) setIsAdmin(true);
-        if(!user) navigate('/login');
+        });
     };
 
     useEffect(() => {

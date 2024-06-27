@@ -3,12 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, useSearchParams } from "react-router-dom";
 import { BotList, BotListType } from '../components/BotList';
-import SnackBar from '../components/Snackbar';
 import UserCard from '../components/UserCard';
 import '../css/Profile.css';
+import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { User, getMe, getUser, getUserCreatedBots, getUserFavoriteBots } from '../service/user';
-import { use } from 'i18next';
 
 
 export function BotListTabs({ value, setValue }: { value: number, setValue: React.Dispatch<React.SetStateAction<number>>; }) {
@@ -47,8 +46,7 @@ const ProfilePage = () => {
     const [tabValue, setTabValue] = React.useState(0);
     const [bots, setBots] = useState([]);
 
-    const [alert, setAlert] = useState(false);
-    const [alertMessage, setAlertMessage] = useState('');
+    const {messageError, ErrorSnackbar} = useErrorHandler();
 
     // 语言切换
     useEffect(() => {
@@ -63,10 +61,9 @@ const ProfilePage = () => {
     useEffect(() => {
         const fetchUserid = async () => {
             if(id == null) return;
-            const response = await getUser(id);
-            if (response != null) {
-                setUserId(response.id);
-            }
+            await getUser(id)
+                .then((res) => setUserId(res.id))
+                .catch(() => console.log("Failed to get user id"));
         };
         fetchUserid();
     }, []);
@@ -74,20 +71,20 @@ const ProfilePage = () => {
     // if id == null, get me
     useEffect(() => {
         const fetchUser = async () => {
-            let response = null;
-
             if (id == null) {
-                response = await getMe();
+                await getMe()
+                    .then((res) => setUser(res))
+                    .catch(() => {
+                        setUser(null);
+                        messageError("获取用户信息失败！");
+                    });
             } else {
-                response = await getUser(id);
-            }
-
-            if (response != null) {
-                setUser(response);
-            } else {
-                setUser(null);
-                setAlert(true);
-                setAlertMessage("获取用户信息失败！");
+                await getUser(id)
+                    .then((res) => setUser(res))
+                    .catch(() => {
+                        setUser(null);
+                        messageError("获取用户信息失败！");
+                    });
             }
             console.log("me", user);
         };
@@ -98,13 +95,15 @@ const ProfilePage = () => {
     const [isAdmin, setIsAdmin] = useState(false);
     useEffect(() => {
         const fetchMe = async () => {
-            const response = await getMe();
-            if (response != null) {
-                setIsMe(user?.id === response.id);
-            }
-            if(response?.asAdmin != null){
-                setIsAdmin(response.asAdmin);
-            }
+            await getMe()
+                .then((res) => {
+                    setIsMe(user?.id === res.id);
+                    if (res.asAdmin != null)
+                        setIsAdmin(res.asAdmin);
+                })
+                .catch(() => {
+                    setIsAdmin(false);
+                });
         };
         fetchMe();
     }, [user]);
@@ -113,23 +112,27 @@ const ProfilePage = () => {
     useEffect(() => {
         const fetchBots = async () => {
             if (user == null) return;
-            let response;
             if (tabValue === 0) {
                 console.log("Created");
-                response = await getUserCreatedBots(user.id, pageIndex, pageSize);
+                await getUserCreatedBots(user.id, pageIndex, pageSize)
+                    .then(res => setBots(res.bots))
+                    .catch((e) => {
+                        setBots([]);
+                        messageError("Failed to get created bots" + e.message);
+                    });
             }
             else {
                 console.log("Favorite");
-                response = await getUserFavoriteBots(user.id, pageIndex, pageSize);
-            }
-
-            if (response != null) {
-                setBots(response.bots);
-            } else {
-                setBots([]);
+                await getUserFavoriteBots(user.id, pageIndex, pageSize)
+                    .then(res => setBots(res.bots))
+                    .catch((e) => {
+                        setBots([]);
+                        messageError("Failed to get favorite bots" + e.message);
+                    });
             }
             console.log("bots", bots);
         };
+
         fetchBots();
     }, [tabValue, user, pageIndex, pageSize]);
 
@@ -139,11 +142,6 @@ const ProfilePage = () => {
 
     return (
         <>
-            <SnackBar
-                open={alert}
-                message={alertMessage}
-                setOpen={setAlert}
-            />
             {
                 user == null ? <></> :
                     <>

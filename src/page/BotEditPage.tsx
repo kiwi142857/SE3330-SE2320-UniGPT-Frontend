@@ -5,9 +5,9 @@ import { useParams } from "react-router-dom";
 import BotEditBasicPart from '../components/BotEditBasicPart';
 import BotEditMarketPart from "../components/BotEditMarketPart";
 import BotEditPromptPart from '../components/BotEditPromptPart';
-import SnackBar from "../components/Snackbar";
 import '../css/App.css';
 import '../css/BotEditPage.css';
+import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { botEditInfo, createBot, fewShot, getBotEditInfo, updateBot } from '../service/BotEdit';
 import { apiToString, stringToApi } from "../utils/api";
@@ -44,8 +44,7 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
     const [publishCheck, setPublishCheck] = useState<boolean>(false);
     const [promptKeys, setPromptKeys] = useState<string[]>([]);
 
-    const [alert, setAlert] = useState(false);
-    const [alertMessage, setAlertMessage] = useState('');
+    const {messageError, ErrorSnackbar} = useErrorHandler();
 
     useEffect(() => {
         if (edit) {
@@ -64,21 +63,18 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
         if (!id) {
             return;
         }
-        let info = await getBotEditInfo(id);
-        if (info !== null) {
-            info.baseModelAPI = Number(info.baseModelAPI);
-            info.temperature = Number(info.temperature);
-            console.log(info);
-            setBotEditInfo(info);
-            setAvatarImg(info.avatar);
-            setPhotoImgs(info.photos);
-            setPromptCheck(info.prompted);
-            setPublishCheck(info.published);
-            setFewShots(info.promptChats);
-        } else {
-            setAlert(true);
-            setAlertMessage("获取bot信息失败");
-        }
+        await getBotEditInfo(id)
+            .then((info) => {
+                info.baseModelAPI = Number(info.baseModelAPI);
+                info.temperature = Number(info.temperature);
+                setBotEditInfo(info);
+                setAvatarImg(info.avatar);
+                setPhotoImgs(info.photos);
+                setPromptCheck(info.prompted);
+                setPublishCheck(info.published);
+                setFewShots(info.promptChats);
+            })
+            .catch(e => messageError("获取bot信息失败: " + e.message));
     }
 
     const onSubmit = async (event: React.FormEvent) => {
@@ -105,8 +101,7 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
         }
 
         if (promptCheck && promptKeys.length === 0) {
-            setAlert(true);
-            setAlertMessage("请至少添加一个变量");
+            messageError("请至少添加一个变量");
             return;
         }
 
@@ -126,7 +121,7 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
 
         console.log(newInfo);
 
-        let res;
+        let res = { ok: false, message: '' };
 
         if (edit) {
             if (id) {
@@ -136,36 +131,26 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
             res = await createBot(newInfo);
         }
 
-        if (res) {
-            if (res.ok) {
-                let href = '/botChat/';
+        if (res.ok) {
+            let href = '/botChat/';
 
-                if (edit) {
-                    href += id;
-                } else {
-                    href += res.message;
-                }
+            if (edit)
+                href += id;
+            else
+                href += res.message;
 
-                setTimeout(() => {
-                    window.location.href = href;
-                }, 100);
-            } else {
-                setAlert(true);
-                setAlertMessage("bot创建/修改表单提交失败: " + res.message);
-            }
+            setTimeout(() => {
+                window.location.href = href;
+            }, 100);
+        } else {
+            messageError("bot创建/修改表单提交失败: " + res.message);
         }
     };
 
     return [
+        <ErrorSnackbar/>,
         <div className='main-container bot-edit-container'>
             <form onSubmit={onSubmit}>
-
-                <SnackBar
-                    open={alert}
-                    setOpen={setAlert}
-                    message={alertMessage}
-                />
-
                 <BotEditBasicPart
                     avatarImg={avatarImg}
                     setAvatarImg={setAvatarImg}

@@ -2,14 +2,13 @@ import { Pagination } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from "react-router-dom";
+import { UserList, UserListType } from '../components/UserList';
 import UserListSearch from '../components/UserListSearch';
-import MarketSearch from '../components/MarketSearch';
 import '../css/Market.css';
+import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { getSearchUserList } from '../service/user';
-import { UserListType } from '../components/UserList';
-import { UserList } from '../components/UserList';
-// bot市场
+
 const UserListPage: React.FC = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
@@ -20,15 +19,21 @@ const UserListPage: React.FC = () => {
     const [tabValue, setTabValue] = React.useState(1);
     const [totalPage, setTotalPage] = useState(0);
 
-    const [users, setUsers] = useState([]); // [botListType
+    const [users, setUsers] = useState([]);
+    const {messageError, ErrorSnackbar} = useErrorHandler();
+
     const getSearchUsers = async () => {
         let type = tabValue === 0 ? "id" : "name";
         
-        let response = await getSearchUserList(pageIndex, pageSize, searchParams.get("keyword") || "", type);
-        console.log(response);
-        setUsers(response.users || []);
-        if(!response.total) response.total = 0;
-        setTotalPage(response.total % pageSize === 0 ? response.total / pageSize : Math.floor(response.total / pageSize) + 1);
+        await getSearchUserList(pageIndex, pageSize, searchParams.get("keyword") || "", type)
+            .then(response => {
+                setUsers(response.users || []);
+                if(!response.total) response.total = 0;
+                setTotalPage(response.total % pageSize === 0 ? response.total / pageSize : Math.floor(response.total / pageSize) + 1);
+            })
+            .catch(e => {
+                messageError("Failed to get user list: " + e.message);
+            });
     };
 
     const context = React.useContext(LanguageContext);
@@ -60,6 +65,7 @@ const UserListPage: React.FC = () => {
 
     return (
         <div className='nav'>
+            <ErrorSnackbar />
             <div style={{ marginTop: '100px' }}>
                 <UserListSearch tabValue={tabValue} setTabValue={setTabValue} onChange={handleSearch}></UserListSearch>
             </div>

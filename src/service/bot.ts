@@ -1,4 +1,4 @@
-import { getJson, PREFIX } from './common';
+import { PREFIX, getJsonOrThrow } from './common';
 
 export interface Bot {
     id: number;
@@ -12,17 +12,8 @@ interface BotResponse {
     total: number;
 }
 
-export async function getSearchBotList(page: number, pageSize: number, q: string, order: string): Promise<BotResponse | null>  {
+export async function getSearchBotList(page: number, pageSize: number, q: string, order: string): Promise<BotResponse>  {
     const url = `${PREFIX}/bots?page=${page}&pagesize=${pageSize}&q=${q}&order=${order}`;
-    let data = null;
-    
-    try{
-        console.log("url", url);
-        data = await getJson(url);
-    }
-    catch(e){
-        console.log("GetSearchBotListError: ", e);
-    }
-
+    let data = await getJsonOrThrow(url);
     return data;
 }

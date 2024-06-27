@@ -1,17 +1,13 @@
 import Grid from '@mui/material/Grid';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FavoriteHeader, BotList, RecentUsedHeader } from "../components/BotList";
-import '../css/Home.css';
 import { useSearchParams } from "react-router-dom";
+import { BotList, BotListType, FavoriteHeader, RecentUsedHeader } from "../components/BotList";
+import '../css/Home.css';
+import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { Bot } from '../service/bot';
-import { use } from 'i18next';
-import { useState } from 'react';
-import { getUserFavoriteBots } from '../service/user';
-import { getUerUsedBots, User } from '../service/user';
-import { getMe } from '../service/user';
-import { BotListType } from '../components/BotList';
+import { User, getMe, getUerUsedBots, getUserFavoriteBots } from '../service/user';
 
 const HomePage: React.FC = () => {
 
@@ -28,15 +24,14 @@ const HomePage: React.FC = () => {
 
     const [Favoritebots, setFavoriteBots] = React.useState<Bot[] | null>([]);
 
+    const {messageError, ErrorSnackbar} = useErrorHandler();
+
     // 获取用户信息
     const [me, setMe] = useState<User | null>(null);
     useEffect(() => {
         const fetchMe = async () => {
-            const response = await getMe();
-
-            setMe(response);
-            console.log("response", response);
-            console.log("me", me);
+            await getMe().then((res) => setMe(res))
+                .catch(() => setMe(null));
         };
         fetchMe();
     }, []);
@@ -48,11 +43,18 @@ const HomePage: React.FC = () => {
     useEffect(() => {
         const fetchBots = async () => {
             if (!me) return;
-            let response;
-            response = await getUerUsedBots(me.id, pageIndex, pageSize);
-            setUsedBots(response.bots);
-            response = await getUserFavoriteBots(me.id, pageIndex, pageSize);
-            setFavoriteBots(response.bots);
+            await getUerUsedBots(me.id, pageIndex, pageSize)
+                .then(res => setUsedBots(res.bots))
+                .catch((e) => {
+                    setUsedBots(null); 
+                    messageError("Failed to get used bots" + e.message);
+                });
+            await getUserFavoriteBots(me.id, pageIndex, pageSize)
+                .then(res => setFavoriteBots(res.bots))
+                .catch((e) => {
+                    setFavoriteBots(null);
+                    messageError("Failed to get favorite bots" + e.message);
+                });
         };
         fetchBots();
     }, [me]);
@@ -68,6 +70,7 @@ const HomePage: React.FC = () => {
     console.log("me", me);
     return (
         <div>
+            <ErrorSnackbar />
             <div>
                 <video className='home-bg' autoPlay loop muted>
                     <source src="/assets/homepage.mp4" type="video/mp4" />

@@ -4,22 +4,21 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useRef, useState } from 'react';
-import { createWebSocketConnection, sendMessage } from "../service/webSocket";
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
 import BotBriefCard from "../components/BotBriefCard";
 import ChatHistoryList from "../components/ChatHistoryList";
+import ChatWindow from "../components/ChatWindow";
 import { PromptInput } from "../components/Inputs";
 import TableCreateDialog from "../components/TableCreateDialog";
 import theme from "../components/theme";
 import '../css/App.css';
 import '../css/BotChatPage.css';
-import { Prompt, BotChat, BotChatHistory, BotBriefInfo, getBotChatHistoryList, getBotBrief, getBotChatList, createHistory, deleteHistory } from "../service/BotChat";
-import { useParams } from "react-router-dom";
+import { useErrorHandler } from "../hooks/errorHandler.tsx";
+import { BotBriefInfo, BotChat, BotChatHistory, Prompt, createHistory, deleteHistory, getBotBrief, getBotChatHistoryList, getBotChatList } from "../service/BotChat";
 import { getMe } from "../service/user";
-import ChatWindow from "../components/ChatWindow";
-import { use } from "i18next";
+import { createWebSocketConnection, sendMessage } from "../service/webSocket";
 import { ellipsisStr } from "../utils/strUtils.ts";
-
 
 // bot聊天页
 // 侧边栏宽度
@@ -28,7 +27,6 @@ const BotChatPage = () => {
     // TODO: 重构
     let { botID } = useParams<{ botID: string; }>();
     botID === undefined ? botID = "" : botID = botID;
-
 
     const [botChatHistoryList, setBotChatHistoryList] = useState<BotChatHistory[]>([]);
     const [selectedHistoryId, setSelectedHistoryId] = useState(0);
@@ -45,23 +43,37 @@ const BotChatPage = () => {
     const [responding, setResponding] = useState(false);
 
     const [botChatHistoryLoading, setBotChatHistoryLoading] = useState(true);
+    const {messageError, ErrorSnackbar} = useErrorHandler();
 
     const { t } = useTranslation();
 
     const fetchAndUpdateBrief = async () => {
-        const brief = await getBotBrief(botID);
-        setBotBriefInfo(brief);
-        console.log("brief: ", brief);
+        await getBotBrief(botID)
+            .then((brief) => setBotBriefInfo(brief))
+            .catch((e) => {
+                setBotBriefInfo(null);
+                messageError("Failed to get bot info: " + e.message)
+            });
     };
+
     const fetchAndSetUser = async () => {
-        let me = await getMe();
-        setUser(me);
+        await getMe().then((res) => {
+            setUser(res);
+        }).catch((e) => {
+            messageError("Failed to get user info: " + e.message);
+        });
     };
+
     // 从后端获取 botChatHistoryList并更新state
     const fetchAndSetBotChatHistoryList = async () => {
-        let list = await getBotChatHistoryList(botID, 0, 20);
-        setBotChatHistoryList(list ?? []);
+        await getBotChatHistoryList(botID, 0, 20)
+            .then((list) => setBotChatHistoryList(list.histories))
+            .catch((e) => {
+                setBotChatHistoryList([]);
+                messageError("Failed to get chat history list: " + e.message);
+            });
     };
+    
     const fetchAndSetBotChatList = async () => {
         const list = selectedHistoryId ? await getBotChatList(selectedHistoryId) : [];
         setBotChatList(list);
@@ -70,6 +82,10 @@ const BotChatPage = () => {
     const onSubmit = async (promptlist: Prompt[]) => {
         console.log("PromptList: ", promptlist);
         const response = await createHistory(botID, promptlist);
+        if (!response.ok) {
+            messageError("开启对话失败");
+            return;
+        }
         const newHistoryId = response.historyid;
         setUserAsk(response.userAsk);
         setBotChatHistoryList([
@@ -110,7 +126,10 @@ const BotChatPage = () => {
         console.log('Delete History: ' + historyid);
         setBotChatHistoryList(botChatHistoryList.filter(item => item.id !== historyid));
         if (historyid === selectedHistoryId) setSelectedHistoryId(0);
-        deleteHistory(historyid);
+        let res = await deleteHistory(historyid);
+        if (!res.ok) {
+            messageError("删除对话历史失败");
+        }
     };
     // 创建新的对话历史
     const onChatClicked = () => {
@@ -304,6 +323,7 @@ const BotChatPage = () => {
                 display: 'flex',
                 flexDirection: 'row',
             }}>
+            <ErrorSnackbar />
             <Drawer
                 variant="permanent"
                 sx={{

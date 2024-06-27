@@ -12,33 +12,27 @@ export interface ResponseData {
     message: string;
 }
 
-export async function getJson(url: string): Promise<any> {
-    let res = await fetch(url, { method: "GET", credentials: "include" });
-    if (res.status === 401) {
-        console.log('Unauthorized');
-        window.location.href = '/login';
-        throw new Error('Unauthorized');
+export async function getJsonOrThrow(url: string): Promise<any> {
+    let result;
+    try {
+        result = await getJsonBasic(url);
+    } catch(e) {
+        throw {ok: false, message: 'network error'};
     }
-    if (!res.ok) {
-        throw new Error("Network error");
+
+    if (result.status !== 200) {
+        throw {ok: false, message: result.json.message ?? 'network error'};
     }
-    return res.json();
+    return result.json;
 }
 
-export async function get(url: string): Promise<Response> {
+export async function getJsonBasic(url: string): Promise<any> {
     let res = await fetch(url, { method: "GET", credentials: "include" });
-    if (res.status === 401) {
-        console.log('Unauthorized');
-        window.location.href = '/login';
-        throw new Error('Unauthorized');
-    }
-    if(res.status === 403){
-        return res;
-    }
-    if (!res.ok) {
-        throw new Error("Network error");
-    }
-    return res;
+    checkStatus(res);
+    return {
+        json: await res.json(),
+        status: res.status,
+    };
 }
 
 export async function put(url: string, data: any): Promise<any> {
@@ -51,21 +45,13 @@ export async function put(url: string, data: any): Promise<any> {
         credentials: "include"
     };
     let res = await fetch(url, opts);
-    if (res.status === 401) {
-        console.log('Unauthorized');
-        window.location.href = '/login';
-        throw new Error('Unauthorized');
-    }
+    checkStatus(res);
     return res.json();
 }
 
 export async function del(url: string, data: any): Promise<any> {
     let res = await fetch(url, { method: "DELETE", credentials: "include", body: JSON.stringify(data) });
-    if (res.status === 401) {
-        console.log('Unauthorized');
-        window.location.href = '/login';
-        throw new Error('Unauthorized');
-    }
+    checkStatus(res);
     return res.json();
 }
 
@@ -79,12 +65,21 @@ export async function post(url: string, data: any): Promise<any> {
         credentials: "include"
     };
     let res = await fetch(url, opts);
+    checkStatus(res);
+    return res.json();
+}
+
+function checkStatus(res: Response) {
     if (res.status === 401) {
         console.log('Unauthorized');
         window.location.href = '/login';
         throw new Error('Unauthorized');
+    } else if (res.status === 403) {
+        console.log('Forbidden');
+        alert("您已被封禁");
+        window.location.href = '/login';
+        throw new Error('Forbidden');
     }
-    return res.json();
 }
 
 export const BACKEND_SERVER_IP = process.env.REACT_APP_IP ?? 'localhost';

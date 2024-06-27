@@ -1,4 +1,4 @@
-import { DUMMY_RESPONSE, PREFIX, del, getJson, post, put } from './common';
+import { DUMMY_RESPONSE, PREFIX, del, getJsonOrThrow, post, put } from './common';
 
 export interface botDetailInfo {
     id: string;
@@ -36,16 +36,7 @@ export interface CommentList {
 export async function getBotDetail(id: string): Promise<botDetailInfo | null> {
 
     const url = `${PREFIX}/bots/${id}?info=detail`;
-    let res;
-
-    try {
-        res = await getJson(url);
-    } catch (e) {
-        console.log("In getBotDetail");
-        console.error(e);
-        res = null;
-    }
-
+    let res = await getJsonOrThrow(url);
     return res;
 }
 
@@ -112,23 +103,15 @@ export async function unStarBot(id: string) {
 export async function getBotComments(id: string, page: number, pageSize: number): Promise<CommentList> {
     const url = `${PREFIX}/bots/${id}/comments?page=${page}&pagesize=${pageSize}`;
     let comments: CommentList;
-    try {
-        let data = await getJson(url);
-        comments = {
-            ...data,
-            comments: data.comments.map((comment: any) => ({
-                ...comment,
-                time: new Date(comment.time)
-            }))
-        };
-    } catch (e) {
-        console.error(e);
-        comments = {
-            total: 0,
-            comments: []
-        }
-    }
-
+    let data = await getJsonOrThrow(url);
+    comments = {
+        ...data,
+        comments: data.comments.map((comment: any) => ({
+            ...comment,
+            time: new Date(comment.time)
+        }))
+    };
+    
     return comments;
 }
 
