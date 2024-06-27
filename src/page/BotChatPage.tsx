@@ -53,8 +53,11 @@ const BotChatPage = () => {
         console.log("brief: ", brief);
     };
     const fetchAndSetUser = async () => {
-        let me = await getMe();
-        setUser(me);
+        await getMe().then((res) => {
+            setUser(res);
+        }).catch((e) => {
+            messageError("Failed to get user info: " + e.message);
+        });
     };
     // 从后端获取 botChatHistoryList并更新state
     const fetchAndSetBotChatHistoryList = async () => {

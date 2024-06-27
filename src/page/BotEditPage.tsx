@@ -63,20 +63,18 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
         if (!id) {
             return;
         }
-        let info = await getBotEditInfo(id);
-        if (info !== null) {
-            info.baseModelAPI = Number(info.baseModelAPI);
-            info.temperature = Number(info.temperature);
-            console.log(info);
-            setBotEditInfo(info);
-            setAvatarImg(info.avatar);
-            setPhotoImgs(info.photos);
-            setPromptCheck(info.prompted);
-            setPublishCheck(info.published);
-            setFewShots(info.promptChats);
-        } else {
-            messageError("获取bot信息失败");
-        }
+        await getBotEditInfo(id)
+            .then((info) => {
+                info.baseModelAPI = Number(info.baseModelAPI);
+                info.temperature = Number(info.temperature);
+                setBotEditInfo(info);
+                setAvatarImg(info.avatar);
+                setPhotoImgs(info.photos);
+                setPromptCheck(info.prompted);
+                setPublishCheck(info.published);
+                setFewShots(info.promptChats);
+            })
+            .catch(e => messageError("获取bot信息失败: " + e.message));
     }
 
     const onSubmit = async (event: React.FormEvent) => {

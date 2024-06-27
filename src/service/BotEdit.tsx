@@ -1,4 +1,4 @@
-import { DUMMY_RESPONSE, getJson, post, PREFIX, put, ResponseData } from './common';
+import { DUMMY_RESPONSE, getJsonOrThrow, post, PREFIX, put, ResponseData } from './common';
 
 export enum PromptChatType {
     USER, ASSISTANT, SYSTEM
@@ -38,16 +38,9 @@ export async function createBot(data: botEditInfo): Promise<ResponseData> {
     return res;
 }
 
-export async function getBotEditInfo(id: string): Promise<botEditInfo | null> {
+export async function getBotEditInfo(id: string): Promise<botEditInfo> {
     const url = `${PREFIX}/bots/${id}?info=edit`;
-    let res;
-
-    try {
-        res = await getJson(url);
-    } catch (e) {
-        res = null;
-    }
-
+    let res = await getJsonOrThrow(url);
     return res;
 }
 

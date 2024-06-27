@@ -42,9 +42,8 @@ const BotDetailPage: React.FC = () => {
     }
 
     const getUser = async () => {
-        let me = await getMe();
-        if (me)
-            setUser(me);
+        await getMe().then((res) => setUser(res))
+            .catch(() => console.log('Failed to get user'));
     }
 
     const handleClose = () => {
