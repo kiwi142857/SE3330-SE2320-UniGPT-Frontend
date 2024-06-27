@@ -35,18 +35,6 @@ export async function getJsonBasic(url: string): Promise<any> {
     };
 }
 
-export async function getJson(url: string): Promise<any> {
-    let res = await fetch(url, { method: "GET", credentials: "include" });
-    checkStatus(res);
-    return res.json();
-}
-
-export async function get(url: string): Promise<Response> {
-    let res = await fetch(url, { method: "GET", credentials: "include" });
-    checkStatus(res);
-    return res;
-}
-
 export async function put(url: string, data: any): Promise<any> {
     let opts: FetchOptions = {
         method: "PUT",
