@@ -5,6 +5,7 @@ import { useSearchParams } from "react-router-dom";
 import { BotList, BotListType } from '../components/BotList';
 import MarketSearch from '../components/MarketSearch';
 import '../css/Market.css';
+import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { Bot, getSearchBotList } from '../service/bot';
 
@@ -18,15 +19,19 @@ const MarketPage: React.FC = () => {
     const pageSize = pageSizeStr != null ? Number.parseInt(pageSizeStr) : 15;
     const [tabValue, setTabValue] = React.useState(1);
     const [totalPage, setTotalPage] = useState(0);
+    const {messageError, ErrorSnackbar} = useErrorHandler();
 
     const [bots, setBots] = useState<Bot[]>([]); // [botListType
     const getSearchBots = async () => {
         let order = tabValue === 0 ? "latest" : "like";
-        let response = await getSearchBotList(pageIndex, pageSize, searchParams.get("keyword") || "", order);
-        if (response != null) {
-            setBots(response.bots);
-            setTotalPage(response.total % pageSize === 0 ? response.total / pageSize : Math.floor(response.total / pageSize) + 1);
-        }
+        getSearchBotList(pageIndex, pageSize, searchParams.get("keyword") || "", order)
+            .then(response => {
+                setBots(response.bots);
+                setTotalPage(response.total % pageSize === 0 ? response.total / pageSize : Math.floor(response.total / pageSize) + 1);
+            })
+            .catch(e => {
+                messageError("Failed to get bot list: " + e.message);
+            });
     }
 
     const context = React.useContext(LanguageContext);
@@ -58,6 +63,7 @@ const MarketPage: React.FC = () => {
 
     return (
         <div className='nav'>
+            <ErrorSnackbar />
             <div style={{ marginTop: '100px' }}>
                 <MarketSearch tabValue={tabValue} setTabValue={setTabValue} onChange={handleSearch}></MarketSearch>
             </div>

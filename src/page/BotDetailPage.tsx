@@ -27,18 +27,17 @@ const BotDetailPage: React.FC = () => {
 
     const getBot = async () => {
         if (id) {
-            const bot = await getBotDetail(id);
-            if (bot)
-                setBot(bot);
-            else
-                setAlert(true);
+            await getBotDetail(id)
+                .then((res) => setBot(res))
+                .catch(() => setAlert(true));
         }
     }
 
     const getComments = async () => {
         if (id) {
-            let com = await getBotComments(id, 0, 20);
-            setComments(com);
+            await getBotComments(id, 0, 20)
+                .then((com) => setComments(com))
+                .catch(() => setComments({ total: 0, comments: [] }));
         }
     }
 
