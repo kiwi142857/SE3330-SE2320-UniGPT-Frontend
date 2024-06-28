@@ -7,7 +7,7 @@ import SearchBar, { SearchTabs } from '../components/Search';
 import '../css/Market.css';
 import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
-import { Bot, getSearchBotList } from '../service/bot';
+import { Bot, getSearchBotList, getSearchPluginList } from '../service/market';
 
 // bot市场
 const MarketPage: React.FC = () => {
@@ -23,16 +23,28 @@ const MarketPage: React.FC = () => {
     const {messageError, ErrorSnackbar} = useErrorHandler();
 
     const [bots, setBots] = useState<Bot[]>([]); // [botListType
-    const getSearchBots = async () => {
+
+    const getSearch = async () => {
         let order = tabValue === 0 ? "latest" : "like";
-        getSearchBotList(pageIndex, pageSize, searchParams.get("keyword") || "", order)
-            .then(response => {
-                setBots(response.bots);
-                setTotalPage(response.total % pageSize === 0 ? response.total / pageSize : Math.floor(response.total / pageSize) + 1);
-            })
-            .catch(e => {
-                messageError("Failed to get bot list: " + e.message);
-            });
+        if (marketValue === 1) {
+            getSearchPluginList(pageIndex, pageSize, searchParams.get("keyword") || "", order)
+                .then(response => {
+                    setBots(response.plugins);
+                    setTotalPage(response.total % pageSize === 0 ? response.total / pageSize : Math.floor(response.total / pageSize) + 1);
+                })
+                .catch(e => {
+                    messageError("Failed to get plugin list: " + e.message);
+                });
+        } else {
+            getSearchBotList(pageIndex, pageSize, searchParams.get("keyword") || "", order)
+                .then(response => {
+                    setBots(response.bots);
+                    setTotalPage(response.total % pageSize === 0 ? response.total / pageSize : Math.floor(response.total / pageSize) + 1);
+                })
+                .catch(e => {
+                    messageError("Failed to get bot list: " + e.message);
+                });
+        }
     }
 
     const context = React.useContext(LanguageContext);
@@ -43,8 +55,8 @@ const MarketPage: React.FC = () => {
     }, [context?.language, i18n]);
 
     useEffect(() => {
-        getSearchBots();
-    }, [searchParams, tabValue]);
+        getSearch();
+    }, [searchParams, tabValue, marketValue]);
 
     console.log("bots", bots);
 
@@ -55,7 +67,7 @@ const MarketPage: React.FC = () => {
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
         console.log("page change", value - 1);
         setPageIndex(value - 1);
-        setSearchParams({ pageIndex: (value).toString() }); // Update the pageIndex when the page changes
+        setSearchParams({ ...searchParams, pageIndex: (value).toString() });
     };
 
     const botListType: BotListType = {

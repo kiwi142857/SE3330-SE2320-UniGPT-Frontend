@@ -6,7 +6,7 @@ import { BotList, BotListType, FavoriteHeader, RecentUsedHeader } from "../compo
 import '../css/Home.css';
 import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
-import { Bot } from '../service/bot';
+import { Bot } from '../service/market';
 import { User, getMe, getUerUsedBots, getUserFavoriteBots } from '../service/user';
 
 const HomePage: React.FC = () => {

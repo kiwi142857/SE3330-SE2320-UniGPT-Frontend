@@ -1,11 +1,11 @@
-import * as React from 'react';
 import Card from '@mui/material/Card';
-import Link from '@mui/material/Link';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
+import * as React from 'react';
 import '../css/Home.css';
-import { Bot } from '../service/bot';
+import { Bot } from '../service/market';
 
 
 export default function BotCard({ Bot }: { Bot: Bot }) {
@@ -16,7 +16,7 @@ export default function BotCard({ Bot }: { Bot: Bot }) {
         <CardMedia style={{ width: '70px', height: '70px', marginLeft: '5%', borderRadius: '20px', marginBottom: '0px', marginTop: '25px' }}
           component="img"
           image={Bot.avatar}
-          alt="bot-default"
+          alt="default"
         />
         <CardContent >
           <Typography className='bot-card-name'>

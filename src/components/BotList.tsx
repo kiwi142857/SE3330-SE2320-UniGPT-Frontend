@@ -14,7 +14,7 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LanguageContext } from "../provider/LanguageProvider";
-import { Bot } from '../service/bot';
+import { Bot } from '../service/market';
 import BotCard from './BotCard';
 
 

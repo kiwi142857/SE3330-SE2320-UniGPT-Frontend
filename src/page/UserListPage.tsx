@@ -56,7 +56,7 @@ const UserListPage: React.FC = () => {
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
         console.log("page change", value - 1);
         setPageIndex(value - 1);
-        setSearchParams({ pageIndex: (value).toString() }); // Update the pageIndex when the page changes
+        setSearchParams({ ...searchParams, pageIndex: (value).toString() });
     };
 
     const userListType: UserListType = {
