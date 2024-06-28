@@ -3,11 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from "react-router-dom";
 import { BotList, BotListType } from '../components/BotList';
+import { PluginList } from '../components/PluginList';
 import SearchBar, { SearchTabs } from '../components/Search';
 import '../css/Market.css';
 import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
-import { Bot, getSearchBotList, getSearchPluginList } from '../service/market';
+import { Bot, Plugin, getSearchBotList, getSearchPluginList } from '../service/market';
 
 // bot市场
 const MarketPage: React.FC = () => {
@@ -23,13 +24,14 @@ const MarketPage: React.FC = () => {
     const {messageError, ErrorSnackbar} = useErrorHandler();
 
     const [bots, setBots] = useState<Bot[]>([]); // [botListType
+    const [plugins, setPlugins] = useState<Plugin[]>([]);
 
     const getSearch = async () => {
         let order = tabValue === 0 ? "latest" : "like";
         if (marketValue === 1) {
             getSearchPluginList(pageIndex, pageSize, searchParams.get("keyword") || "", order)
                 .then(response => {
-                    setBots(response.plugins);
+                    setPlugins(response.plugins);
                     setTotalPage(response.total % pageSize === 0 ? response.total / pageSize : Math.floor(response.total / pageSize) + 1);
                 })
                 .catch(e => {
@@ -57,8 +59,6 @@ const MarketPage: React.FC = () => {
     useEffect(() => {
         getSearch();
     }, [searchParams, tabValue, marketValue]);
-
-    console.log("bots", bots);
 
     const handleSearch = (keyword: string) => {
         setSearchParams({ keyword: keyword });
@@ -93,7 +93,10 @@ const MarketPage: React.FC = () => {
             >
             </SearchBar>
             <div style={{ marginTop: '20px' }} className='market-card'>
-                <BotList type={botListType} bots={bots}></BotList>
+                {marketValue === 0 ? 
+                    <BotList type={botListType} bots={bots}></BotList> 
+                    : <PluginList plugins={plugins}></PluginList>
+                }
             </div>
             <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
                 <Pagination count={totalPage} page={pageIndex + 1} onChange={handlePageChange} className='pagination' />

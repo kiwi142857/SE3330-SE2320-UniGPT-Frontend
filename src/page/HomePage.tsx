@@ -1,8 +1,10 @@
+import { Favorite } from '@mui/icons-material';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import Grid from '@mui/material/Grid';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from "react-router-dom";
-import { BotList, BotListType, FavoriteHeader, RecentUsedHeader } from "../components/BotList";
+import { BotList, BotListType, HomeListHeader } from "../components/BotList";
 import '../css/Home.css';
 import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
@@ -79,11 +81,17 @@ const HomePage: React.FC = () => {
 
             {me && <Grid container spacing={8} className='bot-box' >
                 <Grid item xs={6}>
-                    <FavoriteHeader></FavoriteHeader>
+                    <HomeListHeader
+                        title={t('Favorite')}
+                        icon={<Favorite fontSize='large' />}
+                    ></HomeListHeader>
                     <BotList type={favoriteBotsType} bots={Favoritebots}></BotList>
                 </Grid>
                 <Grid item xs={6}>
-                    <RecentUsedHeader></RecentUsedHeader>
+                    <HomeListHeader
+                        title={t('Recently Used')}
+                        icon={<AccessTimeFilledIcon fontSize='large' />}
+                    ></HomeListHeader>
                     <BotList type={usedBotsType} bots={Usedbots}></BotList>
                 </Grid>
             </Grid>}

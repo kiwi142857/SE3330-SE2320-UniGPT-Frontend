@@ -1,5 +1,3 @@
-import { Favorite } from '@mui/icons-material';
-import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { Divider } from '@mui/material';
@@ -15,11 +13,31 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { Bot } from '../service/market';
-import BotCard from './BotCard';
+import ListCard from './ListCard';
 
 
 export interface BotListType {
     type: 'Favorite' | 'Recently used' | 'Market' | 'Profile';
+}
+
+export function HomeListHeader({icon, title}: {icon: React.ReactNode, title: string}) {
+    return (
+        <div style={{ marginLeft: '20px', marginTop: '10px' }}>
+            <Grid container alignItems="center" spacing={2}>
+                <Grid item>
+                    <IconButton>
+                        {icon}
+                    </IconButton>
+                </Grid>
+                <Grid item>
+                    <Typography className='list-header'>
+                        {title}
+                    </Typography>
+                </Grid>
+            </Grid>
+            <Divider className='Divider' />
+        </div>
+    );
 }
 
 function HomeMarketCard() {
@@ -65,7 +83,7 @@ export function HomeCreateCard() {
     );
 }
 
-export function RecentUsedHeader() {
+export function MarketCreateCard() {
     const { t, i18n } = useTranslation();
     const context = React.useContext(LanguageContext);
 
@@ -74,49 +92,23 @@ export function RecentUsedHeader() {
     }, [context?.language, i18n]);
 
     return (
-        <div style={{ marginLeft: '20px', marginTop: '10px' }}>
-            <Grid container alignItems="center" spacing={2}>
-                <Grid item>
-                    <IconButton>
-                        <AccessTimeFilledIcon fontSize='large' />
-                    </IconButton>
-                </Grid>
-                <Grid item>
-                    <Typography className='list-header'>{t('Recently Used')}</Typography>
-                </Grid>
-            </Grid>
-            <Divider className='Divider' />
-        </div>
-    );
-}
-
-export function FavoriteHeader() {
-    const { t, i18n } = useTranslation();
-    const context = React.useContext(LanguageContext);
-
-    useEffect(() => {
-        i18n.changeLanguage(context?.language);
-    }, [context?.language, i18n]);
-    return (
-        <div style={{ marginLeft: '20px', marginTop: '10px' }}>
-            <Grid container alignItems="center" spacing={3}>
-                <Grid item>
-                    <IconButton>
-                        <Favorite fontSize='large' />
-                    </IconButton>
-                </Grid>
-                <Grid item>
-                    <Typography className='list-header'>{t('Favorite')}</Typography>
-                </Grid>
-            </Grid>
-            <Divider className='Divider' />
-        </div>
+        <Link href='/botcreate' style={{ textDecoration: 'none' }} >
+            <Card elevation={0}>
+                <AddCircleOutlineIcon style={{ width: '20%', height: '10%', marginTop: '10%', color: '#666666' }} />
+                <CardContent>
+                    <Typography className='card-discription' color="text.secondary">
+                        {t(" Create your new bot")}
+                    </Typography>
+                </CardContent>
+            </Card>
+        </Link>
     );
 }
 
 export function BotList({ type, bots }: { type: BotListType, bots: Bot[] | null; }) {
 
-    const boxStyle = type.type === 'Favorite' ? { marginLeft: '20px', marginRight: '0' } : { marginLeft: '0', marginRight: '20px' };
+    const boxStyle = type.type === 'Favorite' ? 
+        { marginLeft: '20px', marginRight: '0' } : { marginLeft: '0', marginRight: '20px' };
 
     console.log("type", type, "boxStyle", boxStyle);
     const PrefixComponent = () => {
@@ -131,11 +123,9 @@ export function BotList({ type, bots }: { type: BotListType, bots: Bot[] | null;
             </Grid>;
         }
         else if (type.type === 'Market') {
-            <Grid item xs={4}>
+            return <Grid item xs={4}>
                 <Card className='create-bot-card'>
-                    <div style={{ height: '100%' }}>
-                        <HomeCreateCard></HomeCreateCard>
-                    </div>
+                    <MarketCreateCard></MarketCreateCard>
                 </Card>
             </Grid>;
         }
@@ -151,11 +141,17 @@ export function BotList({ type, bots }: { type: BotListType, bots: Bot[] | null;
                         {PrefixComponent()}
                         {bots.map(bot => (
                             <Grid item xs={4} key={bot.id}>
-                                <BotCard Bot={bot} />
+                                <ListCard
+                                    link={'/botdetail/' + bot.id}
+                                    avatar={bot.avatar}
+                                    name={bot.name}
+                                    description={bot.description}
+                                ></ListCard>
                             </Grid>
                         ))}
                     </Grid>
-                </Box>}
+                </Box>
+            }
         </>
     );
 };
