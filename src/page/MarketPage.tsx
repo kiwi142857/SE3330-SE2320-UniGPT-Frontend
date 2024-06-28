@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from "react-router-dom";
 import { BotList, BotListType } from '../components/BotList';
-import MarketSearch from '../components/MarketSearch';
+import SearchBar, { SearchTabs } from '../components/Search';
 import '../css/Market.css';
 import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
@@ -17,7 +17,8 @@ const MarketPage: React.FC = () => {
     const pageSizeStr = searchParams.get("pageSize");
     const [pageIndex, setPageIndex] = useState(pageIndexStr != null ? Number.parseInt(pageIndexStr) - 1 : 0);
     const pageSize = pageSizeStr != null ? Number.parseInt(pageSizeStr) : 15;
-    const [tabValue, setTabValue] = React.useState(1);
+    const [tabValue, setTabValue] = useState(1);
+    const [marketValue, setMarketValue] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
     const {messageError, ErrorSnackbar} = useErrorHandler();
 
@@ -64,9 +65,21 @@ const MarketPage: React.FC = () => {
     return (
         <div className='nav'>
             <ErrorSnackbar />
-            <div style={{ marginTop: '100px' }}>
-                <MarketSearch tabValue={tabValue} setTabValue={setTabValue} onChange={handleSearch}></MarketSearch>
+            <div className='market-choose'>
+                <SearchTabs
+                    tabValue={marketValue}
+                    setTabValue={setMarketValue}
+                    tabNames={['Bot Market', 'Plugin Market']}
+                >
+                </SearchTabs>
             </div>
+            <SearchBar
+                tabValue={tabValue} 
+                setTabValue={setTabValue} 
+                onChange={handleSearch}
+                tabNames={['Latest', 'Hottest']}
+            >
+            </SearchBar>
             <div style={{ marginTop: '20px' }} className='market-card'>
                 <BotList type={botListType} bots={bots}></BotList>
             </div>

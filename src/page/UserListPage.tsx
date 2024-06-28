@@ -2,8 +2,8 @@ import { Pagination } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from "react-router-dom";
+import SearchBar from '../components/Search';
 import { UserList, UserListType } from '../components/UserList';
-import UserListSearch from '../components/UserListSearch';
 import '../css/Market.css';
 import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
@@ -67,7 +67,13 @@ const UserListPage: React.FC = () => {
         <div className='nav'>
             <ErrorSnackbar />
             <div style={{ marginTop: '100px' }}>
-                <UserListSearch tabValue={tabValue} setTabValue={setTabValue} onChange={handleSearch}></UserListSearch>
+                <SearchBar
+                    tabValue={tabValue} 
+                    setTabValue={setTabValue} 
+                    onChange={handleSearch}
+                    tabNames={['ID', 'Name']}
+                >
+                </SearchBar>
             </div>
             <div style={{ marginTop: '20px' }} className='market-card'>
                 <UserList type={userListType} users={users}></UserList>

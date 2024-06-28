@@ -145,6 +145,7 @@ const ProfilePage = () => {
             {
                 user == null ? <></> :
                     <>
+                        <ErrorSnackbar />
                         <div className='profile-container'>
                             <UserCard user={user} isMe={isMe} isAdmin={isAdmin} userId={userId}></UserCard>
                         </div>

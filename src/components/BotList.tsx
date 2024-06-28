@@ -14,11 +14,8 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LanguageContext } from "../provider/LanguageProvider";
-import { getUserFavoriteBots } from '../service/user';
-import { getUerUsedBots } from '../service/user';
-import { useState } from 'react';
-import BotCard from './BotCard';
 import { Bot } from '../service/bot';
+import BotCard from './BotCard';
 
 
 export interface BotListType {
