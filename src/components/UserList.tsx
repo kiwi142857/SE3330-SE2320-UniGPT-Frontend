@@ -1,29 +1,29 @@
+import { Box, Grid } from '@mui/material';
 import React from 'react';
-import { Box, Grid, Card } from '@mui/material';
+import '../css/Home.css';
 import { User } from '../service/user';
-import UserListCard from './UserListCard';
-export interface UserListType {
-    type: 'Market';
-}
+import ListCard from './ListCard';
 
-export function UserList({ type, users }: { type: UserListType, users: User[] | null; }) {
-
-    
-    console.log("type", type);
-    
+export function UserList({ users }: { users: User[] | null; }) {
     return (
         <>
-            {users == null ? <></> :
-                <Box sx={{ flexGrow: 1 }} >
-                    <Grid container item spacing={4}>
-                        
-                        {users.map(user => (
-                            <Grid item xs={4} key={user.id}>
-                                <UserListCard User={user} />
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Box>}
+            {
+                users == null ? <></> :
+                    <Box sx={{ flexGrow: 1 }} >
+                        <Grid container item spacing={4}>
+                            {users.map(user => (
+                                <Grid item xs={4} key={user.id}>
+                                    <ListCard 
+                                        link={'/profile/' + user.id}
+                                        avatar={user.avatar ? user.avatar : '/assets/user-default.png'}
+                                        name={user.name}
+                                        description={user.description}
+                                    />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </Box>
+            }
         </>
     );
 };

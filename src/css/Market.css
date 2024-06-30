@@ -92,6 +92,7 @@
     letter-spacing: 0em;
     text-align: center;
     color: #666666;
+    text-transform: none !important;
 }
 
 .MuiTabs-indicator {
@@ -107,8 +108,14 @@
     margin-left: -52%;
 }
 
-.market-search {
+.market-choose {
+    display: flex;
+    justify-content: center;
     margin-top: 150px;
+    margin-bottom: 50px;
+}
+
+.search-bar {
     margin-bottom: 50px;
 }
 
@@ -137,7 +144,7 @@
     box-shadow: 4px 4px 10px 0px #00000026 !important;
     text-decoration: none;
     border-radius: 20px !important;
-  }
+}
 
 .botlist-container {
     margin-top: 50px;
