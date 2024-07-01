@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from "react-router-dom";
 import BotEditBasicPart from '../components/BotEditBasicPart';
+import BotEditKnowPart from "../components/BotEditKnowPart";
 import BotEditMarketPart from "../components/BotEditMarketPart";
 import BotEditPromptPart from '../components/BotEditPromptPart';
 import '../css/App.css';
@@ -39,10 +40,14 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
     });
     const [avatarImg, setAvatarImg] = useState<string>('/assets/bot-default.png');
     const [photoImgs, setPhotoImgs] = useState<string[]>([]);
+
     const [fewShots, setFewShots] = useState<fewShot[]>([]);
+    const [promptKeys, setPromptKeys] = useState<string[]>([]);
+
     const [promptCheck, setPromptCheck] = useState<boolean>(false);
     const [publishCheck, setPublishCheck] = useState<boolean>(false);
-    const [promptKeys, setPromptKeys] = useState<string[]>([]);
+    const [knowCheck, setKnowCheck] = useState<boolean>(false);
+    const [pluginCheck, setPluginCheck] = useState<boolean>(false);
 
     const {messageError, ErrorSnackbar} = useErrorHandler();
 
@@ -100,7 +105,7 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
             detail = null;
         }
 
-        if (promptCheck && promptKeys.length === 0) {
+        if (!promptCheck || promptKeys.length === 0) {
             messageError("请至少添加一个变量");
             return;
         }
@@ -123,13 +128,10 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
 
         let res = { ok: false, message: '' };
 
-        if (edit) {
-            if (id) {
-                res = await updateBot(id, newInfo);
-            }
-        } else {
+        if (edit)
+            if (id) res = await updateBot(id, newInfo); 
+        else 
             res = await createBot(newInfo);
-        }
 
         if (res.ok) {
             let href = '/botChat/';
@@ -167,6 +169,13 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
                     promptKeys={promptKeys}
                     fewShots={fewShots}
                     setFewShots={setFewShots}
+                />
+
+                <Divider style={{ marginTop: '20px' }} />
+
+                <BotEditKnowPart
+                    knowCheck={knowCheck}
+                    setKnowCheck={setKnowCheck}
                 />
 
                 <Divider style={{ marginTop: '20px' }} />

@@ -1,11 +1,12 @@
 import AddIcon from '@mui/icons-material/Add';
-import { Checkbox, Grid, IconButton, Typography } from '@mui/material';
+import { Grid, IconButton } from '@mui/material';
 import React, { ChangeEvent, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../css/BotEditPage.css';
 import { LanguageContext } from '../provider/LanguageProvider';
 import { PromptChatType, fewShot } from '../service/BotEdit';
 import BasicInput from './BasicInput';
+import CheckTitle from './CheckTitle';
 import EditLayout from './EditLayout';
 import { MarkdownInput, OneFewShotInput } from './Inputs';
 
@@ -61,19 +62,11 @@ function BotEditPromptPart(
 
     return (
         <div className='edit-prompts-container'>
-            <div className='edit-title-container'>
-                <Checkbox
-                    checked={promptCheck}
-                    onChange={onPromptCheck}
-                />
-                <Typography 
-                    className='edit-label' 
-                    style={{ display: 'flex', alignItems: 'center' }}
-                    sx={{color: 'primary.main'}}
-                >
-                    {t('Define your own prompt list')}
-                </Typography>
-            </div>
+            <CheckTitle
+                check={promptCheck}
+                onCheck={onPromptCheck}
+                title={t('Define your own prompt list')}
+            />
             {promptCheck && (
                 <div className='prompts-list-container'>
                     <EditLayout title={t('System Prompt')}>

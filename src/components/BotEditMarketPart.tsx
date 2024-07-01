@@ -1,11 +1,12 @@
 import RemoveIcon from '@mui/icons-material/Remove';
-import { Button, Checkbox, Grid, IconButton, Typography } from '@mui/material';
+import { Button, Grid, IconButton } from '@mui/material';
 import React, { ChangeEvent, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../css/BotEditPage.css';
 import { LanguageContext } from '../provider/LanguageProvider';
 import { imageUpload } from '../service/upload';
 import BasicInput from './BasicInput';
+import CheckTitle from './CheckTitle';
 import EditLayout from './EditLayout';
 
 function BotEditMarketPart(
@@ -54,19 +55,11 @@ function BotEditMarketPart(
 
     return (
         <div className='edit-publish-container'>
-            <div className='edit-title-container'>
-                <Checkbox
-                    checked={publishCheck}
-                    onChange={(event) => setPublishCheck(event.target.checked)}
-                />
-                <Typography 
-                    className='edit-label' 
-                    style={{ display: 'flex', alignItems: 'center' }}
-                    sx={{color: 'primary.main'}}
-                >
-                    {t('Publish to market')}
-                </Typography>
-            </div>
+            <CheckTitle
+                check={publishCheck}
+                onCheck={(event) => setPublishCheck(event.target.checked)}
+                title={t('Publish to market')}
+            />
             
             {publishCheck && (
                 <>
@@ -86,18 +79,8 @@ function BotEditMarketPart(
                             style={{ display: 'none' }} 
                             onChange={onPhotoUpload} 
                         />
-                        <Grid container>
-                            <Grid item xs={2}>
-                                <Typography 
-                                    className='edit-label' 
-                                    style={{ display: 'flex', alignItems: 'center' }}
-                                    sx={{color: 'primary.main'}}
-                                >
-                                    {t('Photos')}
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={4}>
-                                {photoImgs.map((image, index) => [
+                        <EditLayout title={t('Photos')} leftSpace={2} rightSpace={4}>
+                            {photoImgs.map((image, index) => [
                                     <Grid container spacing={2}>
                                         <Grid item xs={1}>
                                             <div className='oneprompt-element'>
@@ -115,17 +98,16 @@ function BotEditMarketPart(
                                             </div>
                                         </Grid>
                                     </Grid>
-                                ])}
-                                <br/>
-                                <Button 
-                                    variant="contained" 
-                                    onClick={onPhotoClick}
-                                    sx={{backgroundColor: 'primary.light'}}
-                                >
-                                    {t('add image')}
-                                </Button>
-                            </Grid>
-                        </Grid>
+                            ])}
+                            <br/>
+                            <Button 
+                                variant="contained" 
+                                onClick={onPhotoClick}
+                                sx={{backgroundColor: 'primary.light'}}
+                            >
+                                {t('add image')}
+                            </Button>
+                        </EditLayout>
                     </div>
             </>
             )}
