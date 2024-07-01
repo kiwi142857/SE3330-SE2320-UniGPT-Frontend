@@ -11,7 +11,7 @@ import Slider from '@mui/material/Slider';
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "../css/BotChatPage.css";
-import "../css/BotDetailPage.css";
+import "../css/DetailPage.css";
 import "../css/BotEditPage.css";
 import { LanguageContext } from "../provider/LanguageProvider";
 import BasicInput from './BasicInput';

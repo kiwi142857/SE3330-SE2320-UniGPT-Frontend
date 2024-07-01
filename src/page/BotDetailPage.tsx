@@ -6,13 +6,24 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useParams } from 'react-router-dom';
 import BotCarousel from '../components/BotCarousel';
 import BotDetailCard from '../components/BotDetailCard';
+import CallsCard from '../components/CallsCard';
 import { CommentInput } from '../components/Inputs';
 import OneComment from '../components/OneComment';
 import '../css/App.css';
-import '../css/BotDetailPage.css';
+import '../css/DetailPage.css';
 import { Comment, CommentList, botDetailInfo, getBotComments, getBotDetail, postComment } from '../service/BotDetail';
+import { Plugin } from '../service/market';
 import { getMe } from '../service/user';
 
+const plugins = [] as Plugin[];
+for (let i = 1; i < 4; i++) {
+    plugins.push({
+        id: i,
+        name: 'Plugin ' + i,
+        avatar: '/assets/bot' + i + '.png',
+        description: 'This is a plugin'
+    });
+}
 
 // bot详情页
 const BotDetailPage: React.FC = () => {
@@ -75,6 +86,8 @@ const BotDetailPage: React.FC = () => {
                         isCreator={bot.asCreator || false}
                         isAdmin={bot.asAdmin || false}
                     />
+
+                    <CallsCard plugins={plugins} />
 
                     <BotCarousel photos={bot.photos || []} />
 
