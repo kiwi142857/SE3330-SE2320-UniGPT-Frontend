@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import '../css/BotDetailPage.css';
+import '../css/DetailPage.css';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { disLikeBot, likeBot, starBot, unStarBot } from '../service/BotDetail';
 

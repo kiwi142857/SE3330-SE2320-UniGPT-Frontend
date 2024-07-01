@@ -14,7 +14,7 @@ const resources = {
       "Favorite": "收藏",
       "Welcome to UniGPT": "欢迎来到 UniGPT",
       "More from market": "应用市场",
-      " Create your new bot": " 创建你的新机器人",
+      "Create your new bot": " 创建你的新机器人",
       "change your avatar": "更换头像",
       "Username": "用户名",
       "change": "更改",
@@ -92,6 +92,8 @@ const resources = {
       "UserList": "用户列表",
       "Bot Market" : "机器人市场",
       "Plugin Market": "插件市场",
+      "Create your new plugin": "创建你的新插件",
+      "Plugins Called": "调用插件",
     }
   }
 };

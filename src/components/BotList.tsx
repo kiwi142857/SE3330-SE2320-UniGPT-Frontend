@@ -1,16 +1,10 @@
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { Divider } from '@mui/material';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
-import Typography from '@mui/material/Typography';
+import { Box, Card, CardContent, Divider, Grid, IconButton, Link, Typography } from '@mui/material';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import '../css/Market.css';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { Bot } from '../service/market';
 import ListCard from './ListCard';
@@ -83,7 +77,7 @@ export function HomeCreateCard() {
     );
 }
 
-export function MarketCreateCard() {
+export function MarketCreateCard({link,text}: {link: string, text: string}) {
     const { t, i18n } = useTranslation();
     const context = React.useContext(LanguageContext);
 
@@ -92,12 +86,12 @@ export function MarketCreateCard() {
     }, [context?.language, i18n]);
 
     return (
-        <Link href='/botcreate' style={{ textDecoration: 'none' }} >
+        <Link href={link} style={{ textDecoration: 'none' }} >
             <Card elevation={0}>
                 <AddCircleOutlineIcon style={{ width: '20%', height: '10%', marginTop: '10%', color: '#666666' }} />
                 <CardContent>
                     <Typography className='card-discription' color="text.secondary">
-                        {t(" Create your new bot")}
+                        {t(text)}
                     </Typography>
                 </CardContent>
             </Card>
@@ -125,7 +119,7 @@ export function BotList({ type, bots }: { type: BotListType, bots: Bot[] | null;
         else if (type.type === 'Market') {
             return <Grid item xs={4}>
                 <Card className='create-bot-card'>
-                    <MarketCreateCard></MarketCreateCard>
+                    <MarketCreateCard link='/botcreate' text='Create your new bot'></MarketCreateCard>
                 </Card>
             </Grid>;
         }
