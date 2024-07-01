@@ -96,7 +96,8 @@ const resources = {
       "Plugins Called": "调用插件",
       "Add knowledge base": "添加知识库",
       "Upload Files": "上传文件",
-      "Files": "文件"
+      "Files": "文件",
+      "Add plugins": "添加插件",
     }
   }
 };

@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import BotEditBasicPart from '../components/BotEditBasicPart';
 import BotEditKnowPart from "../components/BotEditKnowPart";
 import BotEditMarketPart from "../components/BotEditMarketPart";
+import BotEditPluginPart from "../components/BotEditPluginPart";
 import BotEditPromptPart from '../components/BotEditPromptPart';
 import '../css/App.css';
 import '../css/BotEditPage.css';
@@ -176,6 +177,13 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
                 <BotEditKnowPart
                     knowCheck={knowCheck}
                     setKnowCheck={setKnowCheck}
+                />
+
+                <Divider style={{ marginTop: '20px' }} />
+
+                <BotEditPluginPart
+                    pluginCheck={pluginCheck}
+                    setPluginCheck={setPluginCheck}
                 />
 
                 <Divider style={{ marginTop: '20px' }} />
