@@ -7,6 +7,7 @@ import '../css/DetailPage.css';
 import { LanguageContext } from '../provider/LanguageProvider';
 import { Plugin } from '../service/market';
 import CheckTitle from './CheckTitle';
+import PluginSelectDialog from './PluginSelectDialog';
 
 function BotEditPluginPart({pluginCheck, setPluginCheck} :
     {pluginCheck: boolean, setPluginCheck: React.Dispatch<React.SetStateAction<boolean>>}) {
@@ -14,24 +15,17 @@ function BotEditPluginPart({pluginCheck, setPluginCheck} :
     const context = React.useContext(LanguageContext);
     const { t, i18n } = useTranslation();
 
-      useEffect(() => {
-          i18n.changeLanguage(context?.language);
-      }, [context?.language, i18n]);
+    useEffect(() => {
+        i18n.changeLanguage(context?.language);
+    }, [context?.language, i18n]);
 
-      const [plugins, setPlugins] = useState<Plugin[]>([]);
+    const [plugins, setPlugins] = useState<Plugin[]>([]);
 
-      useEffect(() => {
-          const array = [] as Plugin[];
-          for (let i = 1; i < 4; i++) {
-              array.push({
-                  id: i,
-                  name: 'Plugin ' + i,
-                  avatar: '/assets/bot' + i + '.png',
-                  description: 'This is a plugin'
-              });
-          }
-          setPlugins(array);
-      }, []);
+    const [open, setOpen] = useState(false);
+
+    const handleClickClose = () => {
+        setOpen(false);
+    }
 
     return (
       <div className='edit-prompts-container'>
@@ -57,18 +51,20 @@ function BotEditPluginPart({pluginCheck, setPluginCheck} :
                   ))}
                   <IconButton
                       sx={{backgroundColor: 'secondary.main'}}
-                      onClick={() => setPlugins([...plugins, {
-                          id: plugins.length + 1,
-                          name: 'Plugin ' + (plugins.length + 1),
-                          avatar: '/assets/bot' + (plugins.length % 5 + 1) + '.png',
-                          description: 'This is a plugin'
-                      }])}
+                      onClick={() => setOpen(true)}
                   >
                       <ChecklistIcon />
                   </IconButton>
                 </div>
               </div>
           }
+
+          <PluginSelectDialog
+              open={open}
+              handleClickClose={handleClickClose}
+              plugins={plugins}
+              setPlugins={setPlugins}
+          />
       </div>
     );
 }

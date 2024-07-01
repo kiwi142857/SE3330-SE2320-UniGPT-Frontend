@@ -58,18 +58,18 @@ export default function SearchBar({tabValue, setTabValue, onChange, tabNames}:
         <Grid container spacing={0} className='search-bar'>
             <Grid item xs={2}>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={2}>
                 <SearchTabs 
                     tabValue={tabValue} 
                     setTabValue={setTabValue}
                     tabNames={tabNames}>
                 </SearchTabs>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={4}>
                 <SearchBox onChange={onChange}></SearchBox>
             </Grid>
-            <Grid item xs={2}>
-                <IconButton style={{ backgroundColor: '#D9D9D9', color:'#FFFFFF', marginLeft:'-50%' }}>
+            <Grid item xs={1}>
+                <IconButton style={{ backgroundColor: '#D9D9D9', color:'#FFFFFF', marginLeft:'20px' }}>
                     <SearchOutlinedIcon fontSize='large'/>
                 </IconButton>
             </Grid>

@@ -98,6 +98,8 @@ const resources = {
       "Upload Files": "上传文件",
       "Files": "文件",
       "Add plugins": "添加插件",
+      "Select Plugin": "选择插件",
+      "Confirm": "确认",
     }
   }
 };
