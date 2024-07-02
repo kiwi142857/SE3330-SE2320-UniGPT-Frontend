@@ -35,7 +35,6 @@ const BotDetailPage: React.FC = () => {
     let { id } = useParams<{ id: string }>();
     const { t } = useTranslation();
 
-
     const getBot = async () => {
         if (id) {
             await getBotDetail(id)
@@ -143,19 +142,23 @@ const BotDetailPage: React.FC = () => {
                     </Box>
                 </div>
             }
+
             <Dialog open={alert} onClose={handleClose}>
                 <DialogTitle>
-                    <Typography sx={{ color: 'primary.main', fontWeight: 'bold', textAlign: 'center', fontSize: '32px' }}>
-                        Error
+                    <Typography sx={{ color: 'primary.main', fontWeight: 'bold', 
+                        textAlign: 'center', fontSize: '32px' }}>
+                        {t('Error')}
                     </Typography>
                 </DialogTitle>
                 <DialogContent>
                     <Typography sx={{ color: 'primary.light', fontWeight: 'bold' }}>
-                        <p>The bot is not public anymore.</p>
+                        <p>{t('The bot is not public anymore')}</p>
                     </Typography>
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'center' }}>
-                    <Button onClick={handleClose} variant="contained" color="primary">Confirm</Button>
+                    <Button onClick={handleClose} variant="contained" color="primary">
+                        {t('Confirm')}
+                    </Button>
                 </DialogActions>
             </Dialog>
         </>);
