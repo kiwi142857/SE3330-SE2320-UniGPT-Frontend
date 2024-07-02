@@ -5,10 +5,11 @@ import '../css/BotEditPage.css';
 interface LayoutProps {
     title: string;
     leftSpace?: number;
+    rightSpace?: number;
     children: React.ReactNode;
 }
 
-const EditLayout: React.FC<LayoutProps> = ({ title, leftSpace = 2, children }) => {
+const EditLayout: React.FC<LayoutProps> = ({ title, leftSpace = 2, rightSpace = 10, children }) => {
     return (
         <Grid container>
             <Grid item xs={leftSpace}>
@@ -23,7 +24,7 @@ const EditLayout: React.FC<LayoutProps> = ({ title, leftSpace = 2, children }) =
                     <p>{title}</p>
                 </Typography>
             </Grid>
-            <Grid item xs={12 - leftSpace}>
+            <Grid item xs={rightSpace}>
                 {children}
             </Grid>
         </Grid>

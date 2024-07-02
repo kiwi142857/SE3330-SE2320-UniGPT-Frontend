@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from "react-router-dom";
 import SearchBar from '../components/Search';
-import { UserList, UserListType } from '../components/UserList';
+import { UserList } from '../components/UserList';
 import '../css/Market.css';
 import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
@@ -59,14 +59,10 @@ const UserListPage: React.FC = () => {
         setSearchParams({ ...searchParams, pageIndex: (value).toString() });
     };
 
-    const userListType: UserListType = {
-        type: 'Market'
-    };
-
     return (
         <div className='nav'>
             <ErrorSnackbar />
-            <div style={{ marginTop: '100px' }}>
+            <div style={{ marginTop: '150px' }}>
                 <SearchBar
                     tabValue={tabValue} 
                     setTabValue={setTabValue} 
@@ -76,7 +72,7 @@ const UserListPage: React.FC = () => {
                 </SearchBar>
             </div>
             <div style={{ marginTop: '20px' }} className='market-card'>
-                <UserList type={userListType} users={users}></UserList>
+                <UserList users={users}></UserList>
             </div>
             <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
                 <Pagination count={totalPage} page={pageIndex + 1} onChange={handlePageChange} className='pagination' />

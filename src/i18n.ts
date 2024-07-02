@@ -94,6 +94,13 @@ const resources = {
       "Plugin Market": "插件市场",
       "Create your new plugin": "创建你的新插件",
       "Plugins Called": "调用插件",
+      "Add knowledge base": "添加知识库",
+      "Upload Files": "上传文件",
+      "Files": "文件",
+      "Add plugins": "添加插件",
+      "Select Plugin": "选择插件",
+      "Confirm": "确认",
+      "Running Process": "运行进度",
     }
   }
 };

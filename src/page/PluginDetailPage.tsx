@@ -1,9 +1,13 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
 const PluginDetailPage = () => {
+
+    let { id } = useParams<{ id: string }>();
+
     return (
         <div style={{ marginTop: '200px' }}>
-            <h1>{"Plugin Detail Page"}</h1>
+            <h1>{"Plugin " + id + " Detail Page"}</h1>
         </div>
     );
 }

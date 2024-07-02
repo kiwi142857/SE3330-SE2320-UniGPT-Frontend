@@ -46,7 +46,7 @@ function HomeMarketCard() {
             <Card elevation={0}>
                 <ShoppingCartOutlinedIcon style={{ width: '30%', height: '30%', marginTop: '20%', color: '#666666' }} />
                 <CardContent>
-                    <Typography className='card-discription' color="text.secondary">
+                    <Typography className='create-card-discription' color="text.secondary">
                         {t("More from market")}
                     </Typography>
                 </CardContent>
@@ -68,8 +68,8 @@ export function HomeCreateCard() {
             <Card elevation={0}>
                 <AddCircleOutlineIcon style={{ width: '30%', height: '30%', marginTop: '20%', color: '#666666' }} />
                 <CardContent>
-                    <Typography className='card-discription' color="text.secondary">
-                        {t(" Create your new bot")}
+                    <Typography className='create-card-discription' color="text.secondary">
+                        {t("Create your new bot")}
                     </Typography>
                 </CardContent>
             </Card>
@@ -90,7 +90,7 @@ export function MarketCreateCard({link,text}: {link: string, text: string}) {
             <Card elevation={0}>
                 <AddCircleOutlineIcon style={{ width: '20%', height: '10%', marginTop: '10%', color: '#666666' }} />
                 <CardContent>
-                    <Typography className='card-discription' color="text.secondary">
+                    <Typography className='create-card-discription' color="text.secondary">
                         {t(text)}
                     </Typography>
                 </CardContent>

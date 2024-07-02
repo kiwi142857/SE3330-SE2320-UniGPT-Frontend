@@ -105,7 +105,7 @@
     border-radius: 25px;
     height: 100%;
     text-align: left;
-    margin-left: -52%;
+    width: 100%;
 }
 
 .market-choose {
@@ -116,8 +116,8 @@
 }
 
 .search-bar {
-    margin-top: 150px;
     margin-bottom: 50px;
+    display: flex;
 }
 
 .input-box {

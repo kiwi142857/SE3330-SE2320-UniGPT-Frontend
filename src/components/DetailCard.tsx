@@ -13,7 +13,7 @@ import { LanguageContext } from "../provider/LanguageProvider";
 import { disLikeBot, likeBot, starBot, unStarBot } from '../service/BotDetail';
 
 // bot详情页的最上方的简介
-const BotDetailCard = (
+const DetailCard = (
     {
         id,
         name,
@@ -25,8 +25,7 @@ const BotDetailCard = (
         starNumber,
         isLiked,
         isStarred,
-        isCreator,
-        isAdmin
+        canEdit,
     }
         : {
             id: string;
@@ -39,8 +38,7 @@ const BotDetailCard = (
             starNumber: string;
             isLiked: boolean;
             isStarred: boolean;
-            isCreator: boolean;
-            isAdmin: boolean;
+            canEdit: boolean;
         }) => {
     const [liked, setLiked] = React.useState(isLiked);
     const [starred, setStarred] = React.useState(isStarred);
@@ -72,10 +70,6 @@ const BotDetailCard = (
         unStarBot(id);
         setLocalStarNumber((parseInt(localStarNumber) - 1).toString());
         setStarred(false);
-    }
-
-    const use = () => {
-        // TODO
     }
 
     useEffect(() => {
@@ -150,12 +144,11 @@ const BotDetailCard = (
                         endIcon={<SendIcon />}
                         href={`/botchat/${id}`}
                         size='large'
-                        onClick={() => use()}
                     >
                         {t('Use')}
                     </Button>
                     {
-                        (isCreator || isAdmin) &&
+                        canEdit &&
                         <Button
                             variant="contained"
                             endIcon={<SendIcon />}
@@ -171,4 +164,4 @@ const BotDetailCard = (
     );
 }
 
-export default BotDetailCard;
+export default DetailCard;

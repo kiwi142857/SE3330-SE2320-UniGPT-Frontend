@@ -35,12 +35,12 @@ export async function getSearchPluginList(page: number, pageSize: number, q: str
     // let data = await getJsonOrThrow(url);
     // return data;
     let plugins: Plugin[] = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 1; i < 11; i++) {
         plugins.push({
             id: i,
             name: `plugin${i}`,
             description: `description${i}`,
-            avatar: `avatar${i}`
+            avatar: `/assets/bot${i % 6 + 1}.png`
         });
     }
     return {plugins: plugins, total: 10};

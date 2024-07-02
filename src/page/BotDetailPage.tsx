@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useParams } from 'react-router-dom';
-import BotCarousel from '../components/BotCarousel';
-import BotDetailCard from '../components/BotDetailCard';
 import CallsCard from '../components/CallsCard';
+import DetailCard from '../components/DetailCard';
+import DetailCarousel from '../components/DetailCarousel';
 import { CommentInput } from '../components/Inputs';
 import OneComment from '../components/OneComment';
 import '../css/App.css';
@@ -72,7 +72,7 @@ const BotDetailPage: React.FC = () => {
             {bot && comments &&
                 <div className="main-container bot-detail-container">
 
-                    <BotDetailCard
+                    <DetailCard
                         id={bot.id || ''}
                         name={bot.name || ''}
                         author={bot.creator || ''}
@@ -83,13 +83,12 @@ const BotDetailPage: React.FC = () => {
                         starNumber={bot.starNumber.toString()}
                         isLiked={bot.liked || false}
                         isStarred={bot.starred || false}
-                        isCreator={bot.asCreator || false}
-                        isAdmin={bot.asAdmin || false}
+                        canEdit={bot.asCreator || bot.asAdmin || false}
                     />
 
                     <CallsCard plugins={plugins} />
 
-                    <BotCarousel photos={bot.photos || []} />
+                    <DetailCarousel photos={bot.photos || []} />
 
                     <Typography
                         sx={{ color: 'primary.light' }}

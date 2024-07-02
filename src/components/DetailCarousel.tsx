@@ -3,7 +3,7 @@ import { Carousel } from 'react-responsive-carousel';
 import '../css/OneChat.css';
 
 // 走马灯，输入图片的url数组
-const BotCarousel = ({ photos }: { photos: string[] }) => {
+const DetailCarousel = ({ photos }: { photos: string[] }) => {
 
   // 这里我是想用css的，但是试过了好多次都不行，所以就只能这样了
   let imageWidth = '45%';
@@ -108,4 +108,4 @@ const BotCarousel = ({ photos }: { photos: string[] }) => {
   }
 };
 
-export default BotCarousel;
+export default DetailCarousel;

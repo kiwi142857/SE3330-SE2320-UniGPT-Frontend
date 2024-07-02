@@ -85,13 +85,15 @@ const MarketPage: React.FC = () => {
                 >
                 </SearchTabs>
             </div>
-            <SearchBar
-                tabValue={tabValue} 
-                setTabValue={setTabValue} 
-                onChange={handleSearch}
-                tabNames={['Latest', 'Hottest']}
-            >
-            </SearchBar>
+            <div style={{ marginTop: '150px' }}>
+                <SearchBar
+                    tabValue={tabValue} 
+                    setTabValue={setTabValue} 
+                    onChange={handleSearch}
+                    tabNames={['Latest', 'Hottest']}
+                >
+                </SearchBar>
+            </div>
             <div style={{ marginTop: '20px' }} className='market-card'>
                 {marketValue === 0 ? 
                     <BotList type={botListType} bots={bots}></BotList> 
@@ -99,7 +101,12 @@ const MarketPage: React.FC = () => {
                 }
             </div>
             <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
-                <Pagination count={totalPage} page={pageIndex + 1} onChange={handlePageChange} className='pagination' />
+                <Pagination 
+                    count={totalPage} 
+                    page={pageIndex + 1} 
+                    onChange={handlePageChange} 
+                    className='pagination' 
+                />
             </div>
         </div>
     );

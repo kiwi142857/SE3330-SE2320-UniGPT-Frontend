@@ -55,7 +55,7 @@ const ProfileDialog =
                     </DialogTitle>
                     <DialogContent>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                            <EditLayout title={t('Username')} leftSpace={3}>
+                            <EditLayout title={t('Username')} leftSpace={3} rightSpace={12}>
                                 <BasicInput
                                     placeholder={t("Maximum 25 characters input")}
                                     name='name'
@@ -65,7 +65,7 @@ const ProfileDialog =
                                     required
                                 />
                             </EditLayout>
-                            <EditLayout title={t('Description')} leftSpace={3}>
+                            <EditLayout title={t('Description')} leftSpace={3} rightSpace={12}>
                                 <BasicInput
                                     placeholder={t("Write your description here...")}
                                     name='description'
@@ -75,7 +75,7 @@ const ProfileDialog =
                                     required
                                 />
                             </EditLayout>
-                            <EditLayout title={t('Canvas Url')} leftSpace={3}>
+                            <EditLayout title={t('Canvas Url')} leftSpace={3} rightSpace={12}>
                                 <BasicInput
                                     placeholder={t("Log in to canvas, click \"Calendar\" - \"Calendar Subscription\", then copy the link to here")}
                                     name='canvasUrl'
