@@ -101,6 +101,8 @@ const resources = {
       "Select Plugin": "选择插件",
       "Confirm": "确认",
       "Running Process": "运行进度",
+      "Error": "错误",
+      "The bot is not public anymore": "该机器人已不再公开",
     }
   }
 };

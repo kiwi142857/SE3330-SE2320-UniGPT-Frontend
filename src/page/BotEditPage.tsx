@@ -127,26 +127,34 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
 
         console.log(newInfo);
 
-        let res = { ok: false, message: '' };
-
-        if (edit)
-            if (id) res = await updateBot(id, newInfo); 
-        else 
-            res = await createBot(newInfo);
-
-        if (res.ok) {
-            let href = '/botChat/';
-
-            if (edit)
-                href += id;
-            else
-                href += res.message;
-
-            setTimeout(() => {
-                window.location.href = href;
-            }, 100);
-        } else {
-            messageError("bot创建/修改表单提交失败: " + res.message);
+        if (edit) {
+            if (id) 
+                {   await updateBot(id, newInfo)
+                        .then((res) => {
+                        if (res.ok) {
+                            let href = '/botChat/'+ id;
+                
+                            setTimeout(() => {
+                                window.location.href = href;
+                            }, 100);
+                        } else {
+                            messageError("bot创建/修改表单提交失败: " + res.message);
+                        }})
+                }
+            }
+        else {   
+                await createBot(newInfo)
+                    .then((res) => {
+                    if (res.ok) {
+                        let href = '/botChat/'+ res.message;
+            
+                        setTimeout(() => {
+                            window.location.href = href;
+                        }, 100);
+                    } else {
+                        messageError("bot创建/修改表单提交失败: " + res.message);
+                    }
+                })
         }
     };
 
