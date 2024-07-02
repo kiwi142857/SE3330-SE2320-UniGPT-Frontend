@@ -17,7 +17,7 @@ const HomePage: React.FC = () => {
     const pageIndexStr = searchParams.get("pageIndex");
     const pageSizeStr = searchParams.get("pageSize");
     const pageIndex = pageIndexStr != null ? Number.parseInt(pageIndexStr) : 0;
-    const pageSize = pageSizeStr != null ? Number.parseInt(pageSizeStr) : 17;
+    const pageSize = pageSizeStr != null ? Number.parseInt(pageSizeStr) : 8;
 
     const context = React.useContext(LanguageContext);
     const { t, i18n } = useTranslation();

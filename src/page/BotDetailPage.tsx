@@ -4,14 +4,14 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useParams } from 'react-router-dom';
-import CallsCard from '../components/CallsCard';
+import BotCallsCard from '../components/CallsCard';
 import DetailCard from '../components/DetailCard';
 import DetailCarousel from '../components/DetailCarousel';
 import { CommentInput } from '../components/Inputs';
 import OneComment from '../components/OneComment';
 import '../css/App.css';
 import '../css/DetailPage.css';
-import { Comment, CommentList, botDetailInfo, getBotComments, getBotDetail, postComment } from '../service/BotDetail';
+import { Comment, CommentList, botDetailInfo, getBotComments, getBotDetail, postCommentToBot } from '../service/BotDetail';
 import { Plugin } from '../service/market';
 import { getMe } from '../service/user';
 
@@ -83,9 +83,10 @@ const BotDetailPage: React.FC = () => {
                         isLiked={bot.liked || false}
                         isStarred={bot.starred || false}
                         canEdit={bot.asCreator || bot.asAdmin || false}
+                        forBot={true}
                     />
 
-                    <CallsCard plugins={plugins} />
+                    <BotCallsCard plugins={plugins} />
 
                     <DetailCarousel photos={bot.photos || []} />
 
@@ -108,7 +109,7 @@ const BotDetailPage: React.FC = () => {
                     <CommentInput onSend={
                         async (content: string) => {
                             if (id)
-                                postComment(id, content);
+                                postCommentToBot(id, content);
 
                             setComments({
                                 total: comments.total + 1,
