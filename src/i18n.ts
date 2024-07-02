@@ -100,6 +100,7 @@ const resources = {
       "Add plugins": "添加插件",
       "Select Plugin": "选择插件",
       "Confirm": "确认",
+      "Running Process": "运行进度",
     }
   }
 };

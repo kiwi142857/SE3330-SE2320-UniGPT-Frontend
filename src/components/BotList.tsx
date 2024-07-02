@@ -69,7 +69,7 @@ export function HomeCreateCard() {
                 <AddCircleOutlineIcon style={{ width: '30%', height: '30%', marginTop: '20%', color: '#666666' }} />
                 <CardContent>
                     <Typography className='create-card-discription' color="text.secondary">
-                        {t(" Create your new bot")}
+                        {t("Create your new bot")}
                     </Typography>
                 </CardContent>
             </Card>

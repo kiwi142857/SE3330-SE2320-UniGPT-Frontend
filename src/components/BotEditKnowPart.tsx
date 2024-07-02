@@ -98,6 +98,7 @@ function BotEditKnowPart({knowCheck, setKnowCheck} :
                                 <VisuallyHiddenInput 
                                     type="file"
                                     onChange={onFileUpload}
+                                    accept=".txt,.pdf"
                                 />
                             </Button>
                         </EditLayout>

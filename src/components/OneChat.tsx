@@ -1,26 +1,37 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import ReplayIcon from '@mui/icons-material/Replay';
 import EditIcon from '@mui/icons-material/Edit';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MenuIcon from '@mui/icons-material/Menu';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import ReplayIcon from '@mui/icons-material/Replay';
 import SaveIcon from '@mui/icons-material/Save';
-import { Avatar, Divider, Grid, TextField } from '@mui/material';
-import React, { useEffect } from 'react';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import { Accordion, AccordionDetails, AccordionSummary, Avatar, Divider, Grid, TextField, Typography } from '@mui/material';
+import React, { useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import '../css/OneChat.css';
-import { useState } from 'react';
-import { use } from 'i18next';
-import { TailSpin } from 'react-loader-spinner';
+
+const calledList = ["Plugin 1", "knowledge base", "Plugin 2"];
+const loadingList = ["Plugin 1", "knowledge base", "Plugin 2"];
 
 // 聊天或评论区的一句对话
 // 注意，只有一个单词的时候是不会换行的！
+// type = true: bot
 const OneChat = (
     { id, name, avatar, content, type, last = false, shuffleLast, editLast, loading }:
-        { id: number, name: string, avatar: string, content: string, type: boolean, last: boolean, shuffleLast: () => void, editLast: (editedContent: string) => void, loading: boolean }
+        {   id: number, name: string, avatar: string, content: string, 
+            type: boolean, last: boolean, 
+            shuffleLast: () => void, editLast: (editedContent: string) => void, loading: boolean 
+        }
 ) => {
     const [pressCopy, setPressCopy] = useState(false);
     const [pressReplay, setPressReplay] = useState(false);
     const [editing, setEditing] = useState(false);
     const [editedContent, setEditedContent] = useState(content);
+
+    const { t } = useTranslation();
 
     const onSave = () => {
         editLast(editedContent);
@@ -46,6 +57,38 @@ const OneChat = (
                 </div>
                 <div className='one-chat-markdown'>
                     {
+                        type && !loading && calledList.length > 0 ?
+                            <Accordion defaultExpanded 
+                                style={{
+                                    width: '90%',
+                                    borderRadius: '4px', 
+                                    backgroundColor: '#F5F5F5',
+                                }}
+                            >
+                                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                    <div className='one-chat-icon-and-text'>
+                                        <MenuIcon />
+                                        <Typography style={{ color: '#273B4A', fontWeight:'bold' }}>
+                                            {t("Running Process")}
+                                        </Typography>
+                                    </div>
+                                </AccordionSummary>
+                                <AccordionDetails style={{ paddingTop: '0' }}>
+                                    {
+                                        calledList.map((item, index) => (
+                                            <div className='one-chat-icon-and-text' key={index}>
+                                                <TaskAltIcon/>
+                                                <Typography key={index}>
+                                                    {"Called " + item}
+                                                </Typography>
+                                            </div>
+                                        ))
+                                    }
+                                </AccordionDetails>
+                            </Accordion>
+                            : null
+                    }
+                    {
                         editing ? (
                             <TextField
                                 multiline
@@ -55,11 +98,22 @@ const OneChat = (
                             />
                         ) : (
                             loading && type ? (
-                                <TailSpin
-                                    color='grey'
-                                    height={20}
-                                    width={20}
-                                />
+                                loadingList.map((item, index) => (
+                                    index !== loadingList.length - 1 ?
+                                    <div className='one-chat-icon-and-text' key={index}>
+                                        <TaskAltIcon/>
+                                        <Typography key={index}>
+                                            {"Called " + item}
+                                        </Typography>
+                                    </div> :
+                                    <div className='one-chat-icon-and-text' key={index}>
+                                        {/* <TailSpin color='grey' height={20} width={20}/> */}
+                                        <RefreshIcon className='loading-spin'/>
+                                        <Typography key={index}>
+                                            {"Calling " + item + " ..."}
+                                        </Typography>
+                                    </div>
+                                ))
                             ) : (
                                 <ReactMarkdown>
                                     {content}
