@@ -1,17 +1,11 @@
 import { Typography } from '@mui/material';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import '../css/DetailPage.css';
-import { LanguageContext } from "../provider/LanguageProvider";
-import { Plugin } from '../service/market';
+import { Bot, Plugin } from '../service/market';
 
-function CallsCard({plugins}: {plugins: Plugin[]}) {
-    const context = React.useContext(LanguageContext);
-    const { t, i18n } = useTranslation();
-
-    useEffect(() => {
-        i18n.changeLanguage(context?.language);
-    }, [context?.language, i18n]);
+function BotCallsCard({plugins}: {plugins: Plugin[]}) {
+    const { t } = useTranslation();
 
     return (
         <div className='detail-calls-container'>
@@ -38,4 +32,32 @@ function CallsCard({plugins}: {plugins: Plugin[]}) {
     );
 }
 
-export default CallsCard;
+export function PluginCallsCard({bots}: {bots: Bot[]}) {
+    const { t } = useTranslation();
+
+    return (
+        <div className='detail-calls-container'>
+            <Typography sx={{ color: 'primary.main' }}>
+                <p className='detail-card-calls'>
+                    {t("Bots Calling")}
+                </p>
+            </Typography>
+            <div className='detail-calls-group'>
+                {bots.map((bot, index) => (
+                    <div key={index} className='detail-calls-group'>
+                        <a href={'/botdetail/' + bot.id}>
+                            <img 
+                                src={bot.avatar} 
+                                alt={bot.name} 
+                                className='detail-card-small-avatar'
+                            />
+                        </a>
+                        <p className='detail-calls-name'>{bot.name}</p>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+export default BotCallsCard;

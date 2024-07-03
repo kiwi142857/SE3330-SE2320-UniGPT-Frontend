@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import '../css/DetailPage.css';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { disLikeBot, likeBot, starBot, unStarBot } from '../service/BotDetail';
+import { disLikePlugin, likePlugin, starPlugin, unStarPlugin } from '../service/PluginDetail';
 
 // bot详情页的最上方的简介
 const DetailCard = (
@@ -26,6 +27,7 @@ const DetailCard = (
         isLiked,
         isStarred,
         canEdit,
+        forBot
     }
         : {
             id: string;
@@ -39,6 +41,7 @@ const DetailCard = (
             isLiked: boolean;
             isStarred: boolean;
             canEdit: boolean;
+            forBot: boolean;
         }) => {
     const [liked, setLiked] = React.useState(isLiked);
     const [starred, setStarred] = React.useState(isStarred);
@@ -49,25 +52,29 @@ const DetailCard = (
     const { t, i18n } = useTranslation();
 
     const like = () => {
-        likeBot(id);
+        if (forBot) likeBot(id);
+            else likePlugin(id);
         setLocalLikeNumber((parseInt(localLikeNumber) + 1).toString());
         setLiked(true);
     }
 
     const disLike = () => {
-        disLikeBot(id);
+        if (forBot) disLikeBot(id);
+            else disLikePlugin(id);
         setLocalLikeNumber((parseInt(localLikeNumber) - 1).toString());
         setLiked(false);
     }
 
     const star = () => {
-        starBot(id);
+        if (forBot) starBot(id);
+            else starPlugin(id);
         setLocalStarNumber((parseInt(localStarNumber) + 1).toString());
         setStarred(true);
     }
 
     const unStar = () => {
-        unStarBot(id);
+        if (forBot) unStarBot(id);
+            else unStarPlugin(id);
         setLocalStarNumber((parseInt(localStarNumber) - 1).toString());
         setStarred(false);
     }
@@ -87,7 +94,7 @@ const DetailCard = (
         <div className='detail-card-container'>
             <img
                 src={avatar}
-                alt='bot'
+                alt={forBot ? 'bot-avatar' : 'plugin-avatar'}
                 className='detail-card-avatar'
             ></img>
             <div className='detail-card-right'>
@@ -139,16 +146,19 @@ const DetailCard = (
                     <span className='detail-card-collect'>
                         {localStarNumber}
                     </span>
-                    <Button
-                        variant="contained"
-                        endIcon={<SendIcon />}
-                        href={`/botchat/${id}`}
-                        size='large'
-                    >
-                        {t('Use')}
-                    </Button>
                     {
-                        canEdit &&
+                        forBot &&
+                        <Button
+                            variant="contained"
+                            endIcon={<SendIcon />}
+                            href={`/botchat/${id}`}
+                            size='large'
+                        >
+                            {t('Use')}
+                        </Button>
+                    }
+                    {
+                        forBot && canEdit &&
                         <Button
                             variant="contained"
                             endIcon={<SendIcon />}

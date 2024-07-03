@@ -115,7 +115,7 @@ export async function getBotComments(id: string, page: number, pageSize: number)
     return comments;
 }
 
-export async function postComment(id: string, content: string) {
+export async function postCommentToBot(id: string, content: string) {
     const url = `${PREFIX}/bots/${id}/comments`;
     let res;
 

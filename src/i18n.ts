@@ -103,6 +103,7 @@ const resources = {
       "Running Process": "运行进度",
       "Error": "错误",
       "The bot is not public anymore": "该机器人已不再公开",
+      "Bots Calling": "调用该插件的机器人",
     }
   }
 };
