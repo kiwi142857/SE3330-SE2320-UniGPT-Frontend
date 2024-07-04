@@ -21,7 +21,6 @@ import { ellipsisStr } from "../utils/strUtils.ts";
 // 侧边栏宽度
 const drawerWidth = 350;
 const BotChatPage = () => {
-    // TODO: 重构
     let { botID } = useParams<{ botID: string; }>();
     botID === undefined ? botID = "" : botID = botID;
 
@@ -37,13 +36,14 @@ const BotChatPage = () => {
     const [socket, setSocket] = useState<WebSocket | null>(null);
     const [user, setUser] = useState({ id: 0, name: '', avatar: '' });
     const [tableCreateOpen, setTableCreateOpen] = useState(false);
-    const [responding, setResponding] = useState(false);
+    // const [responding, setResponding] = useState(false);
 
     // 正在流式输出的聊天，为null时表示没有流式输出
     const [streamingChat, setStreamingChat] = useState<BotChat | null>(null);
     const streamingChatRef = useRef(streamingChat);
 
-    const [tokenQueue, setTokenQueue] = useState<String[]>([]);
+    // token队列，用于缓冲流式输出的token
+    const [tokenQueue, setTokenQueue] = useState<string[]>([]);
 
     const [botChatHistoryLoading, setBotChatHistoryLoading] = useState(true);
     const { messageError, ErrorSnackbar } = useErrorHandler();
@@ -118,7 +118,7 @@ const BotChatPage = () => {
                     type: true
                 }]
         );
-        setResponding(true);
+        // setResponding(true);
         setSelectedHistoryId(newHistoryId);
         setIsFirstReply(true);
     };
@@ -164,7 +164,7 @@ const BotChatPage = () => {
 
         // 向 WebSocket 发送消息
         sendMessage(socket, text);
-        setResponding(true);
+        // setResponding(true);
     };
 
     const resendLast = (sendText: string) => {
@@ -194,7 +194,7 @@ const BotChatPage = () => {
 
         // 向 WebSocket 发送消息
         sendMessage(socket, sendText, true);
-        setResponding(true);
+        // setResponding(true);
     };
 
 
@@ -226,10 +226,6 @@ const BotChatPage = () => {
         });
     }, []);
 
-    useEffect(() =>{
-        streamingChatRef.current = streamingChat;
-    }, [streamingChat]);
-
     const sendUserAsk = (websocket: WebSocket | null) => {
         console.log("send user ask:", socket, userAsk);
         sendMessage(websocket, userAsk, false, true);
@@ -241,8 +237,8 @@ const BotChatPage = () => {
         selectedHistoryId && WebSocketConnection(selectedHistoryId);
 
         !isFirstReply && fetchAndSetBotChatList();
-        !isFirstReply && setResponding(false);
-        !isFirstReply && console.log("set Responding to false here");
+        // !isFirstReply && setResponding(false);
+        // !isFirstReply && console.log("set Responding to false here");
 
         return () => {
             socket?.readyState === WebSocket.OPEN && closeWebSocketConnection(socket);
@@ -250,11 +246,11 @@ const BotChatPage = () => {
     }, [selectedHistoryId]);
 
     useEffect(() => {
-        if(tokenQueue.length > 0) {
+        if (tokenQueue.length > 0) {
             const nextToken = tokenQueue[0];
             setStreamingChat(streamingChat => streamingChat ? ({
-                ...streamingChat, 
-                content: streamingChat?.content + nextToken
+                ...streamingChat,
+                content: streamingChat?.content.concat(nextToken)
             }) : {
                 id: 0,
                 name: botBriefInfo ? botBriefInfo.name : "",
@@ -266,6 +262,18 @@ const BotChatPage = () => {
             setTokenQueue(queue => queue.slice(1));
         }
     }, [tokenQueue]);
+
+    useEffect(() => {
+        streamingChatRef.current = streamingChat;
+        if(streamingChat == null) {
+            return ;
+        }
+        setBotChatList(
+            botChatList =>
+                botChatList.slice(0, botChatList.length - 1).concat(
+                    [streamingChat])
+        );
+    }, [streamingChat])
 
 
     useEffect(() => {
@@ -303,50 +311,31 @@ const BotChatPage = () => {
                     console.log("before on message:", botChatList);
                     console.log("length", botChatList.length);
 
-                    setBotChatList(
-                        botChatList =>
-                            botChatList.slice(0, botChatList.length - 1).concat(
-                                [{
-                                    id: 0,
-                                    name: botBriefInfo ? botBriefInfo.name : "",
-                                    historyId: selectedHistoryId,
-                                    avatar: botBriefInfo ? botBriefInfo.avatar : "",
-                                    content: response.replyMessage,
-                                    type: true
-                                }])
-                    );
-                    setStreamingChat(null);
+                    // setBotChatList(
+                    //     botChatList =>
+                    //         botChatList.slice(0, botChatList.length - 1).concat(
+                    //             [{
+                    //                 id: 0,
+                    //                 name: botBriefInfo ? botBriefInfo.name : "",
+                    //                 historyId: selectedHistoryId,
+                    //                 avatar: botBriefInfo ? botBriefInfo.avatar : "",
+                    //                 content: response.replyMessage,
+                    //                 type: true
+                    //             }])
+                    // );
+                    // setStreamingChat(null);
                 } else {
                     // 流式token
                     console.log("token arrived", response.token);
                     let pendingChat: BotChat;
-                    if(!streamingChatRef.current) {
+                    if (!streamingChatRef.current) {
                         // 第一个token到达
                         console.log("first token arrived");
-                        pendingChat = 
-                        {
-                            id: 0,
-                            name: botBriefInfo ? botBriefInfo.name : "",
-                            historyId: selectedHistoryId,
-                            avatar: botBriefInfo ? botBriefInfo.avatar : "",
-                            content: response.token,
-                            type: true
-                        };
-                        setResponding(false);
+                        // setResponding(false);
                     } else {
                         // 之后的token到达
                         console.log("other token arrived");
-                        pendingChat = 
-                        {
-                            ...streamingChat,
-                            content: streamingChatRef.current.content + response.token
-                        };
                     }
-                    setBotChatList(
-                        botChatList =>
-                            botChatList.slice(0, botChatList.length - 1).concat(
-                                [pendingChat])
-                    );
                     setTokenQueue(queue => [...queue, response.token]);
                 }
 
@@ -356,7 +345,7 @@ const BotChatPage = () => {
             socket.onerror = (error) => {
                 console.error('WebSocket Error: ', error);
                 // TODO: Update your state to indicate that an error occurred
-                setResponding(false);
+                // setResponding(false);
             };
         }
     }, [socket]);
@@ -435,7 +424,7 @@ const BotChatPage = () => {
                 display="flex"
                 width="100%"
             >
-                <ChatWindow botChatList={botChatList} resendLast={resendLast} loading={responding} />
+                <ChatWindow botChatList={botChatList} resendLast={resendLast} loading={false} />
                 {/* 输入框，发送按钮，编辑按钮 */}
                 <PromptInput
                     selectedHistoryId={selectedHistoryId}
@@ -444,7 +433,7 @@ const BotChatPage = () => {
                     }}
                     onSend={onSendClicked}
                     // responding 时禁止编辑
-                    disabled={responding}
+                    disabled={false}
                 />
                 {/* 弹出 prompt 表格 */}
                 <TableCreateDialog
