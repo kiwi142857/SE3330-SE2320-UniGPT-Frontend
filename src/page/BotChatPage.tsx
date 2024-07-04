@@ -39,8 +39,11 @@ const BotChatPage = () => {
     const [tableCreateOpen, setTableCreateOpen] = useState(false);
     const [responding, setResponding] = useState(false);
 
+    // 正在流式输出的聊天，为null时表示没有流式输出
+    const [streamingChat, setStreamingChat] = useState<BotChat | null>(null);
+
     const [botChatHistoryLoading, setBotChatHistoryLoading] = useState(true);
-    const {messageError, ErrorSnackbar} = useErrorHandler();
+    const { messageError, ErrorSnackbar } = useErrorHandler();
 
     const { t } = useTranslation();
 
@@ -70,7 +73,7 @@ const BotChatPage = () => {
                 messageError("Failed to get chat history list: " + e.message);
             });
     };
-    
+
     const fetchAndSetBotChatList = async () => {
         const list = selectedHistoryId ? await getBotChatList(selectedHistoryId) : [];
         setBotChatList(list);
@@ -246,7 +249,7 @@ const BotChatPage = () => {
 
             socket.onmessage = (event) => {
                 console.log('Message from server: ', event.data);
-                let response: { replyMessage: string; };
+                let response: { finalState: string, replyMessage: string } | { finalState: string, token: string };
                 try {
                     console.log('event.data: ' + event.data);
                     response = JSON.parse(event.data);
@@ -255,34 +258,71 @@ const BotChatPage = () => {
                     response = { replyMessage: 'Error parsing JSON' };
                     // Handle the error as needed
                 }
-                console.log('Message from server: ', response.replyMessage);
-                setBotChatHistoryList(
-                    botChatHistoryListRef
-                        .current
-                        .map(
-                            history =>
-                                history.id === selectedHistoryId ?
-                                    {
-                                        ...history,
-                                        content: ellipsisStr(response.replyMessage, 20)
-                                    } : history
-                        )
-                );
-                console.log("before on message:", botChatList);
-                console.log("length", botChatList.length)
-                setBotChatList(
-                    botChatList =>
-                        botChatList.slice(0, botChatList.length - 1).concat(
-                            [{
-                                id: 0,
-                                name: botBriefInfo ? botBriefInfo.name : "",
-                                historyId: selectedHistoryId,
-                                avatar: botBriefInfo ? botBriefInfo.avatar : "",
-                                content: response.replyMessage,
-                                type: true
-                            }])
-                );
-                setResponding(false);
+                console.log('Message from server: ', response);
+                console.log("response.finalState:" + response.finalState);
+                if (response.finalState == "true") {
+                    // 完整的消息
+                    setBotChatHistoryList(
+                        botChatHistoryListRef
+                            .current
+                            .map(
+                                history =>
+                                    history.id === selectedHistoryId ?
+                                        {
+                                            ...history,
+                                            content: ellipsisStr(response.replyMessage, 20)
+                                        } : history
+                            )
+                    );
+                    console.log("before on message:", botChatList);
+                    console.log("length", botChatList.length);
+
+                    setBotChatList(
+                        botChatList =>
+                            botChatList.slice(0, botChatList.length - 1).concat(
+                                [{
+                                    id: 0,
+                                    name: botBriefInfo ? botBriefInfo.name : "",
+                                    historyId: selectedHistoryId,
+                                    avatar: botBriefInfo ? botBriefInfo.avatar : "",
+                                    content: response.replyMessage,
+                                    type: true
+                                }])
+                    );
+                } else {
+                    // 流失token
+                    console.log("token arrived", response.token);
+                    let pendingChat: BotChat;
+                    if(!streamingChat) {
+                        // 第一个token到达
+                        console.log("first token arrived");
+                        pendingChat = 
+                        {
+                            id: 0,
+                            name: botBriefInfo ? botBriefInfo.name : "",
+                            historyId: selectedHistoryId,
+                            avatar: botBriefInfo ? botBriefInfo.avatar : "",
+                            content: response.token,
+                            type: true
+                        };
+                        setResponding(false);
+                    } else {
+                        // 之后的token到达
+                        console.log("other token arrived");
+                        pendingChat = 
+                        {
+                            ...streamingChat,
+                            content: streamingChat.content + response.token
+                        };
+                    }
+                    setBotChatList(
+                        botChatList =>
+                            botChatList.slice(0, botChatList.length - 1).concat(
+                                [pendingChat])
+                    );
+                    setStreamingChat(pendingChat);
+                }
+
             };
 
             // Handle any errors that occur.
