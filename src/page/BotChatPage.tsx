@@ -43,6 +43,8 @@ const BotChatPage = () => {
     const [streamingChat, setStreamingChat] = useState<BotChat | null>(null);
     const streamingChatRef = useRef(streamingChat);
 
+    const [tokenQueue, setTokenQueue] = useState<String[]>([]);
+
     const [botChatHistoryLoading, setBotChatHistoryLoading] = useState(true);
     const { messageError, ErrorSnackbar } = useErrorHandler();
 
@@ -248,6 +250,25 @@ const BotChatPage = () => {
     }, [selectedHistoryId]);
 
     useEffect(() => {
+        if(tokenQueue.length > 0) {
+            const nextToken = tokenQueue[0];
+            setStreamingChat(streamingChat => streamingChat ? ({
+                ...streamingChat, 
+                content: streamingChat?.content + nextToken
+            }) : {
+                id: 0,
+                name: botBriefInfo ? botBriefInfo.name : "",
+                historyId: selectedHistoryId,
+                avatar: botBriefInfo ? botBriefInfo.avatar : "",
+                content: nextToken,
+                type: true
+            });
+            setTokenQueue(queue => queue.slice(1));
+        }
+    }, [tokenQueue]);
+
+
+    useEffect(() => {
         if (socket) {
             // 新的WebSocket连接被创建
             // 处理来自服务器的消息
@@ -326,7 +347,7 @@ const BotChatPage = () => {
                             botChatList.slice(0, botChatList.length - 1).concat(
                                 [pendingChat])
                     );
-                    setStreamingChat(pendingChat);
+                    setTokenQueue(queue => [...queue, response.token]);
                 }
 
             };
