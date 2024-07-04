@@ -41,6 +41,7 @@ const BotChatPage = () => {
 
     // 正在流式输出的聊天，为null时表示没有流式输出
     const [streamingChat, setStreamingChat] = useState<BotChat | null>(null);
+    const streamingChatRef = useRef(streamingChat);
 
     const [botChatHistoryLoading, setBotChatHistoryLoading] = useState(true);
     const { messageError, ErrorSnackbar } = useErrorHandler();
@@ -223,6 +224,10 @@ const BotChatPage = () => {
         });
     }, []);
 
+    useEffect(() =>{
+        streamingChatRef.current = streamingChat;
+    }, [streamingChat]);
+
     const sendUserAsk = (websocket: WebSocket | null) => {
         console.log("send user ask:", socket, userAsk);
         sendMessage(websocket, userAsk, false, true);
@@ -289,11 +294,12 @@ const BotChatPage = () => {
                                     type: true
                                 }])
                     );
+                    setStreamingChat(null);
                 } else {
-                    // 流失token
+                    // 流式token
                     console.log("token arrived", response.token);
                     let pendingChat: BotChat;
-                    if(!streamingChat) {
+                    if(!streamingChatRef.current) {
                         // 第一个token到达
                         console.log("first token arrived");
                         pendingChat = 
@@ -312,7 +318,7 @@ const BotChatPage = () => {
                         pendingChat = 
                         {
                             ...streamingChat,
-                            content: streamingChat.content + response.token
+                            content: streamingChatRef.current.content + response.token
                         };
                     }
                     setBotChatList(
