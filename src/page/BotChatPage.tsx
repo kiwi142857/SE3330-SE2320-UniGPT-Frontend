@@ -141,6 +141,9 @@ const BotChatPage = () => {
     };
 
     const onSendClicked = (text: string) => {
+        // 发送消息时，清空流式输出
+        setStreamingChat(null);
+
         console.log('user.name' + user.name);
         setBotChatList(
             botChatList =>
@@ -168,6 +171,8 @@ const BotChatPage = () => {
     };
 
     const resendLast = (sendText: string) => {
+        // 重新发送最后一条消息时，清空流式输出
+        setStreamingChat(null);
         console.log("Resend: ", sendText);
         // 最后一条用户消息内容改为 sendText
         // 删除最后一条机器人消息
@@ -246,11 +251,12 @@ const BotChatPage = () => {
     }, [selectedHistoryId]);
 
     useEffect(() => {
+        streamingChatRef.current = streamingChat;
         if (tokenQueue.length > 0) {
             const nextToken = tokenQueue[0];
             setStreamingChat(streamingChat => streamingChat ? ({
                 ...streamingChat,
-                content: streamingChat?.content.concat(nextToken)
+                content: streamingChat.content.concat(nextToken)
             }) : {
                 id: 0,
                 name: botBriefInfo ? botBriefInfo.name : "",
@@ -261,19 +267,34 @@ const BotChatPage = () => {
             });
             setTokenQueue(queue => queue.slice(1));
         }
-    }, [tokenQueue]);
-
-    useEffect(() => {
-        streamingChatRef.current = streamingChat;
-        if(streamingChat == null) {
-            return ;
+        if (streamingChat == null) {
+            return;
         }
         setBotChatList(
             botChatList =>
                 botChatList.slice(0, botChatList.length - 1).concat(
                     [streamingChat])
         );
-    }, [streamingChat])
+    }, [tokenQueue, streamingChat]);
+
+
+    useEffect(() => {
+        const currentHistory = botChatHistoryList
+            .find(item => item.id === selectedHistoryId);
+        if (!currentHistory) return;
+
+        const newCurrentHistory: BotChatHistory = {
+            ...currentHistory,
+            content: botChatList.length ? ellipsisStr(botChatList[botChatList.length - 1].content, 20) : '',
+            // 如果当前历史没有对话，则使用输入的文本作为标题
+            title: botChatList.length ? ellipsisStr(botChatList[0].content, 10) : "New Chat"
+        };
+        const newBotChatHistoryList = botChatHistoryList.filter(item => item.id !== selectedHistoryId);
+                // 如果在对话中，将当前历史记录置于历史列表顶端
+                // TODO: 先注释掉，之后再重构
+                /* if (socket) */ newBotChatHistoryList.unshift(newCurrentHistory);
+        setBotChatHistoryList(newBotChatHistoryList);
+    }, [botChatList]);
 
 
     useEffect(() => {
@@ -308,26 +329,9 @@ const BotChatPage = () => {
                                         } : history
                             )
                     );
-                    console.log("before on message:", botChatList);
-                    console.log("length", botChatList.length);
-
-                    // setBotChatList(
-                    //     botChatList =>
-                    //         botChatList.slice(0, botChatList.length - 1).concat(
-                    //             [{
-                    //                 id: 0,
-                    //                 name: botBriefInfo ? botBriefInfo.name : "",
-                    //                 historyId: selectedHistoryId,
-                    //                 avatar: botBriefInfo ? botBriefInfo.avatar : "",
-                    //                 content: response.replyMessage,
-                    //                 type: true
-                    //             }])
-                    // );
-                    // setStreamingChat(null);
                 } else {
                     // 流式token
                     console.log("token arrived", response.token);
-                    let pendingChat: BotChat;
                     if (!streamingChatRef.current) {
                         // 第一个token到达
                         console.log("first token arrived");
@@ -350,23 +354,6 @@ const BotChatPage = () => {
         }
     }, [socket]);
 
-    useEffect(() => {
-        const currentHistory = botChatHistoryList
-            .find(item => item.id === selectedHistoryId);
-        if (!currentHistory) return;
-
-        const newCurrentHistory: BotChatHistory = {
-            ...currentHistory,
-            content: botChatList.length ? ellipsisStr(botChatList[botChatList.length - 1].content, 20) : '',
-            // 如果当前历史没有对话，则使用输入的文本作为标题
-            title: botChatList.length ? ellipsisStr(botChatList[0].content, 10) : "New Chat"
-        };
-        const newBotChatHistoryList = botChatHistoryList.filter(item => item.id !== selectedHistoryId);
-        // 如果在对话中，将当前历史记录置于历史列表顶端
-        // TODO: 先注释掉，之后再重构
-        /* if (socket) */ newBotChatHistoryList.unshift(newCurrentHistory);
-        setBotChatHistoryList(newBotChatHistoryList);
-    }, [botChatList]);
 
 
 
