@@ -70,6 +70,7 @@ const ProfilePage = () => {
                 .catch(() => console.log("Failed to get user id"));
         };
         fetchUserid();
+        console.log("userId:" + userId)
     }, []);
 
     // if id == null, get me

@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import ProfilePage from '../../src/page/ProfilePage';
 import { LanguageContext } from '../../src/provider/LanguageProvider';
 import { getMe, getUser, getUserCreatedBots, getUserFavoriteBots } from '../../src/service/user';
@@ -38,10 +38,26 @@ const user = { id: 1, name: 'User 1', description: 'Description 1', avatar: 'Ava
 const me1 = { id: 1, name: 'User 1', description: 'Description 1', avatar: 'Avatar 1', asAdmin: false };
 const me2 = { id: 2, name: 'User 2', description: 'Description 2', avatar: 'Avatar 2', asAdmin: false };
 
+const Content = () => {
+    return(
+        <Routes>
+            <Route path="/profile/:id" element={
+                <LanguageContext.Provider value={mockLanguageContext}>
+                    <ProfilePage />
+                </LanguageContext.Provider>
+            }/>
+            <Route path="/profile/me" element={
+                <LanguageContext.Provider value={mockLanguageContext}>
+                    <ProfilePage />
+                </LanguageContext.Provider>
+            }/>
+        </Routes>
+    );
+}
+
 describe('ProfilePage display (has id and not me)', () => {
 
     beforeEach(async () => { 
-        require('react-router-dom').useParams.mockImplementation(() => ({id: "1"}));
         getUserCreatedBots.mockResolvedValue({ total : 20, bots: bots});
         getUserFavoriteBots.mockResolvedValue({ total : 20, bots: bots});
         getUser.mockResolvedValue(user);
@@ -49,11 +65,9 @@ describe('ProfilePage display (has id and not me)', () => {
         
         await act(async () => {
             render (
-                <Router>
-                    <LanguageContext.Provider value={mockLanguageContext}>
-                    <ProfilePage />
-                    </LanguageContext.Provider>
-                </Router>
+                <MemoryRouter initialEntries={[`/profile/1`]}>
+                    <Content />
+                </MemoryRouter>
             );
         });
     });
@@ -78,18 +92,15 @@ describe('ProfilePage display (has id and not me)', () => {
 describe('ProfilePage display (has id and is me)', () => {
 
     beforeEach(async () => {
-        require('react-router-dom').useParams.mockImplementation(() => ({ id: "1" })); 
         getUserCreatedBots.mockResolvedValue({ total : 20, bots: bots});
         getUserFavoriteBots.mockResolvedValue({ total : 20, bots: bots});
         getUser.mockResolvedValue(user);
         getMe.mockResolvedValue(me1);
         await act(async () => {
             render (
-              <Router>
-                <LanguageContext.Provider value={mockLanguageContext}>
-                  <ProfilePage />
-                </LanguageContext.Provider>
-              </Router>
+                <MemoryRouter initialEntries={[`/profile/1`]}>
+                    <Content/>
+                </MemoryRouter>
             );
         });
     });
@@ -104,18 +115,15 @@ describe('ProfilePage display (has id and is me)', () => {
 describe('ProfilePage display (no id)', () => {
 
     beforeEach(async () => {
-        require('react-router-dom').useParams.mockImplementation(() => ({})); 
         getUserCreatedBots.mockResolvedValue({ total : 20, bots: bots});
         getUserFavoriteBots.mockResolvedValue({ total : 20, bots: bots});
         getUser.mockResolvedValue(user);
         getMe.mockResolvedValue(me1);
         await act(async () => {
             render (
-              <Router>
-                <LanguageContext.Provider value={mockLanguageContext}>
-                  <ProfilePage />
-                </LanguageContext.Provider>
-              </Router>
+                <MemoryRouter initialEntries={[`/profile/me`]}>
+                    <Content />
+                </MemoryRouter>
             );
         });
     });
@@ -131,18 +139,15 @@ describe('ProfilePage display (no id)', () => {
 describe('ProfilePage error handle (has id)', () => {
 
     beforeEach(async () => {
-        require('react-router-dom').useParams.mockImplementation(() => ({ id: "1" })); 
         getUserCreatedBots.mockResolvedValue({ total : 20, bots: bots});
         getUserFavoriteBots.mockResolvedValue({ total : 20, bots: bots});
         getUser.mockRejectedValue(new Error('error'));
         getMe.mockRejectedValue(new Error('error'));
         await act(async () => {
             render (
-              <Router>
-                <LanguageContext.Provider value={mockLanguageContext}>
-                  <ProfilePage />
-                </LanguageContext.Provider>
-              </Router>
+                <MemoryRouter initialEntries={[`/profile/1`]}>
+                    <Content />
+                </MemoryRouter>
             );
         });
     });
@@ -157,18 +162,15 @@ describe('ProfilePage error handle (has id)', () => {
 describe('ProfilePage error handle (no id)', () => {
 
     beforeEach(async () => {
-        require('react-router-dom').useParams.mockImplementation(() => ({})); 
         getUserCreatedBots.mockResolvedValue({ total : 20, bots: bots});
         getUserFavoriteBots.mockResolvedValue({ total : 20, bots: bots});
         getUser.mockRejectedValue(new Error('error'));
         getMe.mockRejectedValue(new Error('error'));
         await act(async () => {
             render (
-              <Router>
-                <LanguageContext.Provider value={mockLanguageContext}>
-                  <ProfilePage />
-                </LanguageContext.Provider>
-              </Router>
+                <MemoryRouter initialEntries={[`/profile/me`]}>
+                    <Content />
+                </MemoryRouter>
             );
         });
     });
@@ -183,18 +185,15 @@ describe('ProfilePage error handle (no id)', () => {
 describe('ProfilePage error handle (get bot error)', () => {
 
     beforeEach(async () => {
-        require('react-router-dom').useParams.mockImplementation(() => ({})); 
         getUserCreatedBots.mockRejectedValue(new Error('error'));
         getUserFavoriteBots.mockRejectedValue(new Error('error'));
         getUser.mockResolvedValue(user);
         getMe.mockResolvedValue(me1);
         await act(async () => {
             render (
-              <Router>
-                <LanguageContext.Provider value={mockLanguageContext}>
-                  <ProfilePage />
-                </LanguageContext.Provider>
-              </Router>
+                <MemoryRouter initialEntries={[`/profile/me`]}>
+                    <Content />
+                </MemoryRouter>
             );
         });
     });
@@ -215,25 +214,3 @@ describe('ProfilePage error handle (get bot error)', () => {
         });
     });
 });
-
-// describe('ProfilePage error handling', () => {
-
-//     beforeEach(async () => {
-//         getSearchUserList.mockRejectedValue(new Error('error'))
-//         await act(async () => {
-//             render (
-//               <Router>
-//                 <LanguageContext.Provider value={mockLanguageContext}>
-//                     <ProfilePage />
-//                 </LanguageContext.Provider>
-//               </Router>
-//             );
-//         });
-//     });
-
-//     it('userlist name', async () => {
-//         await waitFor(() => {
-//             expect(screen.queryByText('User 1')).not.toBeInTheDocument();
-//         });
-//     });
-// });

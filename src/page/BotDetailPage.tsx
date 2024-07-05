@@ -68,27 +68,27 @@ const BotDetailPage: React.FC = () => {
 
     return (
         <>
-            {bot && comments &&
+            {bot && comments && id &&
                 <div className="main-container bot-detail-container">
 
                     <DetailCard
-                        id={bot.id || ''}
-                        name={bot.name || ''}
-                        author={bot.creator || ''}
-                        authorId={bot.creatorId || ''}
-                        avatar={bot.avatar || ''}
-                        description={bot.description || ''}
+                        id={bot.id}
+                        name={bot.name}
+                        author={bot.creator}
+                        authorId={bot.creatorId}
+                        avatar={bot.avatar}
+                        description={bot.description}
                         likeNumber={bot.likeNumber.toString()}
                         starNumber={bot.starNumber.toString()}
-                        isLiked={bot.liked || false}
-                        isStarred={bot.starred || false}
-                        canEdit={bot.asCreator || bot.asAdmin || false}
+                        isLiked={bot.liked}
+                        isStarred={bot.starred}
+                        canEdit={bot.asCreator || bot.asAdmin}
                         forBot={true}
                     />
 
                     <BotCallsCard plugins={plugins} />
 
-                    <DetailCarousel photos={bot.photos || []} />
+                    <DetailCarousel photos={bot.photos} />
 
                     <Typography
                         sx={{ color: 'primary.light' }}
@@ -108,8 +108,7 @@ const BotDetailPage: React.FC = () => {
 
                     <CommentInput onSend={
                         async (content: string) => {
-                            if (id)
-                                postCommentToBot(id, content);
+                            postCommentToBot(id, content);
 
                             setComments({
                                 total: comments.total + 1,
@@ -121,7 +120,7 @@ const BotDetailPage: React.FC = () => {
                                         userId: user.id,
                                         userName: user.name,
                                         avatar: user.avatar,
-                                        botID: id ? parseInt(id) : 0
+                                        botID: parseInt(id)
                                     },
                                     ...comments.comments
                                 ]
@@ -138,6 +137,7 @@ const BotDetailPage: React.FC = () => {
                                 content={comment.content}
                                 time={comment.time}
                                 avatarLink={`/profile/${comment.userId}`}
+                                key={comment.id}
                             />
                         ))}
                     </Box>

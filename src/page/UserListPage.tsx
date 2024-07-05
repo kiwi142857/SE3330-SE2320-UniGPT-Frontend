@@ -47,7 +47,7 @@ const UserListPage: React.FC = () => {
         getSearchUsers();
     }, [searchParams, tabValue]);
 
-    console.log("users", users);
+    // console.log("users", users);
 
     const handleSearch = (keyword: string) => {
         setSearchParams({ keyword: keyword });
