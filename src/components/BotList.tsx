@@ -104,7 +104,6 @@ export function BotList({ type, bots }: { type: BotListType, bots: Bot[] | null;
     const boxStyle = type.type === 'Favorite' ? 
         { marginLeft: '20px', marginRight: '0' } : { marginLeft: '0', marginRight: '20px' };
 
-    console.log("type", type, "boxStyle", boxStyle);
     const PrefixComponent = () => {
         if (type.type === 'Favorite') {
             return <Grid item xs={4}>

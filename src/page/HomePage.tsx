@@ -3,7 +3,6 @@ import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import Grid from '@mui/material/Grid';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from "react-router-dom";
 import { BotList, BotListType, HomeListHeader } from "../components/BotList";
 import '../css/Home.css';
 import { useErrorHandler } from '../hooks/errorHandler';
@@ -13,11 +12,14 @@ import { User, getMe, getUerUsedBots, getUserFavoriteBots } from '../service/use
 
 const HomePage: React.FC = () => {
 
-    const [searchParams] = useSearchParams();
-    const pageIndexStr = searchParams.get("pageIndex");
-    const pageSizeStr = searchParams.get("pageSize");
-    const pageIndex = pageIndexStr != null ? Number.parseInt(pageIndexStr) : 0;
-    const pageSize = pageSizeStr != null ? Number.parseInt(pageSizeStr) : 8;
+    // const [searchParams] = useSearchParams();
+    // const pageIndexStr = searchParams.get("pageIndex");
+    // const pageSizeStr = searchParams.get("pageSize");
+    // const pageIndex = pageIndexStr != null ? Number.parseInt(pageIndexStr) : 0;
+    // const pageSize = pageSizeStr != null ? Number.parseInt(pageSizeStr) : 8;
+
+    const pageIndex = 0;
+    const pageSize = 8;
 
     const context = React.useContext(LanguageContext);
     const { t, i18n } = useTranslation();
@@ -33,7 +35,7 @@ const HomePage: React.FC = () => {
     useEffect(() => {
         const fetchMe = async () => {
             await getMe().then((res) => setMe(res))
-                .catch(() => setMe(null));
+                .catch(() => {setMe(null); console.log("Failed to get me")});
         };
         fetchMe();
     }, []);
