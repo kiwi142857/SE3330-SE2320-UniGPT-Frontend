@@ -233,6 +233,7 @@ const BotChatPage = () => {
 
     const sendUserAsk = (websocket: WebSocket | null) => {
         console.log("send user ask:", socket, userAsk);
+        setStreamingChat(null);
         sendMessage(websocket, userAsk, false, true);
         setIsFirstReply(false);
     };
