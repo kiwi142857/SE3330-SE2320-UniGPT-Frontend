@@ -80,7 +80,7 @@ const BotChatPage = () => {
      * 加载状态
      */
     const [botChatHistoryLoading, setBotChatHistoryLoading] = useState(true);
-    // const [responding, setResponding] = useState(false);
+    const [responding, setResponding] = useState(false);
 
 
     const [socket, setSocket] = useState<WebSocket | null>(null);
@@ -167,7 +167,7 @@ const BotChatPage = () => {
                     type: true
                 }]
         );
-        // setResponding(true);
+        setResponding(true);
         setSelectedHistoryId(newHistoryId);
         setIsFirstReply(true);
     };
@@ -223,7 +223,7 @@ const BotChatPage = () => {
 
         // 向 WebSocket 发送消息
         sendMessage(socket, text);
-        // setResponding(true);
+        setResponding(true);
     };
     const handleResendMessage = (sendText: string) => {
         // 重新发送最后一条消息时，清空流式输出
@@ -254,7 +254,7 @@ const BotChatPage = () => {
 
         // 向 WebSocket 发送消息
         sendMessage(socket, sendText, true);
-        // setResponding(true);
+        setResponding(true);
     };
     const handleSendUserAsk = (websocket: WebSocket | null) => {
         console.log("send user ask:", socket, userAsk);
@@ -262,7 +262,7 @@ const BotChatPage = () => {
         sendMessage(websocket, userAsk, false, true);
         setIsFirstReply(false);
     };
-    
+
 
     /**
      * Functions: WebSocket相关
@@ -306,8 +306,7 @@ const BotChatPage = () => {
         selectedHistoryId && createWebSocketConnectionForHistory(selectedHistoryId);
 
         !isFirstReply && fetchAndSetBotChatList();
-        // !isFirstReply && setResponding(false);
-        // !isFirstReply && console.log("set Responding to false here");
+        !isFirstReply && setResponding(false);
 
         return () => {
             socket?.readyState === WebSocket.OPEN && closeWebSocketConnection(socket);
@@ -404,7 +403,7 @@ const BotChatPage = () => {
                     if (!streamingChatRef.current) {
                         // 第一个token到达
                         console.log("first token arrived");
-                        // setResponding(false);
+                        setResponding(false);
                     } else {
                         // 之后的token到达
                         console.log("other token arrived");
@@ -419,7 +418,7 @@ const BotChatPage = () => {
 
             socket.onerror = (error) => {
                 console.error('WebSocket Error: ', error);
-                // setResponding(false);
+                setResponding(false);
             };
         }
     }, [socket]);
@@ -481,7 +480,11 @@ const BotChatPage = () => {
                 display="flex"
                 width="100%"
             >
-                <ChatWindow botChatList={botChatList} resendLast={handleResendMessage} loading={false} />
+                <ChatWindow
+                    botChatList={botChatList}
+                    resendLast={handleResendMessage}
+                    loading={responding}
+                />
                 {/* 输入框，发送按钮，编辑按钮 */}
                 <PromptInput
                     selectedHistoryId={selectedHistoryId}
@@ -489,7 +492,6 @@ const BotChatPage = () => {
                         setTableCreateOpen(true);
                     }}
                     onSend={handleSendMessage}
-                    // responding 时禁止编辑
                     disabled={false}
                 />
                 {/* 弹出 prompt 表格 */}
