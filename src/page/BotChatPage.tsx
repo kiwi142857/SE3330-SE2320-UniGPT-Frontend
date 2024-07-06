@@ -20,6 +20,11 @@ import { ellipsisStr } from "../utils/strUtils.ts";
 // bot聊天页
 // 侧边栏宽度
 const drawerWidth = 350;
+interface WebSocketMessage {
+    type: string, 
+    message: string
+};
+
 const BotChatPage = () => {
     let { botID } = useParams<{ botID: string; }>();
     botID === undefined ? botID = "" : botID = botID;
@@ -84,7 +89,7 @@ const BotChatPage = () => {
 
     const onSubmit = async (promptlist: Prompt[]) => {
         console.log("PromptList: ", promptlist);
-        const response = await createHistory(botID, promptlist);
+        const response = await createHistory(botID ?? '', promptlist);
         if (!response.ok) {
             messageError("开启对话失败");
             return;
@@ -305,18 +310,16 @@ const BotChatPage = () => {
 
             socket.onmessage = (event) => {
                 console.log('Message from server: ', event.data);
-                let response: { finalState: string, replyMessage: string } | { finalState: string, token: string };
+                let response: WebSocketMessage;
                 try {
                     console.log('event.data: ' + event.data);
                     response = JSON.parse(event.data);
                 } catch (error) {
                     console.error('Error parsing JSON:', error);
-                    response = { replyMessage: 'Error parsing JSON' };
+                    response = { type: 'error', message: 'Error parsing JSON'}
                     // Handle the error as needed
                 }
-                console.log('Message from server: ', response);
-                console.log("response.finalState:" + response.finalState);
-                if (response.finalState == "true") {
+                if (response.type === 'complete') {
                     // 完整的消息
                     setBotChatHistoryList(
                         botChatHistoryListRef
@@ -326,13 +329,13 @@ const BotChatPage = () => {
                                     history.id === selectedHistoryId ?
                                         {
                                             ...history,
-                                            content: ellipsisStr(response.replyMessage, 20)
+                                            content: ellipsisStr(response.message, 20)
                                         } : history
                             )
                     );
-                } else {
+                } else if(response.type === 'token'){
                     // 流式token
-                    console.log("token arrived", response.token);
+                    console.log("token arrived", response.message);
                     if (!streamingChatRef.current) {
                         // 第一个token到达
                         console.log("first token arrived");
@@ -341,7 +344,9 @@ const BotChatPage = () => {
                         // 之后的token到达
                         console.log("other token arrived");
                     }
-                    setTokenQueue(queue => [...queue, response.token]);
+                    setTokenQueue(queue => [...queue, response.message]);
+                } else{
+                    messageError(response.message);
                 }
 
             };
