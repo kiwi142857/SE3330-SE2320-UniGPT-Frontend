@@ -6,6 +6,7 @@ import HomePage from '../page/HomePage';
 import LoginPage from '../page/LoginPage';
 import MarketPage from '../page/MarketPage';
 import PluginDetailPage from '../page/PluginDetailPage';
+import PluginEditPage from '../page/PluginEditPage';
 import ProfilePage from '../page/ProfilePage';
 import UserListPage from '../page/UserListPage';
 import Navigator from './Navigator';
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
             {
                 path: "/botedit/:id",
                 element: <BotEditPage edit={true} />
+            },
+            {
+                path: "/plugincreate",
+                element: <PluginEditPage />
             },
             {
                 path: "/login",

@@ -9,20 +9,22 @@ import BasicInput from './BasicInput';
 import CheckTitle from './CheckTitle';
 import EditLayout from './EditLayout';
 
-function BotEditMarketPart(
+function EditPageMarketPart(
     {
         publishCheck, 
         setPublishCheck, 
         photoImgs, 
         setPhotoImgs,
-        defaultDetail
+        defaultDetail,
+        forBot
     } :
     {
         publishCheck: boolean, 
         setPublishCheck: React.Dispatch<React.SetStateAction<boolean>>, 
         photoImgs: string[], 
         setPhotoImgs: React.Dispatch<React.SetStateAction<string[]>>
-        defaultDetail: string | null
+        defaultDetail: string | null,
+        forBot: boolean
     }
 ) {
     
@@ -65,7 +67,8 @@ function BotEditMarketPart(
                 <>
                     <EditLayout title={t('Detailed Description')}>
                         <BasicInput
-                            placeholder={t('Your detail description for your assistant (max 255 characters)')}
+                            placeholder={t(forBot ?'Your detail description for your assistant (max 255 characters)'
+                                : 'Your detail description for your plugin (max 255 characters)')}
                             name='detail'
                             defaultValue={defaultDetail}
                             maxLength={255}
@@ -115,4 +118,4 @@ function BotEditMarketPart(
     );
 }
 
-export default BotEditMarketPart;
+export default EditPageMarketPart;
