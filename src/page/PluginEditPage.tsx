@@ -3,11 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import EditPageMarketPart from "../components/EditPageMarketPart";
 import PluginEditBasicPart from "../components/PluginEditBasicPart";
+import PluginEditCodePart from "../components/PluginEditCodePart";
 import '../css/App.css';
 import '../css/BotEditPage.css';
 import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
-import { createPlugin, pluginEditInfo } from '../service/PluginEdit';
+import { createPlugin, param, pluginEditInfo } from '../service/PluginEdit';
 
 // bot创建/修改页
 const PluginEditPage = () => {
@@ -20,8 +21,8 @@ const PluginEditPage = () => {
 
     const [avatarImg, setAvatarImg] = useState<string>('/assets/bot-default.png');
     const [photoImgs, setPhotoImgs] = useState<string[]>([]);
-
-    const [publishCheck, setPublishCheck] = useState<boolean>(false);
+    const [params, setParams] = useState<param[]>([]);
+    const [code, setCode] = React.useState('def handler(event, context):\n    return "hello world" \n');
 
     const {messageError, ErrorSnackbar} = useErrorHandler();
 
@@ -32,23 +33,21 @@ const PluginEditPage = () => {
             name: { value: string };
             description: { value: string };
             detail: { value: string };
+            fileName: { value: string };
         };
 
         const name = target.name.value;
         const description = target.description.value;
-        let detail;
-
-        if (publishCheck) {
-            detail = target.detail.value;
-        } else {
-            detail = null;
-        }
+        const fileName = target.fileName.value;
+        const detail = target.detail.value;
 
         let newInfo: pluginEditInfo = {
             name: name,
             avatar: avatarImg,
             description: description,
-            published: publishCheck,
+            fileName: fileName,
+            code: code,
+            param: params,
             detail: detail,
             photos: photoImgs,
         };
@@ -77,9 +76,18 @@ const PluginEditPage = () => {
 
                 <Divider style={{ marginTop: '20px' }} />
 
+                <PluginEditCodePart
+                    code={code}
+                    setCode={setCode}
+                    params={params}
+                    setParams={setParams}
+                />
+
+                <Divider style={{ marginTop: '20px' }} />
+
                 <EditPageMarketPart
-                    publishCheck={publishCheck}
-                    setPublishCheck={setPublishCheck}
+                    publishCheck={true}
+                    setPublishCheck={() => {}}
                     photoImgs={photoImgs}
                     setPhotoImgs={setPhotoImgs}
                     defaultDetail={null}

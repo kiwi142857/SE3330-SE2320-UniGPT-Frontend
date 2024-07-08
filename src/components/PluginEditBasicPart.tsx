@@ -63,7 +63,7 @@ function PluginEditBasicPart (
                     <BasicInput
                         placeholder={t("Your plugin name (max 50 characters)")}
                         name='name'
-                        maxLength={50}
+                        maxLength={255}
                         required
                     />
                 </EditLayout>

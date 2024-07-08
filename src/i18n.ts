@@ -30,6 +30,8 @@ const resources = {
       'Profile': '个人资料',
       "Cancel": "取消",
       'Update': '更新',
+      "Maximum 25 characters input": "最多25个字符",
+      "Maximum 255 characters input": "最多255个字符",
       'Canvas Url': 'Canvas 订阅',
       "Log in to canvas, click \"Calendar\" - \"Calendar Subscription\", then copy the link to here": "登录到Canvas，点击\"日历\" - \"日历订阅\"，然后复制链接到这里",
       "Logout": "登出",
@@ -80,6 +82,13 @@ const resources = {
       "Your plugin name (max 50 characters)": "为你的插件取名（最多50个字符）",
       "Your description for your plugin (max 255 characters)": "简要介绍你的插件（最多255个字符）",
       "Your detail description for your plugin (max 255 characters)": "详细介绍你的插件（最多255个字符）",
+      "Plugin Running Logic": "插件运行逻辑",
+      "File name": "文件名",
+      "no need to add suffix .py": "不需要添加.py后缀",
+      "Code": "代码",
+      "Parameter": "参数",
+      "Type": "类型",
+      "Parameter description": "参数说明",
 
       // BotChatPage
       "Enter your message here...": "发送消息...",

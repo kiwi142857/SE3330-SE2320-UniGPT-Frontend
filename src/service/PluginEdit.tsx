@@ -1,10 +1,18 @@
 import { DUMMY_RESPONSE, ResponseData } from './common';
 
+export interface param {
+    name: string;
+    type: string;
+    description: string;
+}
+
 export interface pluginEditInfo {
     name: string;
     avatar: string;
     description: string;
-    published: boolean;
+    fileName: string;
+    code: string;
+    param: param[];
     detail: string | null;
     photos: string[] | [];
 }

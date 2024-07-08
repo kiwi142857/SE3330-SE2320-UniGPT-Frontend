@@ -89,3 +89,7 @@
     text-align: left;
     align-items: center;
 }
+
+.monaco-editor .view-lines {
+    text-align: left !important;
+}

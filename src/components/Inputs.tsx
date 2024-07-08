@@ -199,7 +199,6 @@ export function EditSelect
     );
 }
 
-// botEdit页的baseModel选项框
 export function SliderSelect
     ({
         title,
