@@ -51,11 +51,6 @@ export function PluginSelectList({ allPlugins,selectedPlugins, setSelectedPlugin
         <>
                 <Box sx={{ flexGrow: 1 }}>
                     <Grid container item spacing={4}>
-                        {/* <Grid item xs={4}>
-                            <Card className='create-bot-card'>
-                                <MarketCreateCard link='/plugincreate' text='Create your new plugin'></MarketCreateCard>
-                            </Card>
-                        </Grid> */}
                         {allPlugins.map(plugin => (
                             <Grid item xs={4} key={plugin.id}>
                                 <SelectListCard
