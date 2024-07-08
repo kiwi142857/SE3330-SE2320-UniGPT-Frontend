@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { useParams } from "react-router-dom";
 import BotEditBasicPart from '../components/BotEditBasicPart';
 import BotEditKnowPart from "../components/BotEditKnowPart";
-import BotEditMarketPart from "../components/BotEditMarketPart";
 import BotEditPluginPart from "../components/BotEditPluginPart";
 import BotEditPromptPart from '../components/BotEditPromptPart';
+import EditPageMarketPart from "../components/EditPageMarketPart";
 import '../css/App.css';
 import '../css/BotEditPage.css';
 import { useErrorHandler } from '../hooks/errorHandler';
@@ -196,12 +196,13 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
 
                 <Divider style={{ marginTop: '20px' }} />
 
-                <BotEditMarketPart
+                <EditPageMarketPart
                     publishCheck={publishCheck}
                     setPublishCheck={setPublishCheck}
                     photoImgs={photoImgs}
                     setPhotoImgs={setPhotoImgs}
                     defaultDetail={botEditInfo.detail}
+                    forBot={true}
                 />
 
                 <Button

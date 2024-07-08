@@ -16,21 +16,6 @@ export interface pluginDetailInfo {
     asAdmin: boolean;
 }
 
-export interface Comment {
-    id: number;
-    content: string;
-    time: Date;
-    userId: number;
-    userName: string;
-    avatar: string;
-    botID: number;
-}
-
-export interface CommentList {
-    total: number;
-    comments: Comment[];
-}
-
 export async function getPluginDetail(id: string): Promise<pluginDetailInfo | null> {
 
     // const url = `${PREFIX}/bots/${id}?info=detail`;
