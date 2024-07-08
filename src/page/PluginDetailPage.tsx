@@ -42,27 +42,27 @@ const PluginDetailPage: React.FC = () => {
 
     return (
         <>
-            {plugin &&
+            {plugin && id &&
                 <div className="main-container bot-detail-container">
                     <ErrorSnackbar />
                     <DetailCard
-                        id={plugin.id || ''}
-                        name={plugin.name || ''}
-                        author={plugin.creator || ''}
-                        authorId={plugin.creatorId || ''}
-                        avatar={plugin.avatar || ''}
-                        description={plugin.description || ''}
+                        id={plugin.id}
+                        name={plugin.name}
+                        author={plugin.creator}
+                        authorId={plugin.creatorId}
+                        avatar={plugin.avatar}
+                        description={plugin.description}
                         likeNumber={plugin.likeNumber.toString()}
                         starNumber={plugin.starNumber.toString()}
-                        isLiked={plugin.liked || false}
-                        isStarred={plugin.starred || false}
-                        canEdit={plugin.asCreator || plugin.asAdmin || false}
+                        isLiked={plugin.liked}
+                        isStarred={plugin.starred}
+                        canEdit={plugin.asCreator || plugin.asAdmin}
                         forBot={false}
                     />
 
                     <PluginCallsCard bots={bots}/>
 
-                    <DetailCarousel photos={plugin.photos || []} />
+                    <DetailCarousel photos={plugin.photos} />
 
                     <Typography
                         sx={{ color: 'primary.light' }}

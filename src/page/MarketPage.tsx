@@ -15,9 +15,11 @@ const MarketPage: React.FC = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const pageIndexStr = searchParams.get("pageIndex");
-    const pageSizeStr = searchParams.get("pageSize");
+    // const pageSizeStr = searchParams.get("pageSize");
     const [pageIndex, setPageIndex] = useState(pageIndexStr != null ? Number.parseInt(pageIndexStr) - 1 : 0);
-    const pageSize = pageSizeStr != null ? Number.parseInt(pageSizeStr) : 15;
+    // const pageSize = pageSizeStr != null ? Number.parseInt(pageSizeStr) : 15;
+    const pageSize = 15;
+
     const [tabValue, setTabValue] = useState(1);
     const [marketValue, setMarketValue] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
@@ -65,7 +67,6 @@ const MarketPage: React.FC = () => {
     }
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        console.log("page change", value - 1);
         setPageIndex(value - 1);
         setSearchParams({ ...searchParams, pageIndex: (value).toString() });
     };
@@ -104,7 +105,7 @@ const MarketPage: React.FC = () => {
                 <Pagination 
                     count={totalPage} 
                     page={pageIndex + 1} 
-                    onChange={handlePageChange} 
+                    onChange={handlePageChange}
                     className='pagination' 
                 />
             </div>

@@ -13,9 +13,10 @@ const UserListPage: React.FC = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const pageIndexStr = searchParams.get("pageIndex");
-    const pageSizeStr = searchParams.get("pageSize");
+    // const pageSizeStr = searchParams.get("pageSize");
     const [pageIndex, setPageIndex] = useState(pageIndexStr != null ? Number.parseInt(pageIndexStr) - 1 : 0);
-    const pageSize = pageSizeStr != null ? Number.parseInt(pageSizeStr) : 15;
+    // const pageSize = pageSizeStr != null ? Number.parseInt(pageSizeStr) : 15;
+    const pageSize = 15;
     const [tabValue, setTabValue] = React.useState(1);
     const [totalPage, setTotalPage] = useState(0);
 
@@ -27,8 +28,7 @@ const UserListPage: React.FC = () => {
         
         await getSearchUserList(pageIndex, pageSize, searchParams.get("keyword") || "", type)
             .then(response => {
-                setUsers(response.users || []);
-                if(!response.total) response.total = 0;
+                setUsers(response.users);
                 setTotalPage(response.total % pageSize === 0 ? response.total / pageSize : Math.floor(response.total / pageSize) + 1);
             })
             .catch(e => {
@@ -47,7 +47,7 @@ const UserListPage: React.FC = () => {
         getSearchUsers();
     }, [searchParams, tabValue]);
 
-    console.log("users", users);
+    // console.log("users", users);
 
     const handleSearch = (keyword: string) => {
         setSearchParams({ keyword: keyword });

@@ -55,6 +55,7 @@ export function CommentInput({ onSend }: { onSend: (content: string) => void }) 
                     variant="extended"
                     size="large"
                     sx={{ color: 'secondary.main' }}
+                    data-testid = 'send-button'
                     onClick={() => {
                         onSend(message);
                         setMessage('');
