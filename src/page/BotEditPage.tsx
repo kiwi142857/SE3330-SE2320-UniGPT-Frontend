@@ -83,6 +83,12 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
                 setPromptCheck(info.prompted);
                 setPublishCheck(info.published);
                 setFewShots(info.promptChats);
+                if(info.plugins.length > 0) {
+                    setPluginCheck(true);
+                    setPlugins(info.plugins);
+                } else {
+                    setPluginCheck(false);
+                }
             })
             .catch(e => messageError("获取bot信息失败: " + e.message));
     }
@@ -139,9 +145,9 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
                         if (res.ok) {
                             let href = '/botChat/'+ id;
                 
-                            // setTimeout(() => {
-                            //     window.location.href = href;
-                            // }, 100);
+                            setTimeout(() => {
+                                window.location.href = href;
+                            }, 100);
                         } else {
                             messageError("bot创建/修改表单提交失败: " + res.message);
                         }})
@@ -153,9 +159,9 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
                     if (res.ok) {
                         let href = '/botChat/'+ res.message;
             
-                        // setTimeout(() => {
-                        //     window.location.href = href;
-                        // }, 100);
+                        setTimeout(() => {
+                            window.location.href = href;
+                        }, 100);
                     } else {
                         messageError("bot创建/修改表单提交失败: " + res.message);
                     }

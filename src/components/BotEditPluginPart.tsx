@@ -1,6 +1,6 @@
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import IconButton from '@mui/material/IconButton';
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../css/BotEditPage.css';
 import '../css/DetailPage.css';
@@ -26,11 +26,18 @@ function BotEditPluginPart({pluginCheck, setPluginCheck, plugins, setPlugins}:
         setOpen(false);
     }
 
+    const onPluginCheck = (event: ChangeEvent<HTMLInputElement>) => {
+        setPluginCheck(event.target.checked);
+        if (!event.target.checked) {
+            setPlugins([]);
+        }
+    }
+
     return (
       <div className='edit-prompts-container'>
           <CheckTitle
               check={pluginCheck}
-              onCheck={(event) => setPluginCheck(event.target.checked)}
+              onCheck={onPluginCheck}
               title={t('Add plugins')}
           />
           {pluginCheck &&
