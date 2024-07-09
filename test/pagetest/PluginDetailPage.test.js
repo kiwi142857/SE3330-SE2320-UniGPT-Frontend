@@ -81,8 +81,6 @@ describe('PluginDetailPage display (has id)', () => {
         await waitFor(() => {
             expect(screen.getByText('Plugin 1')).toBeInTheDocument();
             expect(screen.getByText('Description 1')).toBeInTheDocument();
-            // expect(screen.getByText('Edit')).toBeInTheDocument();
-            // 目前没有编辑插件功能，有编辑功能之后再解开注释
         });
     });
 });
