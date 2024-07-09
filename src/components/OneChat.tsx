@@ -13,17 +13,16 @@ import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import '../css/OneChat.css';
 
-const calledList = ["Plugin 1", "knowledge base", "Plugin 2"];
-const loadingList = ["Plugin 1", "knowledge base", "Plugin 2"];
-
 // 聊天或评论区的一句对话
 // 注意，只有一个单词的时候是不会换行的！
 // type = true: bot
 const OneChat = (
-    { id, name, avatar, content, type, last = false, shuffleLast, editLast, loading }:
-        {   id: number, name: string, avatar: string, content: string, 
-            type: boolean, last: boolean, 
-            shuffleLast: () => void, editLast: (editedContent: string) => void, loading: boolean 
+    { id, name, avatar, content, type, last = false, shuffleLast, editLast, loading, calledList, loadingList }:
+        {
+            id: number, name: string, avatar: string, content: string,
+            type: boolean, last: boolean,
+            shuffleLast: () => void, editLast: (editedContent: string) => void, loading: boolean,
+            calledList: string[], loadingList: string[];
         }
 ) => {
     const [pressCopy, setPressCopy] = useState(false);
@@ -36,7 +35,7 @@ const OneChat = (
     const onSave = () => {
         editLast(editedContent);
         setEditing(false);
-    }
+    };
 
     return (
         <>
@@ -58,17 +57,17 @@ const OneChat = (
                 <div className='one-chat-markdown'>
                     {
                         type && !loading && calledList.length > 0 ?
-                            <Accordion defaultExpanded 
+                            <Accordion defaultExpanded
                                 style={{
                                     width: '90%',
-                                    borderRadius: '4px', 
+                                    borderRadius: '4px',
                                     backgroundColor: '#F5F5F5',
                                 }}
                             >
                                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                     <div className='one-chat-icon-and-text'>
                                         <MenuIcon />
-                                        <Typography style={{ color: '#273B4A', fontWeight:'bold' }}>
+                                        <Typography style={{ color: '#273B4A', fontWeight: 'bold' }}>
                                             {t("Running Process")}
                                         </Typography>
                                     </div>
@@ -77,7 +76,7 @@ const OneChat = (
                                     {
                                         calledList.map((item, index) => (
                                             <div className='one-chat-icon-and-text' key={index}>
-                                                <TaskAltIcon/>
+                                                <TaskAltIcon />
                                                 <Typography key={index}>
                                                     {"Called " + item}
                                                 </Typography>
@@ -100,19 +99,19 @@ const OneChat = (
                             loading && type ? (
                                 loadingList.map((item, index) => (
                                     index !== loadingList.length - 1 ?
-                                    <div className='one-chat-icon-and-text' key={index}>
-                                        <TaskAltIcon/>
-                                        <Typography key={index}>
-                                            {"Called " + item}
-                                        </Typography>
-                                    </div> :
-                                    <div className='one-chat-icon-and-text' key={index}>
-                                        {/* <TailSpin color='grey' height={20} width={20}/> */}
-                                        <RefreshIcon className='loading-spin'/>
-                                        <Typography key={index}>
-                                            {"Calling " + item + " ..."}
-                                        </Typography>
-                                    </div>
+                                        <div className='one-chat-icon-and-text' key={index}>
+                                            <TaskAltIcon />
+                                            <Typography key={index}>
+                                                {"Called " + item}
+                                            </Typography>
+                                        </div> :
+                                        <div className='one-chat-icon-and-text' key={index}>
+                                            {/* <TailSpin color='grey' height={20} width={20}/> */}
+                                            <RefreshIcon className='loading-spin' />
+                                            <Typography key={index}>
+                                                {"Calling " + item + " ..."}
+                                            </Typography>
+                                        </div>
                                 ))
                             ) : (
                                 <ReactMarkdown>
