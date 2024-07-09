@@ -341,6 +341,7 @@ export function PromptInput
                 variant="extended"
                 size="large"
                 style={{ color: 'white', margin: '20px' }}
+                data-testid='create-table-button'
             >
                 <ArticleIcon fontSize='large' />
             </Fab>

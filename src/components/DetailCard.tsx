@@ -108,62 +108,60 @@ const DetailCard = (
                         {t(description)}
                     </p>
                 </Typography>
-                <div className='detail-card-btn-group'>
-                    {liked ? (
-                        <FavoriteIcon
-                            sx={{ color: 'primary.main' }}
-                            fontSize='large'
-                            onClick={() => disLike()}
-                        />
-                    ) : (
-                        <FavoriteBorderIcon
-                            sx={{ color: 'primary.main' }}
-                            fontSize='large'
-                            onClick={() => like()}
-                        />
-                    )}
-                    <span className='detail-card-like'>
-                        {localLikeNumber}
-                    </span>
-                    {starred ? (
-                        <StarIcon
-                            sx={{ color: 'primary.main' }}
-                            fontSize='large'
-                            onClick={() => unStar()}
-                        />
-                    ) : (
-                        <StarBorderIcon
-                            sx={{ color: 'primary.main' }}
-                            fontSize='large'
-                            onClick={() => star()}
-                        />
-                    )}
-                    <span className='detail-card-collect'>
-                        {localStarNumber}
-                    </span>
-                    {
-                        forBot &&
-                        <Button
-                            variant="contained"
-                            endIcon={<SendIcon />}
-                            href={`/botchat/${id}`}
-                            size='large'
-                        >
-                            {t('Use')}
-                        </Button>
-                    }
-                    {
-                        forBot && canEdit &&
-                        <Button
-                            variant="contained"
-                            endIcon={<SendIcon />}
-                            href={`/botedit/${id}`}
-                            size='large'
-                        >
-                            {t('Edit')}
-                        </Button>
-                    }
-                </div>
+                { forBot &&
+                    <div className='detail-card-btn-group'>
+                        {liked ? (
+                            <FavoriteIcon
+                                sx={{ color: 'primary.main' }}
+                                fontSize='large'
+                                onClick={() => disLike()}
+                            />
+                        ) : (
+                            <FavoriteBorderIcon
+                                sx={{ color: 'primary.main' }}
+                                fontSize='large'
+                                onClick={() => like()}
+                            />
+                        )}
+                        <span className='detail-card-like'>
+                            {localLikeNumber}
+                        </span>
+                        {starred ? (
+                            <StarIcon
+                                sx={{ color: 'primary.main' }}
+                                fontSize='large'
+                                onClick={() => unStar()}
+                            />
+                        ) : (
+                            <StarBorderIcon
+                                sx={{ color: 'primary.main' }}
+                                fontSize='large'
+                                onClick={() => star()}
+                            />
+                        )}
+                        <span className='detail-card-collect'>
+                            {localStarNumber}
+                        </span>
+                            <Button
+                                variant="contained"
+                                endIcon={<SendIcon />}
+                                href={`/botchat/${id}`}
+                                size='large'
+                            >
+                                {t('Use')}
+                            </Button>
+                        {canEdit &&
+                            <Button
+                                variant="contained"
+                                endIcon={<SendIcon />}
+                                href={`/botedit/${id}`}
+                                size='large'
+                            >
+                                {t('Edit')}
+                            </Button>
+                        }
+                    </div>
+                }
             </div>
         </div>
     );
