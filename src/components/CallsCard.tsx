@@ -2,12 +2,14 @@ import { Typography } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import '../css/DetailPage.css';
-import { Bot, Plugin } from '../service/market';
+import { BotBriefInfo } from '../service/BotChat';
+import { Plugin } from '../service/market';
 
 function BotCallsCard({plugins}: {plugins: Plugin[]}) {
     const { t } = useTranslation();
 
     return (
+        plugins.length === 0 ? <></> :
         <div className='detail-calls-container'>
             <Typography sx={{ color: 'primary.main' }}>
                 <p className='detail-card-calls'>
@@ -32,10 +34,11 @@ function BotCallsCard({plugins}: {plugins: Plugin[]}) {
     );
 }
 
-export function PluginCallsCard({bots}: {bots: Bot[]}) {
+export function PluginCallsCard({bots}: {bots: BotBriefInfo[]}) {
     const { t } = useTranslation();
 
     return (
+        bots.length === 0 ? <></> :
         <div className='detail-calls-container'>
             <Typography sx={{ color: 'primary.main' }}>
                 <p className='detail-card-calls'>

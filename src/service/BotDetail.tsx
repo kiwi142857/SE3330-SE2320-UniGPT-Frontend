@@ -1,4 +1,5 @@
 import { DUMMY_RESPONSE, PREFIX, del, getJsonOrThrow, post, put } from './common';
+import { Plugin } from './market';
 
 export interface botDetailInfo {
     id: string;
@@ -16,6 +17,7 @@ export interface botDetailInfo {
     starred: boolean;
     asCreator: boolean;
     asAdmin: boolean;
+    plugins: Plugin[];
 }
 
 export interface Comment {

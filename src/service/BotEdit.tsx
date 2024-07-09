@@ -1,4 +1,5 @@
 import { DUMMY_RESPONSE, getJsonOrThrow, post, PREFIX, put, ResponseData } from './common';
+import { Plugin } from './market';
 
 export enum PromptChatType {
     USER, ASSISTANT, SYSTEM
@@ -21,6 +22,7 @@ export interface botEditInfo {
     prompted: boolean;
     promptChats: fewShot[] | [];
     promptKeys: string[] | [];
+    plugins: Plugin[];
 }
 
 export async function createBot(data: botEditInfo): Promise<ResponseData> {

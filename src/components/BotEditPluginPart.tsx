@@ -9,8 +9,9 @@ import { Plugin } from '../service/market';
 import CheckTitle from './CheckTitle';
 import PluginSelectDialog from './PluginSelectDialog';
 
-function BotEditPluginPart({pluginCheck, setPluginCheck} :
-    {pluginCheck: boolean, setPluginCheck: React.Dispatch<React.SetStateAction<boolean>>}) {
+function BotEditPluginPart({pluginCheck, setPluginCheck, plugins, setPlugins}:
+     {pluginCheck: boolean, setPluginCheck: React.Dispatch<React.SetStateAction<boolean>>, 
+    plugins: Plugin[], setPlugins: React.Dispatch<React.SetStateAction<Plugin[]>>}) {
 
     const context = React.useContext(LanguageContext);
     const { t, i18n } = useTranslation();
@@ -18,8 +19,6 @@ function BotEditPluginPart({pluginCheck, setPluginCheck} :
     useEffect(() => {
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
-
-    const [plugins, setPlugins] = useState<Plugin[]>([]);
 
     const [open, setOpen] = useState(false);
 

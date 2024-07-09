@@ -12,6 +12,7 @@ import '../css/BotEditPage.css';
 import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { botEditInfo, createBot, fewShot, getBotEditInfo, updateBot } from '../service/BotEdit';
+import { Plugin } from '../service/market';
 import { apiToString, stringToApi } from "../utils/api";
 import { getPromptKeysFromFewShot } from "../utils/strUtils";
 
@@ -37,13 +38,16 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
         photos: [],
         prompted: false,
         promptChats: [],
-        promptKeys: []
+        promptKeys: [],
+        plugins: []
     });
     const [avatarImg, setAvatarImg] = useState<string>('/assets/bot-default.png');
     const [photoImgs, setPhotoImgs] = useState<string[]>([]);
 
     const [fewShots, setFewShots] = useState<fewShot[]>([]);
     const [promptKeys, setPromptKeys] = useState<string[]>([]);
+
+    const [plugins, setPlugins] = useState<Plugin[]>([]);
 
     const [promptCheck, setPromptCheck] = useState<boolean>(false);
     const [publishCheck, setPublishCheck] = useState<boolean>(false);
@@ -122,7 +126,8 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
             photos: photoImgs,
             prompted: promptCheck,
             promptChats: fewShots,
-            promptKeys: promptKeys
+            promptKeys: promptKeys,
+            plugins: plugins
         };
 
         console.log(newInfo);
@@ -192,6 +197,8 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
                 <BotEditPluginPart
                     pluginCheck={pluginCheck}
                     setPluginCheck={setPluginCheck}
+                    plugins={plugins}
+                    setPlugins={setPlugins}
                 />
 
                 <Divider style={{ marginTop: '20px' }} />
