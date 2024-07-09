@@ -6,11 +6,10 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../css/BotEditPage.css';
 import { LanguageContext } from '../provider/LanguageProvider';
-import CheckTitle from './CheckTitle';
 import EditLayout from './EditLayout';
 
 const VisuallyHiddenInput = styled('input')({
@@ -25,17 +24,15 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 
-function BotEditKnowPart({knowCheck, setKnowCheck} : 
-    {knowCheck: boolean, setKnowCheck: React.Dispatch<React.SetStateAction<boolean>>}) {
-    
+function BotEditKnowPart({knowFiles, setKnowFiles} :
+    { knowFiles: File[], setKnowFiles: React.Dispatch<React.SetStateAction<File[]>>}) {
+            
     const context = React.useContext(LanguageContext);
     const { t, i18n } = useTranslation();
 
     useEffect(() => {
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
-
-    const [knowFiles, setKnowFiles] = useState<File[]>([]);
 
     const onFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
@@ -51,14 +48,7 @@ function BotEditKnowPart({knowCheck, setKnowCheck} :
 
     return (
         <div className='edit-prompts-container'>
-            <CheckTitle
-                check={knowCheck}
-                onCheck={(event) => setKnowCheck(event.target.checked)}
-                title={t('Add knowledge base')}
-            />
-            {knowCheck && 
-                <>
-                        <EditLayout title={t('Files')} leftSpace={2} rightSpace={4}>
+                        <EditLayout title={t('Add files to knowledge base')} leftSpace={3} rightSpace={4}>
                             {
                                 knowFiles && knowFiles.length > 0 &&
                                 <div>
@@ -102,8 +92,6 @@ function BotEditKnowPart({knowCheck, setKnowCheck} :
                                 />
                             </Button>
                         </EditLayout>
-                </>
-            }
         </div>
     );
 }
