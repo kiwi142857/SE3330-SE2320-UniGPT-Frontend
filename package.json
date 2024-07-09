@@ -70,8 +70,12 @@
     "react-test-renderer": "^18.3.1"
   },
   "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!(react-markdown)/)"
+    ],
     "moduleNameMapper": {
-      "\\.(css|less)$": "identity-obj-proxy"
+      "\\.(css|less)$": "identity-obj-proxy",
+      "react-markdown": "<rootDir>/test/mock/empty-mock.js"
     },
     "testEnvironment": "jsdom"
   }
