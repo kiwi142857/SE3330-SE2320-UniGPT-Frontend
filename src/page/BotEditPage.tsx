@@ -139,9 +139,9 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
                         if (res.ok) {
                             let href = '/botChat/'+ id;
                 
-                            setTimeout(() => {
-                                window.location.href = href;
-                            }, 100);
+                            // setTimeout(() => {
+                            //     window.location.href = href;
+                            // }, 100);
                         } else {
                             messageError("bot创建/修改表单提交失败: " + res.message);
                         }})
@@ -153,9 +153,9 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
                     if (res.ok) {
                         let href = '/botChat/'+ res.message;
             
-                        setTimeout(() => {
-                            window.location.href = href;
-                        }, 100);
+                        // setTimeout(() => {
+                        //     window.location.href = href;
+                        // }, 100);
                     } else {
                         messageError("bot创建/修改表单提交失败: " + res.message);
                     }

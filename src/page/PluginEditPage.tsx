@@ -8,7 +8,7 @@ import '../css/App.css';
 import '../css/BotEditPage.css';
 import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
-import { param, pluginEditInfo } from '../service/PluginEdit';
+import { createPlugin, param, pluginEditInfo } from '../service/PluginEdit';
 
 // bot创建/修改页
 const PluginEditPage = () => {
@@ -59,16 +59,16 @@ const PluginEditPage = () => {
 
         console.log(newInfo);
 
-        // await createPlugin(newInfo) 
-        //     .then((res) => {
-        //         if (res.ok) {
-        //             setTimeout(() => {
-        //                 window.location.href = '/market';
-        //             }, 100);
-        //         } else {
-        //             messageError("插件创建失败: " + res.message);
-        //         }
-        //     })
+        await createPlugin(newInfo) 
+            .then((res) => {
+                if (res.ok) {
+                    setTimeout(() => {
+                        window.location.href = '/market';
+                    }, 100);
+                } else {
+                    messageError("插件创建失败: " + res.message);
+                }
+            })
     }
 
     return [
