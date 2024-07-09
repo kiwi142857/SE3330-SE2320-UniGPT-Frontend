@@ -5,9 +5,9 @@ WORKDIR /app
 COPY package*.json .
 RUN npm install 
 COPY . . 
+ENV REACT_APP_IP=124.70.222.207
 RUN npm run build
 
-ENV REACT_APP_IP=124.70.222.207
 
 FROM nginx:latest
 COPY --from=build /app/build /usr/share/nginx/html
