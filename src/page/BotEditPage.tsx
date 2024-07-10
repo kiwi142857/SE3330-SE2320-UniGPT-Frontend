@@ -13,6 +13,7 @@ import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { botEditInfo, createBot, fewShot, getBotEditInfo, updateBot } from '../service/BotEdit';
 import { Plugin } from '../service/market';
+import { knowFileUpload } from '../service/upload';
 import { apiToString, stringToApi } from "../utils/api";
 import { getPromptKeysFromFewShot } from "../utils/strUtils";
 
@@ -48,10 +49,10 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
     const [promptKeys, setPromptKeys] = useState<string[]>([]);
 
     const [plugins, setPlugins] = useState<Plugin[]>([]);
-
+    const [knowFiles, setKnowFiles] = useState<File[]>([]);
+    
     const [promptCheck, setPromptCheck] = useState<boolean>(false);
     const [publishCheck, setPublishCheck] = useState<boolean>(false);
-    const [knowCheck, setKnowCheck] = useState<boolean>(false);
     const [pluginCheck, setPluginCheck] = useState<boolean>(false);
 
     const {messageError, ErrorSnackbar} = useErrorHandler();
@@ -144,10 +145,19 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
                         .then((res) => {
                         if (res.ok) {
                             let href = '/botChat/'+ id;
+
+                            knowFiles.forEach(async (file) => {
+                                await knowFileUpload(id, file)
+                                    .then((res) => {
+                                        if (!res.ok) {
+                                            messageError("知识库文件上传失败: " + res.message);
+                                        }
+                                    })
+                            });
                 
                             setTimeout(() => {
                                 window.location.href = href;
-                            }, 100);
+                            }, 1000);
                         } else {
                             messageError("bot创建/修改表单提交失败: " + res.message);
                         }})
@@ -157,11 +167,21 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
                 await createBot(newInfo)
                     .then((res) => {
                     if (res.ok) {
-                        let href = '/botChat/'+ res.message;
+                        let id = res.message;
+                        let href = '/botChat/'+ id;
+
+                        knowFiles.forEach(async (file) => {
+                            await knowFileUpload(id, file)
+                                .then((res) => {
+                                    if (!res.ok) {
+                                        messageError("知识库文件上传失败: " + res.message);
+                                    }
+                                })
+                        });
             
                         setTimeout(() => {
                             window.location.href = href;
-                        }, 100);
+                        }, 1000);
                     } else {
                         messageError("bot创建/修改表单提交失败: " + res.message);
                     }
@@ -183,19 +203,19 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
                 />
                 <Divider />
 
+                <BotEditKnowPart
+                    knowFiles={knowFiles}
+                    setKnowFiles={setKnowFiles}
+                />
+
+                <Divider style={{ marginTop: '20px' }} />
+
                 <BotEditPromptPart
                     promptCheck={promptCheck}
                     setPromptCheck={setPromptCheck}
                     promptKeys={promptKeys}
                     fewShots={fewShots}
                     setFewShots={setFewShots}
-                />
-
-                <Divider style={{ marginTop: '20px' }} />
-
-                <BotEditKnowPart
-                    knowCheck={knowCheck}
-                    setKnowCheck={setKnowCheck}
                 />
 
                 <Divider style={{ marginTop: '20px' }} />

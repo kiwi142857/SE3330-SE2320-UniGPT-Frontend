@@ -22,3 +22,26 @@ export async function imageUpload(data: File): Promise<ResponseData> {
     console.log(res);
     return res;
 }
+
+export async function knowFileUpload(id: string, data: File): Promise<ResponseData> {
+    const url = `${PREFIX}/knowledge/upload/${id}`
+    let res;
+    const formData = new FormData();
+    formData.append('file', data);
+
+    try{
+        let response = await fetch( url, {
+            method: 'POST',
+            body: formData,
+            credentials: "include"
+        });
+        res = await response.json();
+
+    } catch (e) {
+        console.error(e);
+        res = DUMMY_RESPONSE;
+    }
+
+    console.log(res);
+    return res;
+}
