@@ -56,7 +56,7 @@ const OneChat = (
                 </div>
                 <div className='one-chat-markdown'>
                     {
-                        type && !loading && calledList.length > 0 ?
+                        type && !loading && calledList && calledList.length > 0 ?
                             <Accordion defaultExpanded
                                 style={{
                                     width: '90%',
