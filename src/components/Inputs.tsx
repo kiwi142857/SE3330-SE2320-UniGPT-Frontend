@@ -369,7 +369,9 @@ export function PromptInput
                             }}
                             variant="extended"
                             size="large"
-                            style={{ color: 'white' }}>
+                            style={{ color: 'white' }}
+                            data-testid='send-button'
+                        >
                             <ArrowCircleUpIcon fontSize='large' />
                         </Fab>
                     </>

@@ -148,6 +148,7 @@ const OneChat = (
                                 onMouseDown={() => setPressReplay(true)}
                                 onMouseUp={() => setPressReplay(false)}
                                 onClick={() => shuffleLast()}
+                                data-testid="replay-button"
                             />
                         </Grid>
                     }
@@ -160,6 +161,7 @@ const OneChat = (
                                     <SaveIcon
                                         sx={{ color: 'grey', fontSize: 20 }}
                                         onClick={onSave}
+                                        data-testid="save-button"
                                     />
                                 </Grid>
                             ) : (
@@ -168,6 +170,7 @@ const OneChat = (
                                     <EditIcon
                                         sx={{ color: 'grey', fontSize: 20 }}
                                         onClick={() => setEditing(true)}
+                                        data-testid="edit-button"
                                     />
                                 </Grid>)
                         )

@@ -1,13 +1,11 @@
-import React from "react";
-import { Box } from "@mui/system";
-import { Button, Divider, Icon, IconButton, ListItem, ListItemButton, Menu, MenuItem, Typography } from "@mui/material";
-import theme from './theme';
-import '../css/BotChatPage.css'
-import DeleteIcon from '@mui/icons-material/Delete';
 import ArchiveIcon from '@mui/icons-material/Archive';
+import DeleteIcon from '@mui/icons-material/Delete';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Button, Divider, ListItemButton, Menu, MenuItem } from "@mui/material";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import '../css/BotChatPage.css';
+import theme from './theme';
 const ChatHistoryItem = (
     {
         title,
@@ -51,7 +49,7 @@ const ChatHistoryItem = (
                 <Button
                     onClick={handleMenuClick}
                 >
-                    <MenuIcon />
+                    <MenuIcon data-testid="menu-icon" />
                 </Button>
                 <Menu
                     id="basic-menu"
