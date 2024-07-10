@@ -29,7 +29,7 @@ const MarketPage: React.FC = () => {
     const [plugins, setPlugins] = useState<Plugin[]>([]);
 
     const getSearch = async () => {
-        let order = tabValue === 0 ? "latest" : "like";
+        let order = "latest";
         if (marketValue === 1) {
             getSearchPluginList(pageIndex, pageSize, searchParams.get("keyword") || "", order)
                 .then(response => {
@@ -40,6 +40,7 @@ const MarketPage: React.FC = () => {
                     messageError("Failed to get plugin list: " + e.message);
                 });
         } else {
+            order = tabValue === 0 ? "latest" : "like";
             getSearchBotList(pageIndex, pageSize, searchParams.get("keyword") || "", order)
                 .then(response => {
                     setBots(response.bots);

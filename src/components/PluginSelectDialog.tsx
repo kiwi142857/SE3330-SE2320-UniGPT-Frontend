@@ -39,7 +39,8 @@ function PluginSelectDialog({open, handleClickClose, plugins, setPlugins} :
       const [marketPlugins, setMarketPlugins] = useState<Plugin[]>([]);
 
       const getSearch = async () => {
-        let order = tabValue === 0 ? "latest" : "like";
+        // let order = tabValue === 0 ? "latest" : "like";
+        let order = "latest";
         const pageSize = pageSizeStr != null ? Number.parseInt(pageSizeStr) : 15;
             getSearchPluginList(pageIndex, pageSize, searchParams.get("keyword") || "", order)
                 .then(response => {

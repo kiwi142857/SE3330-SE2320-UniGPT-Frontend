@@ -11,7 +11,6 @@ import { Link } from 'react-router-dom';
 import '../css/DetailPage.css';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { disLikeBot, likeBot, starBot, unStarBot } from '../service/BotDetail';
-import { disLikePlugin, likePlugin, starPlugin, unStarPlugin } from '../service/PluginDetail';
 
 // bot详情页的最上方的简介
 const DetailCard = (
@@ -53,28 +52,24 @@ const DetailCard = (
 
     const like = () => {
         if (forBot) likeBot(id);
-            else likePlugin(id);
         setLocalLikeNumber((parseInt(localLikeNumber) + 1).toString());
         setLiked(true);
     }
 
     const disLike = () => {
         if (forBot) disLikeBot(id);
-            else disLikePlugin(id);
         setLocalLikeNumber((parseInt(localLikeNumber) - 1).toString());
         setLiked(false);
     }
 
     const star = () => {
         if (forBot) starBot(id);
-            else starPlugin(id);
         setLocalStarNumber((parseInt(localStarNumber) + 1).toString());
         setStarred(true);
     }
 
     const unStar = () => {
         if (forBot) unStarBot(id);
-            else unStarPlugin(id);
         setLocalStarNumber((parseInt(localStarNumber) - 1).toString());
         setStarred(false);
     }

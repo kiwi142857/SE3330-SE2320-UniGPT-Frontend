@@ -12,6 +12,7 @@ import '../css/BotEditPage.css';
 import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
 import { botEditInfo, createBot, fewShot, getBotEditInfo, updateBot } from '../service/BotEdit';
+import { Plugin } from '../service/market';
 import { knowFileUpload } from '../service/upload';
 import { apiToString, stringToApi } from "../utils/api";
 import { getPromptKeysFromFewShot } from "../utils/strUtils";
@@ -38,7 +39,8 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
         photos: [],
         prompted: false,
         promptChats: [],
-        promptKeys: []
+        promptKeys: [],
+        plugins: []
     });
     const [avatarImg, setAvatarImg] = useState<string>('/assets/bot-default.png');
     const [photoImgs, setPhotoImgs] = useState<string[]>([]);
@@ -46,8 +48,9 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
     const [fewShots, setFewShots] = useState<fewShot[]>([]);
     const [promptKeys, setPromptKeys] = useState<string[]>([]);
 
+    const [plugins, setPlugins] = useState<Plugin[]>([]);
     const [knowFiles, setKnowFiles] = useState<File[]>([]);
-
+    
     const [promptCheck, setPromptCheck] = useState<boolean>(false);
     const [publishCheck, setPublishCheck] = useState<boolean>(false);
     const [pluginCheck, setPluginCheck] = useState<boolean>(false);
@@ -81,6 +84,12 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
                 setPromptCheck(info.prompted);
                 setPublishCheck(info.published);
                 setFewShots(info.promptChats);
+                if(info.plugins.length > 0) {
+                    setPluginCheck(true);
+                    setPlugins(info.plugins);
+                } else {
+                    setPluginCheck(false);
+                }
             })
             .catch(e => messageError("获取bot信息失败: " + e.message));
     }
@@ -124,7 +133,8 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
             photos: photoImgs,
             prompted: promptCheck,
             promptChats: fewShots,
-            promptKeys: promptKeys
+            promptKeys: promptKeys,
+            plugins: plugins
         };
 
         console.log(newInfo);
@@ -213,6 +223,8 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
                 <BotEditPluginPart
                     pluginCheck={pluginCheck}
                     setPluginCheck={setPluginCheck}
+                    plugins={plugins}
+                    setPlugins={setPlugins}
                 />
 
                 <Divider style={{ marginTop: '20px' }} />

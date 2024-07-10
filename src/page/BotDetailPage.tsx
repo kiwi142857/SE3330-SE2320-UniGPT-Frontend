@@ -12,18 +12,7 @@ import OneComment from '../components/OneComment';
 import '../css/App.css';
 import '../css/DetailPage.css';
 import { Comment, CommentList, botDetailInfo, getBotComments, getBotDetail, postCommentToBot } from '../service/BotDetail';
-import { Plugin } from '../service/market';
 import { getMe } from '../service/user';
-
-const plugins = [] as Plugin[];
-for (let i = 1; i < 4; i++) {
-    plugins.push({
-        id: i,
-        name: 'Plugin ' + i,
-        avatar: '/assets/bot' + i + '.png',
-        description: 'This is a plugin'
-    });
-}
 
 // bot详情页
 const BotDetailPage: React.FC = () => {
@@ -86,7 +75,7 @@ const BotDetailPage: React.FC = () => {
                         forBot={true}
                     />
 
-                    <BotCallsCard plugins={plugins} />
+                    <BotCallsCard plugins={bot.plugins} />
 
                     <DetailCarousel photos={bot.photos} />
 

@@ -21,6 +21,7 @@ const PluginEditPage = () => {
 
     const [avatarImg, setAvatarImg] = useState<string>('/assets/bot-default.png');
     const [photoImgs, setPhotoImgs] = useState<string[]>([]);
+    const [publishCheck, setPublishCheck] = useState<boolean>(false);
     const [params, setParams] = useState<param[]>([]);
     const [code, setCode] = React.useState('def handler(event, context):\n    return "hello world" \n');
 
@@ -33,24 +34,30 @@ const PluginEditPage = () => {
             name: { value: string };
             description: { value: string };
             detail: { value: string };
-            fileName: { value: string };
         };
 
         const name = target.name.value;
         const description = target.description.value;
-        const fileName = target.fileName.value;
-        const detail = target.detail.value;
+        let detail;
+
+        if (publishCheck) {
+            detail = target.detail.value;
+        } else {
+            detail = null;
+        }
 
         let newInfo: pluginEditInfo = {
             name: name,
             avatar: avatarImg,
             description: description,
-            fileName: fileName,
-            code: code,
-            param: params,
             detail: detail,
             photos: photoImgs,
+            parameters: params,
+            code: code,
+            isPublished: publishCheck
         };
+
+        console.log(newInfo);
 
         await createPlugin(newInfo) 
             .then((res) => {
@@ -86,8 +93,8 @@ const PluginEditPage = () => {
                 <Divider style={{ marginTop: '20px' }} />
 
                 <EditPageMarketPart
-                    publishCheck={true}
-                    setPublishCheck={() => {}}
+                    publishCheck={publishCheck}
+                    setPublishCheck={setPublishCheck}
                     photoImgs={photoImgs}
                     setPhotoImgs={setPhotoImgs}
                     defaultDetail={null}

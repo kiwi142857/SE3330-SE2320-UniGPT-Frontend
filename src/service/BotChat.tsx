@@ -8,13 +8,15 @@ export type BotChat = {
     avatar: string;
     content: string;
     type: boolean; // true: 机器人，false: 用户
-}
+    calledList: string[];
+    loadingList: string[];
+};
 // 聊天记录类
 export type BotChatHistory = {
     id: number; // 聊天历史记录id，聊天生成时的UNIX时间戳
     title: string; // 侧边栏的历史标题
     content: string; // 侧边栏的历史信息
-}
+};
 
 export interface BotBriefInfo {
     id: string;
@@ -38,7 +40,7 @@ export async function getBotBrief(botID: string | undefined): Promise<BotBriefIn
     return res;
 }
 
-export async function getBotChatHistoryList(botID: string | undefined, page: number, pagesize: number){
+export async function getBotChatHistoryList(botID: string | undefined, page: number, pagesize: number) {
     const url = `${PREFIX}/bots/${botID}/histories?page=${page}&pagesize=${pagesize}`;
     let res = getJsonOrThrow(url);
     return res;
@@ -96,7 +98,7 @@ export async function getBotChatList(historyId: number): Promise<BotChat[]> {
 
 export async function createHistory(botID: string, promptList: Prompt[]) {
 
-    const url = `${PREFIX}/bots/${botID}/histories`
+    const url = `${PREFIX}/bots/${botID}/histories`;
     let res;
 
     try {

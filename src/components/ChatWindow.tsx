@@ -9,7 +9,7 @@ import { BotChat } from "../service/BotChat";
 
 const ChatWindow = (
     { botChatList, resendLast, loading }:
-        { botChatList: BotChat[], resendLast: (text: string) => void, loading: boolean }
+        { botChatList: BotChat[], resendLast: (text: string) => void, loading: boolean; }
 ) => {
 
     const chatWindowRef = useRef<HTMLDivElement>(null);
@@ -22,7 +22,7 @@ const ChatWindow = (
         // }
         window.scrollTo(0, document.body.scrollHeight + 1000);
 
-    }
+    };
 
     const { t } = useTranslation();
 
@@ -37,7 +37,7 @@ const ChatWindow = (
             console.log("lastUserChat: ", lastUserChat);
             resendLast(lastUserChat.content);
         }
-    }
+    };
 
     const editLast = (editedContent: string) => {
         console.log("editLast");
@@ -46,7 +46,7 @@ const ChatWindow = (
             console.log("lastUserChat: ", lastUserChat);
             resendLast(editedContent);
         }
-    }
+    };
 
 
     return (
@@ -82,6 +82,8 @@ const ChatWindow = (
                             shuffleLast={shuffleLast}
                             editLast={editLast}
                             loading={loading && index === botChatList.length - 1}
+                            calledList={botChat.calledList}
+                            loadingList={botChat.loadingList}
                         />
                     ))}
                 </Box>
@@ -97,6 +99,6 @@ const ChatWindow = (
             )}
         </Box>
     );
-}
+};
 
 export default ChatWindow;

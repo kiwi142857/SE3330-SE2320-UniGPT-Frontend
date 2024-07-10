@@ -1,6 +1,6 @@
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import IconButton from '@mui/material/IconButton';
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../css/BotEditPage.css';
 import '../css/DetailPage.css';
@@ -9,8 +9,9 @@ import { Plugin } from '../service/market';
 import CheckTitle from './CheckTitle';
 import PluginSelectDialog from './PluginSelectDialog';
 
-function BotEditPluginPart({pluginCheck, setPluginCheck} :
-    {pluginCheck: boolean, setPluginCheck: React.Dispatch<React.SetStateAction<boolean>>}) {
+function BotEditPluginPart({pluginCheck, setPluginCheck, plugins, setPlugins}:
+     {pluginCheck: boolean, setPluginCheck: React.Dispatch<React.SetStateAction<boolean>>, 
+    plugins: Plugin[], setPlugins: React.Dispatch<React.SetStateAction<Plugin[]>>}) {
 
     const context = React.useContext(LanguageContext);
     const { t, i18n } = useTranslation();
@@ -19,19 +20,24 @@ function BotEditPluginPart({pluginCheck, setPluginCheck} :
         i18n.changeLanguage(context?.language);
     }, [context?.language, i18n]);
 
-    const [plugins, setPlugins] = useState<Plugin[]>([]);
-
     const [open, setOpen] = useState(false);
 
     const handleClickClose = () => {
         setOpen(false);
     }
 
+    const onPluginCheck = (event: ChangeEvent<HTMLInputElement>) => {
+        setPluginCheck(event.target.checked);
+        if (!event.target.checked) {
+            setPlugins([]);
+        }
+    }
+
     return (
       <div className='edit-prompts-container'>
           <CheckTitle
               check={pluginCheck}
-              onCheck={(event) => setPluginCheck(event.target.checked)}
+              onCheck={onPluginCheck}
               title={t('Add plugins')}
           />
           {pluginCheck &&
