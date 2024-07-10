@@ -11,16 +11,6 @@ import { useErrorHandler } from '../hooks/errorHandler';
 import { getPluginDetail, pluginDetailInfo } from '../service/PluginDetail';
 import { Bot } from '../service/market';
 
-const bots = [] as Bot[];
-for (let i = 1; i < 4; i++) {
-    bots.push({
-        id: i,
-        name: 'Bot ' + i,
-        avatar: '/assets/bot' + i + '.png',
-        description: 'This is a bot'
-    });
-}
-
 // plugin详情页
 const PluginDetailPage: React.FC = () => {
     const [plugin, setPlugin] = useState<pluginDetailInfo | null>(null);
@@ -52,15 +42,15 @@ const PluginDetailPage: React.FC = () => {
                         authorId={plugin.creatorId}
                         avatar={plugin.avatar}
                         description={plugin.description}
-                        likeNumber={plugin.likeNumber.toString()}
-                        starNumber={plugin.starNumber.toString()}
-                        isLiked={plugin.liked}
-                        isStarred={plugin.starred}
+                        likeNumber={"0"}
+                        starNumber={"0"}
+                        isLiked={false}
+                        isStarred={false}
                         canEdit={plugin.asCreator || plugin.asAdmin}
                         forBot={false}
                     />
 
-                    <PluginCallsCard bots={bots}/>
+                    <PluginCallsCard bots={plugin.bots} />
 
                     <DetailCarousel photos={plugin.photos} />
 

@@ -32,7 +32,7 @@ const drawerWidth = 350;
  */
 interface WebSocketMessage {
     type: string,
-    message: string
+    message: string;
 };
 
 const BotChatPage = () => {
@@ -99,7 +99,7 @@ const BotChatPage = () => {
             .then((brief) => setBotBriefInfo(brief))
             .catch((e) => {
                 setBotBriefInfo(null);
-                messageError("Failed to get bot info: " + e.message)
+                messageError("Failed to get bot info: " + e.message);
             });
     };
     const fetchAndSetUser = () => {
@@ -156,7 +156,9 @@ const BotChatPage = () => {
                     historyId: selectedHistoryId,
                     avatar: user.avatar,
                     content: response.userAsk,
-                    type: false
+                    type: false,
+                    calledList: [],
+                    loadingList: []
                 },
                 {
                     id: 0,
@@ -164,7 +166,9 @@ const BotChatPage = () => {
                     historyId: selectedHistoryId,
                     avatar: botBriefInfo ? botBriefInfo.avatar : "",
                     content: "loading...",
-                    type: true
+                    type: true,
+                    calledList: [],
+                    loadingList: []
                 }]
         );
         setResponding(true);
@@ -209,7 +213,9 @@ const BotChatPage = () => {
                     historyId: selectedHistoryId,
                     avatar: user.avatar,
                     content: text,
-                    type: false
+                    type: false,
+                    calledList: [],
+                    loadingList: []
                 },
                 {
                     id: 0,
@@ -217,7 +223,9 @@ const BotChatPage = () => {
                     historyId: selectedHistoryId,
                     avatar: botBriefInfo ? botBriefInfo.avatar : "",
                     content: "loading...",
-                    type: true
+                    type: true,
+                    calledList: [],
+                    loadingList: []
                 }]
         );
 
@@ -240,7 +248,9 @@ const BotChatPage = () => {
                     historyId: lastUserChat.historyId,
                     avatar: lastUserChat.avatar,
                     content: sendText,
-                    type: false
+                    type: false,
+                    calledList: [],
+                    loadingList: []
                 },
                 {
                     id: 0,
@@ -248,7 +258,9 @@ const BotChatPage = () => {
                     historyId: selectedHistoryId,
                     avatar: botBriefInfo ? botBriefInfo.avatar : "",
                     content: "loading...",
-                    type: true
+                    type: true,
+                    calledList: [],
+                    loadingList: []
                 }])
         );
 
@@ -324,12 +336,9 @@ const BotChatPage = () => {
                 ...streamingChat,
                 content: streamingChat.content.concat(nextToken)
             }) : {
-                id: 0,
-                name: botBriefInfo ? botBriefInfo.name : "",
-                historyId: selectedHistoryId,
-                avatar: botBriefInfo ? botBriefInfo.avatar : "",
-                content: nextToken,
-                type: true
+                ...botChatList[botChatList.length - 1],
+                calledList: [...botChatList[botChatList.length - 1].loadingList],
+                content: nextToken
             });
             setTokenQueue(queue => queue.slice(1));
         }
@@ -380,7 +389,7 @@ const BotChatPage = () => {
                     response = JSON.parse(event.data);
                 } catch (error) {
                     console.error('Error parsing JSON:', error);
-                    response = { type: 'error', message: 'Error parsing JSON' }
+                    response = { type: 'error', message: 'Error parsing JSON' };
                     // Handle the error as needed
                 }
                 if (response.type === 'complete') {
@@ -409,7 +418,40 @@ const BotChatPage = () => {
                         console.log("other token arrived");
                     }
                     setTokenQueue(queue => [...queue, response.message]);
-                } else {
+                } else if (response.type === 'toolExecutionRequest') {
+                    // 给最后一条加上loading
+                    setBotChatList(
+                        botChatList =>
+                            botChatList.slice(0, botChatList.length - 1).concat(
+                                [{
+                                    id: 0,
+                                    name: botBriefInfo ? botBriefInfo.name : "",
+                                    historyId: selectedHistoryId,
+                                    avatar: botBriefInfo ? botBriefInfo.avatar : "",
+                                    content: "loading...",
+                                    type: true,
+                                    calledList: [],
+                                    loadingList: [...botChatList[botChatList.length - 1].loadingList, response.message]
+                                }])
+                    );
+                } else if (response.type === 'toolExecutionResult') {
+                    // 给最后一条加上loading
+                    setBotChatList(
+                        botChatList =>
+                            botChatList.slice(0, botChatList.length - 1).concat(
+                                [{
+                                    id: 0,
+                                    name: botBriefInfo ? botBriefInfo.name : "",
+                                    historyId: selectedHistoryId,
+                                    avatar: botBriefInfo ? botBriefInfo.avatar : "",
+                                    content: response.message,
+                                    type: true,
+                                    calledList: [],
+                                    loadingList: [...botChatList[botChatList.length - 1].loadingList, response.message]
+                                }])
+                    );
+                }
+                else {
                     // response.type === 'error'
                     messageError(response.message);
                 }

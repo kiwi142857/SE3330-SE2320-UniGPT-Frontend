@@ -82,14 +82,14 @@ function PluginEditCodePart({code, setCode, params, setParams}:
             title={t('Plugin Running Logic')}
         />
 
-        <EditLayout title={t('File name')} leftSpace={2} rightSpace={4}>
+        {/* <EditLayout title={t('File name')} leftSpace={2} rightSpace={4}>
             <BasicInput
                 placeholder={t('no need to add suffix .py')}
                 name='fileName'
                 maxLength={255}
                 required
             />
-        </EditLayout>
+        </EditLayout> */}
 
         <EditLayout title={t('Code')} leftSpace={2}>
             <CodeEditor 

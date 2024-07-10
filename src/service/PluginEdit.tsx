@@ -1,4 +1,4 @@
-import { DUMMY_RESPONSE, ResponseData } from './common';
+import { DUMMY_RESPONSE, post, PREFIX, ResponseData } from './common';
 
 export interface param {
     name: string;
@@ -10,23 +10,19 @@ export interface pluginEditInfo {
     name: string;
     avatar: string;
     description: string;
-    fileName: string;
-    code: string;
-    param: param[];
     detail: string | null;
     photos: string[] | [];
+    parameters: param[];
+    code: string;
+    isPublished: boolean;
 }
 
 export async function createPlugin(data: pluginEditInfo): Promise<ResponseData> {
-    // const url = `${PREFIX}/bots`;
+    const url = `${PREFIX}/plugin/create`;
     let res;
 
     try {
-        // res = await post(url, data);
-        res = {
-            ok: true,
-            message: "插件创建成功"
-        }
+        res = await post(url, data);
     } catch (e) {
         console.error(e);
         res = DUMMY_RESPONSE;
