@@ -336,14 +336,9 @@ const BotChatPage = () => {
                 ...streamingChat,
                 content: streamingChat.content.concat(nextToken)
             }) : {
-                id: 0,
-                name: botBriefInfo ? botBriefInfo.name : "",
-                historyId: selectedHistoryId,
-                avatar: botBriefInfo ? botBriefInfo.avatar : "",
-                content: nextToken,
-                type: true,
-                calledList: [],
-                loadingList: []
+                ...botChatList[botChatList.length - 1],
+                calledList: [...botChatList[botChatList.length - 1].loadingList],
+                content: nextToken
             });
             setTokenQueue(queue => queue.slice(1));
         }
