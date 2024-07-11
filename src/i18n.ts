@@ -87,7 +87,12 @@ const resources = {
       "Code": "代码",
       "Parameter": "参数",
       "Type": "类型",
+      "Parameter Name": "参数名",
       "Parameter description": "参数说明",
+      'Add a new parameter': '添加新参数',
+      "input value for test": "输入测试值",
+      "Value for test": "测试输入的值",
+      "Start Test": "开始测试",
 
       // BotChatPage
       "Enter your message here...": "发送消息...",

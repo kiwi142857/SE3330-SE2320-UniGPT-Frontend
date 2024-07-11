@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import '../css/BotChatPage.css';
 import { Prompt, getEmptyPromptList, getPromptList } from '../service/BotChat';
-import { TableCreateInput } from "./Inputs";
+import { TableCreateInput } from "./TextInputs";
 import theme from "./theme";
 
 const TableCreateDialog =

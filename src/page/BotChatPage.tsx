@@ -6,8 +6,8 @@ import { useParams } from "react-router-dom";
 import BotBriefCard from "../components/BotBriefCard";
 import ChatHistoryList from "../components/ChatHistoryList";
 import ChatWindow from "../components/ChatWindow";
-import { PromptInput } from "../components/Inputs";
 import TableCreateDialog from "../components/TableCreateDialog";
+import { ChatInput } from "../components/TextInputs.tsx";
 import theme from "../components/theme";
 import '../css/App.css';
 import '../css/BotChatPage.css';
@@ -529,7 +529,7 @@ const BotChatPage = () => {
                     loading={responding}
                 />
                 {/* 输入框，发送按钮，编辑按钮 */}
-                <PromptInput
+                <ChatInput
                     selectedHistoryId={selectedHistoryId}
                     onAltTable={() => {
                         setTableCreateOpen(true);
