@@ -38,9 +38,9 @@ const bot = {id: 1, name: 'Bot 1', description: 'Description 1', avatar: 'Avatar
 const historyList = {total: 2, histories:[{id : 1, title: 'Title 1', content: 'Content 1'}, {id : 2, title: 'Title 2', content: 'Content 2'}]};
 const chatList = [{id: 1, historyId: 1, name: 'User 1', avatar: 'Avatar 1', content: 'Chat 1', type: false}, 
     {id: 2, historyId: 1, name: 'Bot 1', avatar: 'Avatar 2', content: 'Chat 2', type: true}];
-const emptyPromptList = [{promptKey: 'Key 1', promptValue: ''}, {promptKey: 'Key 2', promptValue: ''}];
-const promptList = [{promptKey: 'Key 1', promptValue: 'Value 1'}, {promptKey: 'Key 2', promptValue: 'Value 2'}];
-const createHistoryResponse = {ok: true, historyId: 3, userAsk: 'Chat 1'};
+const emptyPromptList = [{promptKey: 'Key 1', promptValue: ''}];
+const promptList = [{promptKey: 'Key 1', promptValue: 'Value 1'}];
+const createHistoryResponse = {ok: true, historyid: 3, userAsk: 'Chat 1'};
 
 const server = new WS('wss://localhost:8080/chat');
 
@@ -109,6 +109,11 @@ describe('ChatPage display', () => {
         });
 
         await act(async () => {
+            const input = screen.getByRole('textbox');
+            fireEvent.change(input, {target: {value: 'Value 1'}});
+        });
+
+        await act(async () => {
             const submitButton = screen.getByText('Submit');
             fireEvent.click(submitButton);
         });
@@ -154,6 +159,15 @@ describe('ChatPage display', () => {
         await waitFor(() => {
             expect(screen.getByText('User 1')).toBeInTheDocument();
         });
+
+        await act(async () => {
+            const chatButton = screen.getByText('Chat');
+            fireEvent.click(chatButton);
+        });
+
+        await waitFor(() => {
+            expect(screen.getByText('Fill in the prompt table and start chatting!')).toBeInTheDocument();
+        });
     });
 
     it('ChatPage chat', async () => {
@@ -174,6 +188,24 @@ describe('ChatPage display', () => {
 
         await waitFor(() => {
             expect(screen.getByText('Chat 3')).toBeInTheDocument();
+        });
+
+        await act(async () => {
+            const mockMessage = { type: 'toolExecutionRequest', message: 'Plugin 1' };
+            server.send(JSON.stringify(mockMessage));
+        });
+
+        await waitFor(() => {
+            expect(screen.getByText('loading...')).toBeInTheDocument();
+        });
+
+        await act(async () => {
+            const mockMessage = { type: 'toolExecutionResult', message: 'test' };
+            server.send(JSON.stringify(mockMessage));
+        });
+
+        await waitFor(() => {
+            expect(screen.getByText('test')).toBeInTheDocument();
         });
 
         await act(async () => {
@@ -227,11 +259,34 @@ describe('ChatPage display', () => {
         await waitFor(() => {
             expect(screen.getByText('Test')).toBeInTheDocument();
         });
+
+        await act(async () => {
+            server.send('This is not a valid JSON string');
+        });
+
+        await act(async () => {
+            server.error();
+        });
+
+        await waitFor(() => {
+            expect(screen.getByTestId('replay-button')).toBeInTheDocument();
+        });
+    });
+
+    it('ChatPage create websocket error handle', async () => {
+        await act(async () => {
+            const history = screen.getByText('Title 2');
+            fireEvent.click(history);
+        });
+
+        await act(async () => {
+            server.error();
+        });
     });
 });
 
 describe('ChatPage get bot error handle', () => {
-    beforeEach(async () => { 
+    it('ChatPage get bot error handle', async () => {
         getMe.mockResolvedValue(me);
         getBotBrief.mockRejectedValue(new Error('error'));
         getBotChatHistoryList.mockResolvedValue(historyList);
@@ -243,9 +298,7 @@ describe('ChatPage get bot error handle', () => {
                 </MemoryRouter>
             );
         });
-    });
 
-    it('ChatPage get bot error handle', async () => {
         await waitFor(() => {
             expect(screen.queryByText('Bot 1')).not.toBeInTheDocument();
         });
@@ -279,10 +332,7 @@ describe('ChatPage fetch user error handle', () => {
         getMe.mockRejectedValue(new Error('error'));
         getBotBrief.mockResolvedValue(bot);
         getBotChatHistoryList.mockResolvedValue(historyList);
-        getBotChatList.mockResolvedValue(chatList);
-        getEmptyPromptList.mockResolvedValue(emptyPromptList);
-        getPromptList.mockResolvedValue(promptList);
-        
+
         await act(async () => {
             render (
                 <MemoryRouter initialEntries={[`/botchat/1`]}>
@@ -298,3 +348,79 @@ describe('ChatPage fetch user error handle', () => {
         });
     });
 });
+
+describe('ChatPage create history error handle', () => {
+    beforeEach(async () => { 
+        getMe.mockResolvedValue(me);
+        getBotBrief.mockResolvedValue(bot);
+        getBotChatHistoryList.mockResolvedValue(historyList);
+        getBotChatList.mockResolvedValue(chatList);
+        getEmptyPromptList.mockResolvedValue(emptyPromptList);
+        getPromptList.mockResolvedValue(promptList);
+        createHistory.mockResolvedValue({ok: false});
+        deleteHistory.mockResolvedValue({ok: true});
+
+        await act(async () => {
+            render (
+                <MemoryRouter initialEntries={[`/botchat/1`]}>
+                    <Content />
+                </MemoryRouter>
+            );
+        });
+    });
+
+    it('ChatPage create history error handle', async () => {
+        await act(async () => {
+            const tab = screen.getByTestId('create-table-button');
+            fireEvent.click(tab);
+        });
+
+        await act(async () => {
+            const submitButton = screen.getByText('Submit');
+            fireEvent.click(submitButton);
+        });
+
+        await waitFor(() => {
+            expect(screen.queryByText('New Chat')).not.toBeInTheDocument();
+        });
+    });
+});
+
+describe('ChatPage delete history error handle', () => {
+    beforeEach(async () => { 
+        getMe.mockResolvedValue(me);
+        getBotBrief.mockResolvedValue(bot);
+        getBotChatHistoryList.mockResolvedValue(historyList);
+        getBotChatList.mockResolvedValue(chatList);
+        getEmptyPromptList.mockResolvedValue(emptyPromptList);
+        getPromptList.mockResolvedValue(promptList);
+        createHistory.mockResolvedValue(createHistoryResponse);
+        deleteHistory.mockResolvedValue({ok: false});
+
+        await act(async () => {
+            render (
+                <MemoryRouter initialEntries={[`/botchat/1`]}>
+                    <Content />
+                </MemoryRouter>
+            );
+        });
+    });
+
+    it('ChatPage delete history error handle', async () => {
+        await act(async () => {
+            const menus = screen.getAllByTestId('menu-icon');
+            const menu = menus[0];
+            fireEvent.click(menu);
+        });
+
+        await act(async () => {
+            const deleteButton = screen.getByText('Delete');
+            fireEvent.click(deleteButton);
+        });
+
+        await waitFor(() => {
+            expect(screen.getByText('Title 1')).toBeInTheDocument();
+        });
+    });
+});
+

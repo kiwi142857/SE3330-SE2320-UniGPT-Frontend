@@ -180,12 +180,13 @@ const BotChatPage = () => {
     };
     const handleHistoryItemDeleted = async (historyid: number) => {
         console.log('Delete History: ' + historyid);
-        setBotChatHistoryList(botChatHistoryList.filter(item => item.id !== historyid));
-        if (historyid === selectedHistoryId) setSelectedHistoryId(0);
         let res = await deleteHistory(historyid);
         if (!res.ok) {
             messageError("删除对话历史失败");
+            return;
         }
+        setBotChatHistoryList(botChatHistoryList.filter(item => item.id !== historyid));
+        if (historyid === selectedHistoryId) setSelectedHistoryId(0);
     };
     const handleNewChatButtonClicked = () => {
         console.log("Click Chat");
