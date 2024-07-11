@@ -39,6 +39,7 @@ const generatePlugin = (asCreator, asAdmin) => {
         starred: true,
         asCreator: asCreator,
         asAdmin: asAdmin,
+        bots: [ { id: 1, name: 'Bot 1', description: 'Description 1', avatar: 'Avatar 1', }, ],
     };
     return plugin;
 }
