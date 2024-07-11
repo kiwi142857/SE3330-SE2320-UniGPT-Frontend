@@ -19,7 +19,8 @@ const resources = {
       "changeLanguage": "change Language",
       "Market": "市场",
       "Bot Create": "创建机器人",
-      "UserList": "用户列表",
+      "Plugin Create": "创建插件",
+      "User List": "用户列表",
 
       // ProfilePage
       "change your avatar": "更换头像",
@@ -87,7 +88,13 @@ const resources = {
       "Code": "代码",
       "Parameter": "参数",
       "Type": "类型",
+      "Parameter Name": "参数名",
       "Parameter description": "参数说明",
+      'Add a new parameter': '添加新参数',
+      "input value for test": "输入测试值",
+      "Value for test": "测试输入的值",
+      "Start Test": "开始测试",
+      "Test your code": "测试你的代码",
 
       // BotChatPage
       "Enter your message here...": "发送消息...",

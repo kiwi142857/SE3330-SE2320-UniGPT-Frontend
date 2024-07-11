@@ -7,7 +7,7 @@ import { LanguageContext } from '../provider/LanguageProvider';
 import { imageUpload } from '../service/upload';
 import BasicInput from './BasicInput';
 import EditLayout from './EditLayout';
-import { EditSelect, SliderSelect } from './Inputs';
+import { ApiSelect, SliderSelect } from './SelectInputs';
 
 function BotEditBasicPart (
     {
@@ -86,7 +86,7 @@ function BotEditBasicPart (
                         required
                     />
                 </EditLayout>
-                <EditSelect
+                <ApiSelect
                     title={t('Base Model')}
                     defaultSelect={defaultApi}
                     name='api'

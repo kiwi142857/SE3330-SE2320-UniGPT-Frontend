@@ -24,7 +24,7 @@ function CodeEditor({code, setCode}: {code: string, setCode: (newValue: string) 
     return (
         <MonacoEditor
             width="100%"
-            height="200px"
+            height="250px"
             language="python"
             theme="vs-dark"
             value={code}
