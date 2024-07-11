@@ -207,7 +207,7 @@ function PluginEditCodePart({code, setCode, params, setParams}:
                                     required
                                 />
                             </EditLayout>
-                            <EditLayout title={t('Type')} leftSpace={6} rightSpace={6}>
+                            <EditLayout title={t('Type')} leftSpace={6} rightSpace={12}>
                                 <TypeSelect
                                     value={type}
                                     defaultValue="string"
