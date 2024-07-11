@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  app:
+    # 使用./DockerFile构建前端镜像
+    build: .
+    ports:
+      - "3000:3000"
+volumes:
+  db-data:
