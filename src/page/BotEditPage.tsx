@@ -68,8 +68,6 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
         setPromptKeys(newPromptKeys);
     }, [fewShots]);
 
-    
-
     const initInfo = async () => {
         if (!id) {
             return;
@@ -97,22 +95,30 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
     const onSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
-        const target = event.target as typeof event.target & {
-            name: { value: string };
-            description: { value: string };
-            api: { value: string };
-            temperature: { value: number };
-            detail: { value: string };
-        };
+        // const target = event.target as typeof event.target & {
+        //     name: { value: string };
+        //     description: { value: string };
+        //     api: { value: string };
+        //     temperature: { value: number };
+        //     detail: { value: string };
+        // };
 
-        const name = target.name.value;
-        const description = target.description.value;
-        const temperature = target.temperature.value;
-        const api = target.api.value;
+        // const name = target.name.value;
+        // const description = target.description.value;
+        // const temperature = target.temperature.value;
+        // const api = target.api.value;
+        const formData = new FormData(event.target as HTMLFormElement);
+
+        const name = formData.get('name') as string;
+        const description = formData.get('description') as string;
+        const api = formData.get('api') as string;
+        const temperatureStr = formData.get('temperature') as string;
+        const temperature = Number(temperatureStr);
+
         let detail;
 
         if (publishCheck) {
-            detail = target.detail.value;
+            detail = formData.get('detail') as string;
         } else {
             detail = null;
         }
@@ -136,8 +142,6 @@ const BotEditPage = ({ edit }: { edit: boolean }) => {
             promptKeys: promptKeys,
             plugins: plugins
         };
-
-        console.log(newInfo);
 
         if (edit) {
             if (id) 
