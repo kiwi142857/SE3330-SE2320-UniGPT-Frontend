@@ -31,28 +31,24 @@ const PluginEditPage = () => {
     const onSubmit = async (event: React.FormEvent, forSubmit: boolean) => {
         event.preventDefault();
 
-        if(forSubmit && !canSubmit) {
-            messageError("请先测试插件");
-            return;
-        }
+        // const target = event.target as typeof event.target & {
+        //     name: { value: string };
+        //     description: { value: string };
+        //     detail: { value: string };
+        // };
 
-        const target = event.target as typeof event.target & {
-            name: { value: string };
-            description: { value: string };
-            detail: { value: string };
-        };
-
-        const name = target.name.value;
-        const description = target.description.value;
+        // const name = target.name.value;
+        // const description = target.description.value;
+        const formData = new FormData(event.target as HTMLFormElement);
+        const name = formData.get('name') as string;
+        const description = formData.get('description') as string;
         let detail;
 
         if (publishCheck) {
-            detail = target.detail.value;
+            detail = formData.get('detail') as string;
         } else {
             detail = null;
         }
-
-        console.log("www")
 
         const paramsSubmit: param[] = [];
         for (let i = 0; i < params.length; i++) {
