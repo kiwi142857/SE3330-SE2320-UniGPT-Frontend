@@ -10,11 +10,12 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../css/BotEditPage.css';
 import { LanguageContext } from '../provider/LanguageProvider';
-import { param } from '../service/PluginEdit';
+import { paramTest } from '../service/PluginEdit';
 import BasicInput from './BasicInput';
 import CheckTitle from './CheckTitle';
 import CodeEditor from './CodeEditor';
 import EditLayout from './EditLayout';
+import { TypeSelect } from './SelectInputs';
 import theme from "./theme";
 
 function ThreeWordsLayout({index, forTitle, texts, handleDelete}: 
@@ -52,8 +53,12 @@ function ThreeWordsLayout({index, forTitle, texts, handleDelete}:
     );
 }
 
-function PluginEditCodePart({code, setCode, params, setParams}: 
-    {code: string, setCode: (newValue: string) => void, params: param[], setParams: (newValue: param[]) => void}) {
+function PluginEditCodePart({code, setCode, params, setParams}:
+    {   code: string, 
+        setCode: (code: string) => void, 
+        params: paramTest[],
+        setParams: (params: paramTest[]) => void
+    }) {
 
     const context = React.useContext(LanguageContext);
     const [open, setOpen] = React.useState(false);
@@ -91,13 +96,6 @@ function PluginEditCodePart({code, setCode, params, setParams}:
             />
         </EditLayout> */}
 
-        <EditLayout title={t('Code')} leftSpace={2}>
-            <CodeEditor 
-                code={code}
-                setCode={setCode}
-            />
-        </EditLayout>
-
         <EditLayout title={t('Parameter')} leftSpace={2}>
             <ThreeWordsLayout 
                 forTitle={true}
@@ -126,6 +124,59 @@ function PluginEditCodePart({code, setCode, params, setParams}:
                 </Grid>
             </div>
         </EditLayout>
+
+        <EditLayout title={t('Code')} leftSpace={2}>
+            <CodeEditor 
+                code={code}
+                setCode={setCode}
+            />
+        </EditLayout>
+
+        <EditLayout title={t('Test your code')} leftSpace={2}>
+            <Grid container>
+                <Grid item xs={3}>
+                    <Typography
+                        className='edit-label'
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}
+                        sx={{ color: 'primary.main' }}
+                    >
+                        {t('Parameter Name')}
+                    </Typography>
+                </Grid>
+                <Grid item xs={3}>
+                    <Typography
+                        className='edit-label'
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}
+                        sx={{ color: 'primary.main' }}
+                    >
+                        {t('Value for test')}
+                    </Typography>
+                </Grid>
+                <Grid item xs={6}/>
+            </Grid>
+                <div className='prompts-list-container'>
+                    {params.map((param, index) => (
+                        <EditLayout title={param.name} leftSpace={3} rightSpace={9}>
+                            <BasicInput
+                                placeholder={t('input value for test')}
+                                name='paramValue'
+                                onChange={(event) => {
+                                    const newParams = [...params];
+                                    newParams[index].value = event.target.value;
+                                    setParams(newParams);
+                                }}
+                                required
+                            />
+                        </EditLayout>
+                    ))}
+                </div>
+        </EditLayout>
                 
                 <Dialog
                     open={open}
@@ -142,7 +193,7 @@ function PluginEditCodePart({code, setCode, params, setParams}:
                     }}
                 >
                     <DialogTitle className="table-create-title">
-                        {t('Profile')}
+                        {t('Add a new parameter')}
                     </DialogTitle>
                     <DialogContent>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -157,13 +208,10 @@ function PluginEditCodePart({code, setCode, params, setParams}:
                                 />
                             </EditLayout>
                             <EditLayout title={t('Type')} leftSpace={6} rightSpace={12}>
-                                <BasicInput
-                                    placeholder={t("Maximum 25 characters input")}
-                                    name='param type'
+                                <TypeSelect
                                     value={type}
-                                    onChange={(event) => setType(event.target.value)}
-                                    maxLength={25}
-                                    required
+                                    defaultValue="string"
+                                    setValue={setType}
                                 />
                             </EditLayout>
                             <EditLayout title={t('Parameter description')} leftSpace={6} rightSpace={12}>
@@ -192,7 +240,7 @@ function PluginEditCodePart({code, setCode, params, setParams}:
                                 color: 'white',
                             }}
                             onClick={() => {
-                                setParams([...params, {name: name, type: type, description: description}]);
+                                setParams([...params, {name: name, type: type, description: description, value: ''}]);
                                 setOpen(false);
                             }}
                         >

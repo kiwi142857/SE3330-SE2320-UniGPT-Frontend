@@ -38,8 +38,11 @@ export function ListButton({ isAdmin }: { isAdmin: boolean; }) {
                 <MenuItem onClick={handleMouseLeave}>
                     <Link to="/botcreate" style={{ textDecoration: 'none', color: 'inherit' }}>{t("Bot Create")}</Link>
                 </MenuItem>
+                <MenuItem onClick={handleMouseLeave}>
+                    <Link to="/plugincreate" style={{ textDecoration: 'none', color: 'inherit' }}>{t("Plugin Create")}</Link>
+                </MenuItem>
                 {isAdmin && <MenuItem onClick={handleMouseLeave}>
-                    <Link to="/userlist" style={{ textDecoration: 'none', color: 'inherit' }}>{t("UserList")}</Link>
+                    <Link to="/userlist" style={{ textDecoration: 'none', color: 'inherit' }}>{t("User List")}</Link>
                 </MenuItem>}
             </Menu>
         </div>

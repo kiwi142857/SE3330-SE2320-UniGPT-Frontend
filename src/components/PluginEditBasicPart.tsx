@@ -50,6 +50,7 @@ function PluginEditBasicPart (
                     onChange={onAvatarUpload} 
                     style={{display: 'none'}} 
                     id="imageUpload" 
+                    data-testid="imageUpload"
                 />
                 {/* 这里的htmlFor和input的id必须是一样的，否则无法选择文件！ */}
                 <label htmlFor="imageUpload">

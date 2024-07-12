@@ -7,7 +7,7 @@ import { LanguageContext } from '../provider/LanguageProvider';
 import { imageUpload } from '../service/upload';
 import BasicInput from './BasicInput';
 import EditLayout from './EditLayout';
-import { EditSelect, SliderSelect } from './Inputs';
+import { ApiSelect, SliderSelect } from './SelectInputs';
 
 function BotEditBasicPart (
     {
@@ -58,7 +58,8 @@ function BotEditBasicPart (
                     accept="image/*" 
                     onChange={onAvatarUpload} 
                     style={{display: 'none'}} 
-                    id="imageUpload" 
+                    id="imageUpload"
+                    data-testid="imageUpload" 
                 />
                 {/* 这里的htmlFor和input的id必须是一样的，否则无法选择文件！ */}
                 <label htmlFor="imageUpload">
@@ -86,7 +87,7 @@ function BotEditBasicPart (
                         required
                     />
                 </EditLayout>
-                <EditSelect
+                <ApiSelect
                     title={t('Base Model')}
                     defaultSelect={defaultApi}
                     name='api'

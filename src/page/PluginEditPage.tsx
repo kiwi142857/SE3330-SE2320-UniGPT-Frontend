@@ -8,7 +8,7 @@ import '../css/App.css';
 import '../css/BotEditPage.css';
 import { useErrorHandler } from '../hooks/errorHandler';
 import { LanguageContext } from "../provider/LanguageProvider";
-import { createPlugin, param, pluginEditInfo } from '../service/PluginEdit';
+import { createPlugin, param, paramTest, pluginEditInfo, testPlugin, testPluginEditInfo } from '../service/PluginEdit';
 
 // bot创建/修改页
 const PluginEditPage = () => {
@@ -22,42 +22,56 @@ const PluginEditPage = () => {
     const [avatarImg, setAvatarImg] = useState<string>('/assets/bot-default.png');
     const [photoImgs, setPhotoImgs] = useState<string[]>([]);
     const [publishCheck, setPublishCheck] = useState<boolean>(false);
-    const [params, setParams] = useState<param[]>([]);
+    const [params, setParams] = useState<paramTest[]>([]);
     const [code, setCode] = React.useState('def handler(event, context):\n    return "hello world" \n');
+    const [canSubmit, setCanSubmit] = useState<boolean>(false);
 
     const {messageError, ErrorSnackbar} = useErrorHandler();
 
-    const onSubmit = async (event: React.FormEvent) => {
+    const onSubmit = async (event: React.FormEvent, forSubmit: boolean) => {
         event.preventDefault();
 
-        const target = event.target as typeof event.target & {
-            name: { value: string };
-            description: { value: string };
-            detail: { value: string };
-        };
+        // const target = event.target as typeof event.target & {
+        //     name: { value: string };
+        //     description: { value: string };
+        //     detail: { value: string };
+        // };
 
-        const name = target.name.value;
-        const description = target.description.value;
+        // const name = target.name.value;
+        // const description = target.description.value;
+        const formData = new FormData(event.target as HTMLFormElement);
+        const name = formData.get('name') as string;
+        const description = formData.get('description') as string;
         let detail;
 
         if (publishCheck) {
-            detail = target.detail.value;
+            detail = formData.get('detail') as string;
         } else {
             detail = null;
         }
 
-        let newInfo: pluginEditInfo = {
-            name: name,
-            avatar: avatarImg,
-            description: description,
-            detail: detail,
-            photos: photoImgs,
-            parameters: params,
-            code: code,
-            isPublished: publishCheck
-        };
+        const paramsSubmit: param[] = [];
+        for (let i = 0; i < params.length; i++) {
+            paramsSubmit.push({
+                name: params[i].name,
+                type: params[i].type,
+                description: params[i].description
+            });
+        }
 
-        console.log(newInfo);
+        if (forSubmit) {
+            let newInfo: pluginEditInfo = {
+                name: name,
+                avatar: avatarImg,
+                description: description,
+                detail: detail,
+                photos: photoImgs,
+                parameters: paramsSubmit,
+                code: code,
+                isPublished: publishCheck
+            };
+
+            console.log(newInfo);
 
         await createPlugin(newInfo) 
             .then((res) => {
@@ -69,12 +83,39 @@ const PluginEditPage = () => {
                     messageError("插件创建失败: " + res.message);
                 }
             })
+        } else {
+            const paramsValues: string[] = [];
+            for (let i = 0; i < params.length; i++) {
+                paramsValues.push(params[i].value);
+            }
+
+            let testInfo: testPluginEditInfo = {
+                name: name,
+                avatar: avatarImg,
+                description: description,
+                detail: detail,
+                photos: photoImgs,
+                parameters: paramsSubmit,
+                code: code,
+                isPublished: publishCheck,
+                paramsValue: paramsValues
+            };
+
+            await testPlugin(testInfo)
+                .then((res) => {
+                    if (res.ok) {
+                        setCanSubmit(true);
+                    } else {
+                        messageError("插件测试未通过: " + res.message);
+                    }
+                })
+        }
     }
 
     return [
         <ErrorSnackbar/>,
         <div className='main-container bot-edit-container'>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={(e) => onSubmit(e, canSubmit)}>
 
                 <PluginEditBasicPart
                     avatarImg={avatarImg}
@@ -107,7 +148,7 @@ const PluginEditPage = () => {
                     variant="contained"
                     sx={{ backgroundColor: 'primary.main' }}
                 >
-                    {t('Submit')}
+                    {canSubmit? t('Submit') : t('Start Test')}
                 </Button>
             </form>
         </div>

@@ -8,7 +8,7 @@ import { PromptChatType, fewShot } from '../service/BotEdit';
 import BasicInput from './BasicInput';
 import CheckTitle from './CheckTitle';
 import EditLayout from './EditLayout';
-import { MarkdownInput, OneFewShotInput } from './Inputs';
+import { MarkdownInput, OneFewShotInput } from './TextInputs';
 
 function BotEditPromptPart(
     {
