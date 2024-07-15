@@ -171,6 +171,7 @@ export function OneFewShotInput
                     <IconButton
                         sx={{ backgroundColor: 'secondary.main' }}
                         onClick={() => handleDelete(index)}
+                        data-testid='delete-few-shot-button'
                     >
                         <RemoveIcon />
                     </IconButton>

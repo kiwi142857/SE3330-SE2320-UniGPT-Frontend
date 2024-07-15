@@ -6,13 +6,17 @@ import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import BotDetailPage from '../../src/page/BotDetailPage';
 import { LanguageContext } from '../../src/provider/LanguageProvider';
-import { getBotComments, getBotDetail, postCommentToBot } from '../../src/service/BotDetail';
+import { disLikeBot, getBotComments, getBotDetail, likeBot, postCommentToBot, starBot, unStarBot } from '../../src/service/BotDetail';
 import { getMe } from '../../src/service/user';
 
 jest.mock('../../src/service/BotDetail', () => ({
     getBotDetail: jest.fn(),
     getBotComments: jest.fn(),
     postCommentToBot: jest.fn(),
+    likeBot: jest.fn(),
+    starBot: jest.fn(),
+    disLikeBot: jest.fn(),
+    unStarBot: jest.fn(),
 }));
 
 jest.mock('../../src/service/user', () => ({
@@ -86,6 +90,10 @@ describe('BotDetailPage display (has id)', () => {
         getBotComments.mockResolvedValue(comments);
         postCommentToBot.mockResolvedValue({ id: 3, content: 'Good!' });
         getMe.mockResolvedValue(user1);
+        starBot.mockResolvedValue({ ok: true });
+        unStarBot.mockResolvedValue({ ok: true });
+        likeBot.mockResolvedValue({ ok: true });
+        disLikeBot.mockResolvedValue({ ok: true });
         
         await act(async () => {
             render (
@@ -118,6 +126,29 @@ describe('BotDetailPage display (has id)', () => {
             expect(screen.getByText('Description 1')).toBeInTheDocument();
             expect(screen.getByText('Good!')).toBeInTheDocument();
         });
+    });
+
+    it('BotDetailPage like & star', async () => {
+        await act(async () => {
+            const dislike = screen.getByTestId('dislike');
+            fireEvent.click(dislike);
+        });
+
+        await act(async () => {
+            const unstar = screen.getByTestId('unstar');
+            fireEvent.click(unstar);
+        });
+
+        await act(async () => {
+            const like = screen.getByTestId('like');
+            fireEvent.click(like);
+        });
+
+        await act(async () => {
+            const star = screen.getByTestId('star');
+            fireEvent.click(star);
+        });
+
     });
 });
 

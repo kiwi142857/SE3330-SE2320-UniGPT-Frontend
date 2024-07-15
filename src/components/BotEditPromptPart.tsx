@@ -106,6 +106,7 @@ function BotEditPromptPart(
                                     <IconButton
                                         sx={{backgroundColor: 'secondary.main'}}
                                         onClick={() => handleFewShotAdd()}
+                                        data-testid='add-few-shot-button'
                                     >
                                         <AddIcon />
                                     </IconButton>

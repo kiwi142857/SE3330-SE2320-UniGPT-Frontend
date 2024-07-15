@@ -90,14 +90,14 @@ describe('Plugin Create display', () => {
         });
 
         await act(async () => {
-            const buttons = screen.getAllByRole('button');
-            fireEvent.click(buttons[0]);
+            const addButton = screen.getByTestId('add-param-button');
+            fireEvent.click(addButton);
         });
 
         await act(async () => {
             const textboxs = screen.getAllByRole('textbox');
-            fireEvent.change(textboxs[0], { target: { value: 'number' } });
-            fireEvent.change(textboxs[1], { target: { value: 'number for test' } });
+            fireEvent.change(textboxs[0], { target: { value: 'www' } });
+            fireEvent.change(textboxs[1], { target: { value: 'for test' } });
         });
 
         await act(async () => {
@@ -106,10 +106,39 @@ describe('Plugin Create display', () => {
         });
 
         await waitFor(async () => {
-            const numbers = screen.getAllByText('number');
-            expect(numbers.length).toBe(3);
-            const numberForTest = screen.getAllByText('number for test');
-            expect(numberForTest.length).toBe(2);
+            const names = screen.getAllByText('www');
+            expect(names).toHaveLength(2);
+            expect(screen.getByText('for test')).toBeInTheDocument();
+        });
+
+        await act(async () => {
+            const checkboxs = screen.getAllByRole('checkbox');
+            fireEvent.click(checkboxs[0]);
+        });
+
+        await act(async () => {
+            const textboxs = screen.getAllByRole('textbox');
+            fireEvent.change(textboxs[2], { target: { value: 'Value 2' }});
+        });
+
+        await act(async () => {
+            fireEvent.click(screen.getByTestId('delete-param-button'));
+        });
+
+        await act(async () => {
+            const addButton = screen.getByTestId('add-param-button');
+            fireEvent.click(addButton);
+        });
+
+        await act(async () => {
+            const textboxs = screen.getAllByRole('textbox');
+            fireEvent.change(textboxs[0], { target: { value: 'www' } });
+            fireEvent.change(textboxs[1], { target: { value: 'for test' } });
+        });
+
+        await act(async () => {
+            const confirm = screen.getByText('Confirm');
+            fireEvent.click(confirm);
         });
 
         await act(async () => {

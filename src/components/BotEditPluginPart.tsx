@@ -58,6 +58,7 @@ function BotEditPluginPart({pluginCheck, setPluginCheck, plugins, setPlugins}:
                   <IconButton
                       sx={{backgroundColor: 'secondary.main'}}
                       onClick={() => setOpen(true)}
+                      data-testid='add-plugin-button'
                   >
                       <ChecklistIcon />
                   </IconButton>

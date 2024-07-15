@@ -28,6 +28,7 @@ function ThreeWordsLayout({index, forTitle, texts, handleDelete}:
                         <IconButton
                             sx={{ backgroundColor: 'secondary.main' }}
                             onClick={() => handleDelete(index)}
+                            data-testid='delete-param-button'
                         >
                             <RemoveIcon />
                         </IconButton>
@@ -68,8 +69,6 @@ function PluginEditCodePart({code, setCode, params, setParams}:
     const { t, i18n } = useTranslation();
 
     const handleDelete = (index: number) => {
-        if (index === -1) 
-            return;
         const newParams = [...params];
         newParams.splice(index, 1);
         setParams(newParams);
@@ -117,6 +116,7 @@ function PluginEditCodePart({code, setCode, params, setParams}:
                         <IconButton
                             sx={{backgroundColor: 'secondary.main'}}
                             onClick={() => setOpen(true)}
+                            data-testid='add-param-button'
                         >
                             <AddIcon />
                         </IconButton>
@@ -180,7 +180,6 @@ function PluginEditCodePart({code, setCode, params, setParams}:
                 
                 <Dialog
                     open={open}
-                    onClose={() => setOpen(false)}
                     PaperProps={{
                         component: 'form',
                         style: {

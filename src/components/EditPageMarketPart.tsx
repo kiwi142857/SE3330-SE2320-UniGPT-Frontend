@@ -37,7 +37,6 @@ function EditPageMarketPart(
 
     const onPhotoUpload = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
-
         if (file){
             imageUpload(file).then((res) => {
                 if (res.ok) {
@@ -81,6 +80,8 @@ function EditPageMarketPart(
                             ref={fileInputRef} 
                             style={{ display: 'none' }} 
                             onChange={onPhotoUpload} 
+                            accept="image/*"
+                            data-testid="photoUpload"
                         />
                         <EditLayout title={t('Photos')} leftSpace={2} rightSpace={4}>
                             {photoImgs.map((image, index) => [
@@ -90,6 +91,7 @@ function EditPageMarketPart(
                                                 <IconButton
                                                     sx={{ backgroundColor: 'secondary.main' }}
                                                     onClick={() => setPhotoImgs(photoImgs.filter((_, i) => i !== index))}
+                                                    data-testid="remove-photo"
                                                 >
                                                     <RemoveIcon />
                                                 </IconButton>
