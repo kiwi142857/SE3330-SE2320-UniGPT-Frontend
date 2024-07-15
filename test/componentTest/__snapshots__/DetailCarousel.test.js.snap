@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DetailCarousel Component renders correctly with a single photo 1`] = `
+<div>
+  <div
+    class="carousel-root"
+  >
+    <div
+      class="carousel carousel-slider"
+      style="width: 100%;"
+    >
+      <ul
+        class="control-dots"
+      >
+        <li
+          aria-label="slide item 1"
+          class="dot selected"
+          role="button"
+          tabindex="0"
+          value="0"
+        />
+      </ul>
+      <button
+        aria-label="previous slide / item"
+        class="control-arrow control-prev control-disabled"
+        type="button"
+      />
+      <div
+        class="slider-wrapper axis-horizontal"
+      >
+        <ul
+          class="slider animated"
+          style="transform: translate3d(0,0,0); transition-duration: 350ms;"
+        >
+          <li
+            class="slide selected previous"
+          >
+            <div
+              style="display: flex;"
+            >
+              <div
+                style="width: 0%; height: auto;"
+              />
+              <img
+                alt="bot"
+                src="https://example.com/photo1.jpg"
+                style="width: 45%; height: auto; border-radius: 20px;"
+              />
+              <div
+                style="width: 10%; height: auto;"
+              />
+              <img
+                alt="bot"
+                src="https://example.com/photo1.jpg"
+                style="width: 45%; height: auto; border-radius: 20px;"
+              />
+              <div
+                style="width: 0%; height: auto;"
+              />
+            </div>
+          </li>
+        </ul>
+      </div>
+      <button
+        aria-label="next slide / item"
+        class="control-arrow control-next control-disabled"
+        type="button"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DetailCarousel Component renders correctly with multiple photos 1`] = `
+<div>
+  <div
+    class="carousel-root"
+  >
+    <div
+      class="carousel carousel-slider"
+      style="width: 100%;"
+    >
+      <ul
+        class="control-dots"
+      >
+        <li
+          aria-label="slide item 1"
+          class="dot selected"
+          role="button"
+          tabindex="0"
+          value="0"
+        />
+        <li
+          aria-label="slide item 2"
+          class="dot"
+          role="button"
+          tabindex="0"
+          value="1"
+        />
+      </ul>
+      <button
+        aria-label="previous slide / item"
+        class="control-arrow control-prev control-disabled"
+        type="button"
+      />
+      <div
+        class="slider-wrapper axis-horizontal"
+      >
+        <ul
+          class="slider animated"
+          style="transform: translate3d(0,0,0); transition-duration: 350ms;"
+        >
+          <li
+            class="slide selected previous"
+          >
+            <div
+              style="display: flex;"
+            >
+              <div
+                style="width: 0%; height: auto;"
+              />
+              <img
+                alt="bot"
+                src="https://example.com/photo1.jpg"
+                style="width: 45%; height: auto; border-radius: 20px;"
+              />
+              <div
+                style="width: 10%; height: auto;"
+              />
+              <img
+                alt="bot"
+                src="https://example.com/photo2.jpg"
+                style="width: 45%; height: auto; border-radius: 20px;"
+              />
+              <div
+                style="width: 0%; height: auto;"
+              />
+            </div>
+          </li>
+          <li
+            class="slide"
+          >
+            <div
+              style="display: flex;"
+            >
+              <div
+                style="width: 0%; height: auto;"
+              />
+              <img
+                alt="bot"
+                src="https://example.com/photo2.jpg"
+                style="width: 45%; height: auto; border-radius: 20px;"
+              />
+              <div
+                style="width: 10%; height: auto;"
+              />
+              <img
+                alt="bot"
+                src="https://example.com/photo1.jpg"
+                style="width: 45%; height: auto; border-radius: 20px;"
+              />
+              <div
+                style="width: 0%; height: auto;"
+              />
+            </div>
+          </li>
+        </ul>
+      </div>
+      <button
+        aria-label="next slide / item"
+        class="control-arrow control-next"
+        type="button"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DetailCarousel Component renders null when photos is empty 1`] = `<div />`;

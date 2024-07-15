@@ -148,6 +148,15 @@ describe('Bot Create display', () => {
             fireEvent.change(textboxs[1], { target: { value: 'Description 1' } });
         });
 
+        await act(async () => {
+            const slider = screen.getByRole('slider');
+            fireEvent.change(slider, { target: { value: '0.4' } });
+        });
+
+        await act(async () => {
+            fireEvent.click(screen.getByText("gpt-3.5-turbo"));
+        });
+
         await updateImage('imageUpload');
 
         await clickSubmit();
@@ -181,6 +190,15 @@ describe('Bot Create display', () => {
         });
 
         await inputPrompt();
+
+        await act (async () => {
+            const editButtons = screen.getAllByTestId('edit-markdown-button');
+            fireEvent.click(editButtons[0]);
+        });
+
+        await act (async () => {
+            fireEvent.click(screen.getByText('Exit'));
+        });
 
         await waitFor(() => {
             expect(screen.getByText('userAsk')).toBeInTheDocument();

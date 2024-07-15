@@ -1,6 +1,7 @@
 import { waitFor } from '@testing-library/dom';
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
@@ -125,6 +126,11 @@ describe('BotDetailPage display (has id)', () => {
             expect(screen.getByText('Bot 1')).toBeInTheDocument();
             expect(screen.getByText('Description 1')).toBeInTheDocument();
             expect(screen.getByText('Good!')).toBeInTheDocument();
+        });
+
+        await act(async () => {
+            const input = screen.getByRole('textbox');
+            userEvent.type(input, 'Value 1{enter}');
         });
     });
 

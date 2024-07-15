@@ -3,6 +3,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 import EditIcon from '@mui/icons-material/Edit';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Box, Grid, Typography } from "@mui/material";
+import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
 import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
@@ -110,6 +111,7 @@ export function MarkdownInput
                     <IconButton
                         sx={{ backgroundColor: 'secondary.main' }}
                         onClick={handleOpen}
+                        data-testid='edit-markdown-button'
                     >
                         <EditIcon />
                     </IconButton>
@@ -121,22 +123,27 @@ export function MarkdownInput
             open={open}
             onClose={handleClose}
         >
-            <Box sx={
-                {
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    bgcolor: 'background.paper',
-                    boxShadow: 24,
-                    p: 4,
-                }
-            }>
-                <MdEditor
-                    onChange={onChange}
-                    value={value}
-                />
-            </Box>
+            <>
+                <Box sx={
+                    {
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        p: 4,
+                    }
+                }>
+                    <MdEditor
+                        onChange={onChange}
+                        value={value}
+                    />
+                </Box>
+                <Button onClick={handleClose}>
+                    Exit
+                </Button>
+            </>
         </Modal>
     ];
 }

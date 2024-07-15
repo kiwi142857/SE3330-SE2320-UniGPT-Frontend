@@ -29,6 +29,9 @@ jest.mock('react-monaco-editor', () => {
       default: () => {
         return 'MockedMonacoEditor';
       },
+      default: ({ onChange }) => (
+        <textarea onChange={(e) => onChange(e.target.value)} data-testid="mock-editor" />
+      ),
     };
 });
 
@@ -98,6 +101,7 @@ describe('Plugin Create display', () => {
             const textboxs = screen.getAllByRole('textbox');
             fireEvent.change(textboxs[0], { target: { value: 'www' } });
             fireEvent.change(textboxs[1], { target: { value: 'for test' } });
+            fireEvent.click(screen.getByText("string"));
         });
 
         await act(async () => {
@@ -118,7 +122,7 @@ describe('Plugin Create display', () => {
 
         await act(async () => {
             const textboxs = screen.getAllByRole('textbox');
-            fireEvent.change(textboxs[2], { target: { value: 'Value 2' }});
+            fireEvent.change(textboxs[3], { target: { value: 'Value 2' }});
         });
 
         await act(async () => {
