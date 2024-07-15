@@ -9,11 +9,8 @@ ENV REACT_APP_IP=124.70.222.207
 RUN npm run build
 
 
-FROM nginx:latest
-COPY --from=build /app/build /usr/share/nginx/html
-COPY default.conf /etc/nginx/conf.d/default.conf
-
-
+FROM node:21
+COPY --from=build /app/build .
+# RUN npm install serve
 EXPOSE 3000
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npx", "serve", "-s", ".", "-l", "3000"]
