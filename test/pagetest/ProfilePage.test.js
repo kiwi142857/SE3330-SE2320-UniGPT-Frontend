@@ -50,6 +50,7 @@ for (let i = 0; i < 20; i++) {
 const user = { id: 1, name: 'User 1', description: 'Description 1', avatar: 'Avatar 1', account: 'Account 1', canvasUrl:"url 1", asAdmin: false };
 const me1 = { id: 3, name: 'User 3', description: 'Description 3', avatar: 'Avatar 3', account: 'Account 3', canvasUrl:"url 3", asAdmin: false };
 const me2 = { id: 2, name: 'User 2', description: 'Description 2', avatar: 'Avatar 2', account: 'Account 2', canvasUrl:"url 2", asAdmin: true };
+const userNoId = { id: null, name: 'User 1', description: 'Description 1', avatar: 'Avatar 1', account: 'Account 1', canvasUrl:"url 1", asAdmin: false };
 
 const Content = () => {
     return(
@@ -298,6 +299,52 @@ describe('ProfilePage get user error(no id)', () => {
     });
 });
 
+describe('ProfilePage get user null', () => {
+
+    beforeEach(async () => {
+        getUserCreatedBots.mockResolvedValue({ total : 20, bots: bots});
+        getUserFavoriteBots.mockResolvedValue({ total : 20, bots: bots});
+        getUser.mockResolvedValue({})
+        getMe.mockResolvedValue({})
+        await act(async () => {
+            render (
+                <MemoryRouter initialEntries={[`/profile/me`]}>
+                    <Content />
+                </MemoryRouter>
+            );
+        });
+    });
+
+    it('ProfilePage bot created', async () => {
+        await waitFor(() => {
+            expect(screen.queryByText('Bot 1')).toBeInTheDocument();
+        });
+    });
+});
+
+describe('ProfilePage get user no ID', () => {
+
+    beforeEach(async () => {
+        getUserCreatedBots.mockResolvedValue({ total : 20, bots: bots});
+        getUserFavoriteBots.mockResolvedValue({ total : 20, bots: bots});
+        getUser.mockResolvedValue(userNoId)
+        getMe.mockResolvedValue(me2)
+        await act(async () => {
+            render (
+                <MemoryRouter initialEntries={[`/profile/3`]}>
+                    <Content />
+                </MemoryRouter>
+            );
+        });
+    });
+
+    it('ProfilePage ban', async () => {
+        await act(async () => {
+            fireEvent.click(screen.getByText('Ban'));
+        });
+    });
+});
+
 describe('ProfilePage get bot error', () => {
 
     beforeEach(async () => {
@@ -382,7 +429,6 @@ describe('ProfilePage put user error & logout error', () => {
         });
     });
 });
-
 
 describe('ProfilePage get ban error and ban error)', () => {
 

@@ -77,7 +77,8 @@
     ],
     "moduleNameMapper": {
       "\\.(css|less)$": "identity-obj-proxy",
-      "react-markdown": "<rootDir>/test/mock/empty-mock.js"
+      "react-markdown": "<rootDir>/test/mock/empty-mock.js",
+      "vditor": "<rootDir>/test/mock/empty-mock.js"
     },
     "testEnvironment": "jsdom"
   }

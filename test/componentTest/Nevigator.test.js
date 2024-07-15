@@ -59,6 +59,17 @@ describe('Navigator', () => {
     });
   });
 
+  it('is admin', async () => {
+    getMe.mockResolvedValue({ avatar: '/assets/user-default.png', asAdmin: true });
+    localStorage.setItem('language', 'de');
+
+    render(
+      <BrowserRouter>
+        <Navigator />
+      </BrowserRouter>
+    );
+  });
+
   it('no user info', async () => {
     getMe.mockResolvedValue({});
 
@@ -92,7 +103,7 @@ describe('Navigator', () => {
         writable: true,
     });
     
-    getMe.mockResolvedValue({ avatar: '/assets/user-default.png', asAdmin: true });
+    getMe.mockResolvedValue({ avatar: '/assets/user-default.png', asAdmin: false });
 
     render(
       <BrowserRouter>
