@@ -3,6 +3,7 @@ services:
   app:
     # 使用./DockerFile构建前端镜像
     build: .
+    network_mode: "host"
     ports:
       - "3000:3000"
 volumes:
