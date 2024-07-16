@@ -67,6 +67,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.5.1",
     "jest-css-modules": "^2.1.0",
+    "jest-fetch-mock": "^3.0.3",
     "jest-websocket-mock": "^2.5.0",
     "react-test-renderer": "^18.3.1"
   },
@@ -76,7 +77,8 @@
     ],
     "moduleNameMapper": {
       "\\.(css|less)$": "identity-obj-proxy",
-      "react-markdown": "<rootDir>/test/mock/empty-mock.js"
+      "react-markdown": "<rootDir>/test/mock/empty-mock.js",
+      "vditor": "<rootDir>/test/mock/empty-mock.js"
     },
     "testEnvironment": "jsdom"
   }

@@ -56,7 +56,7 @@ const TableCreateDialog =
             let newPromptList = promptList;
             // change the promptList
             for (let i = 0; i < promptList.length; i++) {
-                if (inputValues[i] === "")
+                if (inputValues[i] === undefined || inputValues[i] === "")
                     return;
                 newPromptList[i].promptValue = inputValues[i];
             }
