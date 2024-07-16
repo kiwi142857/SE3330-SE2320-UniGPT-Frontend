@@ -23,7 +23,7 @@ export function ListButton({ isAdmin }: { isAdmin: boolean; }) {
 
     return (
         <div>
-            <Button onMouseEnter={handleMouseEnter}>
+            <Button onMouseEnter={handleMouseEnter} data-testid= "list-button">
                 <img src={unorderListIConUrl} alt="Unorder List" style={{ height: 40 }} />
             </Button>
             <Menu

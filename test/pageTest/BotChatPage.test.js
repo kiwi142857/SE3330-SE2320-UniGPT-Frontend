@@ -1,6 +1,7 @@
 import { waitFor } from '@testing-library/dom';
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import WS from "jest-websocket-mock";
 import React from 'react';
 import { act } from 'react-dom/test-utils';
@@ -38,8 +39,8 @@ const bot = {id: 1, name: 'Bot 1', description: 'Description 1', avatar: 'Avatar
 const historyList = {total: 2, histories:[{id : 1, title: 'Title 1', content: 'Content 1'}, {id : 2, title: 'Title 2', content: 'Content 2'}]};
 const chatList = [{id: 1, historyId: 1, name: 'User 1', avatar: 'Avatar 1', content: 'Chat 1', type: false}, 
     {id: 2, historyId: 1, name: 'Bot 1', avatar: 'Avatar 2', content: 'Chat 2', type: true}];
-const emptyPromptList = [{promptKey: 'Key 1', promptValue: ''}];
-const promptList = [{promptKey: 'Key 1', promptValue: 'Value 1'}];
+const emptyPromptList = [{promptKey: 'Key 1', promptValue: ''}, {promptKey: 'Key 2', promptValue: ''}];
+const promptList = [{promptKey: 'Key 1', promptValue: 'Value 1'}, {promptKey: 'Key 2', promptValue: 'Value 2'}];
 const createHistoryResponse = {ok: true, historyid: 3, userAsk: 'Chat 1'};
 
 const server = new WS('wss://localhost:8080/chat');
@@ -108,14 +109,24 @@ describe('ChatPage display', () => {
             expect(screen.getByText('Key 1')).toBeInTheDocument();
         });
 
+        const inputs = screen.getAllByRole('textbox');
+
         await act(async () => {
-            const input = screen.getByRole('textbox');
-            fireEvent.change(input, {target: {value: 'Value 1'}});
+            fireEvent.change(inputs[0], {target: {value: 'Value 1'}});
         });
 
         await act(async () => {
             const submitButton = screen.getByText('Submit');
             fireEvent.click(submitButton);
+        });
+
+        await act(async () => {
+            userEvent.type(inputs[0], 'Value 1{enter}');
+            expect(document.activeElement).toBe(inputs[1]);
+        });
+
+        await act(async () => {
+            userEvent.type(inputs[1], 'Value 2{enter}');
         });
 
         await waitFor(() => {
@@ -228,6 +239,18 @@ describe('ChatPage display', () => {
         });
     });
 
+    it('ChatPage Enter chat', async () => {
+        await act(async () => {
+            const history = screen.getByText('Title 2');
+            fireEvent.click(history);
+        });
+
+        await act(async () => {
+            const input = screen.getByRole('textbox');
+            userEvent.type(input, 'Chat 3{enter}');
+        });
+    });
+
     it('ChatPage button test', async () => {
         await act(async () => {
             const history = screen.getByText('Title 2');
@@ -238,6 +261,12 @@ describe('ChatPage display', () => {
             const editButton = screen.getByTestId('edit-button');
             fireEvent.click(editButton);
         });
+
+        await act(async () => {
+            const inputs = screen.getAllByRole('textbox');
+            fireEvent.change(inputs[0], {target: {value: 'Content ccc'}});
+        });
+
         await act(async () => {
             const saveButton = screen.getByTestId('save-button');
             fireEvent.click(saveButton);
@@ -250,7 +279,16 @@ describe('ChatPage display', () => {
         });
 
         await act(async () => {
+            const copyButton = screen.getByTestId('copy-button');
+            fireEvent.mouseDown(copyButton);
+            fireEvent.mouseUp(copyButton);
+            fireEvent.click(copyButton);
+        });
+
+        await act(async () => {
             const replayButton = screen.getByTestId('replay-button');
+            fireEvent.mouseDown(replayButton);
+            fireEvent.mouseUp(replayButton);
             fireEvent.click(replayButton);
         });
 
@@ -373,6 +411,13 @@ describe('ChatPage create history error handle', () => {
         await act(async () => {
             const tab = screen.getByTestId('create-table-button');
             fireEvent.click(tab);
+        });
+
+        const inputs = screen.getAllByRole('textbox');
+
+        await act(async () => {
+            fireEvent.change(inputs[0], {target: {value: 'Value 1'}});
+            fireEvent.change(inputs[1], {target: {value: 'Value 2'}});
         });
 
         await act(async () => {

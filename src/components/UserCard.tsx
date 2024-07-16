@@ -136,6 +136,7 @@ export default function UserCard({ user, isMe, isAdmin, userId }: { user: User; 
                         style={{ display: 'none' }}
                         id="avatar-input"
                         disabled={!isMe}
+                        data-testid="avatar-input"
                     />
                     {isMe && <label htmlFor="avatar-input" className="avatar-overlay-profile">{t("change your avatar")}</label>}
                 </div>

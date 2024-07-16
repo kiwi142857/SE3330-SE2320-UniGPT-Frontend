@@ -59,6 +59,7 @@ function BotEditKnowPart({knowFiles, setKnowFiles} :
                                                     <IconButton
                                                         sx={{ backgroundColor: 'secondary.main' }}
                                                         onClick={() => onFileDelete(index)}
+                                                        data-testid='delete-file-button'
                                                     >
                                                         <RemoveIcon />
                                                     </IconButton>

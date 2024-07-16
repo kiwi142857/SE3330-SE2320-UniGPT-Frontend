@@ -133,6 +133,7 @@ const OneChat = (
                                     sx={{ color: pressCopy ? 'grey' : 'darkgrey', fontSize: 20 }}
                                     onMouseDown={() => setPressCopy(true)}
                                     onMouseUp={() => setPressCopy(false)}
+                                    data-testid="copy-button"
                                 />
                             </CopyToClipboard>
                         </Grid>

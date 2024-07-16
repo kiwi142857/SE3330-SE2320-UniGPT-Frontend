@@ -115,12 +115,14 @@ const DetailCard = (
                                 sx={{ color: 'primary.main' }}
                                 fontSize='large'
                                 onClick={() => disLike()}
+                                data-testid='dislike'
                             />
                         ) : (
                             <FavoriteBorderIcon
                                 sx={{ color: 'primary.main' }}
                                 fontSize='large'
                                 onClick={() => like()}
+                                data-testid='like'
                             />
                         )}
                         <span className='detail-card-like'>
@@ -131,12 +133,14 @@ const DetailCard = (
                                 sx={{ color: 'primary.main' }}
                                 fontSize='large'
                                 onClick={() => unStar()}
+                                data-testid='unstar'
                             />
                         ) : (
                             <StarBorderIcon
                                 sx={{ color: 'primary.main' }}
                                 fontSize='large'
                                 onClick={() => star()}
+                                data-testid='star'
                             />
                         )}
                         <span className='detail-card-collect'>
