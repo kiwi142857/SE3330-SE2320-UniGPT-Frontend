@@ -1,10 +1,11 @@
 version: '3.8'
 services:
   app:
-    # 使用./DockerFile构建前端镜像
-    build: .
-    network_mode: "host"
+    build:
+      context: .
+      args:
+        REACT_APP_IP: 123.60.187.205
+        REACT_APP_PORT: 8080    
     ports:
       - "3000:3000"
-volumes:
-  db-data:
+
