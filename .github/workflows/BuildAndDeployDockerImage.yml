@@ -13,19 +13,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-
-    - name: Build Docker Image
-      uses: docker/build-push-action@v6
-      with:
-        context: .
-        outputs: type=docker,name=unigpt-frontend-app,dest=frontend_image.tar
-
+    - name: Build Docker Image and export to file
+      run: docker compose build && docker save -o frontend_image.tar unigpt-frontend-app
+      
     - name: Copy Docker Image to remote server
       uses: appleboy/scp-action@v0.1.7
       with:
-        host: 124.70.222.207
+        host: 123.60.187.205
         username: uni
         password: ${{ secrets.SSH_PASSWORD }}
         port: 22
@@ -35,7 +29,7 @@ jobs:
     - name: Load Docker Image and Restart Docker Container
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: 124.70.222.207
+        host: 123.60.187.205
         username: uni
         password: ${{ secrets.SSH_PASSWORD }}
         port: 22
