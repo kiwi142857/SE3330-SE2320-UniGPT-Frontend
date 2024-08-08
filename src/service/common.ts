@@ -83,9 +83,9 @@ function checkStatus(res: Response) {
 }
 
 export const BACKEND_SERVER_IP = process.env.REACT_APP_IP ?? 'localhost';
-export const BACKEND_SERVER_PORT = process.env.REACT_APP_PORT ?? '8080';
-export const websocketUrl = `wss://${BACKEND_SERVER_IP}:${BACKEND_SERVER_PORT}/chat`;
-export const BASEURL: string = `https://${BACKEND_SERVER_IP}:${BACKEND_SERVER_PORT}`; 
+export const BACKEND_SERVER_PORT = process.env.REACT_APP_PORT ?? '8081';
+export const websocketUrl = `ws://${BACKEND_SERVER_IP}:${BACKEND_SERVER_PORT}/chat`;
+export const BASEURL: string = `http://${BACKEND_SERVER_IP}:${BACKEND_SERVER_PORT}`; 
 export const PREFIX: string = `${BASEURL}/api`;
 export const API_DOCS_URL: string = `${BASEURL}/api-docs`;
 export const DUMMY_RESPONSE: ResponseData = {

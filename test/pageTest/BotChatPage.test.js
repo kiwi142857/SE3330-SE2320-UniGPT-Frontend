@@ -43,7 +43,7 @@ const emptyPromptList = [{promptKey: 'Key 1', promptValue: ''}, {promptKey: 'Key
 const promptList = [{promptKey: 'Key 1', promptValue: 'Value 1'}, {promptKey: 'Key 2', promptValue: 'Value 2'}];
 const createHistoryResponse = {ok: true, historyid: 3, userAsk: 'Chat 1'};
 
-const server = new WS('wss://localhost:8080/chat');
+const server = new WS('ws://localhost:8081/chat');
 
 const Content = () => {
     return(

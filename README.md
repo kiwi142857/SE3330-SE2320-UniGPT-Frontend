@@ -13,7 +13,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 Configure env vars
 ```
 export REACT_APP_IP=123.60.187.205
-export REACT_APP_PORT=8080
+export REACT_APP_PORT=8081
 ```
 ```sh
 npm install 

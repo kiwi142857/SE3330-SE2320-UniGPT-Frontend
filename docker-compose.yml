@@ -5,7 +5,7 @@ services:
       context: .
       args:
         REACT_APP_IP: 123.60.187.205
-        REACT_APP_PORT: 8080    
+        REACT_APP_PORT: 8081    
     image: unigpt-frontend-app
     ports:
       - "3000:3000"
