@@ -1,0 +1,46 @@
+name: Build and Deploy Docker Image
+
+on:
+  push:
+    branches:
+      - master  # 当主分支收到推送时触发
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build Docker Image and export to file
+      run: docker compose build && 
+           docker save -o frontend_image.tar unigpt-frontend-app && 
+           chmod 644 frontend_image.tar
+
+    - name: List files
+      run: ls -la
+      
+    - name: Copy Docker Image to remote server
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: 123.60.187.205
+        username: uni
+        password: ${{ secrets.SSH_PASSWORD }}
+        port: 22
+        source: "frontend_image.tar"
+        target: ~/
+
+    - name: Load Docker Image and Restart Docker Container
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: 123.60.187.205
+        username: uni
+        password: ${{ secrets.SSH_PASSWORD }}
+        port: 22
+        script: docker load -i ~/frontend_image.tar && 
+                rm ~/frontend_image.tar && 
+                cd UniGPT-frontend && 
+                docker compose up -d app
+
+        
